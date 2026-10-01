@@ -1,0 +1,29 @@
+{
+ "status": 200,
+ "body": {
+  "data": {
+   "mode": "selected",
+   "max_passes": 2,
+   "unit_price_minor": 20000,
+   "vat_rate_bp": 1500,
+   "currency": "SAR",
+   "status": "active",
+   "funded_passes": 1,
+   "enabled": true,
+   "counts": {
+    "pending": 0,
+    "reserved": 0,
+    "joined": 1,
+    "released": 0,
+    "unused": 0,
+    "void": 0,
+    "free_slots": 0
+   },
+   "unused_count": null,
+   "voucher": null
+  },
+  "meta": {
+   "server_time": "2026-09-29T17:52:18.645Z"
+  }
+ }
+}

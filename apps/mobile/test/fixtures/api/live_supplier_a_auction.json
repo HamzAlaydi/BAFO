@@ -1,0 +1,47 @@
+{
+ "status": 200,
+ "body": {
+  "data": {
+   "v": 3,
+   "competition_id": "01m3q4e75cveqqa28aks6nak37",
+   "direction": "auction",
+   "status": "live",
+   "phase": "open",
+   "server_time": "2026-09-29T17:52:19.585Z",
+   "bidding_opens_at": "2026-09-29T15:47:12.947Z",
+   "effective_close_at": "2026-10-01T17:00:00.000Z",
+   "hard_stop_at": "2026-10-01T17:40:00.000Z",
+   "extension_count": 0,
+   "accepting_offers": true,
+   "start_price_minor": 5000000,
+   "min_step": {
+    "minor": 50000,
+    "bps": null
+   },
+   "amount_granularity_minor": 100,
+   "my_offer": {
+    "id": "01m3q4e76z5p8hc1yshen78kjm",
+    "seq": 2,
+    "amount_minor": 5100000,
+    "stage": "live",
+    "accepted_at": "2026-09-29T17:47:12.990Z"
+   },
+   "my_offers_count": 1,
+   "is_leading": true,
+   "rank": null,
+   "ranked_count": null,
+   "leading_amount_minor": 5100000,
+   "ladder": null,
+   "required_next_amount_minor": 5150000,
+   "bafo": null,
+   "result": null,
+   "last_change": {
+    "kind": "snapshot",
+    "reason": null
+   }
+  },
+  "meta": {
+   "server_time": "2026-09-29T17:52:19.586Z"
+  }
+ }
+}

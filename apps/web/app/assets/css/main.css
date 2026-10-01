@@ -1,0 +1,498 @@
+/*
+ * BAFO design system for the web app.
+ *
+ * Source of truth: assets/brand/04_ui_color_tokens/bafo_colors.json (OFFICIAL)
+ * plus the gap-fillers in docs/01_findings/05_brand.md §2.1 (PROPOSED) and the
+ * strict-AA decision D1 in docs/02_design/R2R3_rebrand_content.md §3:
+ *   filled primary buttons use green-700 #0B7A55 with a white label (5.34:1);
+ *   brand green #0E9F6E is kept for the mark, icons, focus rings and large display text.
+ *
+ * Layers:
+ *   1. @theme          raw palette, fonts, radii (static values)
+ *   2. :root vars      semantic roles for light mode; dark overrides via
+ *                      prefers-color-scheme (unless [data-theme=light]) and [data-theme=dark]
+ *   3. @theme inline   Tailwind utilities mapped to the semantic roles
+ *
+ * Components use semantic utilities only (bg-surface, text-fg-muted, bg-primary ...),
+ * so dark mode needs no `dark:` variants. Layout uses logical properties only
+ * (ms-/me-/ps-/pe-/start-/end-/text-start) so RTL and LTR share one markup.
+ */
+@import "tailwindcss";
+
+/* `dark:` follows the explicit [data-theme] first, then the OS preference. */
+@custom-variant dark {
+  &:where([data-theme="dark"], [data-theme="dark"] *) {
+    @slot;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    &:where(:root:not([data-theme="light"]), :root:not([data-theme="light"]) *) {
+      @slot;
+    }
+  }
+}
+
+@theme {
+  /* Replace Tailwind's default palette: only brand colours are available. */
+  --color-*: initial;
+
+  --color-white: #ffffff;
+  --color-charcoal: #1c1f26; /* never pure #000 */
+
+  /* Green: 50/500/700 OFFICIAL, the rest PROPOSED (05_brand §2.1) */
+  --color-green-50: #e6f7f1;
+  --color-green-100: #d2f7e4;
+  --color-green-200: #a3e3c8;
+  --color-green-300: #7edfb1;
+  --color-green-400: #4cc693;
+  --color-green-500: #0e9f6e;
+  --color-green-600: #078b5f;
+  --color-green-700: #0b7a55;
+  --color-green-800: #025d3e;
+  --color-green-900: #02442d;
+  --color-green-950: #0b3d2c;
+  --color-green-bright: #16c27e; /* OBSERVED on-dark green */
+
+  /* Red: controlled use (destructive / error only) */
+  --color-red-50: #fbeae9;
+  --color-red-300: #eb6b5d;
+  --color-red-500: #b3261e;
+  --color-red-700: #8c1e17;
+  --color-red-950: #3a1512;
+
+  /* Gray: OFFICIAL 10-step scale; 950 = dark page */
+  --color-gray-50: #f9fafa;
+  --color-gray-100: #f3f4f5;
+  --color-gray-200: #e5e7eb;
+  --color-gray-300: #d1d5db;
+  --color-gray-400: #9aa0a6;
+  --color-gray-500: #6b7280;
+  --color-gray-600: #4b5563;
+  --color-gray-700: #374151;
+  --color-gray-800: #1f2937;
+  --color-gray-900: #1c1f26;
+  --color-gray-925: #262a33;
+  --color-gray-930: #333844;
+  --color-gray-950: #14161b;
+
+  /* Warning (amber) and info (blue): OFFICIAL 500/50, text variants PROPOSED */
+  --color-amber-50: #fef3e2;
+  --color-amber-300: #eaa957;
+  --color-amber-500: #b7791f;
+  --color-amber-700: #8c5802;
+  --color-amber-950: #3a2a10;
+  --color-blue-50: #eaf1fe;
+  --color-blue-300: #74a2fe;
+  --color-blue-500: #2563eb;
+  --color-blue-700: #1d4ed8;
+  --color-blue-950: #14264a;
+
+  /* Typography (D2): Inter first so Latin text and digits stay Inter; Arabic runs fall through to Plex.
+     Both are self-hosted (@fontsource, see nuxt.config.ts). */
+  --font-sans: "Inter Variable", "Inter", "IBM Plex Sans Arabic", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    Tahoma, Arial, sans-serif;
+  --font-arabic: "IBM Plex Sans Arabic", "Inter Variable", "Inter", ui-sans-serif, system-ui, Tahoma, Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+
+  /* Radii: buttons ≈ 20% of height → 10px on a 48px button (05_brand §2.2) */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+  --radius-2xl: 28px;
+
+  --breakpoint-xs: 25rem; /* 400px: larger phones (the smallest supported width is 360px) */
+
+  --animate-toast-in: toast-in 180ms ease-out;
+  --animate-fade-in: fade-in 150ms ease-out;
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+/* ---------- Semantic roles: light (default) ---------- */
+:root {
+  color-scheme: light dark;
+
+  --bafo-page: var(--color-white);
+  --bafo-canvas: var(--color-gray-100);
+  --bafo-surface: var(--color-white);
+  --bafo-surface-muted: var(--color-gray-50);
+  --bafo-surface-sunken: var(--color-gray-100);
+  --bafo-line: var(--color-gray-200);
+  --bafo-line-strong: var(--color-gray-500); /* input borders need ≥ 3:1 */
+
+  --bafo-fg: var(--color-charcoal);
+  --bafo-fg-muted: var(--color-gray-500);
+  --bafo-fg-subtle: var(--color-gray-400); /* decorative only, never body text */
+  --bafo-fg-inverse: var(--color-white);
+
+  --bafo-brand: var(--color-green-500);
+  --bafo-ring: var(--color-green-500);
+  --bafo-link: var(--color-green-700);
+
+  --bafo-primary: var(--color-green-700);
+  --bafo-primary-hover: var(--color-green-800);
+  --bafo-primary-fg: var(--color-white);
+  --bafo-primary-soft: var(--color-green-50);
+  --bafo-primary-soft-fg: var(--color-green-700);
+
+  --bafo-danger: var(--color-red-500);
+  --bafo-danger-hover: var(--color-red-700);
+  --bafo-danger-fg: var(--color-white);
+  --bafo-danger-soft: var(--color-red-50);
+  --bafo-danger-soft-fg: var(--color-red-700);
+
+  --bafo-warning: var(--color-amber-500);
+  --bafo-warning-soft: var(--color-amber-50);
+  --bafo-warning-soft-fg: var(--color-amber-700);
+
+  --bafo-info: var(--color-blue-500);
+  --bafo-info-soft: var(--color-blue-50);
+  --bafo-info-soft-fg: var(--color-blue-700);
+
+  --bafo-neutral-soft: var(--color-gray-100);
+  --bafo-neutral-soft-fg: var(--color-gray-700);
+
+  --bafo-overlay: rgb(20 22 27 / 0.55);
+  --bafo-shadow-rgb: 28 31 38;
+  --bafo-shadow-strength: 1;
+}
+
+/* ---------- Semantic roles: dark ----------
+ * The same block appears twice (system preference, explicit [data-theme=dark]);
+ * CSS cannot share declarations between a media query and a selector. Keep them in sync.
+ */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bafo-page: var(--color-gray-950);
+    --bafo-canvas: var(--color-gray-950);
+    --bafo-surface: var(--color-gray-900);
+    --bafo-surface-muted: var(--color-gray-925);
+    --bafo-surface-sunken: var(--color-gray-950);
+    --bafo-line: var(--color-gray-930);
+    --bafo-line-strong: var(--color-gray-500);
+
+    --bafo-fg: var(--color-gray-100);
+    --bafo-fg-muted: var(--color-gray-400);
+    --bafo-fg-subtle: var(--color-gray-500);
+    --bafo-fg-inverse: var(--color-gray-950);
+
+    --bafo-brand: var(--color-green-bright);
+    --bafo-ring: var(--color-green-bright);
+    --bafo-link: var(--color-green-bright);
+
+    --bafo-primary: var(--color-green-bright);
+    --bafo-primary-hover: var(--color-green-400);
+    --bafo-primary-fg: var(--color-gray-950);
+    --bafo-primary-soft: var(--color-green-950);
+    --bafo-primary-soft-fg: var(--color-green-200);
+
+    --bafo-danger: var(--color-red-300);
+    --bafo-danger-hover: #f08a7e;
+    --bafo-danger-fg: var(--color-gray-950);
+    --bafo-danger-soft: var(--color-red-950);
+    --bafo-danger-soft-fg: var(--color-red-50);
+
+    --bafo-warning: var(--color-amber-300);
+    --bafo-warning-soft: var(--color-amber-950);
+    --bafo-warning-soft-fg: var(--color-amber-300);
+
+    --bafo-info: var(--color-blue-300);
+    --bafo-info-soft: var(--color-blue-950);
+    --bafo-info-soft-fg: var(--color-blue-300);
+
+    --bafo-neutral-soft: var(--color-gray-925);
+    --bafo-neutral-soft-fg: var(--color-gray-300);
+
+    --bafo-overlay: rgb(10 11 14 / 0.7);
+    --bafo-shadow-rgb: 0 0 0;
+    --bafo-shadow-strength: 2.5;
+  }
+}
+
+:root[data-theme="dark"] {
+  --bafo-page: var(--color-gray-950);
+  --bafo-canvas: var(--color-gray-950);
+  --bafo-surface: var(--color-gray-900);
+  --bafo-surface-muted: var(--color-gray-925);
+  --bafo-surface-sunken: var(--color-gray-950);
+  --bafo-line: var(--color-gray-930);
+  --bafo-line-strong: var(--color-gray-500);
+
+  --bafo-fg: var(--color-gray-100);
+  --bafo-fg-muted: var(--color-gray-400);
+  --bafo-fg-subtle: var(--color-gray-500);
+  --bafo-fg-inverse: var(--color-gray-950);
+
+  --bafo-brand: var(--color-green-bright);
+  --bafo-ring: var(--color-green-bright);
+  --bafo-link: var(--color-green-bright);
+
+  --bafo-primary: var(--color-green-bright);
+  --bafo-primary-hover: var(--color-green-400);
+  --bafo-primary-fg: var(--color-gray-950);
+  --bafo-primary-soft: var(--color-green-950);
+  --bafo-primary-soft-fg: var(--color-green-200);
+
+  --bafo-danger: var(--color-red-300);
+  --bafo-danger-hover: #f08a7e;
+  --bafo-danger-fg: var(--color-gray-950);
+  --bafo-danger-soft: var(--color-red-950);
+  --bafo-danger-soft-fg: var(--color-red-50);
+
+  --bafo-warning: var(--color-amber-300);
+  --bafo-warning-soft: var(--color-amber-950);
+  --bafo-warning-soft-fg: var(--color-amber-300);
+
+  --bafo-info: var(--color-blue-300);
+  --bafo-info-soft: var(--color-blue-950);
+  --bafo-info-soft-fg: var(--color-blue-300);
+
+  --bafo-neutral-soft: var(--color-gray-925);
+  --bafo-neutral-soft-fg: var(--color-gray-300);
+
+  --bafo-overlay: rgb(10 11 14 / 0.7);
+  --bafo-shadow-rgb: 0 0 0;
+  --bafo-shadow-strength: 2.5;
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+/* ---------- Tailwind utilities mapped to semantic roles ---------- */
+@theme inline {
+  --color-page: var(--bafo-page);
+  --color-canvas: var(--bafo-canvas);
+  --color-surface: var(--bafo-surface);
+  --color-surface-muted: var(--bafo-surface-muted);
+  --color-surface-sunken: var(--bafo-surface-sunken);
+  --color-line: var(--bafo-line);
+  --color-line-strong: var(--bafo-line-strong);
+
+  --color-fg: var(--bafo-fg);
+  --color-fg-muted: var(--bafo-fg-muted);
+  --color-fg-subtle: var(--bafo-fg-subtle);
+  --color-fg-inverse: var(--bafo-fg-inverse);
+
+  --color-brand: var(--bafo-brand);
+  --color-ring: var(--bafo-ring);
+  --color-link: var(--bafo-link);
+
+  --color-primary: var(--bafo-primary);
+  --color-primary-hover: var(--bafo-primary-hover);
+  --color-primary-fg: var(--bafo-primary-fg);
+  --color-primary-soft: var(--bafo-primary-soft);
+  --color-primary-soft-fg: var(--bafo-primary-soft-fg);
+
+  --color-danger: var(--bafo-danger);
+  --color-danger-hover: var(--bafo-danger-hover);
+  --color-danger-fg: var(--bafo-danger-fg);
+  --color-danger-soft: var(--bafo-danger-soft);
+  --color-danger-soft-fg: var(--bafo-danger-soft-fg);
+
+  --color-warning: var(--bafo-warning);
+  --color-warning-soft: var(--bafo-warning-soft);
+  --color-warning-soft-fg: var(--bafo-warning-soft-fg);
+
+  --color-info: var(--bafo-info);
+  --color-info-soft: var(--bafo-info-soft);
+  --color-info-soft-fg: var(--bafo-info-soft-fg);
+
+  --color-success: var(--bafo-brand);
+  --color-success-soft: var(--bafo-primary-soft);
+  --color-success-soft-fg: var(--bafo-primary-soft-fg);
+
+  --color-neutral-soft: var(--bafo-neutral-soft);
+  --color-neutral-soft-fg: var(--bafo-neutral-soft-fg);
+
+  --color-overlay: var(--bafo-overlay);
+
+  --shadow-xs: 0 1px 2px 0 rgb(var(--bafo-shadow-rgb) / calc(0.05 * var(--bafo-shadow-strength)));
+  --shadow-sm: 0 1px 3px 0 rgb(var(--bafo-shadow-rgb) / calc(0.08 * var(--bafo-shadow-strength))),
+    0 1px 2px -1px rgb(var(--bafo-shadow-rgb) / calc(0.06 * var(--bafo-shadow-strength)));
+  --shadow-md: 0 4px 12px -2px rgb(var(--bafo-shadow-rgb) / calc(0.1 * var(--bafo-shadow-strength))),
+    0 2px 4px -2px rgb(var(--bafo-shadow-rgb) / calc(0.06 * var(--bafo-shadow-strength)));
+  --shadow-lg: 0 12px 32px -8px rgb(var(--bafo-shadow-rgb) / calc(0.16 * var(--bafo-shadow-strength))),
+    0 4px 8px -4px rgb(var(--bafo-shadow-rgb) / calc(0.08 * var(--bafo-shadow-strength)));
+}
+
+@layer base {
+  html {
+    font-family: var(--font-sans);
+    background-color: var(--color-page);
+    color: var(--color-fg);
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Arabic needs more leading than Latin; never letter-space Arabic. */
+  html:lang(ar) body {
+    line-height: 1.6;
+  }
+
+  html:lang(en) body {
+    line-height: 1.5;
+  }
+
+  body {
+    min-height: 100dvh;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 2px;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  ::selection {
+    background-color: var(--color-primary-soft);
+    color: var(--color-primary-soft-fg);
+  }
+
+  dialog::backdrop {
+    background-color: var(--color-overlay);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  /* Visible, AA-contrast inline link */
+  .link {
+    color: var(--color-link);
+    font-weight: 600;
+    text-underline-offset: 3px;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  /* Rendered Markdown (legal documents, UiMarkdown). Logical properties only: one style for RTL and LTR. */
+  .markdown {
+    color: var(--color-fg);
+    font-size: 1rem;
+    overflow-wrap: anywhere;
+
+    & > * + * {
+      margin-block-start: 1em;
+    }
+
+    & h1,
+    & h2,
+    & h3,
+    & h4 {
+      font-weight: 700;
+      line-height: 1.35;
+      margin-block-start: 1.75em;
+    }
+
+    & h1 {
+      font-size: 1.5rem;
+    }
+
+    & h2 {
+      font-size: 1.25rem;
+    }
+
+    & h3 {
+      font-size: 1.125rem;
+    }
+
+    & h4 {
+      font-size: 1rem;
+    }
+
+    & ul,
+    & ol {
+      padding-inline-start: 1.5em;
+    }
+
+    & ul {
+      list-style: disc;
+    }
+
+    & ol {
+      list-style: decimal;
+    }
+
+    & li + li {
+      margin-block-start: 0.35em;
+    }
+
+    & a {
+      color: var(--color-link);
+      font-weight: 600;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    & blockquote {
+      border-inline-start: 3px solid var(--color-line);
+      padding-inline-start: 1em;
+      color: var(--color-fg-muted);
+    }
+
+    & hr {
+      border: 0;
+      border-block-start: 1px solid var(--color-line);
+    }
+
+    & code {
+      font-family: var(--font-mono);
+      font-size: 0.9em;
+      background-color: var(--color-surface-muted);
+      border-radius: var(--radius-xs);
+      padding: 0.1em 0.3em;
+      direction: ltr;
+      unicode-bidi: isolate;
+    }
+
+    & table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9375rem;
+    }
+
+    & th,
+    & td {
+      border: 1px solid var(--color-line);
+      padding: 0.5em 0.75em;
+      text-align: start;
+    }
+
+    & th {
+      background-color: var(--color-surface-muted);
+      font-weight: 600;
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+ "status": 422,
+ "body": {
+  "message": "الرمز غير صحيح.",
+  "code": "otp_invalid",
+  "errors": {}
+ }
+}

@@ -1,0 +1,8 @@
+{
+ "status": 403,
+ "body": {
+  "message": "ليست لديك صلاحية لتنفيذ هذا الإجراء.",
+  "code": "forbidden",
+  "errors": {}
+ }
+}

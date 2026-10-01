@@ -1,0 +1,166 @@
+{
+ "status": 200,
+ "body": {
+  "data": {
+   "id": "01m3q4e776fekgx7wd0qfenna1",
+   "reference_no": "BAFO-T-2026-000005",
+   "title": "تطوير بوابة إلكترونية لخدمات العملاء (عروض مغلقة)",
+   "direction": "tender",
+   "format": "sealed",
+   "status": "live",
+   "phase": "sealed",
+   "currency": "SAR",
+   "price_basis": "excl_vat",
+   "description": "نطاق العمل: توريد وتنفيذ وفق كراسة الشروط والمواصفات المرفقة، مع ضمان لمدة سنة من تاريخ الاستلام. الأسعار لا تشمل ضريبة القيمة المضافة.",
+   "category": {
+    "id": "01m3q4e4eac63az0kartfdkmjc",
+    "code": "office_supplies",
+    "name": "مستلزمات مكتبية",
+    "is_other": false,
+    "auction_allowed": true
+   },
+   "category_other_text": null,
+   "region": {
+    "id": "01m3q4e4dxk4j1fh9rp64kd65j",
+    "code": "RIY",
+    "name": "الرياض"
+   },
+   "preset_code": "sealed_rfq",
+   "rules": {
+    "start_price_minor": 18000000,
+    "min_step_minor": null,
+    "min_step_bps": null,
+    "amount_granularity_minor": 100,
+    "must_beat": null,
+    "rank_visibility": "none",
+    "show_prices": false,
+    "auto_extend": {
+     "enabled": false,
+     "window_seconds": null,
+     "by_seconds": null,
+     "max_extensions": null
+    },
+    "final_window_minutes": null,
+    "bafo_round": {
+     "enabled": true,
+     "duration_minutes": 60
+    },
+    "min_participants": 2,
+    "result_publication": "outcome_only"
+   },
+   "rules_summary": [
+    "مناقصة: العرض الأقل سعرًا يتصدر.",
+    "عروض مغلقة: لا تظهر العروض لأحد قبل الإغلاق، ويمكنك تعديل عرضك حتى الإغلاق.",
+    "سعر السقف: 180,000.00 ر.س",
+    "لا يظهر للمتنافسين ترتيب ولا أسعار.",
+    "قد يدعو طارح المنافسة قائمة مختصرة لتقديم عرض نهائي واحد بعد الإغلاق.",
+    "تُحتسب أوقات العروض عند استلامها في خادم بافو.",
+    "الأسعار لا تشمل ضريبة القيمة المضافة."
+   ],
+   "schedule": {
+    "bidding_opens_at": "2026-09-29T16:47:13.004Z",
+    "scheduled_close_at": "2026-09-30T17:00:00.000Z",
+    "effective_close_at": "2026-09-30T17:00:00.000Z",
+    "hard_stop_at": null,
+    "final_window_starts_at": null,
+    "invitation_cutoff_at": "2026-09-30T16:00:00.000Z",
+    "extension_count": 0,
+    "published_at": "2026-09-29T16:47:13.004Z",
+    "opened_at": "2026-09-29T16:47:13.004Z",
+    "closed_at": null,
+    "offers_opened_at": null,
+    "awarded_at": null,
+    "not_awarded_at": null,
+    "cancelled_at": null
+   },
+   "issuer": {
+    "id": "01m3q4e4vys8t1rn3kfnvf54cr",
+    "name": "Issuer Co",
+    "logo_url": null,
+    "verified": true
+   },
+   "bafo_round": null,
+   "cancellation": null,
+   "not_awarded": null,
+   "participation": {
+    "participant_id": "01m3q4e77vzvyqbnk6p7tf5de6",
+    "alias_no": 75,
+    "joined_at": "2026-09-29T17:47:13.000Z",
+    "terms_accepted_at": "2026-09-29T17:47:13.000Z"
+   },
+   "access": {
+    "state": "full",
+    "coverage": "own_plan",
+    "sponsor_name": null,
+    "join_deadline": "2026-09-30T16:00:00.000Z"
+   },
+   "result": {
+    "outcome": null,
+    "winning_amount_minor": null
+   },
+   "permissions": {
+    "can_edit": false,
+    "can_delete": false,
+    "can_publish": false,
+    "can_invite": false,
+    "can_extend": false,
+    "can_cancel": false,
+    "can_start_bafo": false,
+    "can_award": false,
+    "can_revoke_award": false,
+    "can_close_without_award": false,
+    "can_manage_sponsorship": false,
+    "can_comment": true,
+    "can_join": false,
+    "can_decline": false,
+    "can_submit_offer": true
+   },
+   "viewer_role": "participant",
+   "live": {
+    "v": 2,
+    "competition_id": "01m3q4e776fekgx7wd0qfenna1",
+    "direction": "tender",
+    "status": "live",
+    "phase": "sealed",
+    "server_time": "2026-09-29T17:52:19.135Z",
+    "bidding_opens_at": "2026-09-29T16:47:13.004Z",
+    "effective_close_at": "2026-09-30T17:00:00.000Z",
+    "hard_stop_at": null,
+    "extension_count": 0,
+    "accepting_offers": true,
+    "start_price_minor": 18000000,
+    "min_step": {
+     "minor": null,
+     "bps": null
+    },
+    "amount_granularity_minor": 100,
+    "my_offer": {
+     "id": "01m3q4e78gygk9w88xj7gkags4",
+     "seq": 1,
+     "amount_minor": 17500000,
+     "stage": "sealed",
+     "accepted_at": "2026-09-29T17:47:13.038Z"
+    },
+    "my_offers_count": 1,
+    "is_leading": null,
+    "rank": null,
+    "ranked_count": null,
+    "leading_amount_minor": null,
+    "ladder": null,
+    "required_next_amount_minor": null,
+    "bafo": null,
+    "result": null,
+    "last_change": {
+     "kind": "snapshot",
+     "reason": null
+    }
+   },
+   "server_time": "2026-09-29T17:52:19.138Z",
+   "created_at": "2026-09-29T17:47:12.998Z",
+   "updated_at": "2026-09-29T17:47:13.036Z"
+  },
+  "meta": {
+   "server_time": "2026-09-29T17:52:19.138Z"
+  }
+ }
+}

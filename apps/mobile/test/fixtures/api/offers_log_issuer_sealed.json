@@ -1,0 +1,29 @@
+{
+ "status": 200,
+ "body": {
+  "data": [
+   {
+    "id": "01m3q4e78gygk9w88xj7gkags4",
+    "seq": 1,
+    "participant": {
+     "id": "01m3q4e77vzvyqbnk6p7tf5de6",
+     "alias_no": 75,
+     "organization": {
+      "id": "01m3q4e5hv0x1wy43sgxkq0v5j",
+      "name": "Supplier A"
+     }
+    },
+    "amount_minor": null,
+    "stage": "sealed",
+    "accepted_at": "2026-09-29T17:47:13.038Z",
+    "channel": "web",
+    "voided": false
+   }
+  ],
+  "meta": {
+   "last_seq": 1,
+   "has_more": false,
+   "server_time": "2026-09-29T17:52:18.901Z"
+  }
+ }
+}

@@ -1,0 +1,121 @@
+{
+ "status": 200,
+ "body": {
+  "data": {
+   "user": {
+    "id": "01m3q4e56gqh65sag0th21ftkn",
+    "name": "سارة المالكة",
+    "email": "issuer.owner@demo.bafo.test",
+    "phone": "+966500000011",
+    "locale": "ar",
+    "avatar_url": null,
+    "status": "active",
+    "email_verified_at": "2026-09-29T17:47:10.000Z",
+    "created_at": "2026-09-29T17:47:10.000Z"
+   },
+   "organization": {
+    "id": "01m3q4e4vys8t1rn3kfnvf54cr",
+    "name": "Issuer Co",
+    "legal_name_ar": "شركة الطارح التجريبية",
+    "legal_name_en": "Issuer Co Co. Ltd.",
+    "cr_number": "1010000001",
+    "vat_registered": true,
+    "vat_number": "300000000000013",
+    "region": {
+     "id": "01m3q4e4dxk4j1fh9rp64kd65j",
+     "code": "RIY",
+     "name": "Riyadh"
+    },
+    "city": "الرياض",
+    "national_address": {
+     "building_number": "0231",
+     "street": "طريق الملك فهد",
+     "district": "حي الشاطئ",
+     "postal_code": "16895",
+     "additional_number": "5703",
+     "short_address": "IVTI3778"
+    },
+    "website": null,
+    "email": "issuer.owner@demo.bafo.test",
+    "phone": "+966500000001",
+    "logo_url": null,
+    "profile_document": null,
+    "categories": [
+     {
+      "id": "01m3q4e4e6hpsddbmfwbr8tsed",
+      "code": "it_hardware",
+      "name": "IT hardware",
+      "is_other": false,
+      "auction_allowed": true
+     },
+     {
+      "id": "01m3q4e4eac63az0kartfdkmjc",
+      "code": "office_supplies",
+      "name": "Office supplies",
+      "is_other": false,
+      "auction_allowed": true
+     },
+     {
+      "id": "01m3q4e4ee9khcdvhjj7awh7m4",
+      "code": "surplus_scrap",
+      "name": "Surplus and scrap",
+      "is_other": false,
+      "auction_allowed": true
+     }
+    ],
+    "visible_in_suggestions": true,
+    "status": "active",
+    "verified": true,
+    "features": {
+     "api_enabled": true,
+     "auction_enabled": true,
+     "sponsorship_enabled": true
+    },
+    "billing_profile_complete": true,
+    "billing_profile_missing": [],
+    "trial_available": false,
+    "created_at": "2026-09-29T17:47:10.000Z"
+   },
+   "membership": {
+    "id": "01m3q4e56jcxhht7e9w5r55nyd",
+    "role": "owner",
+    "can_award": true,
+    "can_purchase": true,
+    "status": "active"
+   },
+   "permissions": [
+    "organization.update",
+    "team.manage",
+    "billing.view",
+    "billing.purchase",
+    "competitions.create",
+    "competitions.manage_all",
+    "competitions.award",
+    "participation.submit_offers",
+    "integrations.manage",
+    "account.delete_organization"
+   ],
+   "subscription": {
+    "plan": {
+     "id": "01m3q4e4f3mfmsbkssknnpn6cg",
+     "code": "pro",
+     "name": "Pro"
+    },
+    "source": "paid",
+    "status": "active",
+    "ends_at": "2026-10-29T17:47:12.000Z",
+    "days_left": 30,
+    "total_days": 30
+   },
+   "entitlements": {
+    "can_issue": true,
+    "seats_used": 3,
+    "seats_total": 3
+   },
+   "unread_notifications_count": 38
+  },
+  "meta": {
+   "server_time": "2026-09-29T17:52:17.492Z"
+  }
+ }
+}

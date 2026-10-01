@@ -1,0 +1,15 @@
+{
+ "status": 422,
+ "body": {
+  "message": "البيانات المُدخلة غير صالحة.",
+  "code": "validation_failed",
+  "errors": {
+   "password": [
+    "حقل كلمة المرور مطلوب."
+   ],
+   "device_name": [
+    "حقل اسم الجهاز مطلوب."
+   ]
+  }
+ }
+}

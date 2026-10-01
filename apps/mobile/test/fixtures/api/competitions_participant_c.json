@@ -1,0 +1,410 @@
+{
+ "status": 200,
+ "body": {
+  "data": [
+   {
+    "id": "01m3q4e7kycnbff05zqtegmmc5",
+    "reference_no": "BAFO-T-2026-000010",
+    "title": "خدمات تسويق وطباعة المواد الترويجية",
+    "direction": "tender",
+    "format": "live",
+    "status": "cancelled",
+    "phase": null,
+    "category": {
+     "id": "01m3q4e4eac63az0kartfdkmjc",
+     "code": "office_supplies",
+     "name": "مستلزمات مكتبية",
+     "is_other": false,
+     "auction_allowed": true
+    },
+    "region": {
+     "id": "01m3q4e4dxk4j1fh9rp64kd65j",
+     "code": "RIY",
+     "name": "الرياض"
+    },
+    "issuer": {
+     "id": "01m3q4e4vys8t1rn3kfnvf54cr",
+     "name": "Issuer Co",
+     "logo_url": null,
+     "verified": true
+    },
+    "schedule": {
+     "bidding_opens_at": "2026-10-01T17:00:00.000Z",
+     "effective_close_at": "2026-10-04T17:00:00.000Z",
+     "invitation_cutoff_at": "2026-10-04T16:00:00.000Z"
+    },
+    "invitation": {
+     "id": "01m3q4e7m4feyj313brkvtf7td",
+     "status": "expired",
+     "join_deadline": "2026-10-04T16:00:00.000Z"
+    },
+    "access": {
+     "state": "unavailable",
+     "coverage": "none",
+     "sponsor_name": null,
+     "join_deadline": "2026-10-04T16:00:00.000Z"
+    },
+    "my_offer_amount_minor": null,
+    "is_leading": null,
+    "result": {
+     "outcome": null
+    },
+    "updated_at": "2026-09-29T17:47:13.429Z"
+   },
+   {
+    "id": "01m3q4e7f92zkv3d6bz13k7bgs",
+    "reference_no": "BAFO-T-2026-000008",
+    "title": "توريد أثاث مكتبي للمقر الرئيسي",
+    "direction": "tender",
+    "format": "live",
+    "status": "awarded",
+    "phase": null,
+    "category": {
+     "id": "01m3q4e4eac63az0kartfdkmjc",
+     "code": "office_supplies",
+     "name": "مستلزمات مكتبية",
+     "is_other": false,
+     "auction_allowed": true
+    },
+    "region": {
+     "id": "01m3q4e4dxk4j1fh9rp64kd65j",
+     "code": "RIY",
+     "name": "الرياض"
+    },
+    "issuer": {
+     "id": "01m3q4e4vys8t1rn3kfnvf54cr",
+     "name": "Issuer Co",
+     "logo_url": null,
+     "verified": true
+    },
+    "schedule": {
+     "bidding_opens_at": "2026-09-29T13:47:13.263Z",
+     "effective_close_at": "2026-09-29T17:47:12.316Z",
+     "invitation_cutoff_at": "2026-09-29T17:47:12.316Z"
+    },
+    "invitation": {
+     "id": "01m3q4e7fdf158z1b83xt9z945",
+     "status": "joined",
+     "join_deadline": "2026-09-29T17:47:12.316Z"
+    },
+    "access": {
+     "state": "read_only",
+     "coverage": "own_plan",
+     "sponsor_name": null,
+     "join_deadline": "2026-09-29T17:47:12.316Z"
+    },
+    "my_offer_amount_minor": 21800000,
+    "is_leading": true,
+    "result": {
+     "outcome": "won"
+    },
+    "updated_at": "2026-09-29T17:47:13.333Z"
+   },
+   {
+    "id": "01m3q4e7btzj85vknn9k5m2stt",
+    "reference_no": "BAFO-T-2026-000007",
+    "title": "توريد خوادم ومعدات مركز البيانات",
+    "direction": "tender",
+    "format": "live",
+    "status": "bafo_round",
+    "phase": null,
+    "category": {
+     "id": "01m3q4e4eac63az0kartfdkmjc",
+     "code": "office_supplies",
+     "name": "مستلزمات مكتبية",
+     "is_other": false,
+     "auction_allowed": true
+    },
+    "region": {
+     "id": "01m3q4e4dxk4j1fh9rp64kd65j",
+     "code": "RIY",
+     "name": "الرياض"
+    },
+    "issuer": {
+     "id": "01m3q4e4vys8t1rn3kfnvf54cr",
+     "name": "Issuer Co",
+     "logo_url": null,
+     "verified": true
+    },
+    "schedule": {
+     "bidding_opens_at": "2026-09-29T13:47:13.155Z",
+     "effective_close_at": "2026-09-29T17:47:12.238Z",
+     "invitation_cutoff_at": "2026-09-29T17:47:12.238Z"
+    },
+    "invitation": {
+     "id": "01m3q4e7bzz6wsss2xeavt1qys",
+     "status": "joined",
+     "join_deadline": "2026-09-29T17:47:12.238Z"
+    },
+    "access": {
+     "state": "full",
+     "coverage": "own_plan",
+     "sponsor_name": null,
+     "join_deadline": "2026-09-29T17:47:12.238Z"
+    },
+    "my_offer_amount_minor": 24100000,
+    "is_leading": false,
+    "result": {
+     "outcome": null
+    },
+    "updated_at": "2026-09-29T17:47:13.252Z"
+   },
+   {
+    "id": "01m3q4e78rq2b0b506qbyt6pr2",
+    "reference_no": "BAFO-T-2026-000006",
+    "title": "نقل وتخزين البضائع بين المستودعات",
+    "direction": "tender",
+    "format": "live",
+    "status": "closed",
+    "phase": null,
+    "category": {
+     "id": "01m3q4e4eac63az0kartfdkmjc",
+     "code": "office_supplies",
+     "name": "مستلزمات مكتبية",
+     "is_other": false,
+     "auction_allowed": true
+    },
+    "region": {
+     "id": "01m3q4e4dxk4j1fh9rp64kd65j",
+     "code": "RIY",
+     "name": "الرياض"
+    },
+    "issuer": {
+     "id": "01m3q4e4vys8t1rn3kfnvf54cr",
+     "name": "Issuer Co",
+     "logo_url": null,
+     "verified": true
+    },
+    "schedule": {
+     "bidding_opens_at": "2026-09-29T13:47:13.055Z",
+     "effective_close_at": "2026-09-29T17:47:12.131Z",
+     "invitation_cutoff_at": "2026-09-29T17:47:12.131Z"
+    },
+    "invitation": {
+     "id": "01m3q4e78wdexrnkt6pkvnja27",
+     "status": "joined",
+     "join_deadline": "2026-09-29T17:47:12.131Z"
+    },
+    "access": {
+     "state": "read_only",
+     "coverage": "own_plan",
+     "sponsor_name": null,
+     "join_deadline": "2026-09-29T17:47:12.131Z"
+    },
+    "my_offer_amount_minor": 24000000,
+    "is_leading": false,
+    "result": {
+     "outcome": null
+    },
+    "updated_at": "2026-09-29T17:47:13.138Z"
+   },
+   {
+    "id": "01m3q4e776fekgx7wd0qfenna1",
+    "reference_no": "BAFO-T-2026-000005",
+    "title": "تطوير بوابة إلكترونية لخدمات العملاء (عروض مغلقة)",
+    "direction": "tender",
+    "format": "sealed",
+    "status": "live",
+    "phase": "sealed",
+    "category": {
+     "id": "01m3q4e4eac63az0kartfdkmjc",
+     "code": "office_supplies",
+     "name": "مستلزمات مكتبية",
+     "is_other": false,
+     "auction_allowed": true
+    },
+    "region": {
+     "id": "01m3q4e4dxk4j1fh9rp64kd65j",
+     "code": "RIY",
+     "name": "الرياض"
+    },
+    "issuer": {
+     "id": "01m3q4e4vys8t1rn3kfnvf54cr",
+     "name": "Issuer Co",
+     "logo_url": null,
+     "verified": true
+    },
+    "schedule": {
+     "bidding_opens_at": "2026-09-29T16:47:13.004Z",
+     "effective_close_at": "2026-09-30T17:00:00.000Z",
+     "invitation_cutoff_at": "2026-09-30T16:00:00.000Z"
+    },
+    "invitation": {
+     "id": "01m3q4e77a0q8dn8wrbgdqfyx0",
+     "status": "joined",
+     "join_deadline": "2026-09-30T16:00:00.000Z"
+    },
+    "access": {
+     "state": "full",
+     "coverage": "own_plan",
+     "sponsor_name": null,
+     "join_deadline": "2026-09-30T16:00:00.000Z"
+    },
+    "my_offer_amount_minor": null,
+    "is_leading": null,
+    "result": {
+     "outcome": null
+    },
+    "updated_at": "2026-09-29T17:47:13.036Z"
+   },
+   {
+    "id": "01m3q4e71m4tnkvsecsj2f351b",
+    "reference_no": "BAFO-T-2026-000003",
+    "title": "توريد أجهزة ومستلزمات طبية للمستودع المركزي",
+    "direction": "tender",
+    "format": "live",
+    "status": "live",
+    "phase": "final_window",
+    "category": {
+     "id": "01m3q4e4eac63az0kartfdkmjc",
+     "code": "office_supplies",
+     "name": "مستلزمات مكتبية",
+     "is_other": false,
+     "auction_allowed": true
+    },
+    "region": {
+     "id": "01m3q4e4dxk4j1fh9rp64kd65j",
+     "code": "RIY",
+     "name": "الرياض"
+    },
+    "issuer": {
+     "id": "01m3q4e4vys8t1rn3kfnvf54cr",
+     "name": "Issuer Co",
+     "logo_url": null,
+     "verified": true
+    },
+    "schedule": {
+     "bidding_opens_at": "2026-09-29T14:47:12.829Z",
+     "effective_close_at": "2026-09-29T18:17:12.667Z",
+     "invitation_cutoff_at": "2026-09-29T17:17:12.667Z"
+    },
+    "invitation": {
+     "id": "01m3q4e71srmqj7ppf258a85y4",
+     "status": "joined",
+     "join_deadline": "2026-09-29T17:17:12.667Z"
+    },
+    "access": {
+     "state": "full",
+     "coverage": "own_plan",
+     "sponsor_name": null,
+     "join_deadline": "2026-09-29T17:17:12.667Z"
+    },
+    "my_offer_amount_minor": 23800000,
+    "is_leading": true,
+    "result": {
+     "outcome": null
+    },
+    "updated_at": "2026-09-29T17:47:12.884Z"
+   },
+   {
+    "id": "01m3q4e6z5n2cq79mmr4h3ezb4",
+    "reference_no": "BAFO-T-2026-000002",
+    "title": "توريد مستلزمات مكتبية للعام المالي 2027",
+    "direction": "tender",
+    "format": "live",
+    "status": "live",
+    "phase": "initial",
+    "category": {
+     "id": "01m3q4e4eac63az0kartfdkmjc",
+     "code": "office_supplies",
+     "name": "مستلزمات مكتبية",
+     "is_other": false,
+     "auction_allowed": true
+    },
+    "region": {
+     "id": "01m3q4e4dxk4j1fh9rp64kd65j",
+     "code": "RIY",
+     "name": "الرياض"
+    },
+    "issuer": {
+     "id": "01m3q4e4vys8t1rn3kfnvf54cr",
+     "name": "Issuer Co",
+     "logo_url": null,
+     "verified": true
+    },
+    "schedule": {
+     "bidding_opens_at": "2026-09-29T16:47:12.751Z",
+     "effective_close_at": "2026-10-02T17:00:00.000Z",
+     "invitation_cutoff_at": "2026-10-02T16:00:00.000Z"
+    },
+    "invitation": {
+     "id": "01m3q4e6zb2ed82ky83gg4skex",
+     "status": "joined",
+     "join_deadline": "2026-10-02T16:00:00.000Z"
+    },
+    "access": {
+     "state": "full",
+     "coverage": "own_plan",
+     "sponsor_name": null,
+     "join_deadline": "2026-10-02T16:00:00.000Z"
+    },
+    "my_offer_amount_minor": null,
+    "is_leading": null,
+    "result": {
+     "outcome": null
+    },
+    "updated_at": "2026-09-29T17:47:12.777Z"
+   },
+   {
+    "id": "01m3q4e6xd2x1q3ayy9qyfsyb3",
+    "reference_no": "BAFO-T-2026-000001",
+    "title": "صيانة وتشغيل المباني الإدارية 2027",
+    "direction": "tender",
+    "format": "live",
+    "status": "scheduled",
+    "phase": null,
+    "category": {
+     "id": "01m3q4e4eac63az0kartfdkmjc",
+     "code": "office_supplies",
+     "name": "مستلزمات مكتبية",
+     "is_other": false,
+     "auction_allowed": true
+    },
+    "region": {
+     "id": "01m3q4e4dxk4j1fh9rp64kd65j",
+     "code": "RIY",
+     "name": "الرياض"
+    },
+    "issuer": {
+     "id": "01m3q4e4vys8t1rn3kfnvf54cr",
+     "name": "Issuer Co",
+     "logo_url": null,
+     "verified": true
+    },
+    "schedule": {
+     "bidding_opens_at": "2026-09-30T17:00:00.000Z",
+     "effective_close_at": "2026-10-03T17:00:00.000Z",
+     "invitation_cutoff_at": "2026-10-03T16:00:00.000Z"
+    },
+    "invitation": {
+     "id": "01m3q4e6xj75473s4x2xp582mt",
+     "status": "sent",
+     "join_deadline": "2026-10-03T16:00:00.000Z"
+    },
+    "access": {
+     "state": "join_required",
+     "coverage": "own_plan",
+     "sponsor_name": null,
+     "join_deadline": "2026-10-03T16:00:00.000Z"
+    },
+    "my_offer_amount_minor": null,
+    "is_leading": null,
+    "result": {
+     "outcome": null
+    },
+    "updated_at": "2026-09-29T17:47:12.702Z"
+   }
+  ],
+  "meta": {
+   "pagination": {
+    "type": "page",
+    "current_page": 1,
+    "per_page": 50,
+    "has_more": false,
+    "total": 8,
+    "last_page": 1
+   },
+   "server_time": "2026-09-29T17:52:17.922Z"
+  }
+ }
+}

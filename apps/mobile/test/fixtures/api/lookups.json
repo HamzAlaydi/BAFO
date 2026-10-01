@@ -1,0 +1,373 @@
+{
+ "status": 200,
+ "body": {
+  "data": {
+   "regions": [
+    {
+     "id": "01m3q4e4dxk4j1fh9rp64kd65j",
+     "code": "RIY",
+     "name": "الرياض"
+    },
+    {
+     "id": "01m3q4e4dyry5ybwys962vpvsb",
+     "code": "MAK",
+     "name": "مكة المكرمة"
+    },
+    {
+     "id": "01m3q4e4dyry5ybwys962vpvsc",
+     "code": "MED",
+     "name": "المدينة المنورة"
+    },
+    {
+     "id": "01m3q4e4dzvm64tkzeq6zhsw0s",
+     "code": "EAS",
+     "name": "المنطقة الشرقية"
+    },
+    {
+     "id": "01m3q4e4dzvm64tkzeq6zhsw0t",
+     "code": "QAS",
+     "name": "القصيم"
+    },
+    {
+     "id": "01m3q4e4e0y576j6av6k6c8w9m",
+     "code": "ASR",
+     "name": "عسير"
+    },
+    {
+     "id": "01m3q4e4e0y576j6av6k6c8w9n",
+     "code": "TAB",
+     "name": "تبوك"
+    },
+    {
+     "id": "01m3q4e4e0y576j6av6k6c8w9p",
+     "code": "HAI",
+     "name": "حائل"
+    },
+    {
+     "id": "01m3q4e4e17aqfjv8806rg9p8w",
+     "code": "NBO",
+     "name": "الحدود الشمالية"
+    },
+    {
+     "id": "01m3q4e4e17aqfjv8806rg9p8x",
+     "code": "JAZ",
+     "name": "جازان"
+    },
+    {
+     "id": "01m3q4e4e2b81dbp1z5cgqt2wf",
+     "code": "NAJ",
+     "name": "نجران"
+    },
+    {
+     "id": "01m3q4e4e2b81dbp1z5cgqt2wg",
+     "code": "BAH",
+     "name": "الباحة"
+    },
+    {
+     "id": "01m3q4e4e3hyt4e42nw2qzdjq4",
+     "code": "JOU",
+     "name": "الجوف"
+    }
+   ],
+   "categories": [
+    {
+     "id": "01m3q4e4e6hpsddbmfwbr8tsed",
+     "code": "it_hardware",
+     "name": "أجهزة ومعدات تقنية",
+     "is_other": false,
+     "auction_allowed": true
+    },
+    {
+     "id": "01m3q4e4e6hpsddbmfwbr8tsee",
+     "code": "software_services",
+     "name": "برمجيات وخدمات تقنية",
+     "is_other": false,
+     "auction_allowed": true
+    },
+    {
+     "id": "01m3q4e4e7q29axw2sjb95xd10",
+     "code": "construction",
+     "name": "مقاولات وإنشاءات",
+     "is_other": false,
+     "auction_allowed": true
+    },
+    {
+     "id": "01m3q4e4e9m7g1wpwk95sz6yqb",
+     "code": "facility_management",
+     "name": "تشغيل وصيانة المرافق",
+     "is_other": false,
+     "auction_allowed": true
+    },
+    {
+     "id": "01m3q4e4eac63az0kartfdkmjc",
+     "code": "office_supplies",
+     "name": "مستلزمات مكتبية",
+     "is_other": false,
+     "auction_allowed": true
+    },
+    {
+     "id": "01m3q4e4eb27v1cdr7w5x7ntz5",
+     "code": "logistics",
+     "name": "نقل وخدمات لوجستية",
+     "is_other": false,
+     "auction_allowed": true
+    },
+    {
+     "id": "01m3q4e4ecb09e6bc2v7hvv7zz",
+     "code": "medical_supplies",
+     "name": "مستلزمات وأجهزة طبية",
+     "is_other": false,
+     "auction_allowed": true
+    },
+    {
+     "id": "01m3q4e4ecb09e6bc2v7hvv800",
+     "code": "marketing_printing",
+     "name": "تسويق وطباعة",
+     "is_other": false,
+     "auction_allowed": true
+    },
+    {
+     "id": "01m3q4e4edw3rfczxt5zh0cxtm",
+     "code": "consulting",
+     "name": "خدمات استشارية",
+     "is_other": false,
+     "auction_allowed": true
+    },
+    {
+     "id": "01m3q4e4edw3rfczxt5zh0cxtn",
+     "code": "industrial_equipment",
+     "name": "معدات صناعية",
+     "is_other": false,
+     "auction_allowed": true
+    },
+    {
+     "id": "01m3q4e4ee9khcdvhjj7awh7m4",
+     "code": "surplus_scrap",
+     "name": "فائض ومخلفات",
+     "is_other": false,
+     "auction_allowed": true
+    },
+    {
+     "id": "01m3q4e4ef2ekj163592ez1dr3",
+     "code": "vehicles",
+     "name": "مركبات",
+     "is_other": false,
+     "auction_allowed": false
+    },
+    {
+     "id": "01m3q4e4egzsywtbtrarbys0rk",
+     "code": "real_estate",
+     "name": "عقارات",
+     "is_other": false,
+     "auction_allowed": false
+    },
+    {
+     "id": "01m3q4e4egzsywtbtrarbys0rm",
+     "code": "other",
+     "name": "أخرى",
+     "is_other": true,
+     "auction_allowed": true
+    }
+   ],
+   "close_reasons": [
+    {
+     "id": "01m3q4e4ehmkpszxrynqdwvzkg",
+     "code": "cancel_requirements_changed",
+     "kind": "cancel",
+     "name": "تغيّرت المتطلبات",
+     "requires_note": false
+    },
+    {
+     "id": "01m3q4e4ejgp9a9n275a0q6t3w",
+     "code": "cancel_budget_withdrawn",
+     "kind": "cancel",
+     "name": "سُحبت الميزانية المخصصة",
+     "requires_note": false
+    },
+    {
+     "id": "01m3q4e4ektr71emk4fkcc3mt6",
+     "code": "cancel_insufficient_participants",
+     "kind": "cancel",
+     "name": "عدد المتنافسين غير كافٍ",
+     "requires_note": false
+    },
+    {
+     "id": "01m3q4e4ektr71emk4fkcc3mt7",
+     "code": "cancel_other",
+     "kind": "cancel",
+     "name": "سبب آخر",
+     "requires_note": true
+    },
+    {
+     "id": "01m3q4e4emxw4rgf4705rangdb",
+     "code": "not_awarded_prices_above_budget",
+     "kind": "not_awarded",
+     "name": "الأسعار أعلى من الميزانية",
+     "requires_note": false
+    },
+    {
+     "id": "01m3q4e4enwq762wtg6x05yqjx",
+     "code": "not_awarded_no_compliant_offers",
+     "kind": "not_awarded",
+     "name": "لا توجد عروض مطابقة للمتطلبات",
+     "requires_note": false
+    },
+    {
+     "id": "01m3q4e4epdt08qvs4dczwtvkq",
+     "code": "not_awarded_requirement_cancelled",
+     "kind": "not_awarded",
+     "name": "أُلغي الاحتياج",
+     "requires_note": false
+    },
+    {
+     "id": "01m3q4e4epdt08qvs4dczwtvkr",
+     "code": "not_awarded_other",
+     "kind": "not_awarded",
+     "name": "سبب آخر",
+     "requires_note": true
+    },
+    {
+     "id": "01m3q4e4eq6v1s1g25fszd0c04",
+     "code": "award_leader_non_compliant",
+     "kind": "award_justification",
+     "name": "العرض المتصدر غير مطابق للمتطلبات",
+     "requires_note": false
+    },
+    {
+     "id": "01m3q4e4eq6v1s1g25fszd0c05",
+     "code": "award_commercial_terms",
+     "kind": "award_justification",
+     "name": "شروط تجارية أفضل",
+     "requires_note": false
+    },
+    {
+     "id": "01m3q4e4erpahfywtva90hp59y",
+     "code": "award_leader_unable_to_deliver",
+     "kind": "award_justification",
+     "name": "صاحب العرض المتصدر غير قادر على التنفيذ",
+     "requires_note": false
+    },
+    {
+     "id": "01m3q4e4erpahfywtva90hp59z",
+     "code": "award_other",
+     "kind": "award_justification",
+     "name": "سبب آخر",
+     "requires_note": true
+    },
+    {
+     "id": "01m3q4e4etapt7gjzv7732v9jd",
+     "code": "void_participant_error",
+     "kind": "void_offer",
+     "name": "خطأ من المتنافس",
+     "requires_note": false
+    },
+    {
+     "id": "01m3q4e4etapt7gjzv7732v9je",
+     "code": "void_technical_issue",
+     "kind": "void_offer",
+     "name": "خلل تقني",
+     "requires_note": false
+    },
+    {
+     "id": "01m3q4e4evt60yxfxwd8r6fnfz",
+     "code": "void_other",
+     "kind": "void_offer",
+     "name": "سبب آخر",
+     "requires_note": true
+    }
+   ],
+   "presets": [
+    {
+     "id": "01m3q4e4exws6tx3nts5zjppdk",
+     "code": "standard_live_tender",
+     "name": "مناقصة مباشرة قياسية",
+     "description": "يحسّن كل متنافس عرضه بخطوة لا تقل عن 0.5٪، مع مؤشر العرض المتصدر والتمديد التلقائي وفترة تسعير نهائية مدتها 60 دقيقة.",
+     "direction": "tender",
+     "format": "live",
+     "rules": {
+      "min_step_minor": null,
+      "min_step_bps": 50,
+      "amount_granularity_minor": 100,
+      "must_beat": "own",
+      "rank_visibility": "leading_flag",
+      "show_prices": false,
+      "auto_extend": {
+       "enabled": true,
+       "window_seconds": 180,
+       "by_seconds": 180,
+       "max_extensions": 10
+      },
+      "final_window_minutes": 60,
+      "bafo_round": {
+       "enabled": false,
+       "duration_minutes": null
+      },
+      "min_participants": 2,
+      "result_publication": "outcome_only"
+     }
+    },
+    {
+     "id": "01m3q4e4ey6xnkjyjw4z3bjv4j",
+     "code": "sealed_rfq",
+     "name": "طلب عروض أسعار مغلق",
+     "description": "يقدّم كل متنافس عرضاً مغلقاً لا يُفتح إلا عند الإغلاق، مع جولة عرض نهائي اختيارية مدتها 60 دقيقة.",
+     "direction": "tender",
+     "format": "sealed",
+     "rules": {
+      "min_step_minor": null,
+      "min_step_bps": null,
+      "amount_granularity_minor": 100,
+      "must_beat": null,
+      "rank_visibility": "none",
+      "show_prices": false,
+      "auto_extend": {
+       "enabled": false,
+       "window_seconds": null,
+       "by_seconds": null,
+       "max_extensions": null
+      },
+      "final_window_minutes": null,
+      "bafo_round": {
+       "enabled": true,
+       "duration_minutes": 60
+      },
+      "min_participants": 2,
+      "result_publication": "outcome_only"
+     }
+    },
+    {
+     "id": "01m3q4e4ezs4kv57atqmrtg8md",
+     "code": "surplus_sale_auction",
+     "name": "مزايدة لبيع الفائض",
+     "description": "يرفع كل متنافس العرض المتصدر بخطوة لا تقل عن 500 ر.س، مع إظهار الأسعار والتمديد التلقائي.",
+     "direction": "auction",
+     "format": "live",
+     "rules": {
+      "min_step_minor": 50000,
+      "min_step_bps": null,
+      "amount_granularity_minor": 100,
+      "must_beat": "best",
+      "rank_visibility": "leading_flag",
+      "show_prices": true,
+      "auto_extend": {
+       "enabled": true,
+       "window_seconds": 120,
+       "by_seconds": 120,
+       "max_extensions": 20
+      },
+      "final_window_minutes": null,
+      "bafo_round": {
+       "enabled": false,
+       "duration_minutes": null
+      },
+      "min_participants": 2,
+      "result_publication": "outcome_only"
+     }
+    }
+   ]
+  },
+  "meta": {
+   "server_time": "2026-09-29T17:51:30.105Z"
+  }
+ }
+}

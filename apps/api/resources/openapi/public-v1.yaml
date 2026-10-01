@@ -1,0 +1,5922 @@
+openapi: "3.1.0"
+info:
+  title: BAFO Public API
+  version: v1
+  summary: ERP integration API of the BAFO competition platform (tenders and auctions).
+  description: "Authenticate every call with `Authorization: Bearer <access_token | api_key>`. Get an access token from `POST /oauth/token` (OAuth2 client credentials), or create an API key (`bafo_{env}_{prefix8}_{secret32}`) in the dashboard. Tokens never go in URLs.\n\nResponses use the envelope `{\"data\": …, \"meta\": {…}}`; errors are `{\"message\", \"code\", \"errors\", \"details\"?}`. `Accept-Language: ar|en` localises messages (default ar).\n\nThe organization is the API client's: objects of other organizations answer 404. Competitions are visible to their issuer only.\n\nLists use cursor pagination (`per_page` ≤ 200, `cursor`) and `updated_since`. POSTs that create or act require an `Idempotency-Key`; a replay returns the original response.\n\nMoney is integer halalas (`*_minor`) with `currency: \"SAR\"`, excluding VAT (15%). Times are RFC 3339 UTC with milliseconds.\n\nRate limits: 600 GET and 300 other requests per minute per client, 1500 per minute per organization; the token endpoint allows 20 per minute per IP and client_id."
+servers:
+  - url: "/api/public/v1"
+    description: This deployment
+  - url: "http://localhost:8000/api/public/v1"
+    description: Local development
+tags:
+  - name: Authentication
+    description: Tokens and credential checks.
+  - name: Organization
+    description: Your organization and lookups.
+  - name: Vendors
+    description: Your vendor directory (flow F1).
+  - name: Competitions
+    description: Competitions and attachments (flows F2, F3).
+  - name: Invitations
+    description: Invitations (flow F3).
+  - name: Offers and awards
+    description: "Standings, results and awards (flows F4–F6)."
+  - name: Webhooks
+    description: Endpoints, delivery log and the event catalogue.
+security:
+  - oauth2: []
+  - apiKey: []
+paths:
+  "/oauth/token":
+    post:
+      operationId: issueAccessToken
+      tags:
+        - Authentication
+      summary: Get an access token (OAuth2 client credentials)
+      description: "RFC 6749 client-credentials grant. Send the client credentials with HTTP Basic (`client_id:client_secret`) or in the body. `scope` (space-separated) must be a subset of the client's scopes; all of them when omitted. Tokens last 30 minutes. This is the only response without the `{data}` envelope. Limited to 20 requests per minute per IP and client_id."
+      security:
+        - {}
+        - clientBasic: []
+      requestBody:
+        required: true
+        content:
+          "application/x-www-form-urlencoded":
+            schema:
+              type: object
+              properties:
+                grant_type:
+                  type: string
+                  enum:
+                    - client_credentials
+                scope:
+                  type: string
+                  example: "competitions:read vendors:write"
+                client_id:
+                  type: string
+                client_secret:
+                  type: string
+              required:
+                - grant_type
+          "application/json":
+            schema:
+              type: object
+              properties:
+                grant_type:
+                  type: string
+                  enum:
+                    - client_credentials
+                scope:
+                  type: string
+                client_id:
+                  type: string
+                client_secret:
+                  type: string
+              required:
+                - grant_type
+      responses:
+        "200":
+          description: Token issued.
+          content:
+            "application/json":
+              schema:
+                "$ref": "#/components/schemas/TokenResponse"
+        "400":
+          description: unsupported_grant_type or invalid_scope.
+          content:
+            "application/json":
+              schema:
+                "$ref": "#/components/schemas/OAuthError"
+        "401":
+          description: invalid_client.
+          content:
+            "application/json":
+              schema:
+                "$ref": "#/components/schemas/OAuthError"
+        "429":
+          description: too_many_requests.
+          content:
+            "application/json":
+              schema:
+                "$ref": "#/components/schemas/OAuthError"
+      parameters:
+        - "$ref": "#/components/parameters/AcceptLanguage"
+  "/ping":
+    get:
+      operationId: ping
+      tags:
+        - Authentication
+      summary: Check a credential
+      security:
+        - oauth2: []
+        - apiKey: []
+      responses:
+        "200":
+          description: OK
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "#/components/schemas/Ping"
+                  meta:
+                    type: object
+                required:
+                  - data
+                  - meta
+        "401":
+          "$ref": "#/components/responses/Unauthorized"
+        "403":
+          "$ref": "#/components/responses/Forbidden"
+        "429":
+          "$ref": "#/components/responses/TooManyRequests"
+      parameters:
+        - "$ref": "#/components/parameters/AcceptLanguage"
+  "/client":
+    get:
+      operationId: getClient
+      tags:
+        - Authentication
+      summary: Describe the calling client
+      security:
+        - oauth2: []
+        - apiKey: []
+      responses:
+        "200":
+          description: OK
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "#/components/schemas/ClientInfo"
+                  meta:
+                    type: object
+                required:
+                  - data
+                  - meta
+        "401":
+          "$ref": "#/components/responses/Unauthorized"
+        "403":
+          "$ref": "#/components/responses/Forbidden"
+        "429":
+          "$ref": "#/components/responses/TooManyRequests"
+      parameters:
+        - "$ref": "#/components/parameters/AcceptLanguage"
+  "/openapi.yaml":
+    get:
+      operationId: getOpenApiDocument
+      tags:
+        - Authentication
+      summary: This OpenAPI document (YAML)
+      security: []
+      responses:
+        "200":
+          description: OpenAPI 3.1.
+          content:
+            "application/yaml":
+              schema:
+                type: string
+      parameters:
+        - "$ref": "#/components/parameters/AcceptLanguage"
+  "/organization":
+    get:
+      operationId: getOrganization
+      tags:
+        - Organization
+      summary: Your organization
+      x-bafo-scope: "organization:read"
+      security:
+        - oauth2:
+            - "organization:read"
+        - apiKey: []
+      responses:
+        "200":
+          description: OK
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "#/components/schemas/Organization"
+                  meta:
+                    type: object
+                required:
+                  - data
+                  - meta
+        "401":
+          "$ref": "#/components/responses/Unauthorized"
+        "403":
+          "$ref": "#/components/responses/Forbidden"
+        "429":
+          "$ref": "#/components/responses/TooManyRequests"
+      parameters:
+        - "$ref": "#/components/parameters/AcceptLanguage"
+  "/lookups/{type}":
+    get:
+      operationId: getLookup
+      tags:
+        - Organization
+      summary: Lookup values (regions, categories, close reasons)
+      x-bafo-scope: "lookups:read"
+      security:
+        - oauth2:
+            - "lookups:read"
+        - apiKey: []
+      parameters:
+        - name: type
+          in: path
+          required: true
+          schema:
+            type: string
+            enum:
+              - regions
+              - categories
+              - close-reasons
+        - "$ref": "#/components/parameters/AcceptLanguage"
+      responses:
+        "200":
+          description: OK
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/LookupItem"
+                  meta:
+                    type: object
+                required:
+                  - data
+                  - meta
+        "401":
+          "$ref": "#/components/responses/Unauthorized"
+        "403":
+          "$ref": "#/components/responses/Forbidden"
+        "404":
+          "$ref": "#/components/responses/NotFound"
+        "429":
+          "$ref": "#/components/responses/TooManyRequests"
+  "/vendors":
+    get:
+      operationId: listVendors
+      tags:
+        - Vendors
+      summary: List vendors
+      description: Ordered by updated_at, id.
+      x-bafo-scope: "vendors:read"
+      security:
+        - oauth2:
+            - "vendors:read"
+        - apiKey: []
+      parameters:
+        - "$ref": "#/components/parameters/Cursor"
+        - "$ref": "#/components/parameters/PerPage"
+        - "$ref": "#/components/parameters/UpdatedSince"
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum:
+              - active
+              - blocked
+              - archived
+        - name: q
+          in: query
+          description: Name, English name, e-mail or CR.
+          schema:
+            type: string
+        - name: external_system
+          in: query
+          description: "With external_id: exact match on an ERP key."
+          schema:
+            type: string
+        - name: external_id
+          in: query
+          schema:
+            type: string
+        - name: linked
+          in: query
+          description: Only vendors matched (or not) to a BAFO organization.
+          schema:
+            type: boolean
+        - "$ref": "#/components/parameters/AcceptLanguage"
+      responses:
+        "200":
+          description: OK
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/Vendor"
+                  meta:
+                    type: object
+                    properties:
+                      pagination:
+                        "$ref": "#/components/schemas/CursorPagination"
+                    required:
+                      - pagination
+                required:
+                  - data
+                  - meta
+        "401":
+          "$ref": "#/components/responses/Unauthorized"
+        "403":
+          "$ref": "#/components/responses/Forbidden"
+        "422":
+          "$ref": "#/components/responses/ValidationFailed"
+        "429":
+          "$ref": "#/components/responses/TooManyRequests"
+    post:
+      operationId: createVendor
+      tags:
+        - Vendors
+      summary: Create a vendor
+      description: "Errors: vendor_email_taken (409, details.existing_id), external_ref_conflict (409, details.existing_id)."
+      x-bafo-scope: "vendors:write"
+      security:
+        - oauth2:
+            - "vendors:write"
+        - apiKey: []
+      parameters:
+        - "$ref": "#/components/parameters/IdempotencyKey"
+        - "$ref": "#/components/parameters/AcceptLanguage"
+      requestBody:
+        required: true
+        content:
+          "application/json":
+            schema:
+              "$ref": "#/components/schemas/VendorInput"
+      responses:
+        "201":
+          description: Created.
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "#/components/schemas/Vendor"
+                  meta:
+                    type: object
+                required:
+                  - data
+                  - meta
+          headers:
+            Location:
+              description: URL of the created object.
+              schema:
+                type: string
+                format: uri
+        "401":
+          "$ref": "#/components/responses/Unauthorized"
+        "403":
+          "$ref": "#/components/responses/Forbidden"
+        "409":
+          "$ref": "#/components/responses/Conflict"
+        "422":
+          "$ref": "#/components/responses/ValidationFailed"
+        "429":
+          "$ref": "#/components/responses/TooManyRequests"
+  "/vendors/{vendor}":
+    parameters:
+      - "$ref": "#/components/parameters/Vendor"
+    get:
+      operationId: getVendor
+      tags:
+        - Vendors
+      summary: Get a vendor
+      x-bafo-scope: "vendors:read"
+      security:
+        - oauth2:
+            - "vendors:read"
+        - apiKey: []
+      responses:
+        "200":
+          description: OK
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "#/components/schemas/Vendor"
+                  meta:
+                    type: object
+                required:
+                  - data
+                  - meta
+        "401":
+          "$ref": "#/components/responses/Unauthorized"
+        "403":
+          "$ref": "#/components/responses/Forbidden"
+        "404":
+          "$ref": "#/components/responses/NotFound"
+        "429":
+          "$ref": "#/components/responses/TooManyRequests"
+      parameters:
+        - "$ref": "#/components/parameters/AcceptLanguage"
+    patch:
+      operationId: updateVendor
+      tags:
+        - Vendors
+      summary: Update a vendor
+      x-bafo-scope: "vendors:write"
+      security:
+        - oauth2:
+            - "vendors:write"
+        - apiKey: []
+      requestBody:
+        required: true
+        content:
+          "application/json":
+            schema:
+              "$ref": "#/components/schemas/VendorPatch"
+      responses:
+        "200":
+          description: OK
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "#/components/schemas/Vendor"
+                  meta:
+                    type: object
+                required:
+                  - data
+                  - meta
+        "401":
+          "$ref": "#/components/responses/Unauthorized"
+        "403":
+          "$ref": "#/components/responses/Forbidden"
+        "404":
+          "$ref": "#/components/responses/NotFound"
+        "409":
+          "$ref": "#/components/responses/Conflict"
+        "422":
+          "$ref": "#/components/responses/ValidationFailed"
+        "429":
+          "$ref": "#/components/responses/TooManyRequests"
+      parameters:
+        - "$ref": "#/components/parameters/AcceptLanguage"
+  "/vendors/external/{system}/{external_id}":
+    parameters:
+      - "$ref": "#/components/parameters/System"
+      - "$ref": "#/components/parameters/ExternalId"
+    put:
+      operationId: upsertVendorByExternalId
+      tags:
+        - Vendors
+      summary: Create or replace a vendor by ERP key
+      description: Idempotent upsert by the supplier ERP key. An unknown key with the e-mail of an existing vendor attaches the key to that vendor.
+      x-bafo-scope: "vendors:write"
+      security:
+        - oauth2:
+            - "vendors:write"
+        - apiKey: []
+      requestBody:
+        required: true
+        content:
+          "application/json":
+            schema:
+              "$ref": "#/components/schemas/VendorUpsert"
+      responses:
+        "200":
+          description: Replaced.
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "#/components/schemas/Vendor"
+                  meta:
+                    type: object
+                required:
+                  - data
+                  - meta
+        "201":
+          description: Created.
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "#/components/schemas/Vendor"
+                  meta:
+                    type: object
+                required:
+                  - data
+                  - meta
+          headers:
+            Location:
+              description: URL of the created object.
+              schema:
+                type: string
+                format: uri
+        "401":
+          "$ref": "#/components/responses/Unauthorized"
+        "403":
+          "$ref": "#/components/responses/Forbidden"
+        "409":
+          "$ref": "#/components/responses/Conflict"
+        "422":
+          "$ref": "#/components/responses/ValidationFailed"
+        "429":
+          "$ref": "#/components/responses/TooManyRequests"
+      parameters:
+        - "$ref": "#/components/parameters/AcceptLanguage"
+    get:
+      operationId: getVendorByExternalId
+      tags:
+        - Vendors
+      summary: Find a vendor by ERP key
+      x-bafo-scope: "vendors:read"
+      security:
+        - oauth2:
+            - "vendors:read"
+        - apiKey: []
+      responses:
+        "200":
+          description: OK
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "#/components/schemas/Vendor"
+                  meta:
+                    type: object
+                required:
+                  - data
+                  - meta
+        "401":
+          "$ref": "#/components/responses/Unauthorized"
+        "403":
+          "$ref": "#/components/responses/Forbidden"
+        "404":
+          "$ref": "#/components/responses/NotFound"
+        "429":
+          "$ref": "#/components/responses/TooManyRequests"
+      parameters:
+        - "$ref": "#/components/parameters/AcceptLanguage"
+  "/competitions":
+    get:
+      operationId: listCompetitions
+      tags:
+        - Competitions
+      summary: List your competitions
+      x-bafo-scope: "competitions:read"
+      security:
+        - oauth2:
+            - "competitions:read"
+        - apiKey: []
+      parameters:
+        - "$ref": "#/components/parameters/Cursor"
+        - "$ref": "#/components/parameters/PerPage"
+        - "$ref": "#/components/parameters/UpdatedSince"
+        - name: status
+          in: query
+          description: Comma-separated statuses.
+          schema:
+            type: string
+        - name: direction
+          in: query
+          schema:
+            type: string
+            enum:
+              - tender
+              - auction
+        - name: format
+          in: query
+          schema:
+            type: string
+            enum:
+              - live
+              - sealed
+        - name: external_system
+          in: query
+          schema:
+            type: string
+        - name: external_id
+          in: query
+          schema:
+            type: string
+        - "$ref": "#/components/parameters/AcceptLanguage"
+      responses:
+        "200":
+          description: OK
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/PublicCompetition"
+                  meta:
+                    type: object
+                    properties:
+                      pagination:
+                        "$ref": "#/components/schemas/CursorPagination"
+                    required:
+                      - pagination
+                required:
+                  - data
+                  - meta
+        "401":
+          "$ref": "#/components/responses/Unauthorized"
+        "403":
+          "$ref": "#/components/responses/Forbidden"
+        "429":
+          "$ref": "#/components/responses/TooManyRequests"
+    post:
+      operationId: createCompetition
+      tags:
+        - Competitions
+      summary: Create a draft competition
+      description: "`rules` is a partial RulesInput filled from the preset; invitations and sponsorship are optional."
+      x-bafo-scope: "competitions:write"
+      security:
+        - oauth2:
+            - "competitions:write"
+        - apiKey: []
+      parameters:
+        - "$ref": "#/components/parameters/IdempotencyKey"
+        - "$ref": "#/components/parameters/AcceptLanguage"
+      requestBody:
+        required: true
+        content:
+          "application/json":
+            schema:
+              "$ref": "#/components/schemas/CompetitionCreate"
+      responses:
+        "201":
+          description: Created.
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "#/components/schemas/PublicCompetition"
+                  meta:
+                    type: object
+                required:
+                  - data
+                  - meta
+          headers:
+            Location:
+              description: URL of the created object.
+              schema:
+                type: string
+                format: uri
+        "401":
+          "$ref": "#/components/responses/Unauthorized"
+        "403":
+          "$ref": "#/components/responses/Forbidden"
+        "409":
+          "$ref": "#/components/responses/Conflict"
+        "422":
+          "$ref": "#/components/responses/ValidationFailed"
+        "429":
+          "$ref": "#/components/responses/TooManyRequests"
+  "/competitions/{competition}":
+    parameters:
+      - "$ref": "#/components/parameters/Competition"
+    get:
+      operationId: getCompetition
+      tags:
+        - Competitions
+      summary: Get a competition
+      x-bafo-scope: "competitions:read"
+      security:
+        - oauth2:
+            - "competitions:read"
+        - apiKey: []
+      responses:
+        "200":
+          description: OK
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "#/components/schemas/PublicCompetition"
+                  meta:
+                    type: object
+                required:
+                  - data
+                  - meta
+        "401":
+          "$ref": "#/components/responses/Unauthorized"
+        "403":
+          "$ref": "#/components/responses/Forbidden"
+        "404":
+          "$ref": "#/components/responses/NotFound"
+        "429":
+          "$ref": "#/components/responses/TooManyRequests"
+      parameters:
+        - "$ref": "#/components/parameters/AcceptLanguage"
+    patch:
+      operationId: updateCompetition
+      tags:
+        - Competitions
+      summary: Update a competition
+      description: competition_not_editable (409, details.fields).
+      x-bafo-scope: "competitions:write"
+      security:
+        - oauth2:
+            - "competitions:write"
+        - apiKey: []
+      requestBody:
+        required: true
+        content:
+          "application/json":
+            schema:
+              "$ref": "#/components/schemas/CompetitionPatch"
+      responses:
+        "200":
+          description: OK
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "#/components/schemas/PublicCompetition"
+                  meta:
+                    type: object
+                required:
+                  - data
+                  - meta
+        "401":
+          "$ref": "#/components/responses/Unauthorized"
+        "403":
+          "$ref": "#/components/responses/Forbidden"
+        "404":
+          "$ref": "#/components/responses/NotFound"
+        "409":
+          "$ref": "#/components/responses/Conflict"
+        "422":
+          "$ref": "#/components/responses/ValidationFailed"
+        "429":
+          "$ref": "#/components/responses/TooManyRequests"
+      parameters:
+        - "$ref": "#/components/parameters/AcceptLanguage"
+    delete:
+      operationId: deleteCompetition
+      tags:
+        - Competitions
+      summary: Delete a draft
+      x-bafo-scope: "competitions:write"
+      security:
+        - oauth2:
+            - "competitions:write"
+        - apiKey: []
+      responses:
+        "204":
+          "$ref": "#/components/responses/NoContent"
+        "401":
+          "$ref": "#/components/responses/Unauthorized"
+        "403":
+          "$ref": "#/components/responses/Forbidden"
+        "404":
+          "$ref": "#/components/responses/NotFound"
+        "409":
+          "$ref": "#/components/responses/Conflict"
+        "429":
+          "$ref": "#/components/responses/TooManyRequests"
+      parameters:
+        - "$ref": "#/components/parameters/AcceptLanguage"
+  "/competitions/{competition}/publish":
+    post:
+      operationId: publishCompetition
+      tags:
+        - Competitions
+      summary: Publish a draft
+      description: Runs the publish checks. sponsorship_payment_required (409, details.quote) when passes must be bought first (payment is web-only).
+      x-bafo-scope: "competitions:publish"
+      security:
+        - oauth2:
+            - "competitions:publish"
+        - apiKey: []
+      parameters:
+        - "$ref": "#/components/parameters/Competition"
+        - "$ref": "#/components/parameters/IdempotencyKey"
+        - "$ref": "#/components/parameters/AcceptLanguage"
+      responses:
+        "200":
+          description: OK
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "#/components/schemas/PublicCompetition"
+                  meta:
+                    type: object
+                required:
+                  - data
+                  - meta
+        "401":
+          "$ref": "#/components/responses/Unauthorized"
+        "403":
+          "$ref": "#/components/responses/Forbidden"
+        "404":
+          "$ref": "#/components/responses/NotFound"
+        "409":
+          "$ref": "#/components/responses/Conflict"
+        "422":
+          "$ref": "#/components/responses/ValidationFailed"
+        "429":
+          "$ref": "#/components/responses/TooManyRequests"
+  "/competitions/{competition}/extend":
+    post:
+      operationId: extendCompetition
+      tags:
+        - Competitions
+      summary: Extend the closing time
+      description: "extend_invalid (422, details.min_new_close_at); invalid_state_transition (409) unless live."
+      x-bafo-scope: "competitions:manage"
+      security:
+        - oauth2:
+            - "competitions:manage"
+        - apiKey: []
+      parameters:
+        - "$ref": "#/components/parameters/Competition"
+        - "$ref": "#/components/parameters/IdempotencyKey"
+        - "$ref": "#/components/parameters/AcceptLanguage"
+      requestBody:
+        required: true
+        content:
+          "application/json":
+            schema:
+              type: object
+              properties:
+                new_close_at:
+                  type: string
+                  format: date-time
+                  example: "2026-10-01T12:59:58.412Z"
+                reason:
+                  type: string
+                  minLength: 5
+                  maxLength: 1000
+              required:
+                - new_close_at
+                - reason
+      responses:
+        "200":
+          description: OK
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "#/components/schemas/PublicCompetition"
+                  meta:
+                    type: object
+                required:
+                  - data
+                  - meta
+        "401":
+          "$ref": "#/components/responses/Unauthorized"
+        "403":
+          "$ref": "#/components/responses/Forbidden"
+        "404":
+          "$ref": "#/components/responses/NotFound"
+        "409":
+          "$ref": "#/components/responses/Conflict"
+        "422":
+          "$ref": "#/components/responses/ValidationFailed"
+        "429":
+          "$ref": "#/components/responses/TooManyRequests"
+  "/competitions/{competition}/cancel":
+    post:
+      operationId: cancelCompetition
+      tags:
+        - Competitions
+      summary: Cancel a competition
+      description: Allowed while scheduled, live or in the BAFO round.
+      x-bafo-scope: "competitions:manage"
+      security:
+        - oauth2:
+            - "competitions:manage"
+        - apiKey: []
+      parameters:
+        - "$ref": "#/components/parameters/Competition"
+        - "$ref": "#/components/parameters/IdempotencyKey"
+        - "$ref": "#/components/parameters/AcceptLanguage"
+      requestBody:
+        required: true
+        content:
+          "application/json":
+            schema:
+              type: object
+              properties:
+                close_reason_code:
+                  type: string
+                  description: A close reason of kind cancel.
+                note:
+                  type:
+                    - string
+                    - "null"
+              required:
+                - close_reason_code
+      responses:
+        "200":
+          description: OK
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "#/components/schemas/PublicCompetition"
+                  meta:
+                    type: object
+                required:
+                  - data
+                  - meta
+        "401":
+          "$ref": "#/components/responses/Unauthorized"
+        "403":
+          "$ref": "#/components/responses/Forbidden"
+        "404":
+          "$ref": "#/components/responses/NotFound"
+        "409":
+          "$ref": "#/components/responses/Conflict"
+        "422":
+          "$ref": "#/components/responses/ValidationFailed"
+        "429":
+          "$ref": "#/components/responses/TooManyRequests"
+  "/competitions/{competition}/close":
+    post:
+      operationId: closeCompetition
+      tags:
+        - Competitions
+      summary: Close without award
+      description: Allowed while closed (evaluation).
+      x-bafo-scope: "competitions:manage"
+      security:
+        - oauth2:
+            - "competitions:manage"
+        - apiKey: []
+      parameters:
+        - "$ref": "#/components/parameters/Competition"
+        - "$ref": "#/components/parameters/IdempotencyKey"
+        - "$ref": "#/components/parameters/AcceptLanguage"
+      requestBody:
+        required: true
+        content:
+          "application/json":
+            schema:
+              type: object
+              properties:
+                close_reason_code:
+                  type: string
+                  description: A close reason of kind not_awarded.
+                note:
+                  type:
+                    - string
+                    - "null"
+              required:
+                - close_reason_code
+      responses:
+        "200":
+          description: OK
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "#/components/schemas/PublicCompetition"
+                  meta:
+                    type: object
+                required:
+                  - data
+                  - meta
+        "401":
+          "$ref": "#/components/responses/Unauthorized"
+        "403":
+          "$ref": "#/components/responses/Forbidden"
+        "404":
+          "$ref": "#/components/responses/NotFound"
+        "409":
+          "$ref": "#/components/responses/Conflict"
+        "422":
+          "$ref": "#/components/responses/ValidationFailed"
+        "429":
+          "$ref": "#/components/responses/TooManyRequests"
+  "/competitions/{competition}/attachments":
+    parameters:
+      - "$ref": "#/components/parameters/Competition"
+    get:
+      operationId: listAttachments
+      tags:
+        - Competitions
+      summary: List attachments
+      x-bafo-scope: "competitions:read"
+      security:
+        - oauth2:
+            - "competitions:read"
+        - apiKey: []
+      responses:
+        "200":
+          description: OK
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/Attachment"
+                  meta:
+                    type: object
+                required:
+                  - data
+                  - meta
+        "401":
+          "$ref": "#/components/responses/Unauthorized"
+        "403":
+          "$ref": "#/components/responses/Forbidden"
+        "404":
+          "$ref": "#/components/responses/NotFound"
+        "429":
+          "$ref": "#/components/responses/TooManyRequests"
+      parameters:
+        - "$ref": "#/components/parameters/AcceptLanguage"
+    post:
+      operationId: addAttachment
+      tags:
+        - Competitions
+      summary: Add an attachment or link
+      x-bafo-scope: "competitions:write"
+      security:
+        - oauth2:
+            - "competitions:write"
+        - apiKey: []
+      parameters:
+        - "$ref": "#/components/parameters/IdempotencyKey"
+        - "$ref": "#/components/parameters/AcceptLanguage"
+      requestBody:
+        required: true
+        content:
+          "multipart/form-data":
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                kind:
+                  type: string
+                  enum:
+                    - document
+                    - invitation_document
+                title:
+                  type:
+                    - string
+                    - "null"
+              required:
+                - file
+                - kind
+          "application/json":
+            schema:
+              type: object
+              properties:
+                kind:
+                  type: string
+                  enum:
+                    - external_link
+                url:
+                  type: string
+                  format: uri
+                title:
+                  type: string
+              required:
+                - kind
+                - url
+                - title
+      responses:
+        "201":
+          description: Created.
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "#/components/schemas/Attachment"
+                  meta:
+                    type: object
+                required:
+                  - data
+                  - meta
+        "401":
+          "$ref": "#/components/responses/Unauthorized"
+        "403":
+          "$ref": "#/components/responses/Forbidden"
+        "404":
+          "$ref": "#/components/responses/NotFound"
+        "422":
+          "$ref": "#/components/responses/ValidationFailed"
+        "429":
+          "$ref": "#/components/responses/TooManyRequests"
+  "/competitions/{competition}/attachments/{attachment}":
+    parameters:
+      - "$ref": "#/components/parameters/Competition"
+      - "$ref": "#/components/parameters/Attachment"
+    delete:
+      operationId: deleteAttachment
+      tags:
+        - Competitions
+      summary: Remove an attachment (draft or scheduled)
+      x-bafo-scope: "competitions:write"
+      security:
+        - oauth2:
+            - "competitions:write"
+        - apiKey: []
+      responses:
+        "204":
+          "$ref": "#/components/responses/NoContent"
+        "401":
+          "$ref": "#/components/responses/Unauthorized"
+        "403":
+          "$ref": "#/components/responses/Forbidden"
+        "404":
+          "$ref": "#/components/responses/NotFound"
+        "409":
+          "$ref": "#/components/responses/Conflict"
+        "429":
+          "$ref": "#/components/responses/TooManyRequests"
+      parameters:
+        - "$ref": "#/components/parameters/AcceptLanguage"
+  "/competitions/{competition}/invitations":
+    parameters:
+      - "$ref": "#/components/parameters/Competition"
+    get:
+      operationId: listInvitations
+      tags:
+        - Invitations
+      summary: List invitations
+      x-bafo-scope: "invitations:read"
+      security:
+        - oauth2:
+            - "invitations:read"
+        - apiKey: []
+      responses:
+        "200":
+          description: OK
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/PublicInvitation"
+                  meta:
+                    type: object
+                required:
+                  - data
+                  - meta
+        "401":
+          "$ref": "#/components/responses/Unauthorized"
+        "403":
+          "$ref": "#/components/responses/Forbidden"
+        "404":
+          "$ref": "#/components/responses/NotFound"
+        "429":
+          "$ref": "#/components/responses/TooManyRequests"
+      parameters:
+        - "$ref": "#/components/parameters/AcceptLanguage"
+    post:
+      operationId: createInvitations
+      tags:
+        - Invitations
+      summary: Invite participants (all-or-nothing)
+      description: "Per-item codes in details.item_codes: invitation_duplicate, cannot_invite_own_organization, vendor_blocked, vendor_not_found."
+      x-bafo-scope: "invitations:write"
+      security:
+        - oauth2:
+            - "invitations:write"
+        - apiKey: []
+      parameters:
+        - "$ref": "#/components/parameters/IdempotencyKey"
+        - "$ref": "#/components/parameters/AcceptLanguage"
+      requestBody:
+        required: true
+        content:
+          "application/json":
+            schema:
+              type: object
+              properties:
+                invitations:
+                  type: array
+                  items:
+                    "$ref": "#/components/schemas/InvitationInput"
+              required:
+                - invitations
+      responses:
+        "201":
+          description: Created.
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/PublicInvitation"
+                  meta:
+                    type: object
+                required:
+                  - data
+                  - meta
+        "401":
+          "$ref": "#/components/responses/Unauthorized"
+        "403":
+          "$ref": "#/components/responses/Forbidden"
+        "404":
+          "$ref": "#/components/responses/NotFound"
+        "409":
+          "$ref": "#/components/responses/Conflict"
+        "422":
+          "$ref": "#/components/responses/ValidationFailed"
+        "429":
+          "$ref": "#/components/responses/TooManyRequests"
+  "/competitions/{competition}/invitations/{invitation}":
+    parameters:
+      - "$ref": "#/components/parameters/Competition"
+      - "$ref": "#/components/parameters/Invitation"
+    delete:
+      operationId: removeInvitation
+      tags:
+        - Invitations
+      summary: Remove (draft) or revoke (sent, viewed) an invitation
+      x-bafo-scope: "invitations:write"
+      security:
+        - oauth2:
+            - "invitations:write"
+        - apiKey: []
+      responses:
+        "200":
+          description: Revoked.
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "#/components/schemas/PublicInvitation"
+                  meta:
+                    type: object
+                required:
+                  - data
+                  - meta
+        "204":
+          "$ref": "#/components/responses/NoContent"
+        "401":
+          "$ref": "#/components/responses/Unauthorized"
+        "403":
+          "$ref": "#/components/responses/Forbidden"
+        "404":
+          "$ref": "#/components/responses/NotFound"
+        "409":
+          "$ref": "#/components/responses/Conflict"
+        "429":
+          "$ref": "#/components/responses/TooManyRequests"
+      parameters:
+        - "$ref": "#/components/parameters/AcceptLanguage"
+  "/competitions/{competition}/offers":
+    get:
+      operationId: listOffers
+      tags:
+        - Offers and awards
+      summary: Current standing of every participant
+      description: "Sealed competitions before the offers are opened: amounts and ranks are null."
+      x-bafo-scope: "offers:read"
+      security:
+        - oauth2:
+            - "offers:read"
+        - apiKey: []
+      parameters:
+        - "$ref": "#/components/parameters/Competition"
+        - "$ref": "#/components/parameters/AcceptLanguage"
+      responses:
+        "200":
+          description: OK
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/PublicStandingRow"
+                  meta:
+                    type: object
+                required:
+                  - data
+                  - meta
+        "401":
+          "$ref": "#/components/responses/Unauthorized"
+        "403":
+          "$ref": "#/components/responses/Forbidden"
+        "404":
+          "$ref": "#/components/responses/NotFound"
+        "429":
+          "$ref": "#/components/responses/TooManyRequests"
+  "/competitions/{competition}/results":
+    get:
+      operationId: getResults
+      tags:
+        - Offers and awards
+      summary: Results after close
+      description: results_not_available (409) before the close.
+      x-bafo-scope: "offers:read"
+      security:
+        - oauth2:
+            - "offers:read"
+        - apiKey: []
+      parameters:
+        - "$ref": "#/components/parameters/Competition"
+        - "$ref": "#/components/parameters/AcceptLanguage"
+      responses:
+        "200":
+          description: OK
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "#/components/schemas/PublicResults"
+                  meta:
+                    type: object
+                required:
+                  - data
+                  - meta
+        "401":
+          "$ref": "#/components/responses/Unauthorized"
+        "403":
+          "$ref": "#/components/responses/Forbidden"
+        "404":
+          "$ref": "#/components/responses/NotFound"
+        "409":
+          "$ref": "#/components/responses/Conflict"
+        "429":
+          "$ref": "#/components/responses/TooManyRequests"
+  "/awards":
+    get:
+      operationId: listAwards
+      tags:
+        - Offers and awards
+      summary: List awards (the polling endpoint for firewalled ERPs)
+      x-bafo-scope: "awards:read"
+      security:
+        - oauth2:
+            - "awards:read"
+        - apiKey: []
+      parameters:
+        - "$ref": "#/components/parameters/Cursor"
+        - "$ref": "#/components/parameters/PerPage"
+        - "$ref": "#/components/parameters/UpdatedSince"
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum:
+              - issued
+              - revoked
+        - name: erp_sync_status
+          in: query
+          schema:
+            type: string
+            enum:
+              - not_required
+              - pending
+              - synced
+              - failed
+        - name: competition_id
+          in: query
+          schema:
+            type: string
+            description: ULID (26 lowercase characters).
+            example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+        - name: external_system
+          in: query
+          schema:
+            type: string
+        - name: external_id
+          in: query
+          schema:
+            type: string
+        - "$ref": "#/components/parameters/AcceptLanguage"
+      responses:
+        "200":
+          description: OK
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/PublicAward"
+                  meta:
+                    type: object
+                    properties:
+                      pagination:
+                        "$ref": "#/components/schemas/CursorPagination"
+                    required:
+                      - pagination
+                required:
+                  - data
+                  - meta
+        "401":
+          "$ref": "#/components/responses/Unauthorized"
+        "403":
+          "$ref": "#/components/responses/Forbidden"
+        "429":
+          "$ref": "#/components/responses/TooManyRequests"
+  "/awards/{award}":
+    get:
+      operationId: getAward
+      tags:
+        - Offers and awards
+      summary: Get an award
+      x-bafo-scope: "awards:read"
+      security:
+        - oauth2:
+            - "awards:read"
+        - apiKey: []
+      parameters:
+        - "$ref": "#/components/parameters/Award"
+        - "$ref": "#/components/parameters/AcceptLanguage"
+      responses:
+        "200":
+          description: OK
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "#/components/schemas/PublicAward"
+                  meta:
+                    type: object
+                required:
+                  - data
+                  - meta
+        "401":
+          "$ref": "#/components/responses/Unauthorized"
+        "403":
+          "$ref": "#/components/responses/Forbidden"
+        "404":
+          "$ref": "#/components/responses/NotFound"
+        "429":
+          "$ref": "#/components/responses/TooManyRequests"
+  "/awards/{award}/erp-sync":
+    post:
+      operationId: syncAward
+      tags:
+        - Offers and awards
+      summary: Report the ERP sync of an award
+      description: award_not_active (409) when the award was revoked. The refs are stored on the award (e.g. the purchase order).
+      x-bafo-scope: "awards:sync"
+      security:
+        - oauth2:
+            - "awards:sync"
+        - apiKey: []
+      parameters:
+        - "$ref": "#/components/parameters/Award"
+        - "$ref": "#/components/parameters/IdempotencyKey"
+        - "$ref": "#/components/parameters/AcceptLanguage"
+      requestBody:
+        required: true
+        content:
+          "application/json":
+            schema:
+              "$ref": "#/components/schemas/ErpSyncInput"
+      responses:
+        "200":
+          description: OK
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "#/components/schemas/PublicAward"
+                  meta:
+                    type: object
+                required:
+                  - data
+                  - meta
+        "401":
+          "$ref": "#/components/responses/Unauthorized"
+        "403":
+          "$ref": "#/components/responses/Forbidden"
+        "404":
+          "$ref": "#/components/responses/NotFound"
+        "409":
+          "$ref": "#/components/responses/Conflict"
+        "422":
+          "$ref": "#/components/responses/ValidationFailed"
+        "429":
+          "$ref": "#/components/responses/TooManyRequests"
+  "/webhook-event-types":
+    get:
+      operationId: listWebhookEventTypes
+      tags:
+        - Webhooks
+      summary: The webhook event catalogue
+      x-bafo-scope: "webhooks:manage"
+      security:
+        - oauth2:
+            - "webhooks:manage"
+        - apiKey: []
+      responses:
+        "200":
+          description: OK
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/WebhookEventType"
+                  meta:
+                    type: object
+                required:
+                  - data
+                  - meta
+        "401":
+          "$ref": "#/components/responses/Unauthorized"
+        "403":
+          "$ref": "#/components/responses/Forbidden"
+        "429":
+          "$ref": "#/components/responses/TooManyRequests"
+      parameters:
+        - "$ref": "#/components/parameters/AcceptLanguage"
+  "/webhook-endpoints":
+    get:
+      operationId: listWebhookEndpoints
+      tags:
+        - Webhooks
+      summary: List endpoints
+      x-bafo-scope: "webhooks:manage"
+      security:
+        - oauth2:
+            - "webhooks:manage"
+        - apiKey: []
+      responses:
+        "200":
+          description: OK
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/WebhookEndpoint"
+                  meta:
+                    type: object
+                required:
+                  - data
+                  - meta
+        "401":
+          "$ref": "#/components/responses/Unauthorized"
+        "403":
+          "$ref": "#/components/responses/Forbidden"
+        "429":
+          "$ref": "#/components/responses/TooManyRequests"
+      parameters:
+        - "$ref": "#/components/parameters/AcceptLanguage"
+    post:
+      operationId: createWebhookEndpoint
+      tags:
+        - Webhooks
+      summary: Create an endpoint (the secret is shown once)
+      description: "webhook_url_invalid (422): not https, credentials in the URL, a port other than 443 or 1024–65535, or a private address."
+      x-bafo-scope: "webhooks:manage"
+      security:
+        - oauth2:
+            - "webhooks:manage"
+        - apiKey: []
+      parameters:
+        - "$ref": "#/components/parameters/IdempotencyKey"
+        - "$ref": "#/components/parameters/AcceptLanguage"
+      requestBody:
+        required: true
+        content:
+          "application/json":
+            schema:
+              "$ref": "#/components/schemas/WebhookEndpointInput"
+      responses:
+        "201":
+          description: Created.
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "#/components/schemas/WebhookEndpointWithSecret"
+                  meta:
+                    type: object
+                required:
+                  - data
+                  - meta
+          headers:
+            Location:
+              description: URL of the created object.
+              schema:
+                type: string
+                format: uri
+        "401":
+          "$ref": "#/components/responses/Unauthorized"
+        "403":
+          "$ref": "#/components/responses/Forbidden"
+        "422":
+          "$ref": "#/components/responses/ValidationFailed"
+        "429":
+          "$ref": "#/components/responses/TooManyRequests"
+  "/webhook-endpoints/{endpoint}":
+    parameters:
+      - "$ref": "#/components/parameters/Endpoint"
+    get:
+      operationId: getWebhookEndpoint
+      tags:
+        - Webhooks
+      summary: Get an endpoint
+      x-bafo-scope: "webhooks:manage"
+      security:
+        - oauth2:
+            - "webhooks:manage"
+        - apiKey: []
+      responses:
+        "200":
+          description: OK
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "#/components/schemas/WebhookEndpoint"
+                  meta:
+                    type: object
+                required:
+                  - data
+                  - meta
+        "401":
+          "$ref": "#/components/responses/Unauthorized"
+        "403":
+          "$ref": "#/components/responses/Forbidden"
+        "404":
+          "$ref": "#/components/responses/NotFound"
+        "429":
+          "$ref": "#/components/responses/TooManyRequests"
+      parameters:
+        - "$ref": "#/components/parameters/AcceptLanguage"
+    patch:
+      operationId: updateWebhookEndpoint
+      tags:
+        - Webhooks
+      summary: Update an endpoint
+      x-bafo-scope: "webhooks:manage"
+      security:
+        - oauth2:
+            - "webhooks:manage"
+        - apiKey: []
+      requestBody:
+        required: true
+        content:
+          "application/json":
+            schema:
+              "$ref": "#/components/schemas/WebhookEndpointPatch"
+      responses:
+        "200":
+          description: OK
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "#/components/schemas/WebhookEndpoint"
+                  meta:
+                    type: object
+                required:
+                  - data
+                  - meta
+        "401":
+          "$ref": "#/components/responses/Unauthorized"
+        "403":
+          "$ref": "#/components/responses/Forbidden"
+        "404":
+          "$ref": "#/components/responses/NotFound"
+        "422":
+          "$ref": "#/components/responses/ValidationFailed"
+        "429":
+          "$ref": "#/components/responses/TooManyRequests"
+      parameters:
+        - "$ref": "#/components/parameters/AcceptLanguage"
+    delete:
+      operationId: deleteWebhookEndpoint
+      tags:
+        - Webhooks
+      summary: Delete an endpoint
+      x-bafo-scope: "webhooks:manage"
+      security:
+        - oauth2:
+            - "webhooks:manage"
+        - apiKey: []
+      responses:
+        "204":
+          "$ref": "#/components/responses/NoContent"
+        "401":
+          "$ref": "#/components/responses/Unauthorized"
+        "403":
+          "$ref": "#/components/responses/Forbidden"
+        "404":
+          "$ref": "#/components/responses/NotFound"
+        "429":
+          "$ref": "#/components/responses/TooManyRequests"
+      parameters:
+        - "$ref": "#/components/parameters/AcceptLanguage"
+  "/webhook-endpoints/{endpoint}/test":
+    post:
+      operationId: testWebhookEndpoint
+      tags:
+        - Webhooks
+      summary: Send a webhook.test event to this endpoint
+      x-bafo-scope: "webhooks:manage"
+      security:
+        - oauth2:
+            - "webhooks:manage"
+        - apiKey: []
+      parameters:
+        - "$ref": "#/components/parameters/Endpoint"
+        - "$ref": "#/components/parameters/IdempotencyKey"
+        - "$ref": "#/components/parameters/AcceptLanguage"
+      responses:
+        "202":
+          description: Queued.
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      event_id:
+                        type: string
+                        description: ULID (26 lowercase characters).
+                        example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+                    required:
+                      - event_id
+                  meta:
+                    type: object
+                required:
+                  - data
+                  - meta
+        "401":
+          "$ref": "#/components/responses/Unauthorized"
+        "403":
+          "$ref": "#/components/responses/Forbidden"
+        "404":
+          "$ref": "#/components/responses/NotFound"
+        "429":
+          "$ref": "#/components/responses/TooManyRequests"
+  "/webhook-endpoints/{endpoint}/rotate-secret":
+    post:
+      operationId: rotateWebhookSecret
+      tags:
+        - Webhooks
+      summary: Replace the signing secret (shown once)
+      x-bafo-scope: "webhooks:manage"
+      security:
+        - oauth2:
+            - "webhooks:manage"
+        - apiKey: []
+      parameters:
+        - "$ref": "#/components/parameters/Endpoint"
+        - "$ref": "#/components/parameters/IdempotencyKey"
+        - "$ref": "#/components/parameters/AcceptLanguage"
+      responses:
+        "200":
+          description: OK
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "#/components/schemas/WebhookEndpointWithSecret"
+                  meta:
+                    type: object
+                required:
+                  - data
+                  - meta
+        "401":
+          "$ref": "#/components/responses/Unauthorized"
+        "403":
+          "$ref": "#/components/responses/Forbidden"
+        "404":
+          "$ref": "#/components/responses/NotFound"
+        "429":
+          "$ref": "#/components/responses/TooManyRequests"
+  "/webhook-endpoints/{endpoint}/deliveries":
+    get:
+      operationId: listWebhookDeliveries
+      tags:
+        - Webhooks
+      summary: Delivery log (newest first)
+      x-bafo-scope: "webhooks:manage"
+      security:
+        - oauth2:
+            - "webhooks:manage"
+        - apiKey: []
+      parameters:
+        - "$ref": "#/components/parameters/Endpoint"
+        - "$ref": "#/components/parameters/Cursor"
+        - "$ref": "#/components/parameters/PerPage"
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum:
+              - pending
+              - succeeded
+              - failed
+        - "$ref": "#/components/parameters/AcceptLanguage"
+      responses:
+        "200":
+          description: OK
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/WebhookDelivery"
+                  meta:
+                    type: object
+                    properties:
+                      pagination:
+                        "$ref": "#/components/schemas/CursorPagination"
+                    required:
+                      - pagination
+                required:
+                  - data
+                  - meta
+        "401":
+          "$ref": "#/components/responses/Unauthorized"
+        "403":
+          "$ref": "#/components/responses/Forbidden"
+        "404":
+          "$ref": "#/components/responses/NotFound"
+        "429":
+          "$ref": "#/components/responses/TooManyRequests"
+  "/webhook-deliveries/{delivery}/redeliver":
+    post:
+      operationId: redeliverWebhook
+      tags:
+        - Webhooks
+      summary: Redeliver a failed delivery
+      description: "Sets the delivery to pending with next_attempt_at = now; the attempt count is kept. invalid_state_transition (409) unless failed."
+      x-bafo-scope: "webhooks:manage"
+      security:
+        - oauth2:
+            - "webhooks:manage"
+        - apiKey: []
+      parameters:
+        - "$ref": "#/components/parameters/Delivery"
+        - "$ref": "#/components/parameters/IdempotencyKey"
+        - "$ref": "#/components/parameters/AcceptLanguage"
+      responses:
+        "200":
+          description: OK
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "#/components/schemas/WebhookDelivery"
+                  meta:
+                    type: object
+                required:
+                  - data
+                  - meta
+        "401":
+          "$ref": "#/components/responses/Unauthorized"
+        "403":
+          "$ref": "#/components/responses/Forbidden"
+        "404":
+          "$ref": "#/components/responses/NotFound"
+        "409":
+          "$ref": "#/components/responses/Conflict"
+        "429":
+          "$ref": "#/components/responses/TooManyRequests"
+webhooks:
+  "competition.published":
+    post:
+      operationId: webhook_competition_published
+      tags:
+        - Webhooks
+      summary: competition.published
+      description: "Delivered only to the issuer organization's endpoints. Thin payload: GET links.object for the full state. At least once, no global ordering: use sequence per object. Return 2xx within 15 s; redirects are not followed. Retries after 5 s, 1 min, 5 min, 30 min, 2 h, 5 h, 10 h and 14 h (9 attempts); 410 Gone disables the endpoint."
+      parameters:
+        - name: webhook-id
+          in: header
+          required: true
+          description: "The event id (= body id)."
+          schema:
+            type: string
+        - name: webhook-timestamp
+          in: header
+          required: true
+          description: "Unix seconds at send time; reject if more than 300 s from now."
+          schema:
+            type: string
+        - name: webhook-signature
+          in: header
+          required: true
+          description: "v1,<base64(HMAC-SHA256(base64_decode(secret without whsec_), \"{webhook-id}.{webhook-timestamp}.{raw body}\"))>; several may be space-separated: accept if any matches (constant-time)."
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          "application/json":
+            schema:
+              "$ref": "#/components/schemas/WebhookEvent_competition_published"
+      responses:
+        "2XX":
+          description: Received.
+  "competition.extended":
+    post:
+      operationId: webhook_competition_extended
+      tags:
+        - Webhooks
+      summary: competition.extended
+      description: "Delivered only to the issuer organization's endpoints. Thin payload: GET links.object for the full state. At least once, no global ordering: use sequence per object. Return 2xx within 15 s; redirects are not followed. Retries after 5 s, 1 min, 5 min, 30 min, 2 h, 5 h, 10 h and 14 h (9 attempts); 410 Gone disables the endpoint."
+      parameters:
+        - name: webhook-id
+          in: header
+          required: true
+          description: "The event id (= body id)."
+          schema:
+            type: string
+        - name: webhook-timestamp
+          in: header
+          required: true
+          description: "Unix seconds at send time; reject if more than 300 s from now."
+          schema:
+            type: string
+        - name: webhook-signature
+          in: header
+          required: true
+          description: "v1,<base64(HMAC-SHA256(base64_decode(secret without whsec_), \"{webhook-id}.{webhook-timestamp}.{raw body}\"))>; several may be space-separated: accept if any matches (constant-time)."
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          "application/json":
+            schema:
+              "$ref": "#/components/schemas/WebhookEvent_competition_extended"
+      responses:
+        "2XX":
+          description: Received.
+  "competition.closed":
+    post:
+      operationId: webhook_competition_closed
+      tags:
+        - Webhooks
+      summary: competition.closed
+      description: "Delivered only to the issuer organization's endpoints. Thin payload: GET links.object for the full state. At least once, no global ordering: use sequence per object. Return 2xx within 15 s; redirects are not followed. Retries after 5 s, 1 min, 5 min, 30 min, 2 h, 5 h, 10 h and 14 h (9 attempts); 410 Gone disables the endpoint."
+      parameters:
+        - name: webhook-id
+          in: header
+          required: true
+          description: "The event id (= body id)."
+          schema:
+            type: string
+        - name: webhook-timestamp
+          in: header
+          required: true
+          description: "Unix seconds at send time; reject if more than 300 s from now."
+          schema:
+            type: string
+        - name: webhook-signature
+          in: header
+          required: true
+          description: "v1,<base64(HMAC-SHA256(base64_decode(secret without whsec_), \"{webhook-id}.{webhook-timestamp}.{raw body}\"))>; several may be space-separated: accept if any matches (constant-time)."
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          "application/json":
+            schema:
+              "$ref": "#/components/schemas/WebhookEvent_competition_closed"
+      responses:
+        "2XX":
+          description: Received.
+  "competition.offers_opened":
+    post:
+      operationId: webhook_competition_offers_opened
+      tags:
+        - Webhooks
+      summary: competition.offers_opened
+      description: "Delivered only to the issuer organization's endpoints. Thin payload: GET links.object for the full state. At least once, no global ordering: use sequence per object. Return 2xx within 15 s; redirects are not followed. Retries after 5 s, 1 min, 5 min, 30 min, 2 h, 5 h, 10 h and 14 h (9 attempts); 410 Gone disables the endpoint."
+      parameters:
+        - name: webhook-id
+          in: header
+          required: true
+          description: "The event id (= body id)."
+          schema:
+            type: string
+        - name: webhook-timestamp
+          in: header
+          required: true
+          description: "Unix seconds at send time; reject if more than 300 s from now."
+          schema:
+            type: string
+        - name: webhook-signature
+          in: header
+          required: true
+          description: "v1,<base64(HMAC-SHA256(base64_decode(secret without whsec_), \"{webhook-id}.{webhook-timestamp}.{raw body}\"))>; several may be space-separated: accept if any matches (constant-time)."
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          "application/json":
+            schema:
+              "$ref": "#/components/schemas/WebhookEvent_competition_offers_opened"
+      responses:
+        "2XX":
+          description: Received.
+  "competition.cancelled":
+    post:
+      operationId: webhook_competition_cancelled
+      tags:
+        - Webhooks
+      summary: competition.cancelled
+      description: "Delivered only to the issuer organization's endpoints. Thin payload: GET links.object for the full state. At least once, no global ordering: use sequence per object. Return 2xx within 15 s; redirects are not followed. Retries after 5 s, 1 min, 5 min, 30 min, 2 h, 5 h, 10 h and 14 h (9 attempts); 410 Gone disables the endpoint."
+      parameters:
+        - name: webhook-id
+          in: header
+          required: true
+          description: "The event id (= body id)."
+          schema:
+            type: string
+        - name: webhook-timestamp
+          in: header
+          required: true
+          description: "Unix seconds at send time; reject if more than 300 s from now."
+          schema:
+            type: string
+        - name: webhook-signature
+          in: header
+          required: true
+          description: "v1,<base64(HMAC-SHA256(base64_decode(secret without whsec_), \"{webhook-id}.{webhook-timestamp}.{raw body}\"))>; several may be space-separated: accept if any matches (constant-time)."
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          "application/json":
+            schema:
+              "$ref": "#/components/schemas/WebhookEvent_competition_cancelled"
+      responses:
+        "2XX":
+          description: Received.
+  "competition.not_awarded":
+    post:
+      operationId: webhook_competition_not_awarded
+      tags:
+        - Webhooks
+      summary: competition.not_awarded
+      description: "Delivered only to the issuer organization's endpoints. Thin payload: GET links.object for the full state. At least once, no global ordering: use sequence per object. Return 2xx within 15 s; redirects are not followed. Retries after 5 s, 1 min, 5 min, 30 min, 2 h, 5 h, 10 h and 14 h (9 attempts); 410 Gone disables the endpoint."
+      parameters:
+        - name: webhook-id
+          in: header
+          required: true
+          description: "The event id (= body id)."
+          schema:
+            type: string
+        - name: webhook-timestamp
+          in: header
+          required: true
+          description: "Unix seconds at send time; reject if more than 300 s from now."
+          schema:
+            type: string
+        - name: webhook-signature
+          in: header
+          required: true
+          description: "v1,<base64(HMAC-SHA256(base64_decode(secret without whsec_), \"{webhook-id}.{webhook-timestamp}.{raw body}\"))>; several may be space-separated: accept if any matches (constant-time)."
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          "application/json":
+            schema:
+              "$ref": "#/components/schemas/WebhookEvent_competition_not_awarded"
+      responses:
+        "2XX":
+          description: Received.
+  "invitation.accepted":
+    post:
+      operationId: webhook_invitation_accepted
+      tags:
+        - Webhooks
+      summary: invitation.accepted
+      description: "Delivered only to the issuer organization's endpoints. Thin payload: GET links.object for the full state. At least once, no global ordering: use sequence per object. Return 2xx within 15 s; redirects are not followed. Retries after 5 s, 1 min, 5 min, 30 min, 2 h, 5 h, 10 h and 14 h (9 attempts); 410 Gone disables the endpoint."
+      parameters:
+        - name: webhook-id
+          in: header
+          required: true
+          description: "The event id (= body id)."
+          schema:
+            type: string
+        - name: webhook-timestamp
+          in: header
+          required: true
+          description: "Unix seconds at send time; reject if more than 300 s from now."
+          schema:
+            type: string
+        - name: webhook-signature
+          in: header
+          required: true
+          description: "v1,<base64(HMAC-SHA256(base64_decode(secret without whsec_), \"{webhook-id}.{webhook-timestamp}.{raw body}\"))>; several may be space-separated: accept if any matches (constant-time)."
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          "application/json":
+            schema:
+              "$ref": "#/components/schemas/WebhookEvent_invitation_accepted"
+      responses:
+        "2XX":
+          description: Received.
+  "invitation.declined":
+    post:
+      operationId: webhook_invitation_declined
+      tags:
+        - Webhooks
+      summary: invitation.declined
+      description: "Delivered only to the issuer organization's endpoints. Thin payload: GET links.object for the full state. At least once, no global ordering: use sequence per object. Return 2xx within 15 s; redirects are not followed. Retries after 5 s, 1 min, 5 min, 30 min, 2 h, 5 h, 10 h and 14 h (9 attempts); 410 Gone disables the endpoint."
+      parameters:
+        - name: webhook-id
+          in: header
+          required: true
+          description: "The event id (= body id)."
+          schema:
+            type: string
+        - name: webhook-timestamp
+          in: header
+          required: true
+          description: "Unix seconds at send time; reject if more than 300 s from now."
+          schema:
+            type: string
+        - name: webhook-signature
+          in: header
+          required: true
+          description: "v1,<base64(HMAC-SHA256(base64_decode(secret without whsec_), \"{webhook-id}.{webhook-timestamp}.{raw body}\"))>; several may be space-separated: accept if any matches (constant-time)."
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          "application/json":
+            schema:
+              "$ref": "#/components/schemas/WebhookEvent_invitation_declined"
+      responses:
+        "2XX":
+          description: Received.
+  "offer.submitted":
+    post:
+      operationId: webhook_offer_submitted
+      tags:
+        - Webhooks
+      summary: offer.submitted
+      description: "Delivered only to the issuer organization's endpoints. Thin payload: GET links.object for the full state. At least once, no global ordering: use sequence per object. Return 2xx within 15 s; redirects are not followed. Retries after 5 s, 1 min, 5 min, 30 min, 2 h, 5 h, 10 h and 14 h (9 attempts); 410 Gone disables the endpoint."
+      parameters:
+        - name: webhook-id
+          in: header
+          required: true
+          description: "The event id (= body id)."
+          schema:
+            type: string
+        - name: webhook-timestamp
+          in: header
+          required: true
+          description: "Unix seconds at send time; reject if more than 300 s from now."
+          schema:
+            type: string
+        - name: webhook-signature
+          in: header
+          required: true
+          description: "v1,<base64(HMAC-SHA256(base64_decode(secret without whsec_), \"{webhook-id}.{webhook-timestamp}.{raw body}\"))>; several may be space-separated: accept if any matches (constant-time)."
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          "application/json":
+            schema:
+              "$ref": "#/components/schemas/WebhookEvent_offer_submitted"
+      responses:
+        "2XX":
+          description: Received.
+  "offer.updated":
+    post:
+      operationId: webhook_offer_updated
+      tags:
+        - Webhooks
+      summary: offer.updated
+      description: "Delivered only to the issuer organization's endpoints. Thin payload: GET links.object for the full state. At least once, no global ordering: use sequence per object. Return 2xx within 15 s; redirects are not followed. Retries after 5 s, 1 min, 5 min, 30 min, 2 h, 5 h, 10 h and 14 h (9 attempts); 410 Gone disables the endpoint."
+      parameters:
+        - name: webhook-id
+          in: header
+          required: true
+          description: "The event id (= body id)."
+          schema:
+            type: string
+        - name: webhook-timestamp
+          in: header
+          required: true
+          description: "Unix seconds at send time; reject if more than 300 s from now."
+          schema:
+            type: string
+        - name: webhook-signature
+          in: header
+          required: true
+          description: "v1,<base64(HMAC-SHA256(base64_decode(secret without whsec_), \"{webhook-id}.{webhook-timestamp}.{raw body}\"))>; several may be space-separated: accept if any matches (constant-time)."
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          "application/json":
+            schema:
+              "$ref": "#/components/schemas/WebhookEvent_offer_updated"
+      responses:
+        "2XX":
+          description: Received.
+  "award.issued":
+    post:
+      operationId: webhook_award_issued
+      tags:
+        - Webhooks
+      summary: award.issued
+      description: "Delivered only to the issuer organization's endpoints. Thin payload: GET links.object for the full state. At least once, no global ordering: use sequence per object. Return 2xx within 15 s; redirects are not followed. Retries after 5 s, 1 min, 5 min, 30 min, 2 h, 5 h, 10 h and 14 h (9 attempts); 410 Gone disables the endpoint."
+      parameters:
+        - name: webhook-id
+          in: header
+          required: true
+          description: "The event id (= body id)."
+          schema:
+            type: string
+        - name: webhook-timestamp
+          in: header
+          required: true
+          description: "Unix seconds at send time; reject if more than 300 s from now."
+          schema:
+            type: string
+        - name: webhook-signature
+          in: header
+          required: true
+          description: "v1,<base64(HMAC-SHA256(base64_decode(secret without whsec_), \"{webhook-id}.{webhook-timestamp}.{raw body}\"))>; several may be space-separated: accept if any matches (constant-time)."
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          "application/json":
+            schema:
+              "$ref": "#/components/schemas/WebhookEvent_award_issued"
+      responses:
+        "2XX":
+          description: Received.
+  "award.cancelled":
+    post:
+      operationId: webhook_award_cancelled
+      tags:
+        - Webhooks
+      summary: award.cancelled
+      description: "Delivered only to the issuer organization's endpoints. Thin payload: GET links.object for the full state. At least once, no global ordering: use sequence per object. Return 2xx within 15 s; redirects are not followed. Retries after 5 s, 1 min, 5 min, 30 min, 2 h, 5 h, 10 h and 14 h (9 attempts); 410 Gone disables the endpoint."
+      parameters:
+        - name: webhook-id
+          in: header
+          required: true
+          description: "The event id (= body id)."
+          schema:
+            type: string
+        - name: webhook-timestamp
+          in: header
+          required: true
+          description: "Unix seconds at send time; reject if more than 300 s from now."
+          schema:
+            type: string
+        - name: webhook-signature
+          in: header
+          required: true
+          description: "v1,<base64(HMAC-SHA256(base64_decode(secret without whsec_), \"{webhook-id}.{webhook-timestamp}.{raw body}\"))>; several may be space-separated: accept if any matches (constant-time)."
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          "application/json":
+            schema:
+              "$ref": "#/components/schemas/WebhookEvent_award_cancelled"
+      responses:
+        "2XX":
+          description: Received.
+  "webhook.test":
+    post:
+      operationId: webhook_webhook_test
+      tags:
+        - Webhooks
+      summary: webhook.test
+      description: "Delivered only to the issuer organization's endpoints. Thin payload: GET links.object for the full state. At least once, no global ordering: use sequence per object. Return 2xx within 15 s; redirects are not followed. Retries after 5 s, 1 min, 5 min, 30 min, 2 h, 5 h, 10 h and 14 h (9 attempts); 410 Gone disables the endpoint."
+      parameters:
+        - name: webhook-id
+          in: header
+          required: true
+          description: "The event id (= body id)."
+          schema:
+            type: string
+        - name: webhook-timestamp
+          in: header
+          required: true
+          description: "Unix seconds at send time; reject if more than 300 s from now."
+          schema:
+            type: string
+        - name: webhook-signature
+          in: header
+          required: true
+          description: "v1,<base64(HMAC-SHA256(base64_decode(secret without whsec_), \"{webhook-id}.{webhook-timestamp}.{raw body}\"))>; several may be space-separated: accept if any matches (constant-time)."
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          "application/json":
+            schema:
+              "$ref": "#/components/schemas/WebhookEvent_webhook_test"
+      responses:
+        "2XX":
+          description: Received.
+components:
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      description: "Client credentials; tokens last 30 minutes."
+      flows:
+        clientCredentials:
+          tokenUrl: "/api/public/v1/oauth/token"
+          scopes:
+            "organization:read": Read organization
+            "lookups:read": Read lookups
+            "vendors:read": Read vendors
+            "vendors:write": Write vendors
+            "competitions:read": Read competitions
+            "competitions:write": Write competitions
+            "competitions:publish": Publish competitions
+            "competitions:manage": Manage competitions
+            "invitations:read": Read invitations
+            "invitations:write": Write invitations
+            "offers:read": Read offers
+            "awards:read": Read awards
+            "awards:sync": Sync awards
+            "webhooks:manage": Manage webhooks
+    apiKey:
+      type: http
+      scheme: bearer
+      bearerFormat: "bafo_{env}_{prefix8}_{secret32}"
+      description: "An API key created in the dashboard. It carries all the client's scopes."
+    clientBasic:
+      type: http
+      scheme: basic
+      description: "client_id:client_secret on the token endpoint."
+  parameters:
+    Competition:
+      name: competition
+      in: path
+      required: true
+      schema:
+        type: string
+        description: ULID (26 lowercase characters).
+        example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+    Vendor:
+      name: vendor
+      in: path
+      required: true
+      schema:
+        type: string
+        description: ULID (26 lowercase characters).
+        example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+    Attachment:
+      name: attachment
+      in: path
+      required: true
+      schema:
+        type: string
+        description: ULID (26 lowercase characters).
+        example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+    Invitation:
+      name: invitation
+      in: path
+      required: true
+      schema:
+        type: string
+        description: ULID (26 lowercase characters).
+        example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+    Award:
+      name: award
+      in: path
+      required: true
+      schema:
+        type: string
+        description: ULID (26 lowercase characters).
+        example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+    Endpoint:
+      name: endpoint
+      in: path
+      required: true
+      schema:
+        type: string
+        description: ULID (26 lowercase characters).
+        example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+    Delivery:
+      name: delivery
+      in: path
+      required: true
+      schema:
+        type: string
+        description: ULID (26 lowercase characters).
+        example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+    System:
+      name: system
+      in: path
+      required: true
+      description: "ERP slug; URL-encode the `:` of custom:<name>."
+      schema:
+        type: string
+        pattern: "^[a-z0-9_]+(:[a-z0-9_]+)?$"
+        example: sap_s4
+    ExternalId:
+      name: external_id
+      in: path
+      required: true
+      description: The supplier key in the ERP.
+      schema:
+        type: string
+        example: "100045"
+    Cursor:
+      name: cursor
+      in: query
+      required: false
+      description: Opaque cursor from meta.pagination.next_cursor.
+      schema:
+        type: string
+    PerPage:
+      name: per_page
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 200
+        default: 50
+    UpdatedSince:
+      name: updated_since
+      in: query
+      required: false
+      description: "RFC 3339; rows with updated_at ≥ this."
+      schema:
+        type: string
+        format: date-time
+    IdempotencyKey:
+      name: Idempotency-Key
+      in: header
+      required: true
+      description: "8–64 chars [A-Za-z0-9_-], one per intent. Replays return the original response with Idempotent-Replayed: true."
+      schema:
+        type: string
+        pattern: "^[A-Za-z0-9_-]{8,64}$"
+    AcceptLanguage:
+      name: Accept-Language
+      in: header
+      required: false
+      description: "ar (default) or en; localises messages."
+      schema:
+        type: string
+        enum:
+          - ar
+          - en
+  responses:
+    Unauthorized:
+      description: "invalid_token: missing, invalid or expired access token or API key."
+      headers:
+        WWW-Authenticate:
+          schema:
+            type: string
+            example: "Bearer error=\"invalid_token\""
+      content:
+        "application/json":
+          schema:
+            "$ref": "#/components/schemas/Error"
+    Forbidden:
+      description: insufficient_scope (details.required_scope) or api_access_disabled.
+      content:
+        "application/json":
+          schema:
+            "$ref": "#/components/schemas/Error"
+    NotFound:
+      description: "not_found: unknown, or not your organization's."
+      content:
+        "application/json":
+          schema:
+            "$ref": "#/components/schemas/Error"
+    ValidationFailed:
+      description: "validation_failed: field errors in `errors`."
+      content:
+        "application/json":
+          schema:
+            "$ref": "#/components/schemas/Error"
+    Conflict:
+      description: "A business rule refused the request (see `code`)."
+      content:
+        "application/json":
+          schema:
+            "$ref": "#/components/schemas/Error"
+    TooManyRequests:
+      description: "too_many_requests: 600 GET / 300 other requests per minute per client, 1500 per minute per organization."
+      headers:
+        Retry-After:
+          schema:
+            type: integer
+      content:
+        "application/json":
+          schema:
+            "$ref": "#/components/schemas/Error"
+    NoContent:
+      description: Done.
+  schemas:
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Localised, human-readable message (Accept-Language).
+        code:
+          type: string
+          description: Stable snake_case error code.
+          example: validation_failed
+        errors:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: "Field path → messages; `{}` when none."
+        details:
+          type: object
+          description: "Machine-readable extras; present only when non-empty."
+      required:
+        - message
+        - code
+        - errors
+    OAuthError:
+      type: object
+      properties:
+        error:
+          type: string
+          enum:
+            - unsupported_grant_type
+            - invalid_scope
+            - invalid_client
+            - too_many_requests
+        error_description:
+          type: string
+        message:
+          type: string
+        code:
+          type: string
+        errors:
+          type: object
+      required:
+        - error
+        - error_description
+        - message
+        - code
+        - errors
+    TokenResponse:
+      type: object
+      properties:
+        access_token:
+          type: string
+          description: JWT access token.
+        token_type:
+          type: string
+          enum:
+            - Bearer
+        expires_in:
+          type: integer
+          description: "Seconds; 1800."
+          example: 1800
+        scope:
+          type: string
+          description: Granted scopes, space-separated.
+          example: "competitions:read vendors:write"
+      required:
+        - access_token
+        - token_type
+        - expires_in
+        - scope
+    CursorPagination:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - cursor
+        per_page:
+          type: integer
+          example: 50
+        next_cursor:
+          type:
+            - string
+            - "null"
+          description: "Pass as `cursor` for the next page."
+        prev_cursor:
+          type:
+            - string
+            - "null"
+        has_more:
+          type: boolean
+      required:
+        - type
+        - per_page
+        - next_cursor
+        - prev_cursor
+        - has_more
+    LocalizedName:
+      type: object
+      properties:
+        ar:
+          type: string
+        en:
+          type: string
+      required:
+        - ar
+        - en
+    ExternalRef:
+      type: object
+      properties:
+        system:
+          type: string
+          description: "ERP slug: sap_s4, sap_ecc, oracle_fusion, oracle_ebs, d365_fo, d365_bc, odoo, netsuite, zoho or custom:<name>."
+          pattern: "^[a-z0-9_]+(:[a-z0-9_]+)?$"
+          example: sap_s4
+        type:
+          type: string
+          description: "supplier, customer, rfq, purchase_requisition, purchase_order, supplier_quotation, …"
+          example: supplier
+        id:
+          type: string
+          description: The ERP key.
+          example: "100045"
+        number:
+          type:
+            - string
+            - "null"
+          description: Human document number when it differs.
+        url:
+          type:
+            - string
+            - "null"
+      required:
+        - system
+        - type
+        - id
+        - number
+        - url
+    ExternalRefInput:
+      type: object
+      properties:
+        system:
+          type: string
+          pattern: "^[a-z0-9_]+(:[a-z0-9_]+)?$"
+          maxLength: 60
+        type:
+          type: string
+          pattern: "^[a-z0-9_]+$"
+          maxLength: 60
+        id:
+          type: string
+          maxLength: 120
+        number:
+          type:
+            - string
+            - "null"
+          maxLength: 120
+        url:
+          type:
+            - string
+            - "null"
+          format: uri
+          maxLength: 500
+      required:
+        - system
+        - type
+        - id
+    RegionRef:
+      type: object
+      properties:
+        code:
+          type: string
+          example: RIY
+        name:
+          "$ref": "#/components/schemas/LocalizedName"
+      required:
+        - code
+        - name
+    CategoryRef:
+      type: object
+      properties:
+        code:
+          type: string
+          example: it_hardware
+        name:
+          "$ref": "#/components/schemas/LocalizedName"
+      required:
+        - code
+        - name
+    OrganizationSummary:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ULID (26 lowercase characters).
+          example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+        name:
+          type: string
+        logo_url:
+          type:
+            - string
+            - "null"
+          format: uri
+        verified:
+          type: boolean
+      required:
+        - id
+        - name
+        - logo_url
+        - verified
+    Vendor:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ULID (26 lowercase characters).
+          example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+        name:
+          type: string
+        name_en:
+          type:
+            - string
+            - "null"
+        cr_number:
+          type:
+            - string
+            - "null"
+          pattern: "^\\d{10}$"
+        vat_number:
+          type:
+            - string
+            - "null"
+          pattern: "^3\\d{13}3$"
+        email:
+          type: string
+          format: email
+        contact_name:
+          type:
+            - string
+            - "null"
+        phone:
+          type:
+            - string
+            - "null"
+          pattern: "^\\+9665\\d{8}$"
+        region:
+          oneOf:
+            - "$ref": "#/components/schemas/RegionRef"
+            - type: "null"
+        city:
+          type:
+            - string
+            - "null"
+        categories:
+          type: array
+          items:
+            "$ref": "#/components/schemas/CategoryRef"
+        status:
+          type: string
+          enum:
+            - active
+            - blocked
+            - archived
+          description: Blocked vendors cannot be invited.
+        linked_organization:
+          oneOf:
+            - "$ref": "#/components/schemas/OrganizationSummary"
+            - type: "null"
+        source:
+          type: string
+          enum:
+            - web
+            - api
+            - import
+        notes:
+          type:
+            - string
+            - "null"
+          description: Issuer-private.
+        external_refs:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ExternalRef"
+        created_at:
+          type: string
+          format: date-time
+          example: "2026-10-01T12:59:58.412Z"
+        updated_at:
+          type: string
+          format: date-time
+          example: "2026-10-01T12:59:58.412Z"
+      required:
+        - id
+        - name
+        - name_en
+        - cr_number
+        - vat_number
+        - email
+        - contact_name
+        - phone
+        - region
+        - city
+        - categories
+        - status
+        - linked_organization
+        - source
+        - notes
+        - external_refs
+        - created_at
+        - updated_at
+    VendorInput:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 200
+        name_en:
+          type:
+            - string
+            - "null"
+          maxLength: 200
+        email:
+          type: string
+          description: Unique in your directory.
+          format: email
+          maxLength: 255
+        contact_name:
+          type:
+            - string
+            - "null"
+          maxLength: 150
+        phone:
+          type:
+            - string
+            - "null"
+          pattern: "^\\+9665\\d{8}$"
+        cr_number:
+          type:
+            - string
+            - "null"
+          pattern: "^\\d{10}$"
+        vat_number:
+          type:
+            - string
+            - "null"
+          pattern: "^3\\d{13}3$"
+        region_code:
+          type:
+            - string
+            - "null"
+          description: Region code (GET /lookups/regions).
+          example: RIY
+        city:
+          type:
+            - string
+            - "null"
+          maxLength: 100
+        category_codes:
+          type: array
+          items:
+            type: string
+            example: it_hardware
+        status:
+          type: string
+          enum:
+            - active
+            - blocked
+        notes:
+          type:
+            - string
+            - "null"
+          maxLength: 5000
+        external_refs:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ExternalRefInput"
+      required:
+        - name
+        - email
+    VendorPatch:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 200
+        name_en:
+          type:
+            - string
+            - "null"
+          maxLength: 200
+        email:
+          type: string
+          description: Unique in your directory.
+          format: email
+          maxLength: 255
+        contact_name:
+          type:
+            - string
+            - "null"
+          maxLength: 150
+        phone:
+          type:
+            - string
+            - "null"
+          pattern: "^\\+9665\\d{8}$"
+        cr_number:
+          type:
+            - string
+            - "null"
+          pattern: "^\\d{10}$"
+        vat_number:
+          type:
+            - string
+            - "null"
+          pattern: "^3\\d{13}3$"
+        region_code:
+          type:
+            - string
+            - "null"
+          description: Region code (GET /lookups/regions).
+          example: RIY
+        city:
+          type:
+            - string
+            - "null"
+          maxLength: 100
+        category_codes:
+          type: array
+          items:
+            type: string
+            example: it_hardware
+        status:
+          type: string
+          enum:
+            - active
+            - blocked
+        notes:
+          type:
+            - string
+            - "null"
+          maxLength: 5000
+        external_refs:
+          description: Replaces the whole list when sent.
+          type: array
+          items:
+            "$ref": "#/components/schemas/ExternalRefInput"
+    VendorUpsert:
+      type: object
+      description: "The create body without external_refs: the path supplies the ERP key (type supplier). Fields are replaced; an omitted status or notes keeps its value."
+      properties:
+        name:
+          type: string
+          maxLength: 200
+        name_en:
+          type:
+            - string
+            - "null"
+          maxLength: 200
+        email:
+          type: string
+          description: Unique in your directory.
+          format: email
+          maxLength: 255
+        contact_name:
+          type:
+            - string
+            - "null"
+          maxLength: 150
+        phone:
+          type:
+            - string
+            - "null"
+          pattern: "^\\+9665\\d{8}$"
+        cr_number:
+          type:
+            - string
+            - "null"
+          pattern: "^\\d{10}$"
+        vat_number:
+          type:
+            - string
+            - "null"
+          pattern: "^3\\d{13}3$"
+        region_code:
+          type:
+            - string
+            - "null"
+          description: Region code (GET /lookups/regions).
+          example: RIY
+        city:
+          type:
+            - string
+            - "null"
+          maxLength: 100
+        category_codes:
+          type: array
+          items:
+            type: string
+            example: it_hardware
+        status:
+          type: string
+          enum:
+            - active
+            - blocked
+        notes:
+          type:
+            - string
+            - "null"
+          maxLength: 5000
+      required:
+        - name
+        - email
+    VendorSummary:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ULID (26 lowercase characters).
+          example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+        external_refs:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ExternalRef"
+      required:
+        - id
+        - external_refs
+    Ping:
+      type: object
+      properties:
+        pong:
+          type: boolean
+        server_time:
+          type: string
+          format: date-time
+          example: "2026-10-01T12:59:58.412Z"
+      required:
+        - pong
+        - server_time
+    ClientInfo:
+      type: object
+      properties:
+        client_id:
+          type: string
+          description: ULID (26 lowercase characters).
+          example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+        name:
+          type: string
+        organization_id:
+          type: string
+          description: ULID (26 lowercase characters).
+          example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+        scopes:
+          type: array
+          items:
+            type: string
+            enum:
+              - "organization:read"
+              - "lookups:read"
+              - "vendors:read"
+              - "vendors:write"
+              - "competitions:read"
+              - "competitions:write"
+              - "competitions:publish"
+              - "competitions:manage"
+              - "invitations:read"
+              - "invitations:write"
+              - "offers:read"
+              - "awards:read"
+              - "awards:sync"
+              - "webhooks:manage"
+        auth:
+          type: string
+          enum:
+            - oauth
+            - api_key
+        environment:
+          type: string
+          enum:
+            - test
+            - live
+        rate_limits:
+          type: object
+          properties:
+            per_minute_read:
+              type: integer
+              example: 600
+            per_minute_write:
+              type: integer
+              example: 300
+          required:
+            - per_minute_read
+            - per_minute_write
+      required:
+        - client_id
+        - name
+        - organization_id
+        - scopes
+        - auth
+        - environment
+        - rate_limits
+    Organization:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ULID (26 lowercase characters).
+          example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+        name:
+          type: string
+        legal_name_ar:
+          type:
+            - string
+            - "null"
+        legal_name_en:
+          type:
+            - string
+            - "null"
+        cr_number:
+          type: string
+        vat_number:
+          type:
+            - string
+            - "null"
+        national_address:
+          type: object
+          description: building_number, street, district, postal_code, additional_number, short_address.
+        region:
+          "$ref": "#/components/schemas/RegionRef"
+        city:
+          type: string
+        website:
+          type:
+            - string
+            - "null"
+        email:
+          type: string
+        phone:
+          type: string
+        features:
+          type: object
+          properties:
+            auction_enabled:
+              type: boolean
+            sponsorship_enabled:
+              type: boolean
+          required:
+            - auction_enabled
+            - sponsorship_enabled
+        subscription:
+          oneOf:
+            - type: object
+              properties:
+                plan_code:
+                  type: string
+                status:
+                  type: string
+                ends_at:
+                  type: string
+                  format: date-time
+                  example: "2026-10-01T12:59:58.412Z"
+              required:
+                - plan_code
+                - status
+                - ends_at
+            - type: "null"
+      required:
+        - id
+        - name
+        - legal_name_ar
+        - legal_name_en
+        - cr_number
+        - vat_number
+        - national_address
+        - region
+        - city
+        - website
+        - email
+        - phone
+        - features
+        - subscription
+    LookupItem:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ULID (26 lowercase characters).
+          example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+        code:
+          type: string
+        name:
+          "$ref": "#/components/schemas/LocalizedName"
+        is_other:
+          type: boolean
+          description: categories only
+        auction_allowed:
+          type: boolean
+          description: categories only
+        kind:
+          type: string
+          enum:
+            - cancel
+            - not_awarded
+            - award_justification
+            - void_offer
+          description: close-reasons only
+        requires_note:
+          type: boolean
+          description: close-reasons only
+      required:
+        - id
+        - code
+        - name
+    Rules:
+      type: object
+      properties:
+        start_price_minor:
+          type:
+            - integer
+            - "null"
+          description: "Halalas. Tender: ceiling (optional); auction: opening (required). Always disclosed."
+        reserve_price_minor:
+          type:
+            - integer
+            - "null"
+          description: "Halalas; issuer only; never rejects an offer."
+        min_step_minor:
+          type:
+            - integer
+            - "null"
+          description: "Absolute step (halalas); exclusive with min_step_bps."
+        min_step_bps:
+          type:
+            - integer
+            - "null"
+          description: "Percentage step in basis points (50 = 0.5%)."
+        amount_granularity_minor:
+          type: integer
+          enum:
+            - 1
+            - 100
+        must_beat:
+          type:
+            - string
+            - "null"
+          enum:
+            - own
+            - best
+            - null
+        rank_visibility:
+          type: string
+          enum:
+            - full
+            - leading_flag
+            - none
+        show_prices:
+          type: boolean
+        auto_extend:
+          type: object
+          properties:
+            enabled:
+              type: boolean
+            window_seconds:
+              type:
+                - integer
+                - "null"
+            by_seconds:
+              type:
+                - integer
+                - "null"
+            max_extensions:
+              type:
+                - integer
+                - "null"
+          required:
+            - enabled
+            - window_seconds
+            - by_seconds
+            - max_extensions
+        final_window_minutes:
+          type:
+            - integer
+            - "null"
+          description: "null = no final pricing window."
+        bafo_round:
+          type: object
+          properties:
+            enabled:
+              type: boolean
+            duration_minutes:
+              type:
+                - integer
+                - "null"
+          required:
+            - enabled
+            - duration_minutes
+        min_participants:
+          type: integer
+        result_publication:
+          type: string
+          enum:
+            - none
+            - outcome_only
+            - outcome_and_amount
+    CloseReason:
+      type: object
+      properties:
+        code:
+          type: string
+        name:
+          "$ref": "#/components/schemas/LocalizedName"
+      required:
+        - code
+        - name
+    PublicCompetition:
+      type: object
+      description: "The issuer projection of API.md §2.6 without permissions, viewer_role and live."
+      properties:
+        id:
+          type: string
+          description: ULID (26 lowercase characters).
+          example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+        reference_no:
+          type:
+            - string
+            - "null"
+          description: Assigned at publish.
+          example: BAFO-T-2026-000123
+        title:
+          type: string
+        description:
+          type:
+            - string
+            - "null"
+        direction:
+          type: string
+          enum:
+            - tender
+            - auction
+          description: "Tender: the lowest price wins. Auction: the highest."
+        format:
+          type: string
+          enum:
+            - live
+            - sealed
+        status:
+          type: string
+          enum:
+            - draft
+            - scheduled
+            - live
+            - closed
+            - bafo_round
+            - awarded
+            - not_awarded
+            - cancelled
+          description: "`closed` = evaluation."
+        phase:
+          type:
+            - string
+            - "null"
+          enum:
+            - sealed
+            - initial
+            - open
+            - final_window
+            - null
+        currency:
+          type: string
+          enum:
+            - SAR
+        price_basis:
+          type: string
+          enum:
+            - excl_vat
+        category:
+          "$ref": "#/components/schemas/CategoryRef"
+        category_other_text:
+          type:
+            - string
+            - "null"
+        region:
+          "$ref": "#/components/schemas/RegionRef"
+        preset_code:
+          type:
+            - string
+            - "null"
+        rules:
+          "$ref": "#/components/schemas/Rules"
+        rules_summary:
+          type: array
+          items:
+            type: string
+        schedule:
+          type: object
+          description: "bidding_opens_at, scheduled_close_at, effective_close_at, hard_stop_at, final_window_starts_at, invitation_cutoff_at, extension_count and the lifecycle stamps (published_at … cancelled_at)."
+        issuer:
+          "$ref": "#/components/schemas/OrganizationSummary"
+        counts:
+          type: object
+          description: invitations, joined, declined, participants_with_offers, offers, comments, attachments.
+        leading_amount_minor:
+          type:
+            - integer
+            - "null"
+          description: null while sealed and not yet opened, or without offers.
+        sponsorship:
+          type:
+            - object
+            - "null"
+        bafo_round:
+          type:
+            - object
+            - "null"
+        award:
+          type:
+            - object
+            - "null"
+        cancellation:
+          type:
+            - object
+            - "null"
+        not_awarded:
+          type:
+            - object
+            - "null"
+        external_refs:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ExternalRef"
+        created_by:
+          type: object
+          properties:
+            type:
+              type: string
+              enum:
+                - user
+                - api_client
+            id:
+              type: string
+              description: ULID (26 lowercase characters).
+              example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+            name:
+              type: string
+          required:
+            - type
+            - id
+            - name
+        source:
+          type: string
+          enum:
+            - web
+            - ios
+            - android
+            - api
+        server_time:
+          type: string
+          format: date-time
+          example: "2026-10-01T12:59:58.412Z"
+        created_at:
+          type: string
+          format: date-time
+          example: "2026-10-01T12:59:58.412Z"
+        updated_at:
+          type: string
+          format: date-time
+          example: "2026-10-01T12:59:58.412Z"
+      required:
+        - id
+        - reference_no
+        - title
+        - description
+        - direction
+        - format
+        - status
+        - phase
+        - currency
+        - price_basis
+        - category
+        - category_other_text
+        - region
+        - preset_code
+        - rules
+        - rules_summary
+        - schedule
+        - issuer
+        - counts
+        - leading_amount_minor
+        - sponsorship
+        - bafo_round
+        - award
+        - cancellation
+        - not_awarded
+        - external_refs
+        - created_by
+        - source
+        - server_time
+        - created_at
+        - updated_at
+    InvitationInput:
+      type: object
+      description: Exactly one of vendor_id, vendor_external or email.
+      properties:
+        vendor_id:
+          type: string
+          description: ULID (26 lowercase characters).
+          example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+        vendor_external:
+          type: object
+          description: "Resolved through the vendor supplier ref; unknown → item code vendor_not_found."
+          properties:
+            system:
+              type: string
+            id:
+              type: string
+          required:
+            - system
+            - id
+        email:
+          type: string
+          format: email
+        name:
+          type:
+            - string
+            - "null"
+        sponsored:
+          type: boolean
+    CompetitionCreate:
+      type: object
+      properties:
+        title:
+          type: string
+          maxLength: 200
+        description:
+          type:
+            - string
+            - "null"
+        category_code:
+          type: string
+        category_other_text:
+          type:
+            - string
+            - "null"
+        region_code:
+          type: string
+        direction:
+          type: string
+          enum:
+            - tender
+            - auction
+        format:
+          type: string
+          enum:
+            - live
+            - sealed
+        preset_code:
+          type:
+            - string
+            - "null"
+        rules:
+          "$ref": "#/components/schemas/Rules"
+        bidding_opens_at:
+          type:
+            - string
+            - "null"
+          format: date-time
+        scheduled_close_at:
+          type:
+            - string
+            - "null"
+          format: date-time
+        external_refs:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ExternalRefInput"
+        invitations:
+          type: array
+          items:
+            "$ref": "#/components/schemas/InvitationInput"
+        sponsorship:
+          type: object
+          properties:
+            mode:
+              type: string
+              enum:
+                - none
+                - all
+                - selected
+            max_passes:
+              type:
+                - integer
+                - "null"
+      required:
+        - title
+        - category_code
+        - region_code
+        - direction
+        - format
+    CompetitionPatch:
+      description: "Any create field allowed in the current status (API.md §1.4); external_refs replaces the list."
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type:
+            - string
+            - "null"
+        category_code:
+          type: string
+        category_other_text:
+          type:
+            - string
+            - "null"
+        region_code:
+          type: string
+        rules:
+          "$ref": "#/components/schemas/Rules"
+        bidding_opens_at:
+          type:
+            - string
+            - "null"
+          format: date-time
+        scheduled_close_at:
+          type:
+            - string
+            - "null"
+          format: date-time
+        external_refs:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ExternalRefInput"
+    File:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ULID (26 lowercase characters).
+          example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+        name:
+          type: string
+        mime_type:
+          type: string
+        extension:
+          type: string
+        size_bytes:
+          type: integer
+        download_path:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+          example: "2026-10-01T12:59:58.412Z"
+      required:
+        - id
+        - name
+        - mime_type
+        - extension
+        - size_bytes
+        - download_path
+        - created_at
+    Attachment:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ULID (26 lowercase characters).
+          example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+        kind:
+          type: string
+          enum:
+            - document
+            - invitation_document
+            - external_link
+        title:
+          type:
+            - string
+            - "null"
+        file:
+          oneOf:
+            - "$ref": "#/components/schemas/File"
+            - type: "null"
+        url:
+          type:
+            - string
+            - "null"
+        is_addendum:
+          type: boolean
+        sort_order:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+          example: "2026-10-01T12:59:58.412Z"
+      required:
+        - id
+        - kind
+        - title
+        - file
+        - url
+        - is_addendum
+        - sort_order
+        - created_at
+    PublicInvitation:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ULID (26 lowercase characters).
+          example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+        email:
+          type: string
+        name:
+          type:
+            - string
+            - "null"
+        status:
+          type: string
+          enum:
+            - draft
+            - sent
+            - viewed
+            - joined
+            - declined
+            - revoked
+            - expired
+        organization:
+          oneOf:
+            - type: object
+              properties:
+                id:
+                  type: string
+                  description: ULID (26 lowercase characters).
+                  example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+                name:
+                  type: string
+              required:
+                - id
+                - name
+            - type: "null"
+        vendor:
+          oneOf:
+            - type: object
+              properties:
+                id:
+                  type: string
+                  description: ULID (26 lowercase characters).
+                  example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+                name:
+                  type: string
+                external_refs:
+                  type: array
+                  items:
+                    "$ref": "#/components/schemas/ExternalRef"
+              required:
+                - id
+                - name
+                - external_refs
+            - type: "null"
+        sponsored:
+          type: boolean
+          description: The coverage is sponsored.
+        pass_status:
+          type:
+            - string
+            - "null"
+          enum:
+            - pending
+            - reserved
+            - joined
+            - released
+            - unused
+            - void
+            - null
+        participant:
+          oneOf:
+            - type: object
+              properties:
+                id:
+                  type: string
+                  description: ULID (26 lowercase characters).
+                  example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+                alias_no:
+                  type: integer
+                joined_at:
+                  type: string
+                  format: date-time
+                  example: "2026-10-01T12:59:58.412Z"
+              required:
+                - id
+                - alias_no
+                - joined_at
+            - type: "null"
+        sent_at:
+          type:
+            - string
+            - "null"
+          format: date-time
+        joined_at:
+          type:
+            - string
+            - "null"
+          format: date-time
+        declined_at:
+          type:
+            - string
+            - "null"
+          format: date-time
+        revoked_at:
+          type:
+            - string
+            - "null"
+          format: date-time
+        expired_at:
+          type:
+            - string
+            - "null"
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+          example: "2026-10-01T12:59:58.412Z"
+      required:
+        - id
+        - email
+        - name
+        - status
+        - organization
+        - vendor
+        - sponsored
+        - pass_status
+        - participant
+        - sent_at
+        - joined_at
+        - declined_at
+        - revoked_at
+        - expired_at
+        - updated_at
+    PublicStandingRow:
+      type: object
+      properties:
+        participant:
+          type: object
+          properties:
+            id:
+              type: string
+              description: ULID (26 lowercase characters).
+              example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+            alias_no:
+              type: integer
+            joined_at:
+              type: string
+              format: date-time
+              example: "2026-10-01T12:59:58.412Z"
+            organization:
+              type: object
+            coverage:
+              type: string
+          required:
+            - id
+            - alias_no
+            - joined_at
+            - organization
+            - coverage
+        current_amount_minor:
+          type:
+            - integer
+            - "null"
+          description: null in a sealed competition before the offers are opened.
+        first_amount_minor:
+          type:
+            - integer
+            - "null"
+        offers_count:
+          type: integer
+        last_offer_at:
+          type:
+            - string
+            - "null"
+          format: date-time
+        rank:
+          type:
+            - integer
+            - "null"
+        is_leader:
+          type:
+            - boolean
+            - "null"
+        change_ratio_bps:
+          type:
+            - integer
+            - "null"
+        submitted:
+          type: boolean
+        bafo:
+          type: object
+        vendor:
+          oneOf:
+            - "$ref": "#/components/schemas/VendorSummary"
+            - type: "null"
+      required:
+        - participant
+        - current_amount_minor
+        - first_amount_minor
+        - offers_count
+        - last_offer_at
+        - rank
+        - is_leader
+        - change_ratio_bps
+        - submitted
+        - bafo
+        - vendor
+    PublicResults:
+      type: object
+      properties:
+        competition_id:
+          type: string
+          description: ULID (26 lowercase characters).
+          example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+        reference_no:
+          type: string
+        status:
+          type: string
+        direction:
+          type: string
+          enum:
+            - tender
+            - auction
+        closed_at:
+          type:
+            - string
+            - "null"
+          format: date-time
+        offers_opened_at:
+          type:
+            - string
+            - "null"
+          format: date-time
+        leader_amount_minor:
+          type:
+            - integer
+            - "null"
+        reserve_met:
+          type:
+            - boolean
+            - "null"
+        improvement_vs_start_bps:
+          type:
+            - integer
+            - "null"
+        ranking:
+          type: array
+          items:
+            type: object
+            properties:
+              participant_id:
+                type: string
+                description: ULID (26 lowercase characters).
+                example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+              alias_no:
+                type: integer
+              organization:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: ULID (26 lowercase characters).
+                    example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+                  name:
+                    type: string
+                  cr_number:
+                    type: string
+                  vat_number:
+                    type:
+                      - string
+                      - "null"
+                required:
+                  - id
+                  - name
+                  - cr_number
+                  - vat_number
+              vendor:
+                oneOf:
+                  - "$ref": "#/components/schemas/VendorSummary"
+                  - type: "null"
+              rank:
+                type:
+                  - integer
+                  - "null"
+              current_amount_minor:
+                type:
+                  - integer
+                  - "null"
+              first_amount_minor:
+                type:
+                  - integer
+                  - "null"
+              offers_count:
+                type: integer
+              last_offer_at:
+                type:
+                  - string
+                  - "null"
+                format: date-time
+              is_leader:
+                type:
+                  - boolean
+                  - "null"
+            required:
+              - participant_id
+              - alias_no
+              - organization
+              - vendor
+              - rank
+              - current_amount_minor
+              - first_amount_minor
+              - offers_count
+              - last_offer_at
+              - is_leader
+        generated_at:
+          type: string
+          format: date-time
+          example: "2026-10-01T12:59:58.412Z"
+      required:
+        - competition_id
+        - reference_no
+        - status
+        - direction
+        - closed_at
+        - offers_opened_at
+        - leader_amount_minor
+        - reserve_met
+        - improvement_vs_start_bps
+        - ranking
+        - generated_at
+    PublicAward:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ULID (26 lowercase characters).
+          example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+        object:
+          type: string
+          enum:
+            - award
+        status:
+          type: string
+          enum:
+            - issued
+            - revoked
+        competition:
+          type: object
+          properties:
+            id:
+              type: string
+              description: ULID (26 lowercase characters).
+              example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+            reference_no:
+              type: string
+            title:
+              type: string
+            direction:
+              type: string
+            format:
+              type: string
+            external_refs:
+              type: array
+              items:
+                "$ref": "#/components/schemas/ExternalRef"
+          required:
+            - id
+            - reference_no
+            - title
+            - direction
+            - format
+            - external_refs
+        winner:
+          type: object
+          properties:
+            participant_id:
+              type: string
+              description: ULID (26 lowercase characters).
+              example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+            organization:
+              type: object
+              properties:
+                id:
+                  type: string
+                  description: ULID (26 lowercase characters).
+                  example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+                name:
+                  type: string
+                legal_name_ar:
+                  type:
+                    - string
+                    - "null"
+                legal_name_en:
+                  type:
+                    - string
+                    - "null"
+                cr_number:
+                  type: string
+                vat_number:
+                  type:
+                    - string
+                    - "null"
+              required:
+                - id
+                - name
+                - legal_name_ar
+                - legal_name_en
+                - cr_number
+                - vat_number
+            vendor:
+              oneOf:
+                - "$ref": "#/components/schemas/VendorSummary"
+                - type: "null"
+          required:
+            - participant_id
+            - organization
+            - vendor
+        amount_minor:
+          type: integer
+          description: Halalas, excl. VAT.
+        currency:
+          type: string
+          enum:
+            - SAR
+        price_basis:
+          type: string
+          enum:
+            - excl_vat
+        vat_rate_bp:
+          type: integer
+          example: 1500
+        vat_minor:
+          type: integer
+          description: Informational.
+        amount_incl_vat_minor:
+          type: integer
+        is_leading_offer:
+          type: boolean
+        rank_at_award:
+          type: integer
+        reserve_met:
+          type:
+            - boolean
+            - "null"
+        justification:
+          oneOf:
+            - type: object
+              properties:
+                code:
+                  type: string
+                name:
+                  "$ref": "#/components/schemas/LocalizedName"
+                text:
+                  type:
+                    - string
+                    - "null"
+              required:
+                - code
+                - name
+                - text
+            - type: "null"
+        offer:
+          type: object
+          properties:
+            id:
+              type: string
+              description: ULID (26 lowercase characters).
+              example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+            seq:
+              type: integer
+            accepted_at:
+              type: string
+              format: date-time
+              example: "2026-10-01T12:59:58.412Z"
+          required:
+            - id
+            - seq
+            - accepted_at
+        awarded_at:
+          type: string
+          format: date-time
+          example: "2026-10-01T12:59:58.412Z"
+        awarded_by:
+          type: object
+          properties:
+            name:
+              type: string
+            email:
+              type: string
+          required:
+            - name
+            - email
+        revoked_at:
+          type:
+            - string
+            - "null"
+          format: date-time
+        revoke_reason:
+          type:
+            - string
+            - "null"
+        erp_sync:
+          type: object
+          properties:
+            status:
+              type: string
+              enum:
+                - not_required
+                - pending
+                - synced
+                - failed
+            message:
+              type:
+                - string
+                - "null"
+            synced_at:
+              type:
+                - string
+                - "null"
+              format: date-time
+            refs:
+              type: array
+              items:
+                "$ref": "#/components/schemas/ExternalRef"
+          required:
+            - status
+            - message
+            - synced_at
+            - refs
+        ledger_head_hash:
+          type: string
+        updated_at:
+          type: string
+          format: date-time
+          example: "2026-10-01T12:59:58.412Z"
+      required:
+        - id
+        - object
+        - status
+        - competition
+        - winner
+        - amount_minor
+        - currency
+        - price_basis
+        - vat_rate_bp
+        - vat_minor
+        - amount_incl_vat_minor
+        - is_leading_offer
+        - rank_at_award
+        - reserve_met
+        - justification
+        - offer
+        - awarded_at
+        - awarded_by
+        - revoked_at
+        - revoke_reason
+        - erp_sync
+        - ledger_head_hash
+        - updated_at
+    ErpSyncInput:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+            - synced
+            - failed
+        message:
+          type:
+            - string
+            - "null"
+        external_refs:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ExternalRefInput"
+      required:
+        - status
+    WebhookEventType:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - competition.published
+            - competition.extended
+            - competition.closed
+            - competition.offers_opened
+            - competition.cancelled
+            - competition.not_awarded
+            - invitation.accepted
+            - invitation.declined
+            - offer.submitted
+            - offer.updated
+            - award.issued
+            - award.cancelled
+            - webhook.test
+        description:
+          type: string
+          description: Localised.
+      required:
+        - type
+        - description
+    WebhookEndpoint:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ULID (26 lowercase characters).
+          example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+        url:
+          type: string
+          format: uri
+        description:
+          type:
+            - string
+            - "null"
+        event_types:
+          type: array
+          items:
+            type: string
+            example: award.issued
+        status:
+          type: string
+          enum:
+            - active
+            - disabled
+        disabled_reason:
+          type:
+            - string
+            - "null"
+          enum:
+            - manual
+            - failing
+            - null
+        failing_since:
+          type:
+            - string
+            - "null"
+          format: date-time
+        last_success_at:
+          type:
+            - string
+            - "null"
+          format: date-time
+        last_failure_at:
+          type:
+            - string
+            - "null"
+          format: date-time
+        created_at:
+          type: string
+          format: date-time
+          example: "2026-10-01T12:59:58.412Z"
+      required:
+        - id
+        - url
+        - description
+        - event_types
+        - status
+        - disabled_reason
+        - failing_since
+        - last_success_at
+        - last_failure_at
+        - created_at
+    WebhookEndpointWithSecret:
+      allOf:
+        - "$ref": "#/components/schemas/WebhookEndpoint"
+        - type: object
+          properties:
+            secret:
+              type: string
+              description: "whsec_… — shown once."
+          required:
+            - secret
+    WebhookEndpointInput:
+      type: object
+      properties:
+        url:
+          type: string
+          description: "https, public address (SSRF guard → 422 webhook_url_invalid)."
+          format: uri
+          maxLength: 1000
+        event_types:
+          type: array
+          items:
+            type: string
+            enum:
+              - competition.published
+              - competition.extended
+              - competition.closed
+              - competition.offers_opened
+              - competition.cancelled
+              - competition.not_awarded
+              - invitation.accepted
+              - invitation.declined
+              - offer.submitted
+              - offer.updated
+              - award.issued
+              - award.cancelled
+              - webhook.test
+              - "*"
+        description:
+          type:
+            - string
+            - "null"
+          maxLength: 255
+      required:
+        - url
+        - event_types
+    WebhookEndpointPatch:
+      type: object
+      properties:
+        url:
+          type: string
+          format: uri
+          maxLength: 1000
+        event_types:
+          type: array
+          items:
+            type: string
+            enum:
+              - competition.published
+              - competition.extended
+              - competition.closed
+              - competition.offers_opened
+              - competition.cancelled
+              - competition.not_awarded
+              - invitation.accepted
+              - invitation.declined
+              - offer.submitted
+              - offer.updated
+              - award.issued
+              - award.cancelled
+              - webhook.test
+              - "*"
+        description:
+          type:
+            - string
+            - "null"
+          maxLength: 255
+        status:
+          type: string
+          enum:
+            - active
+            - disabled
+          description: Re-enabling clears failing_since.
+    WebhookDelivery:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ULID (26 lowercase characters).
+          example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+        event:
+          type: object
+          properties:
+            id:
+              type: string
+              description: ULID (26 lowercase characters).
+              example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+            type:
+              type: string
+              enum:
+                - competition.published
+                - competition.extended
+                - competition.closed
+                - competition.offers_opened
+                - competition.cancelled
+                - competition.not_awarded
+                - invitation.accepted
+                - invitation.declined
+                - offer.submitted
+                - offer.updated
+                - award.issued
+                - award.cancelled
+                - webhook.test
+            occurred_at:
+              type: string
+              format: date-time
+              example: "2026-10-01T12:59:58.412Z"
+          required:
+            - id
+            - type
+            - occurred_at
+        status:
+          type: string
+          enum:
+            - pending
+            - succeeded
+            - failed
+        attempts:
+          type: integer
+        next_attempt_at:
+          type:
+            - string
+            - "null"
+          format: date-time
+        last_attempt_at:
+          type:
+            - string
+            - "null"
+          format: date-time
+        last_http_status:
+          type:
+            - integer
+            - "null"
+        last_error:
+          type:
+            - string
+            - "null"
+        last_response_excerpt:
+          type:
+            - string
+            - "null"
+          description: At most 2 KB.
+        last_duration_ms:
+          type:
+            - integer
+            - "null"
+        succeeded_at:
+          type:
+            - string
+            - "null"
+          format: date-time
+        failed_at:
+          type:
+            - string
+            - "null"
+          format: date-time
+      required:
+        - id
+        - event
+        - status
+        - attempts
+        - next_attempt_at
+        - last_attempt_at
+        - last_http_status
+        - last_error
+        - last_response_excerpt
+        - last_duration_ms
+        - succeeded_at
+        - failed_at
+    WebhookObject_competition_published:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ULID (26 lowercase characters).
+          example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+        object:
+          type: string
+          enum:
+            - competition
+        reference_no:
+          type: string
+        status:
+          type: string
+        direction:
+          type: string
+        format:
+          type: string
+        bidding_opens_at:
+          type:
+            - string
+            - "null"
+          format: date-time
+        scheduled_close_at:
+          type:
+            - string
+            - "null"
+          format: date-time
+        external_refs:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ExternalRef"
+      required:
+        - id
+        - object
+        - reference_no
+        - status
+        - direction
+        - format
+        - bidding_opens_at
+        - scheduled_close_at
+        - external_refs
+    WebhookEvent_competition_published:
+      type: object
+      properties:
+        id:
+          type: string
+          description: "Equals the webhook-id header; stable across retries: deduplicate on it."
+        type:
+          type: string
+          enum:
+            - competition.published
+        api_version:
+          type: string
+          enum:
+            - v1
+        environment:
+          type: string
+          enum:
+            - test
+            - live
+        occurred_at:
+          type: string
+          format: date-time
+          example: "2026-10-01T12:59:58.412Z"
+        organization_id:
+          type: string
+          description: ULID (26 lowercase characters).
+          example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+        sequence:
+          type: integer
+          description: "Monotonic per object: drop events whose sequence is ≤ the last one processed for the same data.object.id."
+        data:
+          type: object
+          properties:
+            object:
+              "$ref": "#/components/schemas/WebhookObject_competition_published"
+          required:
+            - object
+        links:
+          type: object
+          properties:
+            object:
+              type: string
+              description: Public API URL of the object.
+              format: uri
+          required:
+            - object
+      required:
+        - id
+        - type
+        - api_version
+        - environment
+        - occurred_at
+        - organization_id
+        - sequence
+        - data
+        - links
+    WebhookObject_competition_extended:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ULID (26 lowercase characters).
+          example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+        object:
+          type: string
+          enum:
+            - competition
+        previous_close_at:
+          type: string
+          format: date-time
+          example: "2026-10-01T12:59:58.412Z"
+        effective_close_at:
+          type: string
+          format: date-time
+          example: "2026-10-01T12:59:58.412Z"
+        extension_count:
+          type: integer
+        kind:
+          type: string
+          enum:
+            - auto
+            - manual
+            - admin
+      required:
+        - id
+        - object
+        - previous_close_at
+        - effective_close_at
+        - extension_count
+        - kind
+    WebhookEvent_competition_extended:
+      type: object
+      properties:
+        id:
+          type: string
+          description: "Equals the webhook-id header; stable across retries: deduplicate on it."
+        type:
+          type: string
+          enum:
+            - competition.extended
+        api_version:
+          type: string
+          enum:
+            - v1
+        environment:
+          type: string
+          enum:
+            - test
+            - live
+        occurred_at:
+          type: string
+          format: date-time
+          example: "2026-10-01T12:59:58.412Z"
+        organization_id:
+          type: string
+          description: ULID (26 lowercase characters).
+          example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+        sequence:
+          type: integer
+          description: "Monotonic per object: drop events whose sequence is ≤ the last one processed for the same data.object.id."
+        data:
+          type: object
+          properties:
+            object:
+              "$ref": "#/components/schemas/WebhookObject_competition_extended"
+          required:
+            - object
+        links:
+          type: object
+          properties:
+            object:
+              type: string
+              description: Public API URL of the object.
+              format: uri
+          required:
+            - object
+      required:
+        - id
+        - type
+        - api_version
+        - environment
+        - occurred_at
+        - organization_id
+        - sequence
+        - data
+        - links
+    WebhookObject_competition_closed:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ULID (26 lowercase characters).
+          example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+        object:
+          type: string
+          enum:
+            - competition
+        status:
+          type: string
+          enum:
+            - closed
+        closed_at:
+          type: string
+          format: date-time
+          example: "2026-10-01T12:59:58.412Z"
+        participants_with_offers:
+          type: integer
+        offers_count:
+          type: integer
+      required:
+        - id
+        - object
+        - status
+        - closed_at
+        - participants_with_offers
+        - offers_count
+    WebhookEvent_competition_closed:
+      type: object
+      properties:
+        id:
+          type: string
+          description: "Equals the webhook-id header; stable across retries: deduplicate on it."
+        type:
+          type: string
+          enum:
+            - competition.closed
+        api_version:
+          type: string
+          enum:
+            - v1
+        environment:
+          type: string
+          enum:
+            - test
+            - live
+        occurred_at:
+          type: string
+          format: date-time
+          example: "2026-10-01T12:59:58.412Z"
+        organization_id:
+          type: string
+          description: ULID (26 lowercase characters).
+          example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+        sequence:
+          type: integer
+          description: "Monotonic per object: drop events whose sequence is ≤ the last one processed for the same data.object.id."
+        data:
+          type: object
+          properties:
+            object:
+              "$ref": "#/components/schemas/WebhookObject_competition_closed"
+          required:
+            - object
+        links:
+          type: object
+          properties:
+            object:
+              type: string
+              description: Public API URL of the object.
+              format: uri
+          required:
+            - object
+      required:
+        - id
+        - type
+        - api_version
+        - environment
+        - occurred_at
+        - organization_id
+        - sequence
+        - data
+        - links
+    WebhookObject_competition_offers_opened:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ULID (26 lowercase characters).
+          example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+        object:
+          type: string
+          enum:
+            - competition
+        offers_opened_at:
+          type: string
+          format: date-time
+          example: "2026-10-01T12:59:58.412Z"
+      required:
+        - id
+        - object
+        - offers_opened_at
+    WebhookEvent_competition_offers_opened:
+      type: object
+      properties:
+        id:
+          type: string
+          description: "Equals the webhook-id header; stable across retries: deduplicate on it."
+        type:
+          type: string
+          enum:
+            - competition.offers_opened
+        api_version:
+          type: string
+          enum:
+            - v1
+        environment:
+          type: string
+          enum:
+            - test
+            - live
+        occurred_at:
+          type: string
+          format: date-time
+          example: "2026-10-01T12:59:58.412Z"
+        organization_id:
+          type: string
+          description: ULID (26 lowercase characters).
+          example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+        sequence:
+          type: integer
+          description: "Monotonic per object: drop events whose sequence is ≤ the last one processed for the same data.object.id."
+        data:
+          type: object
+          properties:
+            object:
+              "$ref": "#/components/schemas/WebhookObject_competition_offers_opened"
+          required:
+            - object
+        links:
+          type: object
+          properties:
+            object:
+              type: string
+              description: Public API URL of the object.
+              format: uri
+          required:
+            - object
+      required:
+        - id
+        - type
+        - api_version
+        - environment
+        - occurred_at
+        - organization_id
+        - sequence
+        - data
+        - links
+    WebhookObject_competition_cancelled:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ULID (26 lowercase characters).
+          example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+        object:
+          type: string
+          enum:
+            - competition
+        cancelled_at:
+          type: string
+          format: date-time
+          example: "2026-10-01T12:59:58.412Z"
+        reason:
+          oneOf:
+            - type: object
+              properties:
+                code:
+                  type: string
+                name:
+                  "$ref": "#/components/schemas/LocalizedName"
+              required:
+                - code
+                - name
+            - type: "null"
+        note:
+          type:
+            - string
+            - "null"
+      required:
+        - id
+        - object
+        - cancelled_at
+        - reason
+        - note
+    WebhookEvent_competition_cancelled:
+      type: object
+      properties:
+        id:
+          type: string
+          description: "Equals the webhook-id header; stable across retries: deduplicate on it."
+        type:
+          type: string
+          enum:
+            - competition.cancelled
+        api_version:
+          type: string
+          enum:
+            - v1
+        environment:
+          type: string
+          enum:
+            - test
+            - live
+        occurred_at:
+          type: string
+          format: date-time
+          example: "2026-10-01T12:59:58.412Z"
+        organization_id:
+          type: string
+          description: ULID (26 lowercase characters).
+          example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+        sequence:
+          type: integer
+          description: "Monotonic per object: drop events whose sequence is ≤ the last one processed for the same data.object.id."
+        data:
+          type: object
+          properties:
+            object:
+              "$ref": "#/components/schemas/WebhookObject_competition_cancelled"
+          required:
+            - object
+        links:
+          type: object
+          properties:
+            object:
+              type: string
+              description: Public API URL of the object.
+              format: uri
+          required:
+            - object
+      required:
+        - id
+        - type
+        - api_version
+        - environment
+        - occurred_at
+        - organization_id
+        - sequence
+        - data
+        - links
+    WebhookObject_competition_not_awarded:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ULID (26 lowercase characters).
+          example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+        object:
+          type: string
+          enum:
+            - competition
+        not_awarded_at:
+          type: string
+          format: date-time
+          example: "2026-10-01T12:59:58.412Z"
+        reason:
+          oneOf:
+            - type: object
+              properties:
+                code:
+                  type: string
+                name:
+                  "$ref": "#/components/schemas/LocalizedName"
+              required:
+                - code
+                - name
+            - type: "null"
+        note:
+          type:
+            - string
+            - "null"
+      required:
+        - id
+        - object
+        - not_awarded_at
+        - reason
+        - note
+    WebhookEvent_competition_not_awarded:
+      type: object
+      properties:
+        id:
+          type: string
+          description: "Equals the webhook-id header; stable across retries: deduplicate on it."
+        type:
+          type: string
+          enum:
+            - competition.not_awarded
+        api_version:
+          type: string
+          enum:
+            - v1
+        environment:
+          type: string
+          enum:
+            - test
+            - live
+        occurred_at:
+          type: string
+          format: date-time
+          example: "2026-10-01T12:59:58.412Z"
+        organization_id:
+          type: string
+          description: ULID (26 lowercase characters).
+          example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+        sequence:
+          type: integer
+          description: "Monotonic per object: drop events whose sequence is ≤ the last one processed for the same data.object.id."
+        data:
+          type: object
+          properties:
+            object:
+              "$ref": "#/components/schemas/WebhookObject_competition_not_awarded"
+          required:
+            - object
+        links:
+          type: object
+          properties:
+            object:
+              type: string
+              description: Public API URL of the object.
+              format: uri
+          required:
+            - object
+      required:
+        - id
+        - type
+        - api_version
+        - environment
+        - occurred_at
+        - organization_id
+        - sequence
+        - data
+        - links
+    WebhookObject_invitation_accepted:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ULID (26 lowercase characters).
+          example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+        object:
+          type: string
+          enum:
+            - invitation
+        competition_id:
+          type: string
+          description: ULID (26 lowercase characters).
+          example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+        email:
+          type: string
+        organization:
+          type: object
+          properties:
+            id:
+              type: string
+              description: ULID (26 lowercase characters).
+              example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+            name:
+              type: string
+          required:
+            - id
+            - name
+        vendor:
+          oneOf:
+            - "$ref": "#/components/schemas/VendorSummary"
+            - type: "null"
+        sponsored:
+          type: boolean
+        joined_at:
+          type: string
+          format: date-time
+          example: "2026-10-01T12:59:58.412Z"
+      required:
+        - id
+        - object
+        - competition_id
+        - email
+        - organization
+        - vendor
+        - sponsored
+        - joined_at
+    WebhookEvent_invitation_accepted:
+      type: object
+      properties:
+        id:
+          type: string
+          description: "Equals the webhook-id header; stable across retries: deduplicate on it."
+        type:
+          type: string
+          enum:
+            - invitation.accepted
+        api_version:
+          type: string
+          enum:
+            - v1
+        environment:
+          type: string
+          enum:
+            - test
+            - live
+        occurred_at:
+          type: string
+          format: date-time
+          example: "2026-10-01T12:59:58.412Z"
+        organization_id:
+          type: string
+          description: ULID (26 lowercase characters).
+          example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+        sequence:
+          type: integer
+          description: "Monotonic per object: drop events whose sequence is ≤ the last one processed for the same data.object.id."
+        data:
+          type: object
+          properties:
+            object:
+              "$ref": "#/components/schemas/WebhookObject_invitation_accepted"
+          required:
+            - object
+        links:
+          type: object
+          properties:
+            object:
+              type: string
+              description: Public API URL of the object.
+              format: uri
+          required:
+            - object
+      required:
+        - id
+        - type
+        - api_version
+        - environment
+        - occurred_at
+        - organization_id
+        - sequence
+        - data
+        - links
+    WebhookObject_invitation_declined:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ULID (26 lowercase characters).
+          example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+        object:
+          type: string
+          enum:
+            - invitation
+        competition_id:
+          type: string
+          description: ULID (26 lowercase characters).
+          example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+        email:
+          type: string
+        vendor:
+          oneOf:
+            - "$ref": "#/components/schemas/VendorSummary"
+            - type: "null"
+        declined_at:
+          type: string
+          format: date-time
+          example: "2026-10-01T12:59:58.412Z"
+      required:
+        - id
+        - object
+        - competition_id
+        - email
+        - vendor
+        - declined_at
+    WebhookEvent_invitation_declined:
+      type: object
+      properties:
+        id:
+          type: string
+          description: "Equals the webhook-id header; stable across retries: deduplicate on it."
+        type:
+          type: string
+          enum:
+            - invitation.declined
+        api_version:
+          type: string
+          enum:
+            - v1
+        environment:
+          type: string
+          enum:
+            - test
+            - live
+        occurred_at:
+          type: string
+          format: date-time
+          example: "2026-10-01T12:59:58.412Z"
+        organization_id:
+          type: string
+          description: ULID (26 lowercase characters).
+          example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+        sequence:
+          type: integer
+          description: "Monotonic per object: drop events whose sequence is ≤ the last one processed for the same data.object.id."
+        data:
+          type: object
+          properties:
+            object:
+              "$ref": "#/components/schemas/WebhookObject_invitation_declined"
+          required:
+            - object
+        links:
+          type: object
+          properties:
+            object:
+              type: string
+              description: Public API URL of the object.
+              format: uri
+          required:
+            - object
+      required:
+        - id
+        - type
+        - api_version
+        - environment
+        - occurred_at
+        - organization_id
+        - sequence
+        - data
+        - links
+    WebhookObject_offer_submitted:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ULID (26 lowercase characters).
+          example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+        object:
+          type: string
+          enum:
+            - offer
+        competition_id:
+          type: string
+          description: ULID (26 lowercase characters).
+          example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+        participant_id:
+          type: string
+          description: ULID (26 lowercase characters).
+          example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+        organization:
+          type: object
+          properties:
+            id:
+              type: string
+              description: ULID (26 lowercase characters).
+              example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+            name:
+              type: string
+          required:
+            - id
+            - name
+        vendor:
+          oneOf:
+            - "$ref": "#/components/schemas/VendorSummary"
+            - type: "null"
+        seq:
+          type: integer
+        stage:
+          type: string
+          enum:
+            - initial
+            - live
+            - sealed
+            - bafo
+        amount_minor:
+          type:
+            - integer
+            - "null"
+          description: null for the sealed stage (before the offers are opened).
+        currency:
+          type: string
+          enum:
+            - SAR
+        accepted_at:
+          type: string
+          format: date-time
+          example: "2026-10-01T12:59:58.412Z"
+      required:
+        - id
+        - object
+        - competition_id
+        - participant_id
+        - organization
+        - vendor
+        - seq
+        - stage
+        - amount_minor
+        - currency
+        - accepted_at
+    WebhookEvent_offer_submitted:
+      type: object
+      properties:
+        id:
+          type: string
+          description: "Equals the webhook-id header; stable across retries: deduplicate on it."
+        type:
+          type: string
+          enum:
+            - offer.submitted
+        api_version:
+          type: string
+          enum:
+            - v1
+        environment:
+          type: string
+          enum:
+            - test
+            - live
+        occurred_at:
+          type: string
+          format: date-time
+          example: "2026-10-01T12:59:58.412Z"
+        organization_id:
+          type: string
+          description: ULID (26 lowercase characters).
+          example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+        sequence:
+          type: integer
+          description: "Monotonic per object: drop events whose sequence is ≤ the last one processed for the same data.object.id."
+        data:
+          type: object
+          properties:
+            object:
+              "$ref": "#/components/schemas/WebhookObject_offer_submitted"
+          required:
+            - object
+        links:
+          type: object
+          properties:
+            object:
+              type: string
+              description: Public API URL of the object.
+              format: uri
+          required:
+            - object
+      required:
+        - id
+        - type
+        - api_version
+        - environment
+        - occurred_at
+        - organization_id
+        - sequence
+        - data
+        - links
+    WebhookObject_offer_updated:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ULID (26 lowercase characters).
+          example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+        object:
+          type: string
+          enum:
+            - offer
+        competition_id:
+          type: string
+          description: ULID (26 lowercase characters).
+          example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+        participant_id:
+          type: string
+          description: ULID (26 lowercase characters).
+          example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+        organization:
+          type: object
+          properties:
+            id:
+              type: string
+              description: ULID (26 lowercase characters).
+              example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+            name:
+              type: string
+          required:
+            - id
+            - name
+        vendor:
+          oneOf:
+            - "$ref": "#/components/schemas/VendorSummary"
+            - type: "null"
+        seq:
+          type: integer
+        stage:
+          type: string
+          enum:
+            - initial
+            - live
+            - sealed
+            - bafo
+        amount_minor:
+          type:
+            - integer
+            - "null"
+          description: null for the sealed stage (before the offers are opened).
+        currency:
+          type: string
+          enum:
+            - SAR
+        accepted_at:
+          type: string
+          format: date-time
+          example: "2026-10-01T12:59:58.412Z"
+      required:
+        - id
+        - object
+        - competition_id
+        - participant_id
+        - organization
+        - vendor
+        - seq
+        - stage
+        - amount_minor
+        - currency
+        - accepted_at
+    WebhookEvent_offer_updated:
+      type: object
+      properties:
+        id:
+          type: string
+          description: "Equals the webhook-id header; stable across retries: deduplicate on it."
+        type:
+          type: string
+          enum:
+            - offer.updated
+        api_version:
+          type: string
+          enum:
+            - v1
+        environment:
+          type: string
+          enum:
+            - test
+            - live
+        occurred_at:
+          type: string
+          format: date-time
+          example: "2026-10-01T12:59:58.412Z"
+        organization_id:
+          type: string
+          description: ULID (26 lowercase characters).
+          example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+        sequence:
+          type: integer
+          description: "Monotonic per object: drop events whose sequence is ≤ the last one processed for the same data.object.id."
+        data:
+          type: object
+          properties:
+            object:
+              "$ref": "#/components/schemas/WebhookObject_offer_updated"
+          required:
+            - object
+        links:
+          type: object
+          properties:
+            object:
+              type: string
+              description: Public API URL of the object.
+              format: uri
+          required:
+            - object
+      required:
+        - id
+        - type
+        - api_version
+        - environment
+        - occurred_at
+        - organization_id
+        - sequence
+        - data
+        - links
+    WebhookObject_award_issued:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ULID (26 lowercase characters).
+          example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+        object:
+          type: string
+          enum:
+            - award
+        competition_id:
+          type: string
+          description: ULID (26 lowercase characters).
+          example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+        status:
+          type: string
+          enum:
+            - issued
+        winner:
+          type: object
+          properties:
+            organization:
+              type: object
+              properties:
+                id:
+                  type: string
+                  description: ULID (26 lowercase characters).
+                  example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+                name:
+                  type: string
+                cr_number:
+                  type: string
+                vat_number:
+                  type:
+                    - string
+                    - "null"
+              required:
+                - id
+                - name
+                - cr_number
+                - vat_number
+            vendor:
+              oneOf:
+                - "$ref": "#/components/schemas/VendorSummary"
+                - type: "null"
+          required:
+            - organization
+            - vendor
+        amount_minor:
+          type: integer
+        currency:
+          type: string
+          enum:
+            - SAR
+        awarded_at:
+          type: string
+          format: date-time
+          example: "2026-10-01T12:59:58.412Z"
+      required:
+        - id
+        - object
+        - competition_id
+        - status
+        - winner
+        - amount_minor
+        - currency
+        - awarded_at
+    WebhookEvent_award_issued:
+      type: object
+      properties:
+        id:
+          type: string
+          description: "Equals the webhook-id header; stable across retries: deduplicate on it."
+        type:
+          type: string
+          enum:
+            - award.issued
+        api_version:
+          type: string
+          enum:
+            - v1
+        environment:
+          type: string
+          enum:
+            - test
+            - live
+        occurred_at:
+          type: string
+          format: date-time
+          example: "2026-10-01T12:59:58.412Z"
+        organization_id:
+          type: string
+          description: ULID (26 lowercase characters).
+          example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+        sequence:
+          type: integer
+          description: "Monotonic per object: drop events whose sequence is ≤ the last one processed for the same data.object.id."
+        data:
+          type: object
+          properties:
+            object:
+              "$ref": "#/components/schemas/WebhookObject_award_issued"
+          required:
+            - object
+        links:
+          type: object
+          properties:
+            object:
+              type: string
+              description: Public API URL of the object.
+              format: uri
+          required:
+            - object
+      required:
+        - id
+        - type
+        - api_version
+        - environment
+        - occurred_at
+        - organization_id
+        - sequence
+        - data
+        - links
+    WebhookObject_award_cancelled:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ULID (26 lowercase characters).
+          example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+        object:
+          type: string
+          enum:
+            - award
+        competition_id:
+          type: string
+          description: ULID (26 lowercase characters).
+          example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+        status:
+          type: string
+          enum:
+            - revoked
+        revoked_at:
+          type: string
+          format: date-time
+          example: "2026-10-01T12:59:58.412Z"
+        reason:
+          type:
+            - string
+            - "null"
+      required:
+        - id
+        - object
+        - competition_id
+        - status
+        - revoked_at
+        - reason
+    WebhookEvent_award_cancelled:
+      type: object
+      properties:
+        id:
+          type: string
+          description: "Equals the webhook-id header; stable across retries: deduplicate on it."
+        type:
+          type: string
+          enum:
+            - award.cancelled
+        api_version:
+          type: string
+          enum:
+            - v1
+        environment:
+          type: string
+          enum:
+            - test
+            - live
+        occurred_at:
+          type: string
+          format: date-time
+          example: "2026-10-01T12:59:58.412Z"
+        organization_id:
+          type: string
+          description: ULID (26 lowercase characters).
+          example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+        sequence:
+          type: integer
+          description: "Monotonic per object: drop events whose sequence is ≤ the last one processed for the same data.object.id."
+        data:
+          type: object
+          properties:
+            object:
+              "$ref": "#/components/schemas/WebhookObject_award_cancelled"
+          required:
+            - object
+        links:
+          type: object
+          properties:
+            object:
+              type: string
+              description: Public API URL of the object.
+              format: uri
+          required:
+            - object
+      required:
+        - id
+        - type
+        - api_version
+        - environment
+        - occurred_at
+        - organization_id
+        - sequence
+        - data
+        - links
+    WebhookObject_webhook_test:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ULID (26 lowercase characters).
+          example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+        object:
+          type: string
+          enum:
+            - webhook_endpoint
+        message:
+          type: string
+          example: BAFO test event
+      required:
+        - id
+        - object
+        - message
+    WebhookEvent_webhook_test:
+      type: object
+      properties:
+        id:
+          type: string
+          description: "Equals the webhook-id header; stable across retries: deduplicate on it."
+        type:
+          type: string
+          enum:
+            - webhook.test
+        api_version:
+          type: string
+          enum:
+            - v1
+        environment:
+          type: string
+          enum:
+            - test
+            - live
+        occurred_at:
+          type: string
+          format: date-time
+          example: "2026-10-01T12:59:58.412Z"
+        organization_id:
+          type: string
+          description: ULID (26 lowercase characters).
+          example: "01j9zq4m1x2a3b4c5d6e7f8g9h"
+        sequence:
+          type: integer
+          description: "Monotonic per object: drop events whose sequence is ≤ the last one processed for the same data.object.id."
+        data:
+          type: object
+          properties:
+            object:
+              "$ref": "#/components/schemas/WebhookObject_webhook_test"
+          required:
+            - object
+        links:
+          type: object
+          properties:
+            object:
+              type: string
+              description: Public API URL of the object.
+              format: uri
+          required:
+            - object
+      required:
+        - id
+        - type
+        - api_version
+        - environment
+        - occurred_at
+        - organization_id
+        - sequence
+        - data
+        - links

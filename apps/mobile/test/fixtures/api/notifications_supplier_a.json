@@ -1,0 +1,376 @@
+{
+ "status": 200,
+ "body": {
+  "data": [
+   {
+    "id": "01m3q4es3zkgk3c68ee6qcrkv3",
+    "type": "competition.opened",
+    "title": "بدأ استقبال العروض",
+    "body": "بدأ استقبال العروض في «خدمات النظافة للفروع (رسوم مغطّاة)».",
+    "subject": {
+     "id": "01m3q4e7myd08bs5aeeywrp8ah",
+     "type": "competition"
+    },
+    "route": "/competitions/01m3q4e7myd08bs5aeeywrp8ah/live",
+    "params": {
+     "direction": "tender",
+     "competition_title": "خدمات النظافة للفروع (رسوم مغطّاة)"
+    },
+    "read_at": null,
+    "created_at": "2026-09-29T17:47:32.000Z"
+   },
+   {
+    "id": "01m3q4es3tk7et4cks9k7zqzn7",
+    "type": "competition.invited",
+    "title": "دعوة للمشاركة في مناقصة",
+    "body": "تدعوك Issuer Co للمشاركة في «خدمات النظافة للفروع (رسوم مغطّاة)».",
+    "subject": {
+     "id": "01m3q4e7myd08bs5aeeywrp8ah",
+     "type": "competition"
+    },
+    "route": "/competitions/01m3q4e7myd08bs5aeeywrp8ah",
+    "params": {
+     "direction": "tender",
+     "sponsored": false,
+     "issuer_name": "Issuer Co",
+     "competition_title": "خدمات النظافة للفروع (رسوم مغطّاة)"
+    },
+    "read_at": null,
+    "created_at": "2026-09-29T17:47:32.000Z"
+   },
+   {
+    "id": "01m3q4es38w96sxg9tkvw18v35",
+    "type": "competition.invited",
+    "title": "دعوة للمشاركة في مناقصة",
+    "body": "تدعوك Issuer Co للمشاركة في «خدمات تسويق وطباعة المواد الترويجية».",
+    "subject": {
+     "id": "01m3q4e7kycnbff05zqtegmmc5",
+     "type": "competition"
+    },
+    "route": "/competitions/01m3q4e7kycnbff05zqtegmmc5",
+    "params": {
+     "direction": "tender",
+     "sponsored": false,
+     "issuer_name": "Issuer Co",
+     "competition_title": "خدمات تسويق وطباعة المواد الترويجية"
+    },
+    "read_at": null,
+    "created_at": "2026-09-29T17:47:32.000Z"
+   },
+   {
+    "id": "01m3q4es24k620bwg1z1fda6qn",
+    "type": "competition.invited",
+    "title": "دعوة للمشاركة في مزايدة",
+    "body": "تدعوك Issuer Co للمشاركة في «بيع خردة حديد ومعادن».",
+    "subject": {
+     "id": "01m3q4e7hysr6j09xnvx6ak8b5",
+     "type": "competition"
+    },
+    "route": "/competitions/01m3q4e7hysr6j09xnvx6ak8b5",
+    "params": {
+     "direction": "auction",
+     "sponsored": false,
+     "issuer_name": "Issuer Co",
+     "competition_title": "بيع خردة حديد ومعادن"
+    },
+    "read_at": null,
+    "created_at": "2026-09-29T17:47:32.000Z"
+   },
+   {
+    "id": "01m3q4es1t4h9zhhxaa8h2ssrb",
+    "type": "award.not_selected",
+    "title": "نتيجة المنافسة",
+    "body": "تمت ترسية «توريد أثاث مكتبي للمقر الرئيسي» على متنافس آخر. نشكركم على المشاركة.",
+    "subject": {
+     "id": "01m3q4e7f92zkv3d6bz13k7bgs",
+     "type": "competition"
+    },
+    "route": "/competitions/01m3q4e7f92zkv3d6bz13k7bgs",
+    "params": {
+     "direction": "tender",
+     "competition_title": "توريد أثاث مكتبي للمقر الرئيسي"
+    },
+    "read_at": null,
+    "created_at": "2026-09-29T17:47:32.000Z"
+   },
+   {
+    "id": "01m3q4es1f7atezvmt1h4ck972",
+    "type": "competition.closed",
+    "title": "أُغلقت المنافسة",
+    "body": "أُغلق استقبال العروض في «توريد أثاث مكتبي للمقر الرئيسي».",
+    "subject": {
+     "id": "01m3q4e7f92zkv3d6bz13k7bgs",
+     "type": "competition"
+    },
+    "route": "/competitions/01m3q4e7f92zkv3d6bz13k7bgs",
+    "params": {
+     "direction": "tender",
+     "competition_title": "توريد أثاث مكتبي للمقر الرئيسي"
+    },
+    "read_at": null,
+    "created_at": "2026-09-29T17:47:32.000Z"
+   },
+   {
+    "id": "01m3q4es0cdpyjmkaf3hb4832r",
+    "type": "competition.opened",
+    "title": "بدأ استقبال العروض",
+    "body": "بدأ استقبال العروض في «توريد أثاث مكتبي للمقر الرئيسي».",
+    "subject": {
+     "id": "01m3q4e7f92zkv3d6bz13k7bgs",
+     "type": "competition"
+    },
+    "route": "/competitions/01m3q4e7f92zkv3d6bz13k7bgs/live",
+    "params": {
+     "direction": "tender",
+     "competition_title": "توريد أثاث مكتبي للمقر الرئيسي"
+    },
+    "read_at": null,
+    "created_at": "2026-09-29T17:47:32.000Z"
+   },
+   {
+    "id": "01m3q4es02bxagasn1h747p64c",
+    "type": "competition.invited",
+    "title": "دعوة للمشاركة في مناقصة",
+    "body": "تدعوك Issuer Co للمشاركة في «توريد أثاث مكتبي للمقر الرئيسي».",
+    "subject": {
+     "id": "01m3q4e7f92zkv3d6bz13k7bgs",
+     "type": "competition"
+    },
+    "route": "/competitions/01m3q4e7f92zkv3d6bz13k7bgs",
+    "params": {
+     "direction": "tender",
+     "sponsored": false,
+     "issuer_name": "Issuer Co",
+     "competition_title": "توريد أثاث مكتبي للمقر الرئيسي"
+    },
+    "read_at": null,
+    "created_at": "2026-09-29T17:47:32.000Z"
+   },
+   {
+    "id": "01m3q4erznxjn50z9g5015exzy",
+    "type": "competition.closed",
+    "title": "أُغلقت المنافسة",
+    "body": "أُغلق استقبال العروض في «توريد خوادم ومعدات مركز البيانات».",
+    "subject": {
+     "id": "01m3q4e7btzj85vknn9k5m2stt",
+     "type": "competition"
+    },
+    "route": "/competitions/01m3q4e7btzj85vknn9k5m2stt",
+    "params": {
+     "direction": "tender",
+     "competition_title": "توريد خوادم ومعدات مركز البيانات"
+    },
+    "read_at": null,
+    "created_at": "2026-09-29T17:47:32.000Z"
+   },
+   {
+    "id": "01m3q4ery7q8k80ww5039eghs0",
+    "type": "competition.opened",
+    "title": "بدأ استقبال العروض",
+    "body": "بدأ استقبال العروض في «توريد خوادم ومعدات مركز البيانات».",
+    "subject": {
+     "id": "01m3q4e7btzj85vknn9k5m2stt",
+     "type": "competition"
+    },
+    "route": "/competitions/01m3q4e7btzj85vknn9k5m2stt/live",
+    "params": {
+     "direction": "tender",
+     "competition_title": "توريد خوادم ومعدات مركز البيانات"
+    },
+    "read_at": null,
+    "created_at": "2026-09-29T17:47:32.000Z"
+   },
+   {
+    "id": "01m3q4erxse1ffpjcem268wdpy",
+    "type": "competition.invited",
+    "title": "دعوة للمشاركة في مناقصة",
+    "body": "تدعوك Issuer Co للمشاركة في «توريد خوادم ومعدات مركز البيانات».",
+    "subject": {
+     "id": "01m3q4e7btzj85vknn9k5m2stt",
+     "type": "competition"
+    },
+    "route": "/competitions/01m3q4e7btzj85vknn9k5m2stt",
+    "params": {
+     "direction": "tender",
+     "sponsored": false,
+     "issuer_name": "Issuer Co",
+     "competition_title": "توريد خوادم ومعدات مركز البيانات"
+    },
+    "read_at": null,
+    "created_at": "2026-09-29T17:47:32.000Z"
+   },
+   {
+    "id": "01m3q4erxksgm5rvwny6gwa65t",
+    "type": "competition.closed",
+    "title": "أُغلقت المنافسة",
+    "body": "أُغلق استقبال العروض في «نقل وتخزين البضائع بين المستودعات».",
+    "subject": {
+     "id": "01m3q4e78rq2b0b506qbyt6pr2",
+     "type": "competition"
+    },
+    "route": "/competitions/01m3q4e78rq2b0b506qbyt6pr2",
+    "params": {
+     "direction": "tender",
+     "competition_title": "نقل وتخزين البضائع بين المستودعات"
+    },
+    "read_at": null,
+    "created_at": "2026-09-29T17:47:32.000Z"
+   },
+   {
+    "id": "01m3q4erw1cacvkrqsr2yh4716",
+    "type": "competition.opened",
+    "title": "بدأ استقبال العروض",
+    "body": "بدأ استقبال العروض في «نقل وتخزين البضائع بين المستودعات».",
+    "subject": {
+     "id": "01m3q4e78rq2b0b506qbyt6pr2",
+     "type": "competition"
+    },
+    "route": "/competitions/01m3q4e78rq2b0b506qbyt6pr2/live",
+    "params": {
+     "direction": "tender",
+     "competition_title": "نقل وتخزين البضائع بين المستودعات"
+    },
+    "read_at": null,
+    "created_at": "2026-09-29T17:47:32.000Z"
+   },
+   {
+    "id": "01m3q4ervj88yf6yr5nw8g6dj7",
+    "type": "competition.invited",
+    "title": "دعوة للمشاركة في مناقصة",
+    "body": "تدعوك Issuer Co للمشاركة في «نقل وتخزين البضائع بين المستودعات».",
+    "subject": {
+     "id": "01m3q4e78rq2b0b506qbyt6pr2",
+     "type": "competition"
+    },
+    "route": "/competitions/01m3q4e78rq2b0b506qbyt6pr2",
+    "params": {
+     "direction": "tender",
+     "sponsored": false,
+     "issuer_name": "Issuer Co",
+     "competition_title": "نقل وتخزين البضائع بين المستودعات"
+    },
+    "read_at": null,
+    "created_at": "2026-09-29T17:47:32.000Z"
+   },
+   {
+    "id": "01m3q4ertqa3dgchz4xdthszwx",
+    "type": "competition.opened",
+    "title": "بدأ استقبال العروض",
+    "body": "بدأ استقبال العروض في «تطوير بوابة إلكترونية لخدمات العملاء (عروض مغلقة)».",
+    "subject": {
+     "id": "01m3q4e776fekgx7wd0qfenna1",
+     "type": "competition"
+    },
+    "route": "/competitions/01m3q4e776fekgx7wd0qfenna1/live",
+    "params": {
+     "direction": "tender",
+     "competition_title": "تطوير بوابة إلكترونية لخدمات العملاء (عروض مغلقة)"
+    },
+    "read_at": null,
+    "created_at": "2026-09-29T17:47:32.000Z"
+   },
+   {
+    "id": "01m3q4ertd5dwvpzg1sfhm7x8z",
+    "type": "competition.invited",
+    "title": "دعوة للمشاركة في مناقصة",
+    "body": "تدعوك Issuer Co للمشاركة في «تطوير بوابة إلكترونية لخدمات العملاء (عروض مغلقة)».",
+    "subject": {
+     "id": "01m3q4e776fekgx7wd0qfenna1",
+     "type": "competition"
+    },
+    "route": "/competitions/01m3q4e776fekgx7wd0qfenna1",
+    "params": {
+     "direction": "tender",
+     "sponsored": false,
+     "issuer_name": "Issuer Co",
+     "competition_title": "تطوير بوابة إلكترونية لخدمات العملاء (عروض مغلقة)"
+    },
+    "read_at": null,
+    "created_at": "2026-09-29T17:47:32.000Z"
+   },
+   {
+    "id": "01m3q4ersb2fn7cp20s5jbnmp7",
+    "type": "competition.opened",
+    "title": "بدأ استقبال العروض",
+    "body": "بدأ استقبال العروض في «بيع معدات صناعية فائضة».",
+    "subject": {
+     "id": "01m3q4e75cveqqa28aks6nak37",
+     "type": "competition"
+    },
+    "route": "/competitions/01m3q4e75cveqqa28aks6nak37/live",
+    "params": {
+     "direction": "auction",
+     "competition_title": "بيع معدات صناعية فائضة"
+    },
+    "read_at": null,
+    "created_at": "2026-09-29T17:47:31.000Z"
+   },
+   {
+    "id": "01m3q4ers5e3b9h3qmek08rvbd",
+    "type": "competition.invited",
+    "title": "دعوة للمشاركة في مزايدة",
+    "body": "تدعوك Issuer Co للمشاركة في «بيع معدات صناعية فائضة».",
+    "subject": {
+     "id": "01m3q4e75cveqqa28aks6nak37",
+     "type": "competition"
+    },
+    "route": "/competitions/01m3q4e75cveqqa28aks6nak37",
+    "params": {
+     "direction": "auction",
+     "sponsored": false,
+     "issuer_name": "Issuer Co",
+     "competition_title": "بيع معدات صناعية فائضة"
+    },
+    "read_at": null,
+    "created_at": "2026-09-29T17:47:31.000Z"
+   },
+   {
+    "id": "01m3q4errr3e20y1f1fqd6fhhg",
+    "type": "standing.lost_lead",
+    "title": "لم يعد عرضك متصدراً",
+    "body": "لم يعد عرضك العرض المتصدر في «توريد أجهزة ومستلزمات طبية للمستودع المركزي».",
+    "subject": {
+     "id": "01m3q4e71m4tnkvsecsj2f351b",
+     "type": "competition"
+    },
+    "route": "/competitions/01m3q4e71m4tnkvsecsj2f351b/live",
+    "params": {
+     "direction": "tender",
+     "competition_title": "توريد أجهزة ومستلزمات طبية للمستودع المركزي"
+    },
+    "read_at": null,
+    "created_at": "2026-09-29T17:47:31.000Z"
+   },
+   {
+    "id": "01m3q4err9kwaar3fv0r39e416",
+    "type": "competition.final_window_started",
+    "title": "بدأت فترة التسعير النهائية",
+    "body": "بدأت فترة التسعير النهائية في «توريد أجهزة ومستلزمات طبية للمستودع المركزي»، وتُغلق المنافسة عند 29 سبتمبر 2026، 9:17 م.",
+    "subject": {
+     "id": "01m3q4e71m4tnkvsecsj2f351b",
+     "type": "competition"
+    },
+    "route": "/competitions/01m3q4e71m4tnkvsecsj2f351b/live",
+    "params": {
+     "direction": "tender",
+     "close_time": "2026-09-29T18:17:12.667Z",
+     "competition_title": "توريد أجهزة ومستلزمات طبية للمستودع المركزي"
+    },
+    "read_at": null,
+    "created_at": "2026-09-29T17:47:31.000Z"
+   }
+  ],
+  "meta": {
+   "pagination": {
+    "type": "page",
+    "current_page": 1,
+    "per_page": 20,
+    "has_more": true,
+    "total": 35,
+    "last_page": 2
+   },
+   "unread_count": 32,
+   "server_time": "2026-09-29T17:52:20.172Z"
+  }
+ }
+}

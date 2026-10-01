@@ -1,0 +1,46 @@
+{
+ "status": 200,
+ "body": {
+  "data": [
+   {
+    "id": "01m3q4e69wssgvrkqr9sxchzxt",
+    "number": "BAFO-INV-2026-000001",
+    "type": "tax_invoice",
+    "issue_date": "2026-09-29",
+    "currency": "SAR",
+    "subtotal_minor": 150000,
+    "discount_minor": 0,
+    "vat_rate_bp": 1500,
+    "vat_minor": 22500,
+    "total_minor": 172500,
+    "einvoice_status": "cleared",
+    "zatca_uuid": "6e56b4ff-f7bb-4439-9bcb-a425ab8bd32c",
+    "lines": [
+     {
+      "description": "باقة برو — شهري",
+      "quantity": 1,
+      "unit_price_minor": 150000,
+      "net_minor": 150000
+     }
+    ],
+    "pdf": {
+     "available": true,
+     "download_path": "/api/app/v1/billing/invoices/01m3q4e69wssgvrkqr9sxchzxt/pdf"
+    },
+    "payment_id": "01m3q4e68pv2r2v2wem5bp1nza",
+    "issued_at": "2026-09-29T17:47:12.000Z"
+   }
+  ],
+  "meta": {
+   "pagination": {
+    "type": "page",
+    "current_page": 1,
+    "per_page": 20,
+    "has_more": false,
+    "total": 1,
+    "last_page": 1
+   },
+   "server_time": "2026-09-29T17:52:20.122Z"
+  }
+ }
+}

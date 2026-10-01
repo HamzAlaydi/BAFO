@@ -1,0 +1,158 @@
+{
+ "status": 200,
+ "body": {
+  "data": {
+   "issuer": {
+    "active_competitions": 0,
+    "draft_competitions": 0,
+    "live_now": 0,
+    "awaiting_award": 0,
+    "offers_received_30d": 0
+   },
+   "participant": {
+    "pending_invitations": 1,
+    "active_participations": 7,
+    "offers_submitted_30d": 6,
+    "awards_won": 0
+   },
+   "team": {
+    "members": 1,
+    "seats_total": 1
+   },
+   "subscription": {
+    "plan": {
+     "id": "01m3q4e4f1dxen0vw37c5jbmnf",
+     "code": "single",
+     "name": "باقة فردية"
+    },
+    "status": "active",
+    "days_left": 30,
+    "total_days": 30,
+    "ends_at": "2026-10-29T17:47:12.000Z"
+   },
+   "alerts": [],
+   "activities": [
+    {
+     "id": "47792a13eb6db37831aa89596a",
+     "action": "invitation.joined",
+     "occurred_at": "2026-09-29T17:47:13.483Z",
+     "actor": {
+      "name": "أحمد مورد أ"
+     },
+     "subject": {
+      "type": "competition",
+      "id": "01m3q4e7myd08bs5aeeywrp8ah",
+      "title": "خدمات النظافة للفروع (رسوم مغطّاة)"
+     }
+    },
+    {
+     "id": "cf1c69b355537bb764baaea5df",
+     "action": "invitation.joined",
+     "occurred_at": "2026-09-29T17:47:13.279Z",
+     "actor": {
+      "name": "أحمد مورد أ"
+     },
+     "subject": {
+      "type": "competition",
+      "id": "01m3q4e7f92zkv3d6bz13k7bgs",
+      "title": "توريد أثاث مكتبي للمقر الرئيسي"
+     }
+    },
+    {
+     "id": "f540d090a80cb06d90e579b167",
+     "action": "invitation.joined",
+     "occurred_at": "2026-09-29T17:47:13.175Z",
+     "actor": {
+      "name": "أحمد مورد أ"
+     },
+     "subject": {
+      "type": "competition",
+      "id": "01m3q4e7btzj85vknn9k5m2stt",
+      "title": "توريد خوادم ومعدات مركز البيانات"
+     }
+    },
+    {
+     "id": "828a3bbce405858fa635707284",
+     "action": "invitation.joined",
+     "occurred_at": "2026-09-29T17:47:13.073Z",
+     "actor": {
+      "name": "أحمد مورد أ"
+     },
+     "subject": {
+      "type": "competition",
+      "id": "01m3q4e78rq2b0b506qbyt6pr2",
+      "title": "نقل وتخزين البضائع بين المستودعات"
+     }
+    },
+    {
+     "id": "ba77258ef3bf9a7b818e0dd511",
+     "action": "invitation.joined",
+     "occurred_at": "2026-09-29T17:47:13.020Z",
+     "actor": {
+      "name": "أحمد مورد أ"
+     },
+     "subject": {
+      "type": "competition",
+      "id": "01m3q4e776fekgx7wd0qfenna1",
+      "title": "تطوير بوابة إلكترونية لخدمات العملاء (عروض مغلقة)"
+     }
+    },
+    {
+     "id": "85ed99e487690376c4b728a8cb",
+     "action": "invitation.joined",
+     "occurred_at": "2026-09-29T17:47:12.972Z",
+     "actor": {
+      "name": "أحمد مورد أ"
+     },
+     "subject": {
+      "type": "competition",
+      "id": "01m3q4e75cveqqa28aks6nak37",
+      "title": "بيع معدات صناعية فائضة"
+     }
+    },
+    {
+     "id": "0fbb0bac071e321d7069f15d35",
+     "action": "invitation.joined",
+     "occurred_at": "2026-09-29T17:47:12.851Z",
+     "actor": {
+      "name": "أحمد مورد أ"
+     },
+     "subject": {
+      "type": "competition",
+      "id": "01m3q4e71m4tnkvsecsj2f351b",
+      "title": "توريد أجهزة ومستلزمات طبية للمستودع المركزي"
+     }
+    },
+    {
+     "id": "b867427d229d70ae55ac52705e",
+     "action": "invitation.joined",
+     "occurred_at": "2026-09-29T17:47:12.785Z",
+     "actor": {
+      "name": "أحمد مورد أ"
+     },
+     "subject": {
+      "type": "competition",
+      "id": "01m3q4e6z5n2cq79mmr4h3ezb4",
+      "title": "توريد مستلزمات مكتبية للعام المالي 2027"
+     }
+    },
+    {
+     "id": "0cb013126913fcd2f2dc81d86d",
+     "action": "subscription.activated",
+     "occurred_at": "2026-09-29T17:47:12.163Z",
+     "actor": {
+      "name": "system"
+     },
+     "subject": {
+      "type": "subscription",
+      "id": "01m3q4e6cxxxxf4qjbb1qbbxdy",
+      "title": null
+     }
+    }
+   ]
+  },
+  "meta": {
+   "server_time": "2026-09-29T17:52:17.758Z"
+  }
+ }
+}

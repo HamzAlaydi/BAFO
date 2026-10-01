@@ -1,0 +1,4 @@
+/* Localized Info.plist values (Arabic). */
+"CFBundleDisplayName" = "بافو";
+"CFBundleName" = "بافو";
+"NSPhotoLibraryUsageDescription" = "يستخدم بافو الصورة التي تختارها صورةً لملفك الشخصي أو شعارًا لمنشأتك.";

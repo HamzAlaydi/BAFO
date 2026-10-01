@@ -1,0 +1,86 @@
+{
+ "status": 200,
+ "body": {
+  "data": {
+   "v": 3,
+   "competition_id": "01m3q4e75cveqqa28aks6nak37",
+   "direction": "auction",
+   "status": "live",
+   "phase": "open",
+   "server_time": "2026-09-29T17:52:18.758Z",
+   "bidding_opens_at": "2026-09-29T15:47:12.947Z",
+   "effective_close_at": "2026-10-01T17:00:00.000Z",
+   "hard_stop_at": "2026-10-01T17:40:00.000Z",
+   "extension_count": 0,
+   "leader": {
+    "participant_id": "01m3q4e76b8jmyq87p7pteacaw",
+    "alias_no": 28,
+    "organization": {
+     "id": "01m3q4e5hv0x1wy43sgxkq0v5j",
+     "name": "Supplier A"
+    },
+    "amount_minor": 5100000,
+    "accepted_at": "2026-09-29T17:47:12.990Z"
+   },
+   "reserve_met": null,
+   "ranking": [
+    {
+     "participant_id": "01m3q4e76b8jmyq87p7pteacaw",
+     "alias_no": 28,
+     "organization": {
+      "id": "01m3q4e5hv0x1wy43sgxkq0v5j",
+      "name": "Supplier A",
+      "logo_url": null
+     },
+     "current_amount_minor": 5100000,
+     "first_amount_minor": 5100000,
+     "rank": 1,
+     "is_leader": true,
+     "offers_count": 1,
+     "last_offer_at": "2026-09-29T17:47:12.990Z",
+     "submitted": true,
+     "bafo": {
+      "shortlisted": false,
+      "submitted": false
+     }
+    },
+    {
+     "participant_id": "01m3q4e762zvpa7nebgkp5709h",
+     "alias_no": 64,
+     "organization": {
+      "id": "01m3q4e62g1ybjnjpk9mp7tmmv",
+      "name": "Buyer D",
+      "logo_url": null
+     },
+     "current_amount_minor": 5000000,
+     "first_amount_minor": 5000000,
+     "rank": 2,
+     "is_leader": false,
+     "offers_count": 1,
+     "last_offer_at": "2026-09-29T17:47:12.980Z",
+     "submitted": true,
+     "bafo": {
+      "shortlisted": false,
+      "submitted": false
+     }
+    }
+   ],
+   "metrics": {
+    "offers_count": 2,
+    "participants_joined": 2,
+    "participants_with_offers": 2,
+    "invitations_count": 2,
+    "improvement_vs_start_bps": 200
+   },
+   "online_participants_count": 0,
+   "bafo": null,
+   "last_change": {
+    "kind": "snapshot",
+    "reason": null
+   }
+  },
+  "meta": {
+   "server_time": "2026-09-29T17:52:18.760Z"
+  }
+ }
+}

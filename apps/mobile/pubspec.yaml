@@ -1,0 +1,88 @@
+name: bafo
+description: "BAFO (بافو) mobile app: B2B competitions (tenders and auctions) for issuers and participants."
+publish_to: 'none'
+
+# build-name (versionName / CFBundleShortVersionString) + build-number (versionCode / CFBundleVersion).
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.13.4
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  # UI
+  material_ui: ^1.5.0
+  flutter_svg: ^2.3.0
+  cached_network_image: ^4.0.3
+
+  # State, navigation
+  flutter_bloc: ^9.1.1
+  equatable: ^3.0.0
+  go_router: ^18.0.2
+
+  # Data, platform
+  dio: ^5.11.1
+  flutter_secure_storage: ^11.2.0
+  shared_preferences: ^2.5.5
+  intl: ^0.20.3
+  file_picker: ^13.1.0
+  url_launcher: ^6.3.2
+  package_info_plus: ^10.2.1
+  device_info_plus: ^13.2.0
+  path_provider: ^2.1.6
+  open_filex: ^4.7.0
+  uuid: ^4.5.3
+  # Pure-Dart parser; legal documents are rendered with the BAFO kit
+  # (material_ui), not with a flutter/material-based widget package.
+  markdown: ^7.3.1
+
+  # Realtime (Pusher protocol, used against Laravel Reverb)
+  dart_pusher_channels: ^1.3.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  bloc_test: ^10.0.0
+  fake_async: ^1.3.3
+  # MultiProvider for test harnesses (already a flutter_bloc dependency).
+  provider: ^6.1.5
+  # Generates the native splash (config: flutter_native_splash.yaml).
+  flutter_native_splash: ^2.4.8
+  mocktail: ^1.0.5
+
+flutter:
+  uses-material-design: true
+  generate: true
+
+  assets:
+    - assets/brand/
+    - assets/fonts/OFL-IBMPlexSansArabic.txt
+    - assets/fonts/OFL-Inter.txt
+
+  # Bundled (never fetched at runtime). Both families are SIL OFL 1.1.
+  fonts:
+    - family: IBMPlexSansArabic
+      fonts:
+        - asset: assets/fonts/IBMPlexSansArabic-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/IBMPlexSansArabic-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/IBMPlexSansArabic-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/IBMPlexSansArabic-Bold.ttf
+          weight: 700
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/Inter-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Inter-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Inter-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Inter-Bold.ttf
+          weight: 700

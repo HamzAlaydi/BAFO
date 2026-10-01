@@ -1,0 +1,11 @@
+{
+ "status": 200,
+ "body": {
+  "data": {
+   "unread_count": 32
+  },
+  "meta": {
+   "server_time": "2026-09-29T17:52:20.218Z"
+  }
+ }
+}

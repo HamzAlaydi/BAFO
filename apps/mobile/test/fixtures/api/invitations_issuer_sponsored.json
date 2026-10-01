@@ -1,0 +1,79 @@
+{
+ "status": 200,
+ "body": {
+  "data": [
+   {
+    "id": "01m3q4e7n5x9x4mtaf1wy5c98r",
+    "email": "supplier-b.owner@demo.bafo.test",
+    "name": "فهد مورد ب",
+    "status": "joined",
+    "organization": {
+     "id": "01m3q4e5qneqhzenf9gda1c18t",
+     "name": "Supplier B",
+     "logo_url": null,
+     "verified": true
+    },
+    "vendor": null,
+    "sponsored_requested": true,
+    "coverage": "sponsored",
+    "pass_status": "joined",
+    "participant": {
+     "id": "01m3q4e7p1zyyf9x3et0207x3e",
+     "alias_no": 92,
+     "joined_at": "2026-09-29T17:47:13.000Z"
+    },
+    "sent_at": "2026-09-29T17:47:13.000Z",
+    "viewed_at": null,
+    "joined_at": "2026-09-29T17:47:13.000Z",
+    "declined_at": null,
+    "decline_reason": null,
+    "revoked_at": null,
+    "revoke_reason": null,
+    "expired_at": null,
+    "created_at": "2026-09-29T17:47:13.000Z"
+   },
+   {
+    "id": "01m3q4e7n8hy7jqf6k3achbxtz",
+    "email": "supplier-a.owner@demo.bafo.test",
+    "name": "أحمد مورد أ",
+    "status": "joined",
+    "organization": {
+     "id": "01m3q4e5hv0x1wy43sgxkq0v5j",
+     "name": "Supplier A",
+     "logo_url": null,
+     "verified": true
+    },
+    "vendor": null,
+    "sponsored_requested": false,
+    "coverage": "own_plan",
+    "pass_status": null,
+    "participant": {
+     "id": "01m3q4e7pagphyvqgh9vxw3a6g",
+     "alias_no": 29,
+     "joined_at": "2026-09-29T17:47:13.000Z"
+    },
+    "sent_at": "2026-09-29T17:47:13.000Z",
+    "viewed_at": null,
+    "joined_at": "2026-09-29T17:47:13.000Z",
+    "declined_at": null,
+    "decline_reason": null,
+    "revoked_at": null,
+    "revoke_reason": null,
+    "expired_at": null,
+    "created_at": "2026-09-29T17:47:13.000Z"
+   }
+  ],
+  "meta": {
+   "counts": {
+    "draft": 0,
+    "sent": 0,
+    "viewed": 0,
+    "joined": 2,
+    "declined": 0,
+    "revoked": 0,
+    "expired": 0
+   },
+   "server_time": "2026-09-29T17:52:18.587Z"
+  }
+ }
+}

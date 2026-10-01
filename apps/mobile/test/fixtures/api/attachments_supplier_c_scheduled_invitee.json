@@ -1,0 +1,28 @@
+{
+ "status": 200,
+ "body": {
+  "data": [
+   {
+    "id": "01m3q4e6xqh851arvzyhbn71fn",
+    "kind": "invitation_document",
+    "title": "نطاق العمل المختصر",
+    "file": {
+     "id": "01m3q4e6xnb8chvk70brc324y3",
+     "name": "scope-summary.pdf",
+     "mime_type": "application/pdf",
+     "extension": "pdf",
+     "size_bytes": 218,
+     "download_path": "/api/app/v1/files/01m3q4e6xnb8chvk70brc324y3/download",
+     "created_at": "2026-09-29T17:47:12.000Z"
+    },
+    "url": null,
+    "is_addendum": false,
+    "sort_order": 1,
+    "created_at": "2026-09-29T17:47:12.000Z"
+   }
+  ],
+  "meta": {
+   "server_time": "2026-09-29T17:52:19.997Z"
+  }
+ }
+}

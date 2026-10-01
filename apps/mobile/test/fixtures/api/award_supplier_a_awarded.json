@@ -1,0 +1,12 @@
+{
+ "status": 200,
+ "body": {
+  "data": {
+   "outcome": "not_selected",
+   "winning_amount_minor": null
+  },
+  "meta": {
+   "server_time": "2026-09-29T17:52:19.800Z"
+  }
+ }
+}

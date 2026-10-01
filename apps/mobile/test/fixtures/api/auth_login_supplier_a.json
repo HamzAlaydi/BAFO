@@ -1,0 +1,116 @@
+{
+ "status": 200,
+ "body": {
+  "data": {
+   "user": {
+    "id": "01m3q4e5qjk56tqc5yfn2dh16x",
+    "name": "أحمد مورد أ",
+    "email": "supplier-a.owner@demo.bafo.test",
+    "phone": "+966500000021",
+    "locale": "ar",
+    "avatar_url": null,
+    "status": "active",
+    "email_verified_at": "2026-09-29T17:47:11.000Z",
+    "created_at": "2026-09-29T17:47:11.000Z"
+   },
+   "organization": {
+    "id": "01m3q4e5hv0x1wy43sgxkq0v5j",
+    "name": "Supplier A",
+    "legal_name_ar": "مورد أ التجريبي",
+    "legal_name_en": "Supplier A Co. Ltd.",
+    "cr_number": "1010000002",
+    "vat_registered": true,
+    "vat_number": "300000000000023",
+    "region": {
+     "id": "01m3q4e4dyry5ybwys962vpvsb",
+     "code": "MAK",
+     "name": "مكة المكرمة"
+    },
+    "city": "جدة",
+    "national_address": {
+     "building_number": "0082",
+     "street": "شارع التحلية",
+     "district": "حي الياسمين",
+     "postal_code": "19039",
+     "additional_number": "8430",
+     "short_address": "OLMY5354"
+    },
+    "website": null,
+    "email": "supplier-a.owner@demo.bafo.test",
+    "phone": "+966500000002",
+    "logo_url": null,
+    "profile_document": null,
+    "categories": [
+     {
+      "id": "01m3q4e4e6hpsddbmfwbr8tsed",
+      "code": "it_hardware",
+      "name": "أجهزة ومعدات تقنية",
+      "is_other": false,
+      "auction_allowed": true
+     },
+     {
+      "id": "01m3q4e4e6hpsddbmfwbr8tsee",
+      "code": "software_services",
+      "name": "برمجيات وخدمات تقنية",
+      "is_other": false,
+      "auction_allowed": true
+     }
+    ],
+    "visible_in_suggestions": true,
+    "status": "active",
+    "verified": true,
+    "features": {
+     "api_enabled": false,
+     "auction_enabled": false,
+     "sponsorship_enabled": false
+    },
+    "billing_profile_complete": true,
+    "billing_profile_missing": [],
+    "trial_available": false,
+    "created_at": "2026-09-29T17:47:11.000Z"
+   },
+   "membership": {
+    "id": "01m3q4e5qkkr782d3kq0dx4apn",
+    "role": "owner",
+    "can_award": true,
+    "can_purchase": true,
+    "status": "active"
+   },
+   "permissions": [
+    "organization.update",
+    "team.manage",
+    "billing.view",
+    "billing.purchase",
+    "competitions.create",
+    "competitions.manage_all",
+    "competitions.award",
+    "participation.submit_offers",
+    "integrations.manage",
+    "account.delete_organization"
+   ],
+   "subscription": {
+    "plan": {
+     "id": "01m3q4e4f1dxen0vw37c5jbmnf",
+     "code": "single",
+     "name": "باقة فردية"
+    },
+    "source": "paid",
+    "status": "active",
+    "ends_at": "2026-10-29T17:47:12.000Z",
+    "days_left": 30,
+    "total_days": 30
+   },
+   "entitlements": {
+    "can_issue": true,
+    "seats_used": 1,
+    "seats_total": 1
+   },
+   "unread_notifications_count": 32,
+   "token": "test-token-redacted",
+   "token_type": "Bearer"
+  },
+  "meta": {
+   "server_time": "2026-09-29T17:52:16.642Z"
+  }
+ }
+}

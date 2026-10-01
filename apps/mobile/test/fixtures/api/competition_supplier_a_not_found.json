@@ -1,0 +1,8 @@
+{
+ "status": 404,
+ "body": {
+  "message": "المورد المطلوب غير موجود.",
+  "code": "not_found",
+  "errors": {}
+ }
+}

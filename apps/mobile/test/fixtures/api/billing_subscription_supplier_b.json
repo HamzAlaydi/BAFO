@@ -1,0 +1,16 @@
+{
+ "status": 200,
+ "body": {
+  "data": {
+   "current": null,
+   "upcoming": null,
+   "history": [],
+   "trial_available": true,
+   "seats_used": 1,
+   "seats_total": 1
+  },
+  "meta": {
+   "server_time": "2026-09-29T17:52:20.094Z"
+  }
+ }
+}

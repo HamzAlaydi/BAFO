@@ -1,0 +1,11 @@
+{
+ "status": 202,
+ "body": {
+  "data": {
+   "otp_expires_at": null
+  },
+  "meta": {
+   "server_time": "2026-09-29T17:51:16.020Z"
+  }
+ }
+}

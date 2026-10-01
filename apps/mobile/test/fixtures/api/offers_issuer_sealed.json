@@ -1,0 +1,68 @@
+{
+ "status": 200,
+ "body": {
+  "data": [
+   {
+    "participant": {
+     "id": "01m3q4e78491db1w5vc7x9nw54",
+     "alias_no": 23,
+     "joined_at": "2026-09-29T17:47:13.000Z",
+     "organization": {
+      "id": "01m3q4e5x5xjb27j4p8pyx5pve",
+      "name": "Supplier C",
+      "logo_url": null,
+      "email": "supplier-c.owner@demo.bafo.test",
+      "phone": "+966500000004",
+      "cr_number": "1010000004"
+     },
+     "coverage": "own_plan"
+    },
+    "current_amount_minor": null,
+    "first_amount_minor": null,
+    "offers_count": 0,
+    "last_offer_at": null,
+    "rank": null,
+    "is_leader": null,
+    "change_ratio_bps": null,
+    "submitted": false,
+    "bafo": {
+     "shortlisted": false,
+     "submitted": false,
+     "reference_amount_minor": null
+    }
+   },
+   {
+    "participant": {
+     "id": "01m3q4e77vzvyqbnk6p7tf5de6",
+     "alias_no": 75,
+     "joined_at": "2026-09-29T17:47:13.000Z",
+     "organization": {
+      "id": "01m3q4e5hv0x1wy43sgxkq0v5j",
+      "name": "Supplier A",
+      "logo_url": null,
+      "email": "supplier-a.owner@demo.bafo.test",
+      "phone": "+966500000002",
+      "cr_number": "1010000002"
+     },
+     "coverage": "own_plan"
+    },
+    "current_amount_minor": null,
+    "first_amount_minor": null,
+    "offers_count": 1,
+    "last_offer_at": "2026-09-29T17:47:13.038Z",
+    "rank": null,
+    "is_leader": null,
+    "change_ratio_bps": null,
+    "submitted": true,
+    "bafo": {
+     "shortlisted": false,
+     "submitted": false,
+     "reference_amount_minor": null
+    }
+   }
+  ],
+  "meta": {
+   "server_time": "2026-09-29T17:52:18.848Z"
+  }
+ }
+}

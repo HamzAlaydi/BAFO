@@ -1,0 +1,33 @@
+{
+ "status": 200,
+ "body": {
+  "data": {
+   "current": {
+    "id": "01m3q4e6ef8psw9xzzpzg7dxvg",
+    "plan": {
+     "id": "01m3q4e4f2fg7wtwesnqq54d2s",
+     "code": "plus",
+     "name": "باقة بلس"
+    },
+    "source": "trial",
+    "interval": null,
+    "seats": 2,
+    "status": "active",
+    "starts_at": "2026-09-29T17:47:12.000Z",
+    "ends_at": "2026-10-29T17:47:12.000Z",
+    "days_left": 30,
+    "total_days": 30,
+    "amounts": null,
+    "created_at": "2026-09-29T17:47:12.000Z"
+   },
+   "upcoming": null,
+   "history": [],
+   "trial_available": false,
+   "seats_used": 1,
+   "seats_total": 2
+  },
+  "meta": {
+   "server_time": "2026-09-29T17:52:20.069Z"
+  }
+ }
+}

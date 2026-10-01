@@ -1,0 +1,16 @@
+{
+ "status": 200,
+ "body": {
+  "data": {
+   "code": "competition_rules",
+   "locale": "ar",
+   "version": "2026-10-01",
+   "title": "قواعد المنافسات",
+   "body_markdown": "Draft text – counsel to provide.\n\n# قواعد المنافسات\n\nنص مؤقت يُستبدل بالنص المعتمد من المستشار القانوني.\n",
+   "published_at": "2026-09-29T17:47:10.000Z"
+  },
+  "meta": {
+   "server_time": "2026-09-29T17:51:30.172Z"
+  }
+ }
+}

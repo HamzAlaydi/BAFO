@@ -1,0 +1,171 @@
+{
+ "status": 200,
+ "body": {
+  "data": {
+   "issuer": {
+    "active_competitions": 8,
+    "draft_competitions": 1,
+    "live_now": 5,
+    "awaiting_award": 1,
+    "offers_received_30d": 15
+   },
+   "participant": {
+    "pending_invitations": 0,
+    "active_participations": 0,
+    "offers_submitted_30d": 0,
+    "awards_won": 0
+   },
+   "team": {
+    "members": 3,
+    "seats_total": 3
+   },
+   "subscription": {
+    "plan": {
+     "id": "01m3q4e4f3mfmsbkssknnpn6cg",
+     "code": "pro",
+     "name": "باقة برو"
+    },
+    "status": "active",
+    "days_left": 30,
+    "total_days": 30,
+    "ends_at": "2026-10-29T17:47:12.000Z"
+   },
+   "alerts": [],
+   "activities": [
+    {
+     "id": "e449d6888cc510eee26a47fad4",
+     "action": "competition.published",
+     "occurred_at": "2026-09-29T17:47:13.462Z",
+     "actor": {
+      "name": "سارة المالكة"
+     },
+     "subject": {
+      "type": "competition",
+      "id": "01m3q4e7myd08bs5aeeywrp8ah",
+      "title": "خدمات النظافة للفروع (رسوم مغطّاة)"
+     }
+    },
+    {
+     "id": "a824fe29c80d336923ff64134f",
+     "action": "competition.created",
+     "occurred_at": "2026-09-29T17:47:13.439Z",
+     "actor": {
+      "name": "سارة المالكة"
+     },
+     "subject": {
+      "type": "competition",
+      "id": "01m3q4e7myd08bs5aeeywrp8ah",
+      "title": "خدمات النظافة للفروع (رسوم مغطّاة)"
+     }
+    },
+    {
+     "id": "2d283bc9d35790e377ea72ead6",
+     "action": "competition.cancelled",
+     "occurred_at": "2026-09-29T17:47:13.431Z",
+     "actor": {
+      "name": "سارة المالكة"
+     },
+     "subject": {
+      "type": "competition",
+      "id": "01m3q4e7kycnbff05zqtegmmc5",
+      "title": "خدمات تسويق وطباعة المواد الترويجية"
+     }
+    },
+    {
+     "id": "b518f61d94a4b071b68532463a",
+     "action": "competition.published",
+     "occurred_at": "2026-09-29T17:47:13.422Z",
+     "actor": {
+      "name": "سارة المالكة"
+     },
+     "subject": {
+      "type": "competition",
+      "id": "01m3q4e7kycnbff05zqtegmmc5",
+      "title": "خدمات تسويق وطباعة المواد الترويجية"
+     }
+    },
+    {
+     "id": "e34eb545b6cec4115674b953d8",
+     "action": "competition.created",
+     "occurred_at": "2026-09-29T17:47:13.407Z",
+     "actor": {
+      "name": "سارة المالكة"
+     },
+     "subject": {
+      "type": "competition",
+      "id": "01m3q4e7kycnbff05zqtegmmc5",
+      "title": "خدمات تسويق وطباعة المواد الترويجية"
+     }
+    },
+    {
+     "id": "9bc4d677eea49dfeb17178b750",
+     "action": "competition.closed",
+     "occurred_at": "2026-09-29T17:47:13.393Z",
+     "actor": {
+      "name": "system"
+     },
+     "subject": {
+      "type": "competition",
+      "id": "01m3q4e7hysr6j09xnvx6ak8b5",
+      "title": "بيع خردة حديد ومعادن"
+     }
+    },
+    {
+     "id": "8906d9e1ab3a990c121dc46f28",
+     "action": "competition.published",
+     "occurred_at": "2026-09-29T17:47:13.356Z",
+     "actor": {
+      "name": "سارة المالكة"
+     },
+     "subject": {
+      "type": "competition",
+      "id": "01m3q4e7hysr6j09xnvx6ak8b5",
+      "title": "بيع خردة حديد ومعادن"
+     }
+    },
+    {
+     "id": "c1c991b501f2fb1eb8b5316734",
+     "action": "competition.created",
+     "occurred_at": "2026-09-29T17:47:13.343Z",
+     "actor": {
+      "name": "سارة المالكة"
+     },
+     "subject": {
+      "type": "competition",
+      "id": "01m3q4e7hysr6j09xnvx6ak8b5",
+      "title": "بيع خردة حديد ومعادن"
+     }
+    },
+    {
+     "id": "e12743f637dc8e334d6d26bc0f",
+     "action": "award.issued",
+     "occurred_at": "2026-09-29T17:47:13.334Z",
+     "actor": {
+      "name": "سارة المالكة"
+     },
+     "subject": {
+      "type": "award",
+      "id": "01m3q4e7hkwwa1q73zbvj93nkb",
+      "title": "توريد أثاث مكتبي للمقر الرئيسي"
+     }
+    },
+    {
+     "id": "06a6d8c9cc4065a776a9eb4f86",
+     "action": "competition.closed",
+     "occurred_at": "2026-09-29T17:47:13.323Z",
+     "actor": {
+      "name": "system"
+     },
+     "subject": {
+      "type": "competition",
+      "id": "01m3q4e7f92zkv3d6bz13k7bgs",
+      "title": "توريد أثاث مكتبي للمقر الرئيسي"
+     }
+    }
+   ]
+  },
+  "meta": {
+   "server_time": "2026-09-29T17:52:17.723Z"
+  }
+ }
+}

@@ -1,0 +1,200 @@
+{
+ "status": 200,
+ "body": {
+  "data": {
+   "id": "01m3q4e7hysr6j09xnvx6ak8b5",
+   "reference_no": "BAFO-A-2026-000009",
+   "title": "بيع خردة حديد ومعادن",
+   "direction": "auction",
+   "format": "live",
+   "status": "not_awarded",
+   "phase": null,
+   "currency": "SAR",
+   "price_basis": "excl_vat",
+   "description": "نطاق العمل: توريد وتنفيذ وفق كراسة الشروط والمواصفات المرفقة، مع ضمان لمدة سنة من تاريخ الاستلام. الأسعار لا تشمل ضريبة القيمة المضافة.",
+   "category": {
+    "id": "01m3q4e4ee9khcdvhjj7awh7m4",
+    "code": "surplus_scrap",
+    "name": "فائض ومخلفات",
+    "is_other": false,
+    "auction_allowed": true
+   },
+   "category_other_text": null,
+   "region": {
+    "id": "01m3q4e4dxk4j1fh9rp64kd65j",
+    "code": "RIY",
+    "name": "الرياض"
+   },
+   "preset_code": "surplus_sale_auction",
+   "rules": {
+    "start_price_minor": 5000000,
+    "reserve_price_minor": null,
+    "min_step_minor": 50000,
+    "min_step_bps": null,
+    "amount_granularity_minor": 100,
+    "must_beat": "best",
+    "rank_visibility": "leading_flag",
+    "show_prices": true,
+    "auto_extend": {
+     "enabled": true,
+     "window_seconds": 120,
+     "by_seconds": 120,
+     "max_extensions": 20
+    },
+    "final_window_minutes": null,
+    "bafo_round": {
+     "enabled": false,
+     "duration_minutes": null
+    },
+    "min_participants": 2,
+    "result_publication": "outcome_and_amount"
+   },
+   "rules_summary": [
+    "مزايدة: العرض الأعلى سعرًا يتصدر.",
+    "منافسة مباشرة: تُقدَّم العروض وتُحدَّث حتى وقت الإغلاق.",
+    "سعر الافتتاح: 50,000.00 ر.س",
+    "يجب أن يتجاوز كل عرض جديد العرض المتصدر.",
+    "الحد الأدنى للتحسين: 500.00 ر.س",
+    "يرى كل متنافس ما إذا كان عرضه متصدرًا، ويظهر مبلغ العرض المتصدر.",
+    "العروض التي تغيّر العرض المتصدر في آخر 2 دقيقة تمدد الإغلاق 2 دقيقة، بحد أقصى 20 مرات (أقصى موعد إغلاق ممكن: 29 سبتمبر 2026، 9:27 م).",
+    "تُحتسب أوقات العروض عند استلامها في خادم بافو.",
+    "الأسعار لا تشمل ضريبة القيمة المضافة."
+   ],
+   "schedule": {
+    "bidding_opens_at": "2026-09-29T13:47:13.349Z",
+    "scheduled_close_at": "2026-09-29T17:47:12.386Z",
+    "effective_close_at": "2026-09-29T17:47:12.386Z",
+    "hard_stop_at": "2026-09-29T18:27:12.386Z",
+    "final_window_starts_at": null,
+    "invitation_cutoff_at": "2026-09-29T17:47:12.386Z",
+    "extension_count": 0,
+    "published_at": "2026-09-29T13:47:13.349Z",
+    "opened_at": "2026-09-29T13:47:13.349Z",
+    "closed_at": "2026-09-29T17:47:12.386Z",
+    "offers_opened_at": null,
+    "awarded_at": null,
+    "not_awarded_at": "2026-09-29T17:47:13.399Z",
+    "cancelled_at": null
+   },
+   "issuer": {
+    "id": "01m3q4e4vys8t1rn3kfnvf54cr",
+    "name": "Issuer Co",
+    "logo_url": null,
+    "verified": true
+   },
+   "counts": {
+    "invitations": 2,
+    "joined": 1,
+    "declined": 0,
+    "participants_with_offers": 1,
+    "offers": 1,
+    "comments": 0,
+    "attachments": 0
+   },
+   "leading_amount_minor": 5000000,
+   "sponsorship": null,
+   "bafo_round": null,
+   "award": null,
+   "cancellation": null,
+   "not_awarded": {
+    "reason": {
+     "id": "01m3q4e4emxw4rgf4705rangdb",
+     "code": "not_awarded_prices_above_budget",
+     "kind": "not_awarded",
+     "name": "الأسعار أعلى من الميزانية",
+     "requires_note": false
+    },
+    "note": "العرض الوحيد أقل من السعر المستهدف.",
+    "not_awarded_at": "2026-09-29T17:47:13.399Z"
+   },
+   "created_by": {
+    "type": "user",
+    "id": "01m3q4e56gqh65sag0th21ftkn",
+    "name": "سارة المالكة"
+   },
+   "source": "web",
+   "permissions": {
+    "can_edit": false,
+    "can_delete": false,
+    "can_publish": false,
+    "can_invite": false,
+    "can_extend": false,
+    "can_cancel": false,
+    "can_start_bafo": false,
+    "can_award": false,
+    "can_revoke_award": false,
+    "can_close_without_award": false,
+    "can_manage_sponsorship": false,
+    "can_comment": false,
+    "can_join": false,
+    "can_decline": false,
+    "can_submit_offer": false
+   },
+   "viewer_role": "issuer",
+   "live": {
+    "v": 5,
+    "competition_id": "01m3q4e7hysr6j09xnvx6ak8b5",
+    "direction": "auction",
+    "status": "not_awarded",
+    "phase": null,
+    "server_time": "2026-09-29T17:52:18.388Z",
+    "bidding_opens_at": "2026-09-29T13:47:13.349Z",
+    "effective_close_at": "2026-09-29T17:47:12.386Z",
+    "hard_stop_at": "2026-09-29T18:27:12.386Z",
+    "extension_count": 0,
+    "leader": {
+     "participant_id": "01m3q4e7jnxy81zveab5dn2hkd",
+     "alias_no": 99,
+     "organization": {
+      "id": "01m3q4e62g1ybjnjpk9mp7tmmv",
+      "name": "Buyer D"
+     },
+     "amount_minor": 5000000,
+     "accepted_at": "2026-09-29T17:47:13.377Z"
+    },
+    "reserve_met": null,
+    "ranking": [
+     {
+      "participant_id": "01m3q4e7jnxy81zveab5dn2hkd",
+      "alias_no": 99,
+      "organization": {
+       "id": "01m3q4e62g1ybjnjpk9mp7tmmv",
+       "name": "Buyer D",
+       "logo_url": null
+      },
+      "current_amount_minor": 5000000,
+      "first_amount_minor": 5000000,
+      "rank": 1,
+      "is_leader": true,
+      "offers_count": 1,
+      "last_offer_at": "2026-09-29T17:47:13.377Z",
+      "submitted": true,
+      "bafo": {
+       "shortlisted": false,
+       "submitted": false
+      }
+     }
+    ],
+    "metrics": {
+     "offers_count": 1,
+     "participants_joined": 1,
+     "participants_with_offers": 1,
+     "invitations_count": 2,
+     "improvement_vs_start_bps": 0
+    },
+    "online_participants_count": 0,
+    "bafo": null,
+    "last_change": {
+     "kind": "snapshot",
+     "reason": null
+    }
+   },
+   "server_time": "2026-09-29T17:52:18.390Z",
+   "created_at": "2026-09-29T17:47:13.342Z",
+   "updated_at": "2026-09-29T17:47:13.399Z"
+  },
+  "meta": {
+   "server_time": "2026-09-29T17:52:18.390Z"
+  }
+ }
+}

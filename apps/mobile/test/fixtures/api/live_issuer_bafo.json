@@ -1,0 +1,111 @@
+{
+ "status": 200,
+ "body": {
+  "data": {
+   "v": 8,
+   "competition_id": "01m3q4e7btzj85vknn9k5m2stt",
+   "direction": "tender",
+   "status": "bafo_round",
+   "phase": null,
+   "server_time": "2026-09-29T17:52:18.787Z",
+   "bidding_opens_at": "2026-09-29T13:47:13.155Z",
+   "effective_close_at": "2026-09-29T17:47:12.238Z",
+   "hard_stop_at": "2026-09-29T18:17:12.238Z",
+   "extension_count": 0,
+   "leader": {
+    "participant_id": "01m3q4e7db9aqrx16bammj8r86",
+    "alias_no": 98,
+    "organization": {
+     "id": "01m3q4e62g1ybjnjpk9mp7tmmv",
+     "name": "Buyer D"
+    },
+    "amount_minor": 23900000,
+    "accepted_at": "2026-09-29T17:47:13.231Z"
+   },
+   "reserve_met": false,
+   "ranking": [
+    {
+     "participant_id": "01m3q4e7db9aqrx16bammj8r86",
+     "alias_no": 98,
+     "organization": {
+      "id": "01m3q4e62g1ybjnjpk9mp7tmmv",
+      "name": "Buyer D",
+      "logo_url": null
+     },
+     "current_amount_minor": 23900000,
+     "first_amount_minor": 23900000,
+     "rank": 1,
+     "is_leader": true,
+     "offers_count": 1,
+     "last_offer_at": "2026-09-29T17:47:13.231Z",
+     "submitted": true,
+     "bafo": {
+      "shortlisted": true,
+      "submitted": false
+     }
+    },
+    {
+     "participant_id": "01m3q4e7d0zqd9swzx95esrk40",
+     "alias_no": 52,
+     "organization": {
+      "id": "01m3q4e5x5xjb27j4p8pyx5pve",
+      "name": "Supplier C",
+      "logo_url": null
+     },
+     "current_amount_minor": 24100000,
+     "first_amount_minor": 24100000,
+     "rank": 2,
+     "is_leader": false,
+     "offers_count": 1,
+     "last_offer_at": "2026-09-29T17:47:13.221Z",
+     "submitted": true,
+     "bafo": {
+      "shortlisted": true,
+      "submitted": false
+     }
+    },
+    {
+     "participant_id": "01m3q4e7cpt7peb53kk5h2128k",
+     "alias_no": 20,
+     "organization": {
+      "id": "01m3q4e5hv0x1wy43sgxkq0v5j",
+      "name": "Supplier A",
+      "logo_url": null
+     },
+     "current_amount_minor": 24600000,
+     "first_amount_minor": 24600000,
+     "rank": 3,
+     "is_leader": false,
+     "offers_count": 1,
+     "last_offer_at": "2026-09-29T17:47:13.208Z",
+     "submitted": true,
+     "bafo": {
+      "shortlisted": false,
+      "submitted": false
+     }
+    }
+   ],
+   "metrics": {
+    "offers_count": 3,
+    "participants_joined": 3,
+    "participants_with_offers": 3,
+    "invitations_count": 3,
+    "improvement_vs_start_bps": 440
+   },
+   "online_participants_count": 0,
+   "bafo": {
+    "status": "running",
+    "cutoff_at": "2026-09-29T19:47:13.249Z",
+    "shortlist_count": 2,
+    "submitted_count": 0
+   },
+   "last_change": {
+    "kind": "snapshot",
+    "reason": null
+   }
+  },
+  "meta": {
+   "server_time": "2026-09-29T17:52:18.790Z"
+  }
+ }
+}

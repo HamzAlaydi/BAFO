@@ -1,0 +1,50 @@
+{
+ "status": 200,
+ "body": {
+  "data": {
+   "v": 7,
+   "competition_id": "01m3q4e7f92zkv3d6bz13k7bgs",
+   "direction": "tender",
+   "status": "awarded",
+   "phase": null,
+   "server_time": "2026-09-29T17:52:19.724Z",
+   "bidding_opens_at": "2026-09-29T13:47:13.263Z",
+   "effective_close_at": "2026-09-29T17:47:12.316Z",
+   "hard_stop_at": "2026-09-29T18:17:12.316Z",
+   "extension_count": 0,
+   "accepting_offers": false,
+   "start_price_minor": 25000000,
+   "min_step": {
+    "minor": null,
+    "bps": 50
+   },
+   "amount_granularity_minor": 100,
+   "my_offer": {
+    "id": "01m3q4e7gy67zr2y64z48n0ef2",
+    "seq": 2,
+    "amount_minor": 21800000,
+    "stage": "initial",
+    "accepted_at": "2026-09-29T17:47:13.308Z"
+   },
+   "my_offers_count": 1,
+   "is_leading": true,
+   "rank": null,
+   "ranked_count": null,
+   "leading_amount_minor": null,
+   "ladder": null,
+   "required_next_amount_minor": null,
+   "bafo": null,
+   "result": {
+    "outcome": "won",
+    "winning_amount_minor": null
+   },
+   "last_change": {
+    "kind": "snapshot",
+    "reason": null
+   }
+  },
+  "meta": {
+   "server_time": "2026-09-29T17:52:19.724Z"
+  }
+ }
+}

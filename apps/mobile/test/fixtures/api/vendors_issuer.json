@@ -1,0 +1,145 @@
+{
+ "status": 200,
+ "body": {
+  "data": [
+   {
+    "id": "01m3q4e6wn5ndt1k8m0mrqxdqd",
+    "name": "مؤسسة الأفق للتوريدات",
+    "name_en": "Al Ofoq Supplies",
+    "cr_number": null,
+    "vat_number": null,
+    "email": "sales@ofoq.demo.bafo.test",
+    "contact_name": null,
+    "phone": null,
+    "region": null,
+    "city": "الرياض",
+    "categories": [],
+    "status": "active",
+    "linked_organization": null,
+    "source": "import",
+    "notes": null,
+    "external_refs": [
+     {
+      "system": "sap_s4",
+      "type": "supplier",
+      "id": "100048",
+      "number": null,
+      "url": null
+     }
+    ],
+    "created_at": "2026-09-29T17:47:12.000Z",
+    "updated_at": "2026-09-29T17:47:12.000Z"
+   },
+   {
+    "id": "01m3q4e6wag0dgtp97dh3ppyg8",
+    "name": "مورد أ التجريبي",
+    "name_en": "Supplier A",
+    "cr_number": "1010000002",
+    "vat_number": null,
+    "email": "supplier-a.owner@demo.bafo.test",
+    "contact_name": null,
+    "phone": null,
+    "region": null,
+    "city": "جدة",
+    "categories": [],
+    "status": "active",
+    "linked_organization": {
+     "id": "01m3q4e5hv0x1wy43sgxkq0v5j",
+     "name": "Supplier A",
+     "logo_url": null,
+     "verified": true
+    },
+    "source": "web",
+    "notes": null,
+    "external_refs": [
+     {
+      "system": "sap_s4",
+      "type": "supplier",
+      "id": "100045",
+      "number": null,
+      "url": null
+     }
+    ],
+    "created_at": "2026-09-29T17:47:12.000Z",
+    "updated_at": "2026-09-29T17:47:12.000Z"
+   },
+   {
+    "id": "01m3q4e6wf6by65205gmsp2mkv",
+    "name": "مورد ب التجريبي",
+    "name_en": "Supplier B",
+    "cr_number": "1010000003",
+    "vat_number": null,
+    "email": "supplier-b.owner@demo.bafo.test",
+    "contact_name": null,
+    "phone": null,
+    "region": null,
+    "city": "الدمام",
+    "categories": [],
+    "status": "active",
+    "linked_organization": {
+     "id": "01m3q4e5qneqhzenf9gda1c18t",
+     "name": "Supplier B",
+     "logo_url": null,
+     "verified": true
+    },
+    "source": "web",
+    "notes": null,
+    "external_refs": [
+     {
+      "system": "sap_s4",
+      "type": "supplier",
+      "id": "100046",
+      "number": null,
+      "url": null
+     }
+    ],
+    "created_at": "2026-09-29T17:47:12.000Z",
+    "updated_at": "2026-09-29T17:47:12.000Z"
+   },
+   {
+    "id": "01m3q4e6wjkptvhdeeecmvgewx",
+    "name": "مورد ج التجريبي",
+    "name_en": "Supplier C",
+    "cr_number": "1010000004",
+    "vat_number": null,
+    "email": "supplier-c.owner@demo.bafo.test",
+    "contact_name": null,
+    "phone": null,
+    "region": null,
+    "city": "مكة المكرمة",
+    "categories": [],
+    "status": "active",
+    "linked_organization": {
+     "id": "01m3q4e5x5xjb27j4p8pyx5pve",
+     "name": "Supplier C",
+     "logo_url": null,
+     "verified": true
+    },
+    "source": "web",
+    "notes": null,
+    "external_refs": [
+     {
+      "system": "sap_s4",
+      "type": "supplier",
+      "id": "100047",
+      "number": null,
+      "url": null
+     }
+    ],
+    "created_at": "2026-09-29T17:47:12.000Z",
+    "updated_at": "2026-09-29T17:47:12.000Z"
+   }
+  ],
+  "meta": {
+   "pagination": {
+    "type": "page",
+    "current_page": 1,
+    "per_page": 20,
+    "has_more": false,
+    "total": 4,
+    "last_page": 1
+   },
+   "server_time": "2026-09-29T17:52:18.985Z"
+  }
+ }
+}

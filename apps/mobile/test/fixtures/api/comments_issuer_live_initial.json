@@ -1,0 +1,54 @@
+{
+ "status": 200,
+ "body": {
+  "data": [
+   {
+    "id": "01m3q4e71g19aaan56x7nejtp4",
+    "parent_id": null,
+    "body": "هل يمكن تقديم بدائل للأصناف غير المتوفرة؟",
+    "author": {
+     "kind": "participant",
+     "alias_no": 2,
+     "organization_name": "Supplier C"
+    },
+    "created_at": "2026-09-29T17:47:12.000Z",
+    "replies": []
+   },
+   {
+    "id": "01m3q4e719cpcycyhp6nn05mr7",
+    "parent_id": null,
+    "body": "هل تشمل الأسعار التوصيل إلى الفروع؟",
+    "author": {
+     "kind": "participant",
+     "alias_no": 69,
+     "organization_name": "Supplier A"
+    },
+    "created_at": "2026-09-29T17:47:12.000Z",
+    "replies": [
+     {
+      "id": "01m3q4e71d74smpwb7gvkny752",
+      "parent_id": "01m3q4e719cpcycyhp6nn05mr7",
+      "body": "نعم، تشمل الأسعار التوصيل إلى جميع الفروع داخل الرياض.",
+      "author": {
+       "kind": "issuer",
+       "organization_name": "Issuer Co"
+      },
+      "created_at": "2026-09-29T17:47:12.000Z",
+      "replies": []
+     }
+    ]
+   }
+  ],
+  "meta": {
+   "pagination": {
+    "type": "page",
+    "current_page": 1,
+    "per_page": 20,
+    "has_more": false,
+    "total": 2,
+    "last_page": 1
+   },
+   "server_time": "2026-09-29T17:52:18.525Z"
+  }
+ }
+}

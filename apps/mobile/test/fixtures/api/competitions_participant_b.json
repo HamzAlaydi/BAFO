@@ -1,0 +1,67 @@
+{
+ "status": 200,
+ "body": {
+  "data": [
+   {
+    "id": "01m3q4e7myd08bs5aeeywrp8ah",
+    "reference_no": "BAFO-T-2026-000011",
+    "title": "خدمات النظافة للفروع (رسوم مغطّاة)",
+    "direction": "tender",
+    "format": "live",
+    "status": "live",
+    "phase": "initial",
+    "category": {
+     "id": "01m3q4e4eac63az0kartfdkmjc",
+     "code": "office_supplies",
+     "name": "مستلزمات مكتبية",
+     "is_other": false,
+     "auction_allowed": true
+    },
+    "region": {
+     "id": "01m3q4e4dxk4j1fh9rp64kd65j",
+     "code": "RIY",
+     "name": "الرياض"
+    },
+    "issuer": {
+     "id": "01m3q4e4vys8t1rn3kfnvf54cr",
+     "name": "Issuer Co",
+     "logo_url": null,
+     "verified": true
+    },
+    "schedule": {
+     "bidding_opens_at": "2026-09-29T14:47:13.453Z",
+     "effective_close_at": "2026-10-03T17:00:00.000Z",
+     "invitation_cutoff_at": "2026-10-03T16:00:00.000Z"
+    },
+    "invitation": {
+     "id": "01m3q4e7n5x9x4mtaf1wy5c98r",
+     "status": "joined",
+     "join_deadline": "2026-10-03T16:00:00.000Z"
+    },
+    "access": {
+     "state": "full",
+     "coverage": "sponsored",
+     "sponsor_name": "Issuer Co",
+     "join_deadline": "2026-10-03T16:00:00.000Z"
+    },
+    "my_offer_amount_minor": null,
+    "is_leading": null,
+    "result": {
+     "outcome": null
+    },
+    "updated_at": "2026-09-29T17:47:13.490Z"
+   }
+  ],
+  "meta": {
+   "pagination": {
+    "type": "page",
+    "current_page": 1,
+    "per_page": 50,
+    "has_more": false,
+    "total": 1,
+    "last_page": 1
+   },
+   "server_time": "2026-09-29T17:52:17.954Z"
+  }
+ }
+}

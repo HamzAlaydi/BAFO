@@ -1,0 +1,3312 @@
+{
+  "common": {
+    "app": {
+      "name": "BAFO",
+      "tagline": "Best and Final Offer",
+      "description": "BAFO is a Saudi platform for business competitions: tenders and auctions with published rules and a server-authoritative clock.",
+      "skip_to_content": "Skip to content"
+    },
+    "brand": {
+      "tagline": {
+        "template": "{best} and Final {offer}",
+        "best": "Best",
+        "offer": "Offer"
+      }
+    },
+    "actions": {
+      "back": "Back",
+      "cancel": "Cancel",
+      "clear_search": "Clear search",
+      "close": "Close",
+      "continue": "Continue",
+      "copied": "Copied",
+      "copy": "Copy",
+      "discard": "Discard changes",
+      "dismiss": "Dismiss",
+      "download": "Download",
+      "retry": "Try again",
+      "save": "Save",
+      "save_changes": "Save changes"
+    },
+    "loading": "Loading",
+    "required": "required",
+    "optional": "Optional",
+    "yes": "Yes",
+    "no": "No",
+    "select_placeholder": "Select",
+    "lookups_failed": "The list could not be loaded. Reload the page.",
+    "retry_in": "Try again in {seconds} s",
+    "unsaved_changes": "You have unsaved changes",
+    "unsaved_confirm": "You have unsaved changes. Leave this page without saving them?",
+    "character_count": "{count} of {max} characters",
+    "prices_exclude_vat": "Prices exclude VAT",
+    "languages": {
+      "ar": "العربية",
+      "en": "English"
+    },
+    "lang": {
+      "switch_to": "Switch to {language}"
+    },
+    "theme": {
+      "label": "Appearance",
+      "system": "System",
+      "light": "Light",
+      "dark": "Dark"
+    },
+    "time": {
+      "riyadh_suffix": "Riyadh time"
+    },
+    "datetime": {
+      "hint": "Time is in Riyadh time"
+    },
+    "money": {
+      "invalid": "Enter a valid amount with at most two decimals",
+      "min": "Minimum {amount}",
+      "max": "Maximum {amount}",
+      "vat_breakdown": "VAT 15%: {vat} · Total incl. VAT: {total}"
+    },
+    "file_drop": {
+      "limits": "Maximum file size {size} MB",
+      "prompt": "Drag and drop files here, or",
+      "browse": "choose from your device",
+      "selected": "Selected files",
+      "remove": "Remove {name}",
+      "units": {
+        "b": "{value} B",
+        "kb": "{value} KB",
+        "mb": "{value} MB",
+        "gb": "{value} GB"
+      },
+      "rejected": {
+        "type": "The file type of {name} is not allowed",
+        "size": "{name} is larger than {size} MB",
+        "count": "You can attach up to {max} files"
+      }
+    },
+    "table": {
+      "empty_title": "No data"
+    },
+    "pagination": {
+      "label": "Pagination",
+      "previous": "Previous page",
+      "next": "Next page",
+      "status": "Page {page} of {total}",
+      "page": "Page {page}"
+    },
+    "countdown": {
+      "days": "{count} days | {count} day | {count} days",
+      "ended": "Time is up",
+      "threshold": "Time is up | 1 minute left | {count} minutes left"
+    },
+    "relative": {
+      "now": "Just now",
+      "minutes": "{count} minutes ago | 1 minute ago | {count} minutes ago",
+      "hours": "{count} hours ago | 1 hour ago | {count} hours ago",
+      "days": "{count} days ago | 1 day ago | {count} days ago"
+    },
+    "stepper": {
+      "label": "Progress",
+      "progress": "Step {current} of {total}:",
+      "completed": "completed"
+    },
+    "combobox": {
+      "selected": "Selected items ({count})",
+      "remove": "Remove {label}",
+      "no_results": "No matching results",
+      "count": "{count} of {max}"
+    },
+    "password": {
+      "show": "Show password",
+      "hide": "Hide password",
+      "checklist_label": "Password requirements",
+      "rule_met": "(met)",
+      "rule_not_met": "(not met)",
+      "rules": {
+        "length": "At least {min} characters",
+        "lowercase": "A lowercase letter (a–z)",
+        "uppercase": "An uppercase letter (A–Z)",
+        "digit": "A digit",
+        "symbol": "A symbol such as {'@'} or #"
+      }
+    },
+    "secret": {
+      "once": "Copy this value now and store it somewhere safe. It will not be shown again.",
+      "copy": "Copy {label}",
+      "acknowledge": "I have stored the value safely"
+    },
+    "states": {
+      "error": {
+        "title": "Something went wrong"
+      },
+      "forbidden": {
+        "title": "No access"
+      },
+      "not_found": {
+        "title": "Not found"
+      },
+      "back_to_overview": "Back to overview",
+      "stale_data": "The data could not be refreshed. You are seeing the last loaded version."
+    },
+    "account_gate": {
+      "account_inactive": {
+        "title": "Account inactive"
+      },
+      "organization_suspended": {
+        "title": "Organisation suspended"
+      }
+    },
+    "support": {
+      "title": "Contact BAFO support",
+      "whatsapp": "WhatsApp"
+    },
+    "maintenance": {
+      "title": "BAFO is under maintenance",
+      "auto_retry": "We check again automatically every minute."
+    },
+    "connection": {
+      "connecting": "Connecting",
+      "connected": "Live",
+      "grace": "Live",
+      "reconnecting": "Reconnecting…",
+      "polling": "Updates delayed",
+      "offline": "Offline"
+    },
+    "footer": {
+      "copyright": "© {year} BAFO. All rights reserved.",
+      "legal_links": "Legal documents"
+    }
+  },
+  "nav": {
+    "main": "Main menu",
+    "open_menu": "Open menu",
+    "dashboard": "Dashboard",
+    "login": "Sign in",
+    "register": "Create account",
+    "overview": "Overview",
+    "my_competitions": "My competitions",
+    "participating": "Participating",
+    "vendors": "Vendors",
+    "team": "Team",
+    "organization": "Organisation",
+    "organization_link": "Organisation page: {name}",
+    "billing": "Subscription and billing",
+    "integrations": "Integrations",
+    "account": "My account",
+    "sign_out": "Sign out",
+    "user_menu": "Account menu",
+    "groups": {
+      "competitions": "Competitions",
+      "organization": "Organisation"
+    },
+    "create_competition": "Create competition",
+    "create_competition_requires_plan": "An active plan is required to issue competitions.",
+    "view_plans": "View plans"
+  },
+  "glossary": {
+    "competition": "Competition",
+    "competitions": "Competitions",
+    "tender": "Tender",
+    "auction": "Auction",
+    "issuer": "Issuer",
+    "participant": "Participant",
+    "participants": "Participants",
+    "offer": "Offer",
+    "leading_offer": "Leading offer",
+    "award": "Award",
+    "fees_covered": "Fees covered",
+    "sponsored_pass": "Sponsored participation pass",
+    "category": "Category",
+    "competition_type": "Type",
+    "bafo_round": "Best-and-final-offer round",
+    "evaluation": "Evaluation"
+  },
+  "validation": {
+    "required": "This field is required",
+    "email": "Enter a valid e-mail address",
+    "cr_number": "The commercial registration number has 10 digits",
+    "vat_number": "The VAT number has 15 digits and starts and ends with 3",
+    "mobile": "Enter a valid Saudi mobile number starting with 5",
+    "password": "Use at least 8 characters with an uppercase and a lowercase letter, a digit and a symbol",
+    "password_confirmation": "The passwords do not match",
+    "accept_terms": "You must accept the terms and conditions to continue",
+    "accept_privacy": "You must accept the privacy policy to continue",
+    "otp": "Enter the 6-digit code",
+    "url_https": "Enter a valid link starting with https://",
+    "max_length": "At most {max} characters",
+    "categories_max": "Choose at most {max} categories",
+    "building_number": "The building number has 4 digits",
+    "postal_code": "The postal code has 5 digits",
+    "additional_number": "The additional number has 4 digits",
+    "short_address": "The short address is 4 Latin letters followed by 4 digits, such as RRRD2929"
+  },
+  "errors": {
+    "network": "We could not reach the server. Check your connection and try again.",
+    "offline": "You are offline.",
+    "unknown": "Something went wrong. Please try again.",
+    "seat_limit_reached_detail": "All seats of your plan are in use ({used} of {total}).",
+    "page": {
+      "not_found_title": "Page not found",
+      "not_found_body": "The page may have moved, or the link is incorrect.",
+      "server_title": "Something went wrong",
+      "server_body": "This page cannot be shown right now. Please try again shortly.",
+      "back_home": "Back to home"
+    },
+    "bad_request": "The request is not valid.",
+    "unauthenticated": "Your session has ended. Please sign in again.",
+    "forbidden": "You do not have permission for this page. Contact your account owner.",
+    "not_found": "This item does not exist or you do not have access to it.",
+    "method_not_allowed": "This action is not supported.",
+    "not_acceptable": "The response cannot be provided in the requested format.",
+    "conflict": "The request conflicts with the current state. Refresh and try again.",
+    "gone": "This item is no longer available.",
+    "payload_too_large": "The request is larger than allowed.",
+    "unsupported_media_type": "This content type is not supported.",
+    "session_expired": "Your session has expired. Please sign in again.",
+    "validation_failed": "Check the highlighted fields and correct the data.",
+    "app_version_unsupported": "Please update the app to continue.",
+    "too_many_requests": "Too many attempts. Please try again later.",
+    "server_error": "A server error occurred. Please try again shortly.",
+    "service_unavailable": "The service is temporarily unavailable. Please try again shortly.",
+    "maintenance": "BAFO is under maintenance and will be back shortly.",
+    "http_error": "The request could not be completed.",
+    "idempotency_key_required": "The request could not be sent. Please try again.",
+    "idempotency_key_reused": "The request could not be verified. Please confirm again.",
+    "idempotency_request_in_progress": "Your previous request is still being processed. Please wait.",
+    "invalid_state_transition": "This action is not allowed in the current state.",
+    "file_type_not_allowed": "This file type is not allowed.",
+    "file_too_large": "The file is larger than allowed.",
+    "invalid_credentials": "The e-mail or password is incorrect.",
+    "email_not_verified": "Your e-mail is not verified yet. We sent you a verification code.",
+    "account_inactive": "Your account is not active in this organisation. Contact your account owner or BAFO support.",
+    "organization_suspended": "Your organisation is suspended. Please contact BAFO support.",
+    "otp_invalid": "The code is incorrect.",
+    "otp_expired": "The code has expired. Request a new one.",
+    "otp_too_many_attempts": "The code was cancelled after too many attempts. Request a new one.",
+    "otp_resend_cooldown": "Please wait before requesting a new code.",
+    "password_incorrect": "The current password is incorrect.",
+    "team_invitation_invalid": "This invitation link is invalid or has expired. Ask your account administrator to resend it.",
+    "seat_limit_reached": "All seats of your plan are in use.",
+    "cannot_modify_owner": "The account owner cannot be changed or removed.",
+    "cannot_modify_self": "You cannot change or remove your own account here.",
+    "account_deletion_blocked": "The account cannot be deleted until the ongoing competitions end.",
+    "account_deletion_pending": "A deletion request is already pending for this account.",
+    "invitation_email_mismatch": "You must register with the invited e-mail address.",
+    "competition_not_editable": "These details cannot be changed in the competition’s current status.",
+    "issuer_plan_required": "An active plan is required to issue competitions.",
+    "auction_not_enabled": "Auctions are not enabled for your organisation. Contact BAFO.",
+    "min_participants_not_met": "There are fewer invitations than the required minimum.",
+    "max_participants_exceeded": "The number of invitations exceeds the allowed maximum.",
+    "live_event_capacity_reached": "The number of concurrent live events has reached its limit for this period. Choose another time.",
+    "extend_invalid": "The new closing time is not allowed.",
+    "invitation_cutoff_passed": "The invitation deadline for this competition has passed.",
+    "invitation_invalid": "This invitation link is invalid or has expired.",
+    "invitation_belongs_to_another_organization": "This invitation belongs to another organisation.",
+    "join_deadline_passed": "The deadline to join this competition has passed.",
+    "already_participating": "Your organisation already takes part in this competition through another invitation.",
+    "terms_not_accepted": "You must accept the competition terms.",
+    "not_a_participant": "This page is available to joined participants only.",
+    "comments_closed": "Questions are closed.",
+    "report_not_available": "The report is not available before the competition closes.",
+    "results_not_available": "Results are not available before the close.",
+    "offer_amount_invalid": "Enter a valid amount greater than zero.",
+    "offer_amount_too_large": "The amount exceeds the allowed maximum.",
+    "offer_granularity": "The amount does not match the competition’s amount precision.",
+    "offer_not_accepting": "The competition is not accepting offers now.",
+    "offer_closed": "Offers are closed.",
+    "offer_not_shortlisted": "The best-and-final-offer round is limited to the shortlist.",
+    "offer_bafo_already_submitted": "You have already submitted your final offer.",
+    "offer_start_price": "The offer does not meet the starting price.",
+    "offer_step_not_met": "The offer does not meet the minimum improvement.",
+    "offer_bafo_worse_than_reference": "Your final offer cannot be worse than your last offer.",
+    "offer_outlier_confirm_required": "This offer differs a lot from your current offer. Please confirm the amount.",
+    "bafo_not_enabled": "The best-and-final-offer round is not enabled for this competition.",
+    "bafo_already_used": "The best-and-final-offer round has already taken place.",
+    "bafo_shortlist_invalid": "The shortlist includes participants without offers.",
+    "award_participant_has_no_offer": "You cannot award a participant without a current offer.",
+    "award_justification_required": "Enter the award justification.",
+    "award_reserve_confirmation_required": "Confirm the award although the target or reserve price is not met.",
+    "award_not_active": "The award was revoked.",
+    "plan_required": "You need an active plan to join this competition.",
+    "purchase_not_available_on_platform": "Purchases are available in the BAFO web dashboard.",
+    "billing_profile_incomplete": "Complete your billing details before paying.",
+    "return_url_not_allowed": "The payment could not be started. Please contact BAFO support.",
+    "plan_not_available": "This plan is not available.",
+    "seats_out_of_range": "The number of seats is outside the allowed range.",
+    "subscription_downgrade_not_allowed": "You cannot move to a lower plan during the current subscription.",
+    "subscription_renewal_too_early": "Renewal is not available yet.",
+    "trial_not_available": "The trial is not available for your organisation.",
+    "coupon_invalid": "The coupon code is not valid.",
+    "coupon_expired": "The coupon code has expired.",
+    "coupon_not_applicable": "The coupon code does not apply to this purchase.",
+    "coupon_exhausted": "The coupon code is used up or in use by another payment.",
+    "invoice_pdf_not_ready": "The invoice is being issued.",
+    "sponsorship_not_enabled": "Covering participation fees is not enabled for your organisation.",
+    "sponsorship_locked": "The fee coverage settings cannot be changed after funding.",
+    "sponsorship_payment_required": "Sponsored participation passes must be bought first.",
+    "sponsorship_already_funded": "The passes are already funded. No further payment is needed.",
+    "invalid_webhook": "The payment gateway notification is not valid.",
+    "gateway_error": "The payment gateway could not be reached. Please try again.",
+    "gateway_not_configured": "Payments are not available right now.",
+    "invalid_token": "The access token is invalid or has expired.",
+    "invalid_client": "The client credentials could not be verified.",
+    "unsupported_grant_type": "This grant type is not supported.",
+    "invalid_scope": "The requested scopes are not available to this client.",
+    "insufficient_scope": "The access token is missing a required scope.",
+    "api_access_disabled": "The API is not enabled for your organisation. Contact BAFO to enable it.",
+    "external_ref_conflict": "This external reference is already used by another record.",
+    "vendor_email_taken": "A vendor with this e-mail already exists.",
+    "webhook_url_invalid": "The URL must use https and point to a public address."
+  },
+  "auth": {
+    "session_expired": "Your session has expired. Please sign in again.",
+    "login": {
+      "title": "Sign in",
+      "subtitle": "Enter your account details to continue to the dashboard.",
+      "submit": "Sign in",
+      "forgot_link": "Forgot your password?",
+      "no_account": "No account yet?",
+      "register_link": "Create your company account",
+      "back_to_sign_in": "Back to sign in",
+      "pending_invitation": "Sign in to join the competition you were invited to."
+    },
+    "register": {
+      "title": "Create a company account",
+      "subtitle": "Register your company with its commercial registration and create the owner account. The account is free; a plan is needed only to issue competitions.",
+      "sections": {
+        "contact": {
+          "title": "Account owner"
+        },
+        "company": {
+          "title": "Company details"
+        },
+        "address": {
+          "title": "Address and activity",
+          "description": "Optional now, required before your first payment."
+        },
+        "consent": {
+          "title": "Consent"
+        }
+      },
+      "accept_terms": "I accept the terms and conditions",
+      "accept_privacy": "I accept the privacy policy",
+      "read_documents": "Read the documents:",
+      "submit": "Create account",
+      "have_account": "Already have an account?",
+      "login_link": "Sign in",
+      "sign_in_instead": "Already registered? Sign in instead",
+      "invitation_hint": "Register with the e-mail address that received the invitation.",
+      "invitation_hint_masked": "Register with the e-mail address that received the invitation: {email}",
+      "invitation_email_mismatch": "You must register with the invited e-mail {email}.",
+      "invitation_dropped": "The invitation link is invalid or has expired, so your account will be created without it. Submit the form again."
+    },
+    "verify": {
+      "title": "Verify your e-mail",
+      "subtitle": "We sent a 6-digit code to",
+      "enter_email": "Enter your e-mail and we will send you a verification code.",
+      "send_code": "Send code",
+      "submit": "Verify",
+      "expires_in": "The code expires in",
+      "expired": "The code has expired",
+      "no_code": "Did not receive the code?",
+      "resend": "Resend code",
+      "resend_in": "Resend in {seconds} s",
+      "resent": "We sent a new code."
+    },
+    "forgot": {
+      "title": "Reset your password",
+      "subtitle": "Enter your e-mail and we will send you a code to set a new password.",
+      "submit": "Send code"
+    },
+    "reset": {
+      "title": "Set a new password",
+      "subtitle": "Enter the code sent to",
+      "sent_notice": "If this e-mail is registered, you will receive a message with a verification code.",
+      "missing_email": "Start from the password reset page to enter your e-mail.",
+      "checking": "Checking the code…",
+      "code_valid": "The code is valid",
+      "submit": "Set password",
+      "done": "Your password was changed. Please sign in."
+    },
+    "accept_invite": {
+      "title": "Join your organisation’s team",
+      "subtitle": "Welcome, {name}. Set a password to activate your account.",
+      "invited_to": "Invitation to join",
+      "expires": "The invitation expires on",
+      "invalid_title": "Invalid invitation link",
+      "accept_terms": "I accept the terms and conditions and the privacy policy",
+      "submit": "Activate account",
+      "signed_in_title": "You are signed in with another account",
+      "signed_in_body": "Sign out to accept the invitation with this new account.",
+      "sign_out_continue": "Sign out and continue"
+    },
+    "fields": {
+      "email": "E-mail",
+      "password": "Password",
+      "new_password": "New password",
+      "password_confirmation": "Confirm password",
+      "name": "Full name",
+      "phone": "Mobile number",
+      "phone_hint": "9 digits starting with 5, such as 501234567",
+      "locale": "Preferred language",
+      "locale_hint": "The language of e-mails and notifications.",
+      "otp": "Verification code",
+      "otp_hint": "6 digits"
+    },
+    "aside": {
+      "body": "The business competition platform: tenders and auctions with published rules, from publishing to award.",
+      "points": {
+        "clock": "The server clock decides whether each offer is accepted",
+        "privacy": "Participants’ identities and prices are protected by each competition’s settings",
+        "security": "A complete log of every offer and action"
+      }
+    }
+  },
+  "home": {
+    "greeting": "Welcome, {name}",
+    "subtitle": "A summary of your organisation’s competition activity.",
+    "sections": {
+      "issuer": "As issuer",
+      "participant": "As participant"
+    },
+    "stats": {
+      "issuer": {
+        "active_competitions": "Active competitions",
+        "draft_competitions": "Drafts",
+        "live_now": "Open for offers now",
+        "awaiting_award": "Awaiting award",
+        "offers_received_30d": "Offers received in 30 days"
+      },
+      "participant": {
+        "pending_invitations": "Pending invitations",
+        "active_participations": "Active participations",
+        "offers_submitted_30d": "Offers submitted in 30 days",
+        "awards_won": "Awards won"
+      }
+    },
+    "quick_actions": {
+      "view_invitations": "View invitations"
+    },
+    "subscription": {
+      "title": "Subscription",
+      "none": "No active plan. You can still take part in competitions whose fees are covered.",
+      "days_left": "No days left | {count} day left | {count} days left",
+      "days_left_label": "Days left in the subscription",
+      "ends_at": "Ends on",
+      "manage": "Manage subscription",
+      "status": {
+        "pending_payment": "Pending payment",
+        "active": "Active",
+        "superseded": "Superseded",
+        "expired": "Expired",
+        "cancelled": "Cancelled"
+      }
+    },
+    "team": {
+      "title": "Team seats",
+      "seats": "{used} of {total} seats used",
+      "manage": "Manage team"
+    },
+    "activity": {
+      "title": "Recent activity",
+      "empty": {
+        "title": "No activity yet",
+        "body": "Your organisation’s competition and team activity appears here."
+      },
+      "someone": "A team member",
+      "competition_created": "{actor} created the draft “{title}”.",
+      "competition_published": "{actor} published “{title}”.",
+      "competition_cancelled": "{actor} cancelled “{title}”.",
+      "competition_closed": "Offers closed for “{title}”.",
+      "award_issued": "{actor} awarded “{title}”.",
+      "invitation_joined": "A participant joined “{title}”.",
+      "member_added": "{actor} added a team member.",
+      "subscription_activated": "The organisation’s subscription was activated.",
+      "other": "An update by {actor}."
+    },
+    "alerts": {
+      "subscription_expiring": "Your subscription ends today | Your subscription ends in {days_left} day | Your subscription ends in {days_left} days",
+      "subscription_expired": "Your subscription has ended",
+      "plan_required": "No active plan. You can still take part in competitions whose fees are covered.",
+      "trial_available": "Try BAFO free for 30 days",
+      "billing_profile_incomplete": "Complete your billing details before your first payment",
+      "trial_started": "Your trial has started.",
+      "actions": {
+        "renew": "Renew",
+        "view_plans": "View plans",
+        "start_trial": "Start trial",
+        "complete_profile": "Complete"
+      }
+    }
+  },
+  "competitions": {
+    "status": {
+      "draft": "Draft",
+      "scheduled": "Scheduled",
+      "live": "Open for offers",
+      "final_window": "Final pricing window",
+      "live_sealed": "Open · sealed offers",
+      "closed": "Evaluation",
+      "bafo_round": "BAFO round",
+      "awarded": "Awarded",
+      "not_awarded": "Closed without award",
+      "cancelled": "Cancelled",
+      "closing_soon": "Closing soon",
+      "extended": "Extended"
+    },
+    "direction": {
+      "tender": "Tender",
+      "auction": "Auction",
+      "rule": {
+        "tender": "Lowest offer wins",
+        "auction": "Highest offer wins"
+      }
+    },
+    "format": {
+      "live": "Live",
+      "sealed": "Sealed"
+    },
+    "participating": {
+      "title": "Participating",
+      "subtitle": "Competitions your organisation is invited to or takes part in.",
+      "tabs": {
+        "label": "Status",
+        "active": "Active",
+        "ended": "Ended",
+        "all": "All"
+      },
+      "direction_filter": {
+        "label": "Type",
+        "all": "All"
+      },
+      "search": "Search competition titles",
+      "needs_action": "Awaiting your decision ({count})",
+      "others": "Other competitions",
+      "list_label": "Competitions",
+      "empty": {
+        "title": "No competitions yet",
+        "body": "Invitations from issuers appear here."
+      },
+      "empty_filtered": {
+        "title": "No matching competitions",
+        "body": "Try other filters or search words."
+      },
+      "card": {
+        "my_offer": "Your offer",
+        "no_offer": "No offer",
+        "leading": "Leading",
+        "not_leading": "Not leading",
+        "open": "Open competition",
+        "result": "Result"
+      }
+    },
+    "participant": {
+      "new_tab": "(opens in a new tab)",
+      "attachments": {
+        "title": "Competition documents",
+        "invitation_title": "Invitation documents",
+        "empty": "No documents attached.",
+        "addendum": "Addendum",
+        "open_link": "Open link",
+        "download": "Download {name}"
+      },
+      "overview": {
+        "standing_title": "Your position",
+        "go_live": "Live room",
+        "next_offer": "Your next offer",
+        "description_title": "Description",
+        "rules_title": "How this competition works",
+        "participation_title": "Your participation",
+        "joined_at": "Joined on {time}",
+        "dates_title": "Key dates",
+        "dates": {
+          "opens": "Offers open",
+          "final_window": "Final pricing window starts",
+          "closes": "Closes",
+          "hard_stop": "Latest possible close",
+          "bafo_cutoff": "Best-and-final-offer round ends",
+          "closed": "Closed at"
+        },
+        "dates_note": "Times are in Riyadh time. The BAFO server clock applies."
+      }
+    },
+    "list": {
+      "title": "My competitions",
+      "subtitle": "Competitions your organisation has issued: drafts, running and ended.",
+      "caption": "Your organisation’s competitions",
+      "tabs": {
+        "label": "Competition status",
+        "active": "Active",
+        "draft": "Drafts",
+        "ended": "Ended",
+        "all": "All"
+      },
+      "filters": {
+        "search": "Search competitions",
+        "search_placeholder": "Search by title",
+        "direction": "Type",
+        "all_directions": "All",
+        "sort": "Sort by",
+        "status": "Status:",
+        "clear_status": "Clear status filter"
+      },
+      "sort": {
+        "updated_at": "Recently updated",
+        "effective_close_at": "Closing soonest",
+        "created_at": "Newest"
+      },
+      "columns": {
+        "title": "Competition",
+        "direction": "Type",
+        "status": "Status",
+        "timing": "Timing",
+        "counts": "Participation",
+        "updated": "Updated"
+      },
+      "counts_title": "Invited · joined · with offers",
+      "counts_legend": "Counts: invited · joined · with offers",
+      "opens": "Opens",
+      "planned_close": "Planned close",
+      "closed": "Closing",
+      "view_plans": "View plans",
+      "plan_required_title": "An active plan is required",
+      "empty": {
+        "active": {
+          "title": "No active competitions",
+          "body": "Scheduled, open and evaluation-stage competitions appear here."
+        },
+        "drafts": {
+          "title": "No drafts",
+          "body": "Start a new competition. It stays a draft until you publish it."
+        },
+        "ended": {
+          "title": "No ended competitions",
+          "body": "Awarded, closed-without-award and cancelled competitions appear here."
+        },
+        "filtered": {
+          "title": "No matching competitions",
+          "body": "Change the filters or search, or create a new competition."
+        }
+      }
+    },
+    "detail": {
+      "title": "Competition details",
+      "back_issuer": "My competitions",
+      "not_found": "This competition does not exist or you do not have access to it.",
+      "category": "Category:",
+      "region": "Region:",
+      "issuer": "Issuer:",
+      "tabs": {
+        "label": "Competition sections",
+        "overview": "Overview",
+        "participants": "Participants",
+        "qa": "Q&A",
+        "live": "Live",
+        "live_room": "Live room",
+        "offers": "Offers log",
+        "award": "Evaluation and award",
+        "my_offers": "My offers"
+      },
+      "countdown": {
+        "opens": "Opens in",
+        "opening": "Opening…",
+        "closes": "Closes in",
+        "closing": "Closing…",
+        "bafo_closes": "BAFO round ends in",
+        "latest_close": "Latest possible close",
+        "extensions": "Not extended | Extended once | Extended {count} times"
+      }
+    },
+    "issuer": {
+      "actions": {
+        "continue_setup": "Continue setup",
+        "publish": "Review and publish",
+        "edit": "Edit",
+        "invite": "Invite participants",
+        "extend": "Extend closing",
+        "cancel": "Cancel competition",
+        "delete": "Delete draft",
+        "award": "Evaluation and award"
+      },
+      "extend": {
+        "title": "Extend the closing time",
+        "description": "Every participant is told the new time and the reason.",
+        "current": "Current closing time:",
+        "new_close": "New closing time",
+        "new_close_hint": "At least 5 minutes after the current closing time, Riyadh time.",
+        "reason": "Reason for the extension",
+        "reason_hint": "5 to 1000 characters. Participants will see it.",
+        "reason_short": "Write a reason of at least {min} characters.",
+        "min_error": "The earliest allowed time is {time}.",
+        "confirm": "Extend closing",
+        "done": "Closing extended. Participants have been notified."
+      },
+      "cancel": {
+        "title": "Cancel the competition",
+        "description": "Offers stop and every invitee and participant is notified. This cannot be undone.",
+        "confirm": "Cancel competition",
+        "keep": "Keep the competition",
+        "done": "The competition was cancelled."
+      },
+      "delete": {
+        "title": "Delete the draft",
+        "description": "The draft, its attachments and its unsent invitations are deleted.",
+        "confirm": "Delete draft",
+        "keep": "Keep the draft",
+        "done": "The draft was deleted."
+      },
+      "reason": {
+        "label": "Reason",
+        "required": "Choose a reason.",
+        "note": "Note",
+        "note_required": "Write a note that explains the reason.",
+        "note_required_hint": "Required for this reason."
+      },
+      "overview": {
+        "draft_title": "Competition setup",
+        "draft_body": "Complete the missing steps, then review and publish.",
+        "cancelled_title": "The competition was cancelled",
+        "not_awarded_title": "Closed without award",
+        "awarded_to": "Awarded to",
+        "award_details": "Award details",
+        "description": "Description",
+        "no_description": "No description yet. A description is required before publishing.",
+        "other_category": "Category (other): {text}",
+        "rules": "Competition rules",
+        "rules_pending": "The rules summary appears once the rules are saved.",
+        "schedule": "Schedule",
+        "counts": "Numbers",
+        "created_by": "Created by {name}",
+        "source_api": "Created through the API"
+      },
+      "counts": {
+        "invitations": "Invited",
+        "joined": "Joined",
+        "declined": "Declined",
+        "participants_with_offers": "With offers",
+        "offers": "Offers",
+        "comments": "Questions"
+      },
+      "timeline": {
+        "published": "Published",
+        "opens": "Offers open",
+        "final_window": "Final pricing window starts",
+        "invitation_cutoff": "Joining and invitations close",
+        "scheduled_close": "Scheduled close",
+        "effective_close": "Close after extensions",
+        "hard_stop": "Latest possible close",
+        "closed": "Closed",
+        "offers_opened": "Sealed offers opened",
+        "bafo_started": "BAFO round started",
+        "bafo_cutoff": "BAFO round ends",
+        "bafo_ended": "BAFO round ended",
+        "awarded": "Awarded",
+        "not_awarded": "Closed without award",
+        "cancelled": "Cancelled"
+      },
+      "attachments": {
+        "add_title": "Add documents",
+        "add_hint": "Upload specifications and terms, or add external links.",
+        "addendum_hint": "Documents added after publishing are addenda; participants are notified.",
+        "add_open": "Add a document",
+        "files_label": "Files",
+        "files_hint": "PDF, Word, Excel, images and ZIP, up to 100 MB each.",
+        "queue_label": "Files waiting to upload",
+        "kind_label": "Who can see it",
+        "kinds": {
+          "document": "Competition documents (after joining)",
+          "invitation_document": "Invitation document (before joining)",
+          "external_link": "External link"
+        },
+        "title_label": "Document title",
+        "upload": "Upload {count} file | Upload {count} files",
+        "uploading": "Uploading {name}",
+        "uploaded": "{count} file uploaded | {count} files uploaded",
+        "link_title": "External link",
+        "link_url": "Link (https)",
+        "link_name": "Link title",
+        "link_add": "Add link",
+        "link_added": "Link added.",
+        "list_title": "Competition documents",
+        "empty_title": "No documents yet",
+        "empty_body": "Add specifications and terms for participants to read.",
+        "addendum": "Addendum",
+        "download": "Download {name}",
+        "open_link": "Open {name}",
+        "move_up": "Move up",
+        "move_down": "Move down",
+        "delete": "Delete {name}",
+        "delete_title": "Delete the document",
+        "delete_body": "“{name}” will be removed from the competition.",
+        "delete_confirm": "Delete document",
+        "deleted": "Document deleted."
+      },
+      "edit": {
+        "title": "Edit the competition",
+        "notice": "Participants will be notified of the update.",
+        "not_editable": "The competition cannot be edited in its current status.",
+        "live_fields": "While offers are open, only the title and description can change.",
+        "rules_fixed": "Rules are fixed after publishing",
+        "refused": "Fields that cannot change now: {fields}",
+        "saved": "Changes saved."
+      },
+      "export": {
+        "offer_log": "Export offers log",
+        "results": "Export results",
+        "results_title": "Results export",
+        "xlsx": "Excel file (XLSX)",
+        "csv": "CSV file",
+        "preparing": "Preparing the file…",
+        "failed": "The file could not be prepared. Try again."
+      }
+    },
+    "setup": {
+      "new_title": "New competition",
+      "new_subtitle": "The competition is saved as a draft after step 2. Nobody sees it until you publish.",
+      "create_draft": "Save draft and continue",
+      "created": "Draft saved.",
+      "saved": "Changes saved.",
+      "published": "Competition published. Invitations sent.",
+      "fix_fields": "Check the highlighted fields, then save.",
+      "steps": {
+        "type": "Type",
+        "basics": "Basics",
+        "rules": "Rules",
+        "schedule": "Schedule",
+        "documents": "Documents",
+        "participants": "Participants",
+        "fees": "Participation fees",
+        "review": "Review and publish"
+      },
+      "titles": {
+        "type": "Competition type and format",
+        "basics": "Basic details",
+        "rules": "Prices and rules",
+        "schedule": "Schedule",
+        "documents": "Competition documents",
+        "participants": "Invite participants",
+        "fees": "Participation fees",
+        "review": "Review and publish"
+      },
+      "descriptions": {
+        "type": "Choose who wins, how offers are submitted and a rules preset.",
+        "basics": "Describe the competition: title, description, category and region.",
+        "rules": "Set the prices and offer rules. The summary on the side updates as you go.",
+        "schedule": "Set when offers open and close, in Riyadh time.",
+        "documents": "Attach specifications and terms, and choose what is visible before and after joining.",
+        "participants": "Pick from suggestions, paste e-mail addresses or choose from your vendor directory.",
+        "fees": "You can cover the participation fees of your invitees for this competition.",
+        "review": "Check every step before publishing. Invitations are sent when you publish."
+      },
+      "type": {
+        "direction_legend": "Who wins this competition?",
+        "direction_hint": "The type cannot change after publishing.",
+        "explain": {
+          "tender": "You are buying goods or services. Suppliers compete by lowering their prices.",
+          "auction": "You are selling goods or assets. Bidders compete by raising their prices."
+        },
+        "issuer_role": {
+          "tender": "You are buying",
+          "auction": "You are selling"
+        },
+        "auction_disabled": "Auctions are not enabled for your organisation. Contact BAFO.",
+        "format_legend": "How offers are submitted",
+        "format_explain": {
+          "live": "Live offers that can be improved until closing.",
+          "sealed": "One sealed offer per participant, opened at closing."
+        },
+        "bafo_label": "Best-and-final-offer round after closing",
+        "bafo_description": "Lets you invite a shortlist of participants to submit one final offer after closing.",
+        "presets": {
+          "legend": "Rules preset",
+          "hint": "A preset sets the main rules. You can adjust them in the rules step.",
+          "none": "There are no presets for this type. The default rules apply and you can adjust them.",
+          "customised": "Customised"
+        },
+        "preset_chips": {
+          "must_beat_own": "Each participant improves their own offer",
+          "must_beat_best": "Must beat the leading offer",
+          "visibility_full": "Full ranking",
+          "visibility_leading_flag": "Leading or not",
+          "visibility_none": "Standing hidden",
+          "auto_extend": "Auto-extend",
+          "final_window": "Final pricing window",
+          "bafo": "BAFO round",
+          "sealed": "Sealed, revisable offer"
+        },
+        "reset_confirm": {
+          "title": "Change the competition type",
+          "body": "The rules return to the chosen preset. Your prices are kept.",
+          "confirm": "Change and reset rules"
+        }
+      },
+      "basics": {
+        "title_label": "Competition title",
+        "title_hint": "A clear title for what you are buying or selling.",
+        "description_label": "Description",
+        "description_hint": "Quantities, specifications, delivery and special terms. Required before publishing.",
+        "category_label": "Category",
+        "category_auction_hint": "Some categories are not available for auctions.",
+        "other_text_label": "Specify the category",
+        "region_label": "Region",
+        "issues": {
+          "title_required": "Enter a title.",
+          "title_too_long": "The title is longer than {max} characters.",
+          "category_required": "Choose a category.",
+          "category_auction": "This category is not available for auctions. Choose another one.",
+          "other_text_required": "Specify the category when you choose “Other”.",
+          "region_required": "Choose a region.",
+          "description_too_long": "The description is longer than {max} characters.",
+          "description_required": "A description is required before publishing."
+        }
+      },
+      "schedule": {
+        "opens_label": "When offers open",
+        "opens_on_publish": "When published",
+        "opens_on_publish_hint": "Offers open as soon as you publish.",
+        "opens_at": "At a set time",
+        "opens_at_hint": "The competition stays scheduled until then.",
+        "close_label": "Closing time",
+        "close_hint": "Riyadh time. Offers are not accepted after it, by the BAFO server clock.",
+        "publish_notes": "Before publishing",
+        "not_set": "Not set",
+        "estimated": "Estimated, fixed at publishing",
+        "duration": "Duration:",
+        "timeline": {
+          "title": "Timeline",
+          "opens": "Offers open",
+          "final_window": "Final pricing window starts",
+          "invitation_cutoff": "Joining closes",
+          "close": "Close",
+          "latest_close": "Latest possible close"
+        },
+        "issues": {
+          "close_required": "Set the closing time before publishing.",
+          "opens_in_past": "The opening time has passed. Choose a later time or “When published”.",
+          "close_after_open": "Closing must be after the opening time.",
+          "min_duration": "The competition must run for at least {minutes} minutes.",
+          "max_duration": "The competition cannot run longer than {days} days.",
+          "final_window_too_long": "The final pricing window ({minutes} minutes) is longer than the competition."
+        }
+      },
+      "documents": {
+        "intro": "“Before joining” documents are shown with the invitation. “After joining” documents are only for participants who joined."
+      },
+      "checklist": {
+        "ready": "Everything is complete. You can publish.",
+        "missing": "{count} item missing | {count} items missing",
+        "done": "(complete)",
+        "todo": "(missing)",
+        "fix": "Complete",
+        "items": {
+          "basics": "Title, category and region",
+          "description": "Description",
+          "other_text": "The “Other” category text",
+          "start_price": {
+            "tender": "Ceiling price",
+            "auction": "Opening price"
+          },
+          "schedule": "Closing time",
+          "invitations": "Invitations reach the minimum"
+        }
+      },
+      "review": {
+        "edit": "Edit",
+        "preset": "Preset",
+        "no_preset": "Custom rules",
+        "documents": "{count} document | {count} documents",
+        "checklist": "Before publishing",
+        "publish": "Publish",
+        "pay_and_publish": "Pay and publish",
+        "publish_note": "Publishing sends the invitations. The rules cannot change afterwards.",
+        "pay_note": "Covering participation fees needs a payment first. The competition is then published automatically.",
+        "no_permission": "You do not have permission to publish this competition."
+      },
+      "publish_errors": {
+        "title": "The competition was not published",
+        "validation": "Some details are missing or invalid:",
+        "min_participants": "Add at least {count} more invitee | Add at least {count} more invitees",
+        "capacity": "The number of simultaneous live events has reached its limit for this period. Choose another time.",
+        "payment_required": "Covering participation fees needs a payment. Check the summary, then choose “Pay and publish”.",
+        "already_published": "The competition’s status changed. We refreshed it.",
+        "go_to": "Go to “{step}”",
+        "complete_profile": "Complete billing details"
+      }
+    }
+  },
+  "invitations": {
+    "landing": {
+      "eyebrow": "Invitation to take part",
+      "title": "Your company is invited to a competition",
+      "invalid_title": "The invitation cannot be opened",
+      "region": "Region",
+      "join_before": "Join before",
+      "opens_at": "Offers open",
+      "invited_email": "Invited e-mail",
+      "rules_title": "Competition rules",
+      "sponsored_line": "{issuer} covers your participation fees for this competition only. You need a free company account to join.",
+      "register_cta": "Create your company account and join",
+      "login_cta": "Sign in to join",
+      "continue_signed_in": "Continue to join",
+      "claim_in_dashboard": "We kept your invitation. You can finish joining from the dashboard."
+    },
+    "decline": {
+      "open": "Decline the invitation",
+      "title": "Decline the invitation",
+      "description": "The issuer will be notified. This cannot be undone.",
+      "reason": "Reason",
+      "confirm": "Decline invitation",
+      "done_title": "You declined the invitation",
+      "done_body": "We informed the issuer. Thank you.",
+      "not_possible": "This invitation can no longer be declined."
+    },
+    "access": {
+      "join_required": "Join required",
+      "plan_required": "Plan required",
+      "full": "Joined",
+      "read_only": "Read only",
+      "unavailable": "Unavailable"
+    },
+    "access_card": {
+      "title": "Taking part",
+      "sponsored": "{sponsor} covers your participation fees for this competition only.",
+      "own_plan": "You join with your current plan.",
+      "plan_required": "You need an active plan to join this competition.",
+      "plans_later": "Subscribe to an active plan, then come back to this page to join.",
+      "purchase_permission": "Payment needs the purchase permission. Contact your account owner.",
+      "view_plans": "View plans",
+      "full": "Your organisation has joined this competition.",
+      "read_only": "The competition has ended. You can still view its details and result.",
+      "unavailable": {
+        "declined": "You declined this invitation.",
+        "expired": "The time to join this competition has passed.",
+        "revoked": "The issuer withdrew this invitation.",
+        "cancelled": "This competition was cancelled.",
+        "closed": "This competition is closed to new participants.",
+        "generic": "Joining this competition is no longer possible."
+      }
+    },
+    "join": {
+      "open": "Join the competition",
+      "title": "Join the competition",
+      "description": "Review the competition rules before you join.",
+      "terms_link": "General competition terms",
+      "accept": "I accept the competition terms",
+      "confirm": "Confirm and join",
+      "joined": "You joined the competition"
+    },
+    "claim": {
+      "title": "Link the invitation",
+      "checking": "Checking your invitation…",
+      "otp_title": "Confirm the invited e-mail",
+      "otp_body": "We sent a code to {email} to confirm you own the invited e-mail.",
+      "code_label": "Verification code",
+      "expires_in": "The code expires in",
+      "verify": "Confirm code",
+      "resend": "Resend code",
+      "resend_in": "Resend in {seconds}s",
+      "resent": "We sent a new code.",
+      "bound": "The invitation is now linked to your organisation.",
+      "other_org_title": "This invitation belongs to another organisation",
+      "other_org_body": "Sign in with the invited organisation's account, or ask the issuer to invite your organisation.",
+      "to_participating": "Go to Participating"
+    },
+    "status": {
+      "draft": "Draft",
+      "sent": "Sent",
+      "viewed": "Viewed",
+      "joined": "Joined",
+      "declined": "Declined",
+      "revoked": "Revoked",
+      "expired": "Expired"
+    },
+    "issuer": {
+      "counter_label": "Invitees",
+      "counter": "{count} of the minimum {min}",
+      "min_reached": "Minimum reached",
+      "min_missing": "{count} more needed | {count} more needed",
+      "add_title": "Add invitees",
+      "add_n": "Add {count} invitation | Add {count} invitations",
+      "current_title": "Invitees",
+      "rows_rejected": "No invitation was added. Fix the highlighted rows and try again.",
+      "empty_title": "No invitations yet",
+      "empty_body": "Invite participants from suggestions, by e-mail or from your vendor directory.",
+      "empty_draft_body": "Invitations are kept with the draft and sent when you publish.",
+      "filter_label": "Filter by invitation status",
+      "filter_all": "All",
+      "cutoff_passed": "The invitation deadline for this competition has passed.",
+      "resend_limit": "This invitation reached today’s resend limit (3 times).",
+      "table": {
+        "caption": "Competition invitees",
+        "invitee": "Invitee",
+        "name": "Name",
+        "status": "Status",
+        "alias": "Alias",
+        "coverage": "Fees",
+        "date": "Last update",
+        "actions": "Actions",
+        "vendor": "From directory: {name}"
+      },
+      "events": {
+        "joined": "Joined",
+        "declined": "Declined",
+        "revoked": "Revoked",
+        "expired": "Expired",
+        "viewed": "Viewed",
+        "sent": "Sent",
+        "created": "Added"
+      },
+      "actions": {
+        "menu": "Actions for {email}",
+        "edit": "Edit",
+        "remove": "Remove",
+        "resend": "Resend",
+        "revoke": "Revoke invitation"
+      },
+      "revoke": {
+        "title": "Revoke the invitation",
+        "body": "{email} will no longer be able to join with this invitation.",
+        "confirm": "Revoke invitation"
+      },
+      "edit": {
+        "title": "Edit the invitation"
+      },
+      "toasts": {
+        "added": "{count} invitation added | {count} invitations added",
+        "sent": "{count} invitation sent | {count} invitations sent",
+        "paid_and_sent": "Paid. Invitations sent.",
+        "resent": "Invitation resent to {email}.",
+        "removed": "Invitation for {email} removed.",
+        "revoked": "Invitation for {email} revoked.",
+        "updated": "Invitation saved."
+      },
+      "item_codes": {
+        "invitation_duplicate": "This invitee is already invited.",
+        "cannot_invite_own_organization": "You cannot invite your own organisation.",
+        "vendor_blocked": "This vendor is blocked in your directory.",
+        "vendor_not_found": "This vendor is not in your directory."
+      },
+      "drawer": {
+        "title": "Invite participants",
+        "description": "Invitations are sent at once. Invitees can join until the joining deadline.",
+        "send": "Send {count} invitation | Send {count} invitations",
+        "payment_title": "Cover the new invitees’ fees",
+        "payment_body": "Your funded passes do not cover these invitees. Pay to cover their fees; the invitations are then sent automatically.",
+        "pay_and_send": "Pay and send",
+        "send_without_fees": "Send without covering fees"
+      },
+      "picker": {
+        "label": "Ways to add invitees",
+        "tabs": {
+          "suggestions": "Suggestions",
+          "email": "By e-mail",
+          "vendors": "Vendor directory"
+        },
+        "search_organizations": "Search by organisation name",
+        "category": "Category",
+        "region": "Region",
+        "no_suggestions": "No matching suggestions",
+        "no_suggestions_body": "Change the category or region, or invite by e-mail.",
+        "verified": "Verified",
+        "match_category": "Same category",
+        "match_region": "Same region",
+        "has_plan": "Has an active plan",
+        "add": "Add",
+        "added": "Added",
+        "emails_label": "E-mail addresses",
+        "emails_hint": "Paste a list separated by commas, spaces or new lines.",
+        "invalid_email": "(invalid address)",
+        "invalid_count": "{count} invalid address | {count} invalid addresses",
+        "add_emails": "Add {count} address | Add {count} addresses",
+        "search_vendors": "Search your vendor directory",
+        "no_vendors": "No matching vendors in your directory",
+        "vendor_blocked": "Blocked",
+        "duplicates_skipped": "Skipped {count} duplicate | Skipped {count} duplicates",
+        "max_rows": "You can add up to {max} invitees at a time.",
+        "staged_title": "Ready to add",
+        "name_label": "Recipient name (optional)",
+        "cover_fees": "Cover fees",
+        "remove_row": "Remove {label}"
+      }
+    }
+  },
+  "sponsorship": {
+    "badge": {
+      "fees_covered": "Fees covered",
+      "fees_covered_by": "Fees covered · by {sponsor}"
+    },
+    "coverage": {
+      "sponsored": "Covered by you",
+      "own_plan": "Own plan",
+      "none": "Not covered"
+    },
+    "pass_status": {
+      "pending": "Pending payment",
+      "reserved": "Reserved",
+      "joined": "Used",
+      "released": "Released",
+      "unused": "Unused",
+      "void": "Void"
+    },
+    "status": {
+      "draft": "Draft",
+      "active": "Active",
+      "settled": "Settled"
+    },
+    "mode": {
+      "none": {
+        "title": "No coverage",
+        "description": "Participants use their own plans."
+      },
+      "all": {
+        "title": "Cover every invitee",
+        "description": "Cover the fees of every invitee without a plan."
+      },
+      "selected": {
+        "title": "Cover selected invitees",
+        "description": "Cover the fees of the invitees you choose."
+      }
+    },
+    "summary": {
+      "title": "Covered participation fees",
+      "mode": "Coverage",
+      "status": "Status",
+      "funded": "Funded passes",
+      "free_slots": "Available passes",
+      "cap": "Up to {count}",
+      "change": "Change",
+      "manage": "Manage invitees and fees",
+      "unused": "{count} unused pass | {count} unused passes",
+      "voucher": "Voucher for unused passes:"
+    },
+    "fees": {
+      "mode_legend": "Participation fee coverage",
+      "unit_price": "Sponsored participation pass, per participant:",
+      "cap_label": "Maximum covered participants",
+      "cap_hint": "Optional, 1 to 200.",
+      "cap_range": "From {min} to {max}.",
+      "cap_apply": "Apply limit",
+      "saved": "Fee coverage saved.",
+      "table_caption": "Fee coverage per invitee",
+      "reason_label": "Reason",
+      "reasons": {
+        "not_selected": "Not selected",
+        "cap_reached": "Over the limit",
+        "own_plan": "Has a plan"
+      },
+      "no_invitations": "Add invitees to see the coverage.",
+      "nothing_to_buy": "No extra passes to buy.",
+      "policy": "Your coverage applies to this competition only. Other participants cannot see who is covered. BAFO issues a voucher for unused passes after offers close.",
+      "purchase_permission": "Payment needs the purchase permission. Contact your account owner.",
+      "coupon": {
+        "title": "Coupon or voucher"
+      },
+      "summary": {
+        "title": "Order summary",
+        "passes": "{count} pass | {count} passes",
+        "discount": "Discount",
+        "vat": "VAT {rate}%",
+        "total": "Total",
+        "reserve_note": "{count} pass is reserved from your funded passes | {count} passes are reserved from your funded passes"
+      },
+      "checkout": {
+        "title": "Confirm the payment",
+        "description": "These are BAFO’s amounts. You will go to the secure payment page to finish.",
+        "subtotal": "Subtotal",
+        "credit": "Credit",
+        "expires": "Payment hold ends at",
+        "pay": "Pay {amount}"
+      }
+    }
+  },
+  "organization": {
+    "title": "Organisation",
+    "subtitle": "Your company details as they appear in competitions and invoices.",
+    "read_only": "Only the account owner and administrators can edit the organisation.",
+    "saved": "Organisation details saved.",
+    "verified": "Verified organisation",
+    "not_verified": "Not verified",
+    "contact_locked": "The e-mail and mobile number are the registered company contacts. Contact BAFO support to change them.",
+    "sections": {
+      "identity": "Identity",
+      "tax": "Tax",
+      "location": "Location",
+      "national_address": "National address",
+      "contact": "Contact",
+      "activity": "Activity",
+      "profile_document": "Company profile",
+      "features": "Features"
+    },
+    "fields": {
+      "name": "Company name",
+      "legal_name_ar": "Legal name in Arabic",
+      "legal_name_en": "Legal name in English",
+      "legal_name_hint": "As in the commercial registration; printed on invoices.",
+      "cr_number": "Commercial registration number",
+      "cr_number_hint": "10 digits",
+      "cr_number_locked": "The commercial registration number cannot be changed.",
+      "vat_registered": "VAT registered",
+      "vat_registered_hint": "Turn this on if your company has a VAT number.",
+      "vat_number": "VAT number",
+      "vat_number_hint": "15 digits, starting and ending with 3",
+      "region": "Region",
+      "city": "City",
+      "building_number": "Building number",
+      "building_number_hint": "4 digits",
+      "street": "Street",
+      "district": "District",
+      "postal_code": "Postal code",
+      "postal_code_hint": "5 digits",
+      "additional_number": "Additional number",
+      "additional_number_hint": "4 digits",
+      "short_address": "Short address",
+      "short_address_hint": "4 letters and 4 digits, such as RRRD2929",
+      "website": "Website",
+      "website_hint": "Optional, starting with https://",
+      "email": "Company e-mail",
+      "phone": "Company mobile",
+      "categories": "Activity categories",
+      "categories_hint": "Helps issuers suggest your company for matching competitions.",
+      "categories_placeholder": "Search categories",
+      "visible_in_suggestions": "Show my company in issuers’ suggestions",
+      "visible_in_suggestions_hint": "Issuers see your company name, region and categories when choosing whom to invite."
+    },
+    "billing_profile": {
+      "title": "Billing details incomplete",
+      "body": "Complete these fields before your first payment:",
+      "required_hint": "Required for billing"
+    },
+    "logo": {
+      "upload": "Upload logo",
+      "replace": "Replace logo",
+      "remove": "Remove logo",
+      "hint": "A PNG, JPG or WEBP image of up to {size} MB.",
+      "too_large": "The image is larger than {size} MB.",
+      "uploaded": "Logo updated.",
+      "removed": "Logo removed."
+    },
+    "profile_document": {
+      "none": "No company profile uploaded yet.",
+      "upload": "Upload company profile",
+      "replace": "Replace file",
+      "remove": "Remove file",
+      "hint": "A PDF of up to {size} MB.",
+      "too_large": "The file is larger than {size} MB.",
+      "uploaded": "Company profile uploaded.",
+      "removed": "Company profile removed."
+    },
+    "features": {
+      "contact_bafo": "BAFO turns these features on. Contact BAFO to enable them.",
+      "api_enabled": "API and webhooks",
+      "auction_enabled": "Auctions",
+      "sponsorship_enabled": "Covering participation fees",
+      "on": "On",
+      "off": "Off"
+    }
+  },
+  "team": {
+    "title": "Team",
+    "subtitle": "Your organisation’s members and permissions. Each active member uses a plan seat.",
+    "table_caption": "Team members",
+    "you": "you",
+    "joined_on": "Joined",
+    "invited_on": "Invited",
+    "row_actions": "Member actions: {name}",
+    "seats": {
+      "title": "Seats",
+      "used": "{used} of {total} seats"
+    },
+    "seat_limit": {
+      "title": "No seats left",
+      "upgrade": "Upgrade plan"
+    },
+    "filters": {
+      "label": "Status",
+      "all": "All",
+      "active": "Active",
+      "invited": "Invited",
+      "inactive": "Inactive"
+    },
+    "fields": {
+      "name": "Name",
+      "email": "E-mail",
+      "phone": "Mobile number",
+      "role": "Role",
+      "status": "Status",
+      "date": "Date",
+      "actions": "Actions",
+      "permissions": "Additional permissions",
+      "can_award": "Can award",
+      "can_award_short": "Award",
+      "can_award_hint": "Award competitions, revoke awards and run the best-and-final-offer round.",
+      "can_purchase": "Can purchase",
+      "can_purchase_short": "Purchase",
+      "can_purchase_hint": "Buy plans and sponsored participation passes."
+    },
+    "roles": {
+      "owner": "Owner",
+      "admin": "Administrator",
+      "admin_description": "Manages the team, organisation, billing and integrations.",
+      "member": "Member",
+      "member_description": "Issues and takes part in competitions."
+    },
+    "statuses": {
+      "active": "Active",
+      "invited": "Invited",
+      "inactive": "Inactive"
+    },
+    "locked": {
+      "owner": "Account owner",
+      "self": "Your account"
+    },
+    "actions": {
+      "invite": "Invite member",
+      "edit": "Edit role and permissions",
+      "resend": "Resend invitation",
+      "deactivate": "Deactivate",
+      "reactivate": "Reactivate",
+      "remove": "Remove from team"
+    },
+    "drawer": {
+      "invite_title": "Invite a member",
+      "invite_description": "We will e-mail a link to set a password and join your organisation.",
+      "invite_submit": "Send invitation",
+      "edit_title": "Edit member"
+    },
+    "remove": {
+      "title": "Remove member",
+      "description": "{name} will lose access to your organisation. The competitions they created stay with the organisation.",
+      "confirm": "Remove member"
+    },
+    "toasts": {
+      "invited": "Invitation sent to {email}.",
+      "updated": "Member updated.",
+      "resent": "Invitation resent to {email}.",
+      "deactivated": "Member deactivated.",
+      "reactivated": "Member reactivated.",
+      "removed": "{name} was removed from the team."
+    },
+    "list": {
+      "empty": {
+        "title": "No team members yet",
+        "body": "Invite colleagues to issue and take part in competitions for your organisation."
+      }
+    }
+  },
+  "profile": {
+    "title": "My account",
+    "subtitle": "Your personal details, password and account settings.",
+    "saved": "Your details were saved.",
+    "sections": {
+      "profile": "Personal details",
+      "security": "Password",
+      "deletion": "Delete account"
+    },
+    "fields": {
+      "name": "Full name",
+      "email": "E-mail",
+      "email_locked": "Contact BAFO support to change your e-mail.",
+      "phone": "Mobile number",
+      "locale": "Interface and e-mail language",
+      "locale_hint": "Used for the interface, e-mails and notifications."
+    },
+    "avatar": {
+      "upload": "Upload photo",
+      "replace": "Replace photo",
+      "remove": "Remove photo",
+      "hint": "A PNG, JPG or WEBP image of up to {size} MB.",
+      "too_large": "The image is larger than {size} MB.",
+      "uploaded": "Photo updated.",
+      "removed": "Photo removed."
+    },
+    "password": {
+      "current": "Current password",
+      "new": "New password",
+      "submit": "Change password",
+      "other_sessions": "You will be signed out on your other devices.",
+      "changed": "Your password was changed."
+    },
+    "deletion": {
+      "scope_organization": "The organisation account and all its members will be deleted 14 days after the request. You can cancel within that time.",
+      "scope_user": "Only your personal account will be deleted, 14 days after the request. The organisation account stays.",
+      "kept": "Legal and financial records are kept: invoices, competitions and the offer records.",
+      "open_organization": "Delete organisation account",
+      "open_user": "Delete my account",
+      "password": "Password to confirm",
+      "reason": "Reason",
+      "confirm": "Request deletion",
+      "requested": "Deletion requested.",
+      "pending_title": "Deletion pending",
+      "pending_body": "The account will be deleted on",
+      "cancel": "Cancel deletion",
+      "cancelled": "Deletion cancelled.",
+      "blockers_title": "Finish these competitions first:",
+      "blocker_types": {
+        "issued_competition": "Issued competition",
+        "participation": "Ongoing participation"
+      }
+    }
+  },
+  "notifications": {
+    "title": "Notifications",
+    "subtitle": "Invitations, competition updates, offers and billing.",
+    "unread_count": "No unread notifications | {count} unread notification | {count} unread notifications",
+    "unread_label": "Unread",
+    "mark_read": "Mark as read",
+    "mark_all_read": "Mark all as read",
+    "view_all": "View all notifications",
+    "delete": "Delete",
+    "row_actions": "Notification actions: {title}",
+    "filters": {
+      "label": "Filter",
+      "all": "All",
+      "unread": "Unread"
+    },
+    "list": {
+      "empty": {
+        "title": "No notifications",
+        "body": "Invitations, new offers and competition updates appear here."
+      },
+      "empty_unread": {
+        "title": "No unread notifications",
+        "body": "You are all caught up."
+      }
+    },
+    "delete_all": {
+      "open": "Delete all",
+      "title": "Delete all notifications",
+      "description": "All your notifications will be deleted permanently.",
+      "confirm": "Delete all notifications",
+      "done": "Notifications deleted."
+    }
+  },
+  "legal": {
+    "codes": {
+      "terms": "Terms and conditions",
+      "privacy": "Privacy policy",
+      "refund": "Refund policy",
+      "competition_rules": "Competition rules",
+      "api_terms": "API terms of use"
+    },
+    "version": "Version",
+    "published": "Published",
+    "not_available": "This document is not available right now.",
+    "meta_description": "{title} of the BAFO platform."
+  },
+  "landing": {
+    "meta": {
+      "title": "The B2B competition platform: tenders and auctions",
+      "og_title": "BAFO: Best and Final Offer",
+      "description": "Run tenders and auctions, invite qualified companies, receive live or sealed offers, then award, with published rules and offers timed by the server.",
+      "og_image_alt": "BAFO logo",
+      "keywords": "e-tendering Saudi, online tender platform, reverse auction, online auction, procurement, BAFO"
+    },
+    "hero": {
+      "eyebrow": "A Saudi platform for business competitions",
+      "title": "Run your competition, get the best and final offer",
+      "subtitle": "BAFO lets organisations run tenders and auctions, invite qualified companies, receive and compare offers, then award, with published rules for every competition and offers timed by the server.",
+      "primary_cta": "Create your organisation account",
+      "secondary_cta": "Sign in",
+      "points": {
+        "trial": "Free trial for new organisations",
+        "arabic_english": "In Arabic and English",
+        "web_mobile": "On the web and mobile apps"
+      }
+    },
+    "preview": {
+      "label": "Sample competition",
+      "title": "Laptops for the branches",
+      "issuer": "Issuer: Procurement department",
+      "time_left": "Time left",
+      "participants": "No participants | {count} participant | {count} participants",
+      "leading": "Your offer is the leading offer"
+    },
+    "how": {
+      "title": "How BAFO works",
+      "subtitle": "Clear steps for issuers and participants, from launch to award.",
+      "tabs": {
+        "label": "How BAFO works for your role",
+        "issuer": "For issuers",
+        "participant": "For participants"
+      },
+      "issuer": {
+        "one": {
+          "title": "Create the competition",
+          "body": "Choose a tender or an auction, set the rules and dates, and attach the terms and documents."
+        },
+        "two": {
+          "title": "Invite participants",
+          "body": "Invite companies by e-mail or from your vendor directory, and cover their participation fees if you wish."
+        },
+        "three": {
+          "title": "Follow offers live",
+          "body": "Offers reach you as they are submitted, with the participant ranking. Closing extends automatically for late offers when you turn it on."
+        },
+        "four": {
+          "title": "Award",
+          "body": "Choose the best offer, record the award justification when needed, and download the results report."
+        }
+      },
+      "participant": {
+        "one": {
+          "title": "Receive the invitation",
+          "body": "The invitation arrives by e-mail with a summary of the competition and the join deadline."
+        },
+        "two": {
+          "title": "Join and review",
+          "body": "Review the terms and documents, and ask the issuer your questions."
+        },
+        "three": {
+          "title": "Submit your offer",
+          "body": "Submit before closing, improve your offer within the competition rules, and see your rank when the competition shows it."
+        },
+        "four": {
+          "title": "Get the result",
+          "body": "You are notified when the competition closes and when it is awarded."
+        }
+      }
+    },
+    "modes": {
+      "title": "Tender or auction, one engine",
+      "subtitle": "You set the direction when you create the competition, and BAFO applies its rules precisely in both.",
+      "examples": "Examples:",
+      "tender": {
+        "title": "Tender",
+        "body": "For buying goods, services and supply contracts: suppliers compete on price, and the lowest offer leads.",
+        "examples": "equipment supply, maintenance contracts, transport services."
+      },
+      "auction": {
+        "title": "Auction",
+        "body": "For selling assets, surplus and stock: bidders compete on price, and the highest offer leads.",
+        "examples": "used equipment, surplus stock, vehicles."
+      },
+      "formats": {
+        "live": "Each participant sees where their offer stands during the competition, as far as the issuer allows, and can improve it until closing.",
+        "sealed": "Nobody sees the offers before closing, and each participant can revise their offer until the closing time."
+      },
+      "bafo_round": "After closing, the issuer can open a best-and-final-offer round for a shortlist of participants, each of whom submits one final offer."
+    },
+    "sponsored": {
+      "title": "Covered fees for your invitees",
+      "body": "Issuers can cover their invitees' participation fees with sponsored participation passes, so invited companies can join without a plan of their own.",
+      "points": {
+        "choose": {
+          "title": "Cover everyone or a selection",
+          "body": "Choose which invitees you cover, and set a maximum number of passes."
+        },
+        "badge": {
+          "title": "The “Fees covered” badge",
+          "body": "A covered invitee sees the badge on their invitation. Nobody else is told."
+        },
+        "unused": {
+          "title": "Unused passes",
+          "body": "The value of unused passes can be returned to you as a voucher after the competition closes."
+        }
+      }
+    },
+    "erp": {
+      "title": "Connected to your ERP",
+      "body": "Connect BAFO to your system to create competitions, invite vendors and receive results and awards without manual entry.",
+      "docs": "API documentation",
+      "items": {
+        "api": {
+          "title": "Public API",
+          "body": "OAuth 2.0 or API keys, with scopes per connected system and an OpenAPI document."
+        },
+        "webhooks": {
+          "title": "Signed webhooks",
+          "body": "Real-time notifications on publish, close and award, signed with the Standard Webhooks scheme and retried automatically."
+        },
+        "files": {
+          "title": "CSV and Excel files",
+          "body": "Import your vendor directory, and export results, offer logs and awards, with no code."
+        }
+      }
+    },
+    "trust": {
+      "title": "Clear rules and a reliable record",
+      "subtitle": "The rules of every competition are published before it starts, and everything that happens is recorded.",
+      "items": {
+        "clock": {
+          "title": "Server-timed",
+          "body": "Every offer is timed on receipt by the BAFO server, not by the user's device clock."
+        },
+        "privacy": {
+          "title": "Participant privacy",
+          "body": "No participant sees another's identity, and prices show only when the competition settings allow it."
+        },
+        "sealed": {
+          "title": "Sealed until closing",
+          "body": "In sealed competitions, offers are not opened before the closing time."
+        },
+        "ledger": {
+          "title": "A tamper-proof offer log",
+          "body": "Accepted offers are kept in a chained log that cannot be edited or deleted."
+        },
+        "award": {
+          "title": "Documented awards",
+          "body": "Awards are recorded with a justification when a non-leading offer is chosen, and the results report is issued in Arabic and English."
+        },
+        "invoices": {
+          "title": "Electronic tax invoices",
+          "body": "Every payment gets a tax invoice, and prices are published excluding VAT."
+        }
+      }
+    },
+    "plans": {
+      "title": "Plans that fit your team",
+      "subtitle": "You need an active plan to issue competitions. To take part, you need a plan or fees covered by the issuer.",
+      "cta": "Get started",
+      "custom": "A custom plan is available for more seats.",
+      "trial": "A free trial is available for new organisations."
+    },
+    "faq": {
+      "title": "Frequently asked questions",
+      "items": {
+        "what": {
+          "question": "What is BAFO?",
+          "answer": "BAFO is a Saudi platform for business competitions. An organisation runs its competition, a tender to buy or an auction to sell, invites qualified companies to submit offers, then awards it to the best offer."
+        },
+        "tender_auction": {
+          "question": "What is the difference between a tender and an auction?",
+          "answer": "In a tender, suppliers compete to supply goods or services, and the lowest offer leads. In an auction, bidders compete to buy what the organisation is selling, and the highest offer leads."
+        },
+        "sealed": {
+          "question": "What is a sealed competition?",
+          "answer": "A competition in which nobody sees the offers before closing, the issuer included. Each participant can revise their offer until the closing time, and then all offers are opened."
+        },
+        "identities": {
+          "question": "Can participants see each other's identities or prices?",
+          "answer": "No participant sees another's identity. The issuer decides what participants see during the competition, such as their rank or the leading offer."
+        },
+        "clock": {
+          "question": "How are last-minute offers timed?",
+          "answer": "Offers are timed on receipt by the BAFO server. When the issuer turns on automatic extension, closing is extended when an offer arrives in the last minutes, up to a published limit."
+        },
+        "sponsored": {
+          "question": "What is sponsored participation?",
+          "answer": "The issuer covers the participation fees of the companies it invites with sponsored participation passes, so an invited company can join that competition without a plan."
+        },
+        "plans": {
+          "question": "Do I need a plan?",
+          "answer": "You need an active plan to issue competitions, and a plan to take part unless the competition's fees are covered. Prices exclude VAT, and new organisations can start with a free trial."
+        },
+        "erp": {
+          "question": "Can BAFO connect to our ERP?",
+          "answer": "Yes, through a public API with scoped access, signed webhooks, vendor import and result exports as CSV and Excel files. The API has to be enabled for your organisation."
+        },
+        "mobile": {
+          "question": "Is BAFO available on mobile?",
+          "answer": "Yes. The BAFO mobile apps let you follow, join and issue competitions. Plans and payments are handled in the web dashboard."
+        }
+      }
+    },
+    "contact": {
+      "title": "Contact us",
+      "body": "To book an introduction or ask about plans and integration, send us a message and the BAFO team will get back to you.",
+      "fields": {
+        "name": "Name",
+        "email": "E-mail",
+        "phone": "Mobile number (optional)",
+        "company": "Organisation (optional)",
+        "subject": "Subject",
+        "message": "Message"
+      },
+      "submit": "Send message",
+      "sent_title": "We received your message",
+      "sent_body": "The BAFO team will get back to you shortly."
+    },
+    "cta": {
+      "body": "Create your organisation account and start your first competition."
+    }
+  },
+  "live": {
+    "room": {
+      "aside_label": "Your offer summary",
+      "invitee_title": "Join the competition to open the live room",
+      "invitee_body": "The live room is open to participants who have joined.",
+      "back_to_overview": "Back to the competition",
+      "no_snapshot": "Loading the live data…",
+      "rules_open": "Competition rules",
+      "rules_title": "Rules of this competition",
+      "rules_legal": "General competition terms"
+    },
+    "countdown": {
+      "opens": "Offers open in",
+      "closes": "Closes in",
+      "bafo_closes": "The best-and-final-offer round ends in",
+      "closing": "Closing…",
+      "opening": "Opening…",
+      "opens_at": "Opens at {time}",
+      "closes_at": "Closes at {time}",
+      "bafo_cutoff_at": "Final offers close at {time}",
+      "closed_at": "Closed at {time}",
+      "final_window_in": "The final pricing window starts in",
+      "hard_stop": "Latest possible close",
+      "extensions_label": "Extensions",
+      "extensions": "Not extended | Extended once | Extended {count} times",
+      "none": "There is no upcoming deadline for this competition."
+    },
+    "extended": "Closing was extended by {minutes} because of an offer in the final minutes.",
+    "extended_manual": "The issuer extended closing to {time}.",
+    "minutes": "{count} minutes | {count} minute | {count} minutes",
+    "announce": {
+      "opened": "Offers are now open.",
+      "final_window": "The final pricing window has started.",
+      "bafo_started": "The best-and-final-offer round has started.",
+      "closed": "Offers are now closed.",
+      "awarded": "The competition has been awarded.",
+      "not_awarded": "The competition closed without an award.",
+      "cancelled": "The competition was cancelled."
+    },
+    "hint": {
+      "server_timing": "Offers are timed on receipt by the BAFO server.",
+      "slow_connection": "Your connection is slow. Allow extra time."
+    },
+    "connection": {
+      "reconnecting": "Reconnecting to live updates. Submitting is paused until the connection is back.",
+      "polling": "Live updates are delayed. Refreshing every {count} seconds. | Live updates are delayed. Refreshing every second. | Live updates are delayed. Refreshing every {count} seconds."
+    },
+    "status": {
+      "leading": "Your offer is the leading offer",
+      "not_leading": {
+        "tender": "Your offer is not leading. Lower your offer to compete.",
+        "auction": "Your offer is not leading. Raise your offer to compete."
+      },
+      "rank": "You are ranked {rank} of {count}",
+      "rank_only": "You are ranked {rank}",
+      "hidden": "Your offer was received. This competition does not show standings.",
+      "own_only": "Before the final pricing window only your own offer is shown.",
+      "no_offer": "You have not submitted an offer yet."
+    },
+    "leading_amount": "Leading offer: {amount}",
+    "market": {
+      "title": "Visible offers",
+      "ladder_title": "Offer ranking",
+      "ladder_caption": "Participants' offers in ranking order",
+      "alias": "Participant {alias}",
+      "you": "You"
+    },
+    "my_offer": {
+      "title": "Your current offer",
+      "none": "No offer yet.",
+      "received_at": "Received at {time}",
+      "count": "{count} offers | {count} offer | {count} offers",
+      "history_link": "Your offer history"
+    },
+    "sealed": {
+      "title": "Your offer is sealed",
+      "body": "Your offer is sealed. Offers are opened at closing, and nobody sees yours before then.",
+      "receipt_amount": "Amount",
+      "receipt_seq": "Sequence number",
+      "receipt_time": "Received at",
+      "revise_hint": "You can revise your offer until closing. Your last offer counts."
+    },
+    "composer": {
+      "title": "Submit an offer",
+      "title_improve": "Improve your offer",
+      "title_sealed": "Your sealed offer",
+      "title_bafo": "Your final offer",
+      "amount_label": "Offer amount",
+      "submit": "Submit offer",
+      "submit_improve": "Submit improved offer",
+      "submit_sealed": "Submit sealed offer",
+      "revise_sealed": "Revise sealed offer",
+      "submit_bafo": "Submit final offer",
+      "cooldown": "Wait {seconds}s",
+      "use_amount": "Use {amount}",
+      "granularity_whole": "Whole riyals only",
+      "granularity_halalas": "Halalas allowed (two decimals)",
+      "no_permission": "You do not have permission to submit offers. Contact your account owner.",
+      "disabled": {
+        "reconnecting": "Reconnecting to live updates. You can submit once the connection is back.",
+        "offline": "You are offline. You can submit once the connection is back.",
+        "connecting": "Preparing the live data…"
+      },
+      "unavailable": {
+        "generic": "The competition is not accepting offers right now.",
+        "opens_at": "Offers open at {time}"
+      }
+    },
+    "metric": {
+      "improvement": {
+        "tender": "Savings against the ceiling price",
+        "auction": "Uplift against the opening price"
+      }
+    },
+    "console": {
+      "polling": "Live updates are delayed. Refreshing every {seconds} s.",
+      "online": "{count} online now | {count} online now",
+      "extended": {
+        "auto": "Closing extended automatically",
+        "manual": "Closing extended",
+        "admin": "BAFO extended closing",
+        "body": "{minutes} minutes added. New closing time: {time}.",
+        "body_no_minutes": "New closing time: {time}."
+      },
+      "announce_leader": "New leading offer from participant {alias}: {amount}",
+      "pre_open": {
+        "title": "Offers have not opened yet",
+        "body": "Follow joining until opening, then offers as they arrive."
+      },
+      "sealed_locked": "Offers open at closing. For now you only see who has submitted.",
+      "leader_since": "Since",
+      "no_leader": "No offers yet.",
+      "improvement_na": "Shown after the first offer when there is a start price.",
+      "reserve": {
+        "met": {
+          "tender": "Target price met",
+          "auction": "Reserve price met"
+        },
+        "not_met": {
+          "tender": "Target price not met",
+          "auction": "Reserve price not met"
+        }
+      },
+      "metrics": {
+        "offers": "Offers",
+        "joined": "Joined",
+        "with_offers": "With offers",
+        "invited": "Invited"
+      },
+      "ranking": {
+        "title": "Ranking",
+        "caption": "Participant ranking",
+        "empty": "No participants have joined yet",
+        "rank": "Rank",
+        "participant": "Participant",
+        "current": "Current offer",
+        "first": "First offer",
+        "offers": "Offers",
+        "last_offer": "Last offer",
+        "bafo": "BAFO",
+        "submitted": "Submitted",
+        "submitted_yes": "Submitted",
+        "submitted_no": "Not yet"
+      },
+      "feed": {
+        "title": "Latest offers",
+        "all": "Full offers log"
+      }
+    }
+  },
+  "offers": {
+    "hint": {
+      "required_next": {
+        "tender": "Your next offer must be {amount} or lower.",
+        "auction": "Your next offer must be {amount} or higher."
+      },
+      "start_price": {
+        "tender": "Must not exceed the ceiling price of {amount}.",
+        "auction": "Must not be below the opening price of {amount}."
+      },
+      "bafo_reference": {
+        "tender": "Your final offer must not be higher than your last offer of {amount}.",
+        "auction": "Your final offer must not be lower than your last offer of {amount}."
+      }
+    },
+    "error": {
+      "start_price": {
+        "tender": "Your offer cannot exceed the ceiling price of {amount}.",
+        "auction": "Your offer cannot be below the opening price of {amount}."
+      },
+      "step_not_met": {
+        "tender": "Your offer must be {amount} or lower.",
+        "auction": "Your offer must be {amount} or higher."
+      },
+      "bafo_reference": {
+        "tender": "Your final offer cannot be higher than your last offer of {amount}.",
+        "auction": "Your final offer cannot be lower than your last offer of {amount}."
+      },
+      "granularity": "The amount must be a multiple of {amount}.",
+      "granularity_whole": "Enter whole riyals, without halalas.",
+      "empty": "Enter the offer amount.",
+      "not_positive": "Enter an amount greater than zero.",
+      "too_large": "The amount exceeds the maximum of {amount}.",
+      "unconfirmed": "We could not confirm your offer. Try again.",
+      "reconfirm": "We could not confirm this offer. Check the amount and confirm it again."
+    },
+    "use_required": "Use this amount",
+    "confirm": {
+      "title": "Confirm your offer",
+      "title_bafo": "Confirm your final offer",
+      "amount_label": "Offer amount",
+      "excl_vat": "Excluding VAT",
+      "live": "The offer counts from the moment the BAFO server receives it and cannot be withdrawn once accepted.",
+      "sealed": "Your offer is sealed. Nobody else can see it, and you can revise it until closing.",
+      "bafo": "This is your only final offer. It cannot be changed.",
+      "submit": "Confirm offer",
+      "submit_bafo": "Confirm final offer",
+      "retry": "Try again",
+      "outlier": {
+        "title": "Confirm an unusual amount",
+        "lower": "This offer is {pct} lower than your current offer.",
+        "higher": "This offer is {pct} higher than your current offer.",
+        "lower_start": "This offer is {pct} lower than the starting price.",
+        "higher_start": "This offer is {pct} higher than the starting price.",
+        "amount": "New amount",
+        "reference": "Reference amount",
+        "check": "Check the amount before you continue: it may contain a typing error.",
+        "change_amount": "Change amount",
+        "confirm": "Submit this amount"
+      }
+    },
+    "submitted": "Offer received at {time}",
+    "submitted_bafo": "Final offer received at {time}",
+    "machine_time": "{time} (KSA)",
+    "stage": {
+      "sealed": "Sealed",
+      "initial": "Initial",
+      "live": "Live",
+      "bafo": "Final"
+    },
+    "sealed": {
+      "received": "Your sealed offer was received."
+    },
+    "mine": {
+      "title": "My offers",
+      "caption": "Your organisation's offers in this competition",
+      "refresh": "Refresh",
+      "columns": {
+        "seq": "Seq.",
+        "time": "Received at",
+        "amount": "Amount",
+        "stage": "Stage",
+        "change": "Change from previous offer"
+      },
+      "voided": "Voided",
+      "first": "First offer",
+      "change_none": "No change",
+      "change_lower": "{pct} lower",
+      "change_higher": "{pct} higher",
+      "empty": {
+        "title": "No offers yet",
+        "body": "Your offers appear here after you submit them in the live room.",
+        "cta": "Go to the live room"
+      }
+    },
+    "participant_alias": "Participant {number}",
+    "sealed_amount": "Sealed",
+    "channel": {
+      "web": "Web",
+      "ios": "iOS",
+      "android": "Android",
+      "api": "API"
+    },
+    "views": {
+      "label": "View",
+      "log": "Log",
+      "participants": "By participant"
+    },
+    "log": {
+      "caption": "Accepted offers log",
+      "columns": {
+        "seq": "Seq.",
+        "time": "Received at",
+        "participant": "Participant",
+        "amount": "Amount",
+        "stage": "Stage",
+        "channel": "Channel"
+      },
+      "voided": "Voided",
+      "load_more": "Load more",
+      "empty_title": "No offers yet",
+      "empty_body": "Offers appear here as soon as the BAFO server accepts them.",
+      "draft": "The offers log appears once the competition is published.",
+      "sealed_note": "Amounts stay hidden until closing because offers are sealed."
+    },
+    "standings": {
+      "caption": "Standing per participant",
+      "empty": "No participants have joined yet",
+      "improvement": "Improvement",
+      "contact": "Contact",
+      "cr": "CR"
+    }
+  },
+  "bafo": {
+    "rule": {
+      "tender": "Your final offer cannot be higher than your last offer.",
+      "auction": "Your final offer cannot be lower than your last offer."
+    },
+    "invite": "Your organisation is on the shortlist. Submit your best and final offer before {cutoff}.",
+    "reference": "Your last offer: {amount}",
+    "submitted": "Your final offer was received. It cannot be changed.",
+    "not_shortlisted": "The issuer is running a best-and-final-offer round with a shortlist. Your last offer still stands.",
+    "ended": "The best-and-final-offer round has ended.",
+    "round": {
+      "title": "BAFO round in progress",
+      "ended_title": "BAFO round ended",
+      "progress": "{submitted} of {total} have submitted their final offer",
+      "closes_in": "Ends in",
+      "shortlisted": "Shortlisted",
+      "submitted": "Final offer in"
+    },
+    "shortlist": {
+      "open": "Start BAFO round",
+      "title": "Best-and-final-offer round",
+      "description": "Choose who may submit one final offer. A final offer cannot be worse than their last offer.",
+      "participants": "Shortlist",
+      "none": "No participants with offers.",
+      "rank": "Rank {rank}",
+      "required": "Choose at least one participant.",
+      "too_many": "You can choose up to {max} participants.",
+      "invalid_row": "This participant cannot be shortlisted.",
+      "duration": "Round length",
+      "confirm": "Start round for {count} participant | Start round for {count} participants",
+      "done": "BAFO round started. The shortlist has been notified."
+    }
+  },
+  "award": {
+    "outcome": {
+      "won": "Awarded to you",
+      "not_selected": "Not selected",
+      "not_awarded": "Closed without award"
+    },
+    "result": {
+      "title": "Competition result",
+      "won_body": "This competition was awarded to your organisation.",
+      "not_selected_body": "The competition was awarded to another participant.",
+      "not_awarded_body": "The issuer closed the competition without an award.",
+      "not_published": "The issuer has not published the result to participants.",
+      "evaluation": "Offers are closed. The issuer is evaluating them.",
+      "cancelled": "This competition was cancelled.",
+      "amount": "Award amount: {amount}",
+      "reason": "Reason: {reason}",
+      "message_title": "Message from the issuer",
+      "final_offer": "Your final offer",
+      "final_position": "Your final position",
+      "final_rank": "Rank {rank} of {count}",
+      "final_leading": "The leading offer at closing",
+      "final_not_leading": "Not the leading offer at closing",
+      "no_offer": "No offer submitted"
+    },
+    "workspace": {
+      "intro": "Choose the winner. If it is not the leading offer, or the target or reserve price is not met, a justification is needed.",
+      "not_yet": "Evaluation and award open once the competition closes.",
+      "bafo_wait": "The BAFO round is running. Award and close become available when it ends.",
+      "standings": "Final standings",
+      "select": "Select",
+      "select_participant": "Select participant {alias}",
+      "no_offer": "No offer",
+      "form_title": "Award",
+      "selected": "Selected: participant {alias} · {name}",
+      "select_required": "Choose the winner in the table.",
+      "why_not_leading": "You chose an offer other than the leading one, so a justification is required.",
+      "why_reserve": "This amount does not meet the target or reserve price, so a confirmation and a justification are required.",
+      "reason": "Justification",
+      "reason_required": "Choose a justification.",
+      "justification_text": "Justification details",
+      "text_required": "Write the justification details.",
+      "confirm_reserve": {
+        "tender": "I confirm the award without meeting the target price",
+        "auction": "I confirm the award without meeting the reserve price"
+      },
+      "reserve_required": "Confirm the award although the target or reserve price is not met.",
+      "message": "Message to the winner",
+      "message_hint": "Optional. Only the winner sees it.",
+      "notes": "Internal notes",
+      "notes_hint": "Optional. Only your team sees them.",
+      "award": "Award the competition",
+      "done": "Awarded. Participants have been notified.",
+      "previous_revoked": "A previous award was revoked: {reason}"
+    },
+    "confirm": {
+      "title": "Confirm the award",
+      "body": "The result is announced to participants under the competition rules, and the result report is updated.",
+      "confirm": "Confirm award"
+    },
+    "close": {
+      "open": "Close without award",
+      "title": "Close without award",
+      "description": "The competition closes with no winner and participants are notified. This cannot be undone.",
+      "confirm": "Close without award",
+      "done": "Closed without award."
+    },
+    "detail": {
+      "title": "Award",
+      "winner": "Winner",
+      "amount": "Awarded amount (excl. VAT)",
+      "leading": "Was the leading offer",
+      "rank": "Rank at award",
+      "reserve_met": {
+        "tender": "Target price met",
+        "auction": "Reserve price met"
+      },
+      "cr": "CR number",
+      "vat": "VAT number",
+      "justification": "Justification",
+      "message": "Message to the winner",
+      "notes": "Internal notes",
+      "awarded_by": "Awarded by",
+      "erp": "ERP sync",
+      "erp_status": {
+        "not_required": "Not required",
+        "pending": "Pending",
+        "synced": "Synced",
+        "failed": "Failed"
+      },
+      "erp_refs": "ERP references",
+      "ledger": "Offer ledger hash"
+    },
+    "revoke": {
+      "open": "Revoke award",
+      "title": "Revoke the award",
+      "description": "The competition returns to evaluation and participants are notified.",
+      "reason": "Reason",
+      "reason_short": "Write a reason of at least {min} characters.",
+      "confirm": "Revoke award",
+      "keep": "Keep the award",
+      "done": "Award revoked."
+    },
+    "report": {
+      "title": "Result report",
+      "description": "A PDF with the rules, timeline, ranking, offers log and award.",
+      "language": "Report language",
+      "download": "Download report",
+      "preparing": "Preparing the report…",
+      "failed": "The report could not be generated. Try again.",
+      "slow": "The report is taking longer than usual. Try again in a moment."
+    }
+  },
+  "qa": {
+    "participant": {
+      "title": "Questions and answers",
+      "ask_label": "Ask a question",
+      "ask_hint": "Other participants see your question without your organisation's name. The issuer sees the name.",
+      "ask_submit": "Send question",
+      "posted": "Your question was sent.",
+      "reply_open": "Add a follow-up",
+      "reply_label": "Follow-up to your question",
+      "reply_submit": "Send",
+      "reply_posted": "Your follow-up was sent.",
+      "closed_body": "Questions are accepted only while the competition is scheduled or open. You can still read earlier questions and answers.",
+      "author": {
+        "me": "You",
+        "participant": "Participant {alias}"
+      },
+      "thread_label": "Question from {author}",
+      "replies_label": "Replies",
+      "empty": {
+        "title": "No questions yet",
+        "body": "Ask a question and the issuer will answer it."
+      },
+      "load_more": "Load older questions",
+      "new_messages": "No new messages | 1 new message | {count} new messages"
+    },
+    "closed": "Questions are closed",
+    "empty": {
+      "title": "No questions yet"
+    },
+    "issuer": {
+      "empty_body": "Participants’ questions and your announcements appear here.",
+      "composer_label": "Post an announcement to every participant",
+      "composer_hint": "Every participant can read it. Up to 2000 characters.",
+      "publish": "Post announcement",
+      "published": "Announcement posted."
+    },
+    "author": {
+      "you": "You"
+    },
+    "threads_label": "Questions",
+    "reply": "Reply",
+    "reply_label": "Your reply",
+    "send_reply": "Send reply",
+    "load_older": "Load older",
+    "new_messages": "{count} new message | {count} new messages"
+  },
+  "billing": {
+    "title": "Subscription and billing",
+    "subtitle": "Your organisation's plan, team seats, vouchers and invoices.",
+    "common": {
+      "percent": "{value}%",
+      "per_month": "per month",
+      "per_year": "per year",
+      "vat_note": "{rate} VAT is added",
+      "incl_vat": "incl. VAT",
+      "purchase_permission": "Payment needs the purchase permission. Contact your account owner.",
+      "seats": "{count} seats | {count} seat | {count} seats",
+      "days_left": "No days left | {count} day left | {count} days left"
+    },
+    "intervals": {
+      "label": "Billing period",
+      "monthly": "Monthly",
+      "annual": "Annual"
+    },
+    "sources": {
+      "paid": "Paid",
+      "trial": "Trial",
+      "grant": "Granted by BAFO"
+    },
+    "statuses": {
+      "pending_payment": "Awaiting payment",
+      "active": "Active",
+      "superseded": "Replaced",
+      "expired": "Expired",
+      "cancelled": "Cancelled"
+    },
+    "amounts": {
+      "lines_caption": "Amount lines",
+      "description": "Item",
+      "quantity": "Qty",
+      "unit_price": "Unit price",
+      "net": "Amount",
+      "subtotal": "Subtotal excl. VAT",
+      "credit": "Upgrade credit",
+      "discount": "Discount",
+      "discount_code": "Discount ({code})",
+      "vat": "VAT ({rate})",
+      "total": "Total incl. VAT"
+    },
+    "overview": {
+      "current_title": "Current plan",
+      "upcoming_title": "Upcoming subscription",
+      "upcoming_starts": "Starts on {date}",
+      "ends_on": "Ends on {date}",
+      "period_value": "{start} – {end}",
+      "no_interval": "Not applicable",
+      "days_meter_label": "Days left",
+      "seats_title": "Team seats",
+      "manage_team": "Manage team",
+      "stale": "We could not refresh this page. You are seeing the last loaded data.",
+      "fields": {
+        "plan": "Plan",
+        "source": "Type",
+        "interval": "Billing period",
+        "seats": "Seats",
+        "period": "Period",
+        "status": "Status",
+        "total_paid": "Amount paid"
+      },
+      "actions": {
+        "plans": "Plans and pricing",
+        "invoices": "Invoices",
+        "choose_plan": "Choose a plan",
+        "change_or_renew": "Change or renew plan",
+        "upgrade": "Move to a paid plan"
+      },
+      "none": {
+        "title": "No active plan",
+        "body": "Choose a plan to issue competitions and add team members. Without a plan you can still take part in competitions whose fees are covered."
+      },
+      "trial": {
+        "title": "Try BAFO free",
+        "body": "Start the trial to issue competitions before choosing a plan. Each organisation can use the trial once.",
+        "start": "Start the free trial",
+        "started": "Your trial has started."
+      },
+      "history": {
+        "title": "Subscription history",
+        "empty": "No previous subscriptions"
+      },
+      "invoices": {
+        "title": "Tax invoices",
+        "body": "Every completed payment gets a tax invoice, which you can download as a PDF once it is cleared."
+      },
+      "sponsorship": {
+        "title": "Sponsored participation",
+        "body": "Purchases of sponsored participation passes appear in your tax invoices, and the value of unused passes can be returned to you as a voucher after the competition is settled."
+      }
+    },
+    "vouchers": {
+      "title": "Vouchers",
+      "hint": "Enter a voucher code in the coupon field at checkout.",
+      "active": "Active",
+      "inactive": "Inactive",
+      "valid_until": "Valid until",
+      "balance": "Remaining balance",
+      "of_amount": "of {amount}",
+      "source_competition": "Related competition",
+      "copy_code": "Copy voucher code {code}",
+      "empty": {
+        "title": "No vouchers",
+        "body": "Vouchers issued to your organisation appear here, such as the value of unused sponsored participation passes."
+      }
+    },
+    "plans": {
+      "title": "Plans and pricing",
+      "subtitle": "Choose the plan that fits your team size. You can upgrade at any time, and the unused days of your current plan are credited.",
+      "list_label": "Available plans",
+      "current": "Current plan",
+      "featured": "Recommended",
+      "list_price": "Price before discount {amount}",
+      "unavailable_interval": "Not available for this period",
+      "features_label": "{plan} features",
+      "choose": "Choose plan",
+      "choose_named": "Choose plan: {plan}",
+      "renew": "Renew plan",
+      "return_hint": "After payment, we will take you back to where you started.",
+      "footnote": "VAT and any upgrade credit are calculated at checkout.",
+      "empty": {
+        "title": "No plans are available right now",
+        "body": "Contact BAFO to find the right plan for your organisation."
+      },
+      "custom": {
+        "description": "Choose the number of seats your team needs.",
+        "per_seat": "{amount} per seat {period}",
+        "seats_label": "Number of seats",
+        "seats_hint": "Between {min} and {max}",
+        "seats_range": "Choose a number between {min} and {max}.",
+        "seats_invalid": "Enter a whole number.",
+        "seats_decrease": "Remove a seat",
+        "seats_increase": "Add a seat",
+        "quote_loading": "Calculating the price…"
+      }
+    },
+    "coupon": {
+      "label": "Coupon or voucher code",
+      "hint": "One code per payment.",
+      "apply": "Apply",
+      "remove": "Remove code",
+      "required": "Enter a code first.",
+      "applied": "Code {code} applied: {amount} discount",
+      "applied_code": "Code {code} applied."
+    },
+    "checkout": {
+      "title": "Checkout",
+      "subtitle": "Review your order, then we take you to the secure payment page.",
+      "options_title": "Order details",
+      "summary_title": "Order summary",
+      "change_plan": "Change plan",
+      "fields": {
+        "plan": "Plan",
+        "interval": "Billing period",
+        "seats": "Seats",
+        "price": "Plan price",
+        "unit_price": "Price per seat"
+      },
+      "next_step_note": "Any upgrade credit and VAT are calculated in the next step.",
+      "continue": "Continue",
+      "retry_network": "We could not confirm the payment request. Try again.",
+      "renewal_from": "You can renew from {date}.",
+      "plan_missing": {
+        "title": "We could not find this plan",
+        "body": "The plan may no longer be available. Choose a plan on the plans page."
+      },
+      "profile_gate": {
+        "complete": "Complete now",
+        "ask_owner": "The account owner, or anyone who can edit the organisation, can complete these fields."
+      },
+      "confirm": {
+        "title": "Review the amount before paying",
+        "body": "These are BAFO's final amounts, including any upgrade credit, discount and VAT.",
+        "expires_in": "This payment request expires in",
+        "expired": "This payment request has expired. Edit your order and start again.",
+        "edit": "Edit order",
+        "pay": "Pay {total}",
+        "redirecting": "Taking you to the payment page…"
+      }
+    },
+    "payment_return": {
+      "title": "Payment status",
+      "checking": {
+        "title": "Checking your payment…",
+        "body": "Confirmation can take a few seconds. Keep this page open."
+      },
+      "still_pending": {
+        "title": "Still checking",
+        "body": "We are still checking the payment. You will be notified when it completes."
+      },
+      "failed": {
+        "title": "Payment not completed",
+        "body": "The payment was not completed. You can try again."
+      },
+      "expired": {
+        "title": "Payment time ran out",
+        "body": "The payment request expired before it was completed. Start a new payment."
+      },
+      "refunded": {
+        "title": "Payment refunded",
+        "body": "This payment has been refunded."
+      },
+      "subscription": {
+        "title": "Plan activated",
+        "body": "{plan} is active until {date}.",
+        "body_generic": "The payment is complete and your subscription is recorded.",
+        "renewed_title": "Plan renewed",
+        "renewed_body": "{plan} is renewed. The new subscription starts on {start} and runs until {end}.",
+        "generic_title": "Payment complete"
+      },
+      "sponsorship": {
+        "published_title": "Paid and published",
+        "published_body": "Sponsored participation passes are reserved for your invitees.",
+        "draft_title": "Payment received",
+        "draft_body": "We received the payment, but the competition was not published. Review it, then publish without paying again.",
+        "invited_title": "Paid and invitations sent",
+        "invited_body": "The new invitations were sent, with sponsored participation passes reserved for them.",
+        "open_competition": "Go to the competition",
+        "review": "Review and publish",
+        "participants": "Participants"
+      },
+      "missing": {
+        "title": "We could not find this payment",
+        "body": "Check the link, or go to Subscription and billing."
+      },
+      "continue": "Continue",
+      "to_billing": "Subscription and billing",
+      "to_dashboard": "Overview",
+      "try_again": "Try again",
+      "back": "Back",
+      "check_again": "Check again",
+      "done": "Check later",
+      "receipt_title": "Amount details",
+      "paid_at": "Paid on",
+      "invoice": "Tax invoice"
+    },
+    "invoices": {
+      "title": "Invoices",
+      "subtitle": "Your organisation's tax invoices and credit notes, newest first.",
+      "caption": "Invoice list",
+      "fields": {
+        "number": "Invoice number",
+        "issue_date": "Issue date",
+        "type": "Type",
+        "total": "Total incl. VAT",
+        "einvoice_status": "E-invoice status",
+        "pdf": "PDF"
+      },
+      "types": {
+        "tax_invoice": "Tax invoice",
+        "credit_note": "Credit note"
+      },
+      "einvoice": {
+        "cleared": "Cleared",
+        "reported": "Reported",
+        "pending": "Being issued",
+        "rejected": "Rejected",
+        "failed": "Issuing failed"
+      },
+      "download_pdf": "Download PDF",
+      "download_named": "Download PDF of invoice {number}",
+      "not_ready": "The invoice is being issued",
+      "total_note": "Amounts include VAT.",
+      "empty": {
+        "title": "No invoices yet",
+        "body": "A tax invoice appears here for every completed payment."
+      }
+    },
+    "invoice": {
+      "title": "Invoice {number}",
+      "details_title": "Invoice details",
+      "lines_title": "Items and amounts",
+      "fields": {
+        "issued_at": "Issued at",
+        "zatca_uuid": "Invoice UUID",
+        "payment": "Payment"
+      },
+      "view_payment": "Payment status"
+    }
+  },
+  "integrations": {
+    "title": "Integrations",
+    "subtitle": "Connect BAFO to your ERP through the API and webhooks, or import vendors and export results as CSV and Excel files.",
+    "back": "Integrations",
+    "common": {
+      "never_used": "Not used yet",
+      "copy_snippet": "Copy: {label}"
+    },
+    "secret": {
+      "done": "Done"
+    },
+    "disabled": {
+      "title": "The API is not enabled"
+    },
+    "cards": {
+      "api_clients": {
+        "title": "API clients",
+        "body": "OAuth 2.0 credentials and API keys for each connected system, with the scopes you choose.",
+        "action": "Manage clients"
+      },
+      "webhooks": {
+        "title": "Webhooks",
+        "body": "Signed real-time notifications to your systems when competitions are published, closed and awarded.",
+        "action": "Manage endpoints"
+      },
+      "import": {
+        "title": "Import vendors",
+        "body": "Add vendors to your directory from a CSV or Excel file.",
+        "action": "Start an import"
+      },
+      "exports": {
+        "title": "Exports",
+        "body": "Export competition results, offer logs, awards and your vendor directory.",
+        "action": "Start an export"
+      },
+      "vendors": {
+        "title": "Vendor directory",
+        "body": "The companies you invite to your competitions, with their references in your systems.",
+        "action": "Open the directory"
+      },
+      "docs": {
+        "title": "Documentation",
+        "body": "The public API reference and the OpenAPI document for your technical team.",
+        "reference": "API reference",
+        "openapi": "OpenAPI document",
+        "new_tab": "Links open in a new tab."
+      }
+    },
+    "scopes": {
+      "label": "Scopes",
+      "hint": "What the connected system can read or do in your organisation's account.",
+      "required": "Choose at least one scope.",
+      "opt_in_warning": "Sensitive scope, enable only when needed",
+      "groups": {
+        "organization": "Organisation and reference lists",
+        "vendors": "Vendors",
+        "competitions": "Competitions",
+        "invitations": "Invitations",
+        "results": "Offers and awards",
+        "webhooks": "Webhooks"
+      },
+      "items": {
+        "organization_read": "Read organisation details",
+        "lookups_read": "Read reference lists (regions and categories)",
+        "vendors_read": "Read vendors",
+        "vendors_write": "Add and edit vendors",
+        "competitions_read": "Read competitions",
+        "competitions_write": "Create and edit drafts and attach documents",
+        "competitions_publish": "Publish competitions",
+        "competitions_manage": "Extend, cancel and close competitions without award",
+        "invitations_read": "Read invitations",
+        "invitations_write": "Send and revoke invitations",
+        "offers_read": "Read offers and results",
+        "awards_read": "Read awards",
+        "awards_sync": "Record award sync with the ERP",
+        "webhooks_manage": "Manage webhook endpoints"
+      }
+    },
+    "clients": {
+      "title": "API clients",
+      "subtitle": "Create one client per connected system. The system gets an access token with the client ID and secret, or uses an API key.",
+      "create": "Create client",
+      "copy_client_id": "Copy client ID",
+      "fields": {
+        "name": "Name",
+        "description": "Description",
+        "status": "Status",
+        "scopes": "Scopes",
+        "keys": "Active keys",
+        "last_used": "Last used",
+        "created_by": "Created by",
+        "client_id": "Client ID (client_id)"
+      },
+      "statuses": {
+        "active": "Active",
+        "suspended": "Suspended by BAFO",
+        "revoked": "Revoked"
+      },
+      "empty": {
+        "title": "No API clients",
+        "body": "Create one client per connected system, such as the test and production environments of your ERP."
+      },
+      "form": {
+        "title": "Create API client",
+        "description": "Choose a clear name and grant only the scopes the system needs.",
+        "name_hint": "For example: SAP – production",
+        "submit": "Create client"
+      },
+      "created": {
+        "title": "Client created",
+        "body": "Copy the client ID and secret into the connected system.",
+        "secret_label": "Client secret (client_secret)"
+      },
+      "detail": {
+        "settings_title": "Client details",
+        "saved": "Changes saved.",
+        "revoked_notice": "This client is revoked and can no longer call the API.",
+        "suspended_notice": "BAFO has suspended this client. Contact BAFO to reactivate it."
+      },
+      "rotate": {
+        "action": "Rotate secret",
+        "title": "Rotate client secret",
+        "description": "The current secret stops working immediately. Update it in the connected system.",
+        "confirm": "Rotate secret",
+        "done_title": "New secret"
+      },
+      "revoke": {
+        "action": "Revoke client",
+        "title": "Revoke client",
+        "description": "{name} stops calling the API immediately and all its keys are revoked. This cannot be undone.",
+        "confirm": "Revoke client",
+        "done": "Client {name} revoked."
+      },
+      "usage": {
+        "title": "How to connect",
+        "body": "Request an access token with the client ID and secret (OAuth 2.0 client credentials), or send an API key in the Authorization header.",
+        "token_label": "Access token request",
+        "key_label": "Request with an API key"
+      }
+    },
+    "keys": {
+      "title": "API keys",
+      "subtitle": "An alternative to access tokens for systems without OAuth. The full key is shown once, when it is created.",
+      "create": "Create key",
+      "no_expiry": "No expiry",
+      "fields": {
+        "key": "Key",
+        "prefix": "Prefix",
+        "status": "Status",
+        "expires": "Expires",
+        "last_used": "Last used",
+        "created": "Created",
+        "actions": "Actions"
+      },
+      "states": {
+        "active": "Active",
+        "expired": "Expired",
+        "revoked": "Revoked"
+      },
+      "empty": {
+        "title": "No keys",
+        "body": "Create a key if your system does not support OAuth."
+      },
+      "create_dialog": {
+        "title": "Create API key",
+        "body": "Choose how long the key stays valid. You can revoke it at any time.",
+        "days_label": "Validity in days",
+        "days_hint": "From 1 to 730 days",
+        "days_error": "Enter a number from 1 to 730.",
+        "submit": "Create key"
+      },
+      "created": {
+        "title": "New key",
+        "key_label": "API key"
+      },
+      "revoke": {
+        "action": "Revoke",
+        "named": "Revoke key {prefix}",
+        "title": "Revoke key",
+        "description": "Key {prefix} stops working immediately. This cannot be undone.",
+        "confirm": "Revoke key",
+        "done": "Key {prefix} revoked."
+      }
+    },
+    "webhooks": {
+      "title": "Webhook endpoints",
+      "subtitle": "URLs in your systems that receive signed notifications when events happen in your competitions.",
+      "create": "Add endpoint",
+      "all_events": "All events",
+      "events_count": "No events | {count} event | {count} events",
+      "failing_since": "Deliveries failing since",
+      "fields": {
+        "url": "Endpoint URL",
+        "events": "Events",
+        "status": "Status",
+        "last_success": "Last successful delivery",
+        "last_failure": "Last failed delivery",
+        "description": "Description"
+      },
+      "statuses": {
+        "active": "Active",
+        "disabled": "Disabled"
+      },
+      "disabled_reasons": {
+        "manual": "Disabled by you",
+        "failing": "Disabled after repeated delivery failures"
+      },
+      "empty": {
+        "title": "No webhook endpoints",
+        "body": "Add a URL that receives notifications when competitions are published, closed and awarded."
+      },
+      "form": {
+        "title_create": "Add webhook endpoint",
+        "description": "We send a signed POST request to the URL for each event you choose.",
+        "url_hint": "An https URL on a public address, such as https://erp.example.sa/bafo/webhooks",
+        "submit": "Add endpoint"
+      },
+      "events": {
+        "label": "Events",
+        "all_label": "All events",
+        "all_hint": "Including events added later.",
+        "pick_hint": "Choose the events you need:",
+        "required": "Choose at least one event.",
+        "load_failed": "We could not load the event list. Reload the page to add an endpoint."
+      },
+      "created": {
+        "title": "Endpoint added",
+        "body": "Use the signing secret to verify that notifications come from BAFO.",
+        "secret_label": "Signing secret (webhook secret)"
+      },
+      "detail": {
+        "title": "Webhook endpoint",
+        "settings_title": "Endpoint details",
+        "saved": "Changes saved.",
+        "enable": "Enable",
+        "disable": "Disable",
+        "enabled": "Endpoint enabled.",
+        "disabled": "Endpoint disabled.",
+        "test": "Send test event",
+        "test_sent": "We sent a test event. It appears in the delivery log within seconds.",
+        "failing_hint": "The endpoint is disabled automatically when deliveries keep failing for five days.",
+        "danger_title": "Signing secret and deletion"
+      },
+      "rotate": {
+        "action": "Rotate signing secret",
+        "title": "Rotate signing secret",
+        "description": "The current secret stops working immediately. Update it in your system to verify the next notifications.",
+        "confirm": "Rotate secret",
+        "done_title": "New signing secret"
+      },
+      "delete": {
+        "action": "Delete endpoint",
+        "title": "Delete endpoint",
+        "description": "Notifications to {url} stop immediately.",
+        "confirm": "Delete endpoint",
+        "done": "Endpoint deleted."
+      },
+      "signature": {
+        "title": "Verifying the signature",
+        "body": "Every message is signed with the Standard Webhooks scheme. Compare signatures in constant time, reject messages whose timestamp is more than 5 minutes off, and ignore duplicates by webhook-id.",
+        "node": "Node.js",
+        "php": "PHP"
+      }
+    },
+    "deliveries": {
+      "title": "Delivery log",
+      "subtitle": "Attempts to deliver events to this endpoint, newest first.",
+      "refresh": "Refresh the log",
+      "filters": {
+        "label": "Delivery status",
+        "all": "All",
+        "pending": "Pending",
+        "succeeded": "Delivered",
+        "failed": "Failed"
+      },
+      "statuses": {
+        "pending": "Pending",
+        "succeeded": "Delivered",
+        "failed": "Failed"
+      },
+      "fields": {
+        "event": "Event",
+        "event_id": "Event ID (webhook-id)",
+        "status": "Status",
+        "attempts": "Attempts",
+        "http_status": "Response code",
+        "duration": "Duration",
+        "next_attempt": "Next attempt",
+        "last_attempt": "Last attempt",
+        "last_error": "Last error",
+        "response": "Response excerpt",
+        "actions": "Actions"
+      },
+      "duration_ms": "{value} ms",
+      "details": "Details",
+      "details_named": "Delivery details for {type}",
+      "drawer_title": "Delivery details",
+      "redeliver": "Redeliver",
+      "redelivered": "Redelivery scheduled.",
+      "empty": {
+        "title": "No deliveries yet",
+        "body": "Send a test event to check that the URL receives notifications."
+      }
+    },
+    "jobs": {
+      "statuses": {
+        "queued": "Queued",
+        "processing": "Processing",
+        "completed": "Completed",
+        "failed": "Failed"
+      }
+    },
+    "import": {
+      "title": "Import vendors",
+      "subtitle": "Add vendors to your directory in one go from a CSV or Excel file, and check the file before importing.",
+      "steps": {
+        "template": "Template",
+        "upload": "Upload",
+        "review": "Review",
+        "import": "Import"
+      },
+      "template": {
+        "title": "Download the template",
+        "body": "Fill in the template with your vendors. Name and e-mail are required. An existing vendor is updated when its external system and ID, or its e-mail, match.",
+        "csv": "CSV template",
+        "xlsx": "Excel template"
+      },
+      "upload": {
+        "title": "Upload and check the file",
+        "label": "Vendor file",
+        "hint": "CSV or XLSX, up to 20 MB and 10,000 rows.",
+        "validate": "Check the file"
+      },
+      "progress_validate": "Checking the file…",
+      "progress_commit": "Importing the valid rows…",
+      "failed": "The file could not be processed.",
+      "results": {
+        "title": "Check results",
+        "total": "Total rows",
+        "valid": "Valid rows",
+        "errors": "Rows with errors",
+        "preview_note": "The list includes the first 100 errors. The errors file includes every row with its errors.",
+        "no_errors": "The file has no errors.",
+        "none_valid": "There are no valid rows to import. Fix the file and upload it again.",
+        "download_errors": "Download the errors file"
+      },
+      "errors": {
+        "caption": "Row errors",
+        "row": "Row",
+        "row_number": "Row {row}",
+        "column": "Column",
+        "code": "Error",
+        "message": "Details"
+      },
+      "row_codes": {
+        "required": "Required field is empty",
+        "invalid_format": "Invalid format",
+        "unknown_region": "Unknown region",
+        "unknown_category": "Unknown category",
+        "duplicate_in_file": "Duplicate in the file"
+      },
+      "commit": "No rows to import | Import {count} valid row | Import {count} valid rows",
+      "start_over": "Start over",
+      "done": {
+        "title": "Import complete",
+        "summary": "New vendors: {created} · Updated vendors: {updated}",
+        "skipped": "No rows skipped | {count} row with errors was skipped | {count} rows with errors were skipped",
+        "to_vendors": "Vendor directory",
+        "again": "Import another file"
+      }
+    },
+    "exports": {
+      "title": "Exports",
+      "subtitle": "Export competition results, offer logs, awards and your vendor directory as CSV or Excel.",
+      "note": "Amounts are in Saudi riyals excluding VAT. Amounts of sealed competitions do not appear before the offers are opened.",
+      "started": "Export started. You can download the file when it completes.",
+      "failed": "The export failed.",
+      "types": {
+        "results": {
+          "label": "Competition results",
+          "description": "Participant ranking, first and current offers, and the award status."
+        },
+        "offer_log": {
+          "label": "Offer log",
+          "description": "Every accepted offer in the competition with its receipt time to the millisecond."
+        },
+        "awards": {
+          "label": "Awards",
+          "description": "Issued awards with the winner's details and amounts."
+        },
+        "vendors": {
+          "label": "Vendor directory",
+          "description": "Every vendor in your directory, in the import template columns."
+        }
+      },
+      "formats": {
+        "csv": "CSV",
+        "xlsx": "Excel (XLSX)"
+      },
+      "form": {
+        "title": "New export",
+        "type_label": "Data",
+        "format_label": "Format",
+        "competition_label": "Competition",
+        "competition_search": "Search competitions",
+        "competition_hint": "Search by title or reference number.",
+        "competition_required": "Choose the competition.",
+        "no_competitions": "No matching competitions.",
+        "range_label": "Period",
+        "from_label": "From",
+        "to_label": "To",
+        "range_hint": "Leave both dates empty to export every award.",
+        "range_invalid": "The end date cannot be before the start date.",
+        "submit": "Start export"
+      },
+      "jobs": {
+        "title": "Exports in this session",
+        "hint": "Exports you started in this browser appear here.",
+        "fields": {
+          "type": "Export",
+          "status": "Status",
+          "rows": "Rows",
+          "created": "Started",
+          "file": "File"
+        },
+        "range": "{from} – {to}",
+        "download": "Download",
+        "empty": {
+          "title": "No exports yet",
+          "body": "Choose the data and format, then start the export."
+        }
+      }
+    }
+  },
+  "vendors": {
+    "title": "Vendors",
+    "subtitle": "Your organisation's directory of the companies you invite to competitions, with their references in your systems.",
+    "caption": "Vendor directory",
+    "linked": "On BAFO",
+    "refs_count": "No external references | {count} external reference | {count} external references",
+    "categories_more": "+{count} more",
+    "list_separator": ", ",
+    "row_actions": "Vendor actions: {name}",
+    "status_hint": "A blocked vendor cannot be invited to competitions.",
+    "email_hint": "Invitations are sent to this address.",
+    "notes_hint": "Internal notes. The vendor never sees them.",
+    "fields": {
+      "name": "Name",
+      "name_en": "Name in English",
+      "email": "E-mail",
+      "contact_name": "Contact person",
+      "phone": "Mobile number",
+      "cr_number": "Commercial registration number",
+      "vat_number": "VAT number",
+      "region": "Region",
+      "city": "City",
+      "categories": "Categories",
+      "status": "Status",
+      "source": "Source",
+      "notes": "Notes",
+      "actions": "Actions"
+    },
+    "statuses": {
+      "active": "Active",
+      "blocked": "Blocked",
+      "archived": "Archived"
+    },
+    "sources": {
+      "web": "Manual",
+      "api": "API",
+      "import": "Import"
+    },
+    "filters": {
+      "search": "Search by name, e-mail or CR number",
+      "status": "Status",
+      "all_statuses": "All statuses",
+      "category": "Category",
+      "all_categories": "All categories",
+      "region": "Region",
+      "all_regions": "All regions",
+      "clear": "Clear filters"
+    },
+    "actions": {
+      "add": "Add vendor",
+      "import": "Import",
+      "export": "Export",
+      "edit": "Edit",
+      "archive": "Archive",
+      "restore": "Restore"
+    },
+    "drawer": {
+      "create_title": "Add vendor",
+      "edit_title": "Edit vendor",
+      "description": "These details are used to invite the vendor to your competitions.",
+      "submit_create": "Add vendor",
+      "submit_edit": "Save changes",
+      "sections": {
+        "identity": "Vendor details",
+        "contact": "Contact",
+        "classification": "Region and categories"
+      }
+    },
+    "refs": {
+      "title": "External references",
+      "hint": "This vendor's identifiers in your systems, such as the SAP supplier number.",
+      "row_label": "Reference {index}",
+      "system": "System",
+      "system_hint": "Lowercase Latin letters and digits, such as sap_s4 or custom:oracle",
+      "system_invalid": "Use lowercase Latin letters, digits and underscores, such as sap_s4.",
+      "type": "Type",
+      "id": "Identifier",
+      "number": "Number",
+      "url": "Link",
+      "add": "Add reference",
+      "remove": "Remove reference {index}"
+    },
+    "conflict": {
+      "email": "A vendor with this e-mail is already in your directory.",
+      "ref": "This external reference is already used by another vendor in your directory.",
+      "open_existing": "Open the existing record"
+    },
+    "archive": {
+      "title": "Archive vendor",
+      "description": "{name} will no longer appear when you choose invitees. Past invitations and competitions stay as they are.",
+      "confirm": "Archive vendor"
+    },
+    "toasts": {
+      "created": "{name} added to the directory.",
+      "updated": "Changes saved.",
+      "archived": "{name} archived.",
+      "restored": "{name} restored to the directory."
+    },
+    "list": {
+      "empty": {
+        "title": "Your directory is empty",
+        "body": "Add vendors by hand or import them from a file, so you can invite them to your competitions quickly."
+      }
+    },
+    "no_results": {
+      "title": "No matching vendors",
+      "body": "Try other search words or filters."
+    }
+  },
+  "rules": {
+    "prices_title": "Prices",
+    "start_price": {
+      "label": {
+        "tender": "Ceiling price",
+        "auction": "Opening price"
+      },
+      "hint": {
+        "tender": "Optional. Offers above it are refused. Participants see it.",
+        "auction": "Required before publishing. Offers below it are refused. Participants see it."
+      }
+    },
+    "reserve_price": {
+      "label": {
+        "tender": "Target price",
+        "auction": "Reserve price"
+      },
+      "hint": "Hidden from participants. It only affects the award."
+    },
+    "granularity": {
+      "label": "Amount precision",
+      "hint": "Applies to offers and prices.",
+      "riyals": "Whole riyals",
+      "halalas": "With halalas"
+    },
+    "advanced": {
+      "title": "Advanced rules"
+    },
+    "sealed_note": "In a sealed competition each participant submits one sealed offer, revisable until closing. No standing or prices are shown.",
+    "sealed_unavailable": "Not available in sealed competitions",
+    "must_beat": {
+      "label": "Each new offer must improve on",
+      "own": {
+        "tender": "Each offer must be lower than your previous offer",
+        "auction": "Each offer must be higher than your previous offer"
+      },
+      "own_description": "Participants improve on their own offers; matching another participant is allowed.",
+      "best": "Must beat the leading offer",
+      "best_description": "Every new offer must beat the leading offer, so prices are shown to participants."
+    },
+    "min_step": {
+      "label": {
+        "tender": "Minimum decrement",
+        "auction": "Minimum increment"
+      },
+      "hint": "How much each new offer must improve by.",
+      "none": "None",
+      "amount": "Amount",
+      "percent": "Percentage",
+      "amount_label": "Improvement amount",
+      "percent_label": "Improvement percentage",
+      "percent_hint": "From {min}% to {max}%"
+    },
+    "visibility": {
+      "label": "What participants see",
+      "full": "Full ranking",
+      "full_description": "Each participant sees their rank.",
+      "leading_flag": "Leading or not",
+      "leading_flag_description": "Participants only see whether their offer is leading.",
+      "none": "Hidden",
+      "none_description": "Participants only see their own offer."
+    },
+    "show_prices": {
+      "label": "Show prices to participants",
+      "description": "Participants see the leading amount, and the ranked amounts with full ranking.",
+      "forced_best": "On, because every offer must beat the leading offer.",
+      "forced_result": "On, because the result is published with the amount."
+    },
+    "result": {
+      "label": "Result shown to participants",
+      "none": "Not shown",
+      "none_description": "Participants only see the status.",
+      "outcome_only": "Outcome only",
+      "outcome_only_description": "Each participant learns whether they were awarded.",
+      "outcome_and_amount": "Outcome and amount",
+      "outcome_and_amount_description": "The awarded amount is shown too, so prices are shown."
+    },
+    "final_window": {
+      "label": "Final pricing window",
+      "description": "Before it, participants only see their own offer; during it, all offer rules apply.",
+      "minutes_label": "Window length before closing"
+    },
+    "auto_extend": {
+      "label": "Auto-extend",
+      "description": "If the leading offer changes in the last minutes, closing extends automatically.",
+      "window_label": "Last minutes",
+      "by_label": "Each extension",
+      "max_label": "Maximum extensions",
+      "latest_close": "Latest possible close:",
+      "latest_close_pending": "The latest possible close appears once the closing time is set."
+    },
+    "bafo": {
+      "label": "Best-and-final-offer round",
+      "description": "After closing you can invite a shortlist to submit one final offer that does not worsen their last offer.",
+      "duration_label": "Round length"
+    },
+    "min_participants": {
+      "label": "Minimum invitees",
+      "hint": "From {min} to {max}. You cannot publish with fewer."
+    },
+    "minutes_suffix": "min",
+    "bounds_minutes": "From {min} to {max} minutes",
+    "bounds_count": "From {min} to {max}",
+    "validation": {
+      "positive": "Enter an amount above zero.",
+      "too_large": "The amount is above the allowed maximum.",
+      "granularity": "Use whole riyals, or choose “With halalas”.",
+      "reserve_vs_start": {
+        "tender": "The target price cannot be above the ceiling price.",
+        "auction": "The reserve price cannot be below the opening price."
+      },
+      "min_step_percent_range": "The percentage must be between 0.01% and 50%.",
+      "min_step_below_start": "The step must be below the start price.",
+      "auto_extend_minutes": "From {min} to {max} minutes.",
+      "auto_extend_max": "From {min} to {max} extensions.",
+      "final_window_range": "From {min} to {max} minutes, or turn the window off.",
+      "bafo_duration_range": "From {min} to {max} minutes.",
+      "min_participants_range": "From {min} to {max}.",
+      "start_price_required": "An opening price is required before publishing an auction.",
+      "whole_number": "Enter a whole number.",
+      "percent_format": "Enter a percentage with at most 2 decimals."
+    },
+    "preview": {
+      "title": "Rules summary",
+      "unsaved": "Preview, not saved",
+      "type": {
+        "tender": "Tender: the lowest offer wins.",
+        "auction": "Auction: the highest offer wins."
+      },
+      "format_live": "Live offers that can be improved until closing.",
+      "format_sealed": "One sealed offer per participant, revisable until closing.",
+      "start_price": {
+        "tender": "Ceiling price {amount}.",
+        "auction": "Opening price {amount}."
+      },
+      "reserve": {
+        "tender": "Target price {amount}, hidden from participants.",
+        "auction": "Reserve price {amount}, hidden from participants."
+      },
+      "must_beat_own": {
+        "tender": "Each offer must be lower than the participant’s previous offer.",
+        "auction": "Each offer must be higher than the participant’s previous offer."
+      },
+      "must_beat_best": "Each offer must beat the leading offer.",
+      "min_step_amount": {
+        "tender": "Minimum decrement {amount}.",
+        "auction": "Minimum increment {amount}."
+      },
+      "min_step_percent": {
+        "tender": "Minimum decrement {percent}%.",
+        "auction": "Minimum increment {percent}%."
+      },
+      "visibility_full": "Participants see their rank, without prices.",
+      "visibility_full_prices": "Participants see their rank and the ranked prices.",
+      "visibility_leading_flag": "Participants see whether they lead, without prices.",
+      "visibility_leading_flag_prices": "Participants see whether they lead and the leading amount.",
+      "visibility_none": "Participants only see their own offer.",
+      "visibility_none_prices": "Participants see their own offer and the leading amount.",
+      "visibility_sealed": "No offers or standing are shown before closing.",
+      "final_window": "The final pricing window starts {minutes} minutes before closing; before it, participants only see their own offer.",
+      "auto_extend": "A change of leading offer in the last {window} minutes extends closing by {by} minutes, up to {max} times.",
+      "bafo": "After closing you may invite a shortlist to submit one final offer within {minutes} minutes.",
+      "min_participants": "Minimum invitees at publishing: {count}.",
+      "result_none": "The result is not shown to participants.",
+      "result_outcome_only": "Each participant learns their outcome, without the awarded amount.",
+      "result_outcome_and_amount": "The outcome is published with the awarded amount.",
+      "granularity_riyals": "Amounts in whole riyals.",
+      "granularity_halalas": "Amounts with halalas.",
+      "server_time": "Offers are timed on receipt by the BAFO server. Prices exclude VAT."
+    }
+  }
+}

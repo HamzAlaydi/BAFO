@@ -1,0 +1,20 @@
+# Native launch screen: brand charcoal with the colour mark, in light and dark
+# mode (05_brand.md §2.8). Regenerate after changing it:
+#   dart run flutter_native_splash:create
+# Art comes from tool/brand/generate_brand_assets.py.
+flutter_native_splash:
+  color: "#1C1F26"
+  image: assets/splash/splash_mark.png
+  color_dark: "#1C1F26"
+  image_dark: assets/splash/splash_mark.png
+
+  android_12:
+    color: "#1C1F26"
+    image: assets/splash/splash_mark_android12.png
+    color_dark: "#1C1F26"
+    image_dark: assets/splash/splash_mark_android12.png
+
+  android: true
+  ios: true
+  web: false
+  fullscreen: false

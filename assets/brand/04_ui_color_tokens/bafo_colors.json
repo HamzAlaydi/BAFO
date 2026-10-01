@@ -1,0 +1,53 @@
+{
+  "brand": {
+    "green": { "value": "#0E9F6E", "usage": "primary brand color, dominant — buttons, links, active states" },
+    "greenDark": { "value": "#0B7A55", "usage": "hover/active state for primary green" },
+    "greenLight": { "value": "#E6F7F1", "usage": "tinted backgrounds, badges, success surfaces" },
+    "red": { "value": "#B3261E", "usage": "accent — controlled use only: icon mark, destructive actions" },
+    "redDark": { "value": "#8C1E17", "usage": "hover/active state for destructive actions" },
+    "redLight": { "value": "#FBEAE9", "usage": "error background tint" },
+    "charcoal": { "value": "#1C1F26", "usage": "wordmark, primary text, dark surfaces" }
+  },
+  "gray": {
+    "50": "#F9FAFA",
+    "100": "#F3F4F5",
+    "200": "#E5E7EB",
+    "300": "#D1D5DB",
+    "400": "#9AA0A6",
+    "500": "#6B7280",
+    "600": "#4B5563",
+    "700": "#374151",
+    "800": "#1F2937",
+    "900": "#1C1F26"
+  },
+  "semantic": {
+    "success": { "value": "#0E9F6E", "background": "#E6F7F1" },
+    "error": { "value": "#B3261E", "background": "#FBEAE9" },
+    "warning": { "value": "#B7791F", "background": "#FEF3E2" },
+    "info": { "value": "#2563EB", "background": "#EAF1FE" }
+  },
+  "surface": {
+    "light": {
+      "bgPage": "#FFFFFF",
+      "bgSurface": "#F9FAFA",
+      "bgSurfaceAlt": "#F3F4F5",
+      "borderDefault": "#E5E7EB",
+      "textPrimary": "#1C1F26",
+      "textSecondary": "#6B7280",
+      "textOnBrand": "#FFFFFF"
+    },
+    "dark": {
+      "bgPage": "#14161B",
+      "bgSurface": "#1C1F26",
+      "bgSurfaceAlt": "#262A33",
+      "borderDefault": "#333844",
+      "textPrimary": "#F3F4F5",
+      "textSecondary": "#9AA0A6"
+    }
+  },
+  "notes": [
+    "Green is the dominant interactive color; red is reserved for the icon mark and destructive actions only.",
+    "Charcoal (#1C1F26) is the default 'black' across the system — do not substitute pure #000000.",
+    "Success/Error reuse brand green/red so product feedback states stay on-brand; Warning/Info are neutral-safe additions since the brand palette has no yellow/blue equivalents."
+  ]
+}

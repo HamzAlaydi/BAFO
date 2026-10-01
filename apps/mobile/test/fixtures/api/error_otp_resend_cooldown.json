@@ -1,0 +1,11 @@
+{
+ "status": 200,
+ "body": {
+  "message": "انتظر 51 ثانية قبل طلب رمز جديد.",
+  "code": "otp_resend_cooldown",
+  "errors": {},
+  "details": {
+   "retry_after_seconds": 51
+  }
+ }
+}

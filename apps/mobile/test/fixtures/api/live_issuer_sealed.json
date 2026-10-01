@@ -1,0 +1,77 @@
+{
+ "status": 200,
+ "body": {
+  "data": {
+   "v": 2,
+   "competition_id": "01m3q4e776fekgx7wd0qfenna1",
+   "direction": "tender",
+   "status": "live",
+   "phase": "sealed",
+   "server_time": "2026-09-29T17:52:18.727Z",
+   "bidding_opens_at": "2026-09-29T16:47:13.004Z",
+   "effective_close_at": "2026-09-30T17:00:00.000Z",
+   "hard_stop_at": null,
+   "extension_count": 0,
+   "leader": null,
+   "reserve_met": null,
+   "ranking": [
+    {
+     "participant_id": "01m3q4e78491db1w5vc7x9nw54",
+     "alias_no": 23,
+     "organization": {
+      "id": "01m3q4e5x5xjb27j4p8pyx5pve",
+      "name": "Supplier C",
+      "logo_url": null
+     },
+     "current_amount_minor": null,
+     "first_amount_minor": null,
+     "rank": null,
+     "is_leader": null,
+     "offers_count": 0,
+     "last_offer_at": null,
+     "submitted": false,
+     "bafo": {
+      "shortlisted": false,
+      "submitted": false
+     }
+    },
+    {
+     "participant_id": "01m3q4e77vzvyqbnk6p7tf5de6",
+     "alias_no": 75,
+     "organization": {
+      "id": "01m3q4e5hv0x1wy43sgxkq0v5j",
+      "name": "Supplier A",
+      "logo_url": null
+     },
+     "current_amount_minor": null,
+     "first_amount_minor": null,
+     "rank": null,
+     "is_leader": null,
+     "offers_count": 1,
+     "last_offer_at": "2026-09-29T17:47:13.038Z",
+     "submitted": true,
+     "bafo": {
+      "shortlisted": false,
+      "submitted": false
+     }
+    }
+   ],
+   "metrics": {
+    "offers_count": 1,
+    "participants_joined": 2,
+    "participants_with_offers": 1,
+    "invitations_count": 2,
+    "improvement_vs_start_bps": null
+   },
+   "online_participants_count": 0,
+   "bafo": null,
+   "last_change": {
+    "kind": "snapshot",
+    "reason": null
+   }
+  },
+  "meta": {
+   "server_time": "2026-09-29T17:52:18.730Z"
+  }
+ }
+}

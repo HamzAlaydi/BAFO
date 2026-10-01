@@ -1,0 +1,168 @@
+{
+ "status": 200,
+ "body": {
+  "data": {
+   "id": "01m3q4e75cveqqa28aks6nak37",
+   "reference_no": "BAFO-A-2026-000004",
+   "title": "بيع معدات صناعية فائضة",
+   "direction": "auction",
+   "format": "live",
+   "status": "live",
+   "phase": "open",
+   "currency": "SAR",
+   "price_basis": "excl_vat",
+   "description": "نطاق العمل: توريد وتنفيذ وفق كراسة الشروط والمواصفات المرفقة، مع ضمان لمدة سنة من تاريخ الاستلام. الأسعار لا تشمل ضريبة القيمة المضافة.",
+   "category": {
+    "id": "01m3q4e4ee9khcdvhjj7awh7m4",
+    "code": "surplus_scrap",
+    "name": "فائض ومخلفات",
+    "is_other": false,
+    "auction_allowed": true
+   },
+   "category_other_text": null,
+   "region": {
+    "id": "01m3q4e4dxk4j1fh9rp64kd65j",
+    "code": "RIY",
+    "name": "الرياض"
+   },
+   "preset_code": "surplus_sale_auction",
+   "rules": {
+    "start_price_minor": 5000000,
+    "min_step_minor": 50000,
+    "min_step_bps": null,
+    "amount_granularity_minor": 100,
+    "must_beat": "best",
+    "rank_visibility": "leading_flag",
+    "show_prices": true,
+    "auto_extend": {
+     "enabled": true,
+     "window_seconds": 120,
+     "by_seconds": 120,
+     "max_extensions": 20
+    },
+    "final_window_minutes": null,
+    "bafo_round": {
+     "enabled": false,
+     "duration_minutes": null
+    },
+    "min_participants": 2,
+    "result_publication": "outcome_and_amount"
+   },
+   "rules_summary": [
+    "مزايدة: العرض الأعلى سعرًا يتصدر.",
+    "منافسة مباشرة: تُقدَّم العروض وتُحدَّث حتى وقت الإغلاق.",
+    "سعر الافتتاح: 50,000.00 ر.س",
+    "يجب أن يتجاوز كل عرض جديد العرض المتصدر.",
+    "الحد الأدنى للتحسين: 500.00 ر.س",
+    "يرى كل متنافس ما إذا كان عرضه متصدرًا، ويظهر مبلغ العرض المتصدر.",
+    "العروض التي تغيّر العرض المتصدر في آخر 2 دقيقة تمدد الإغلاق 2 دقيقة، بحد أقصى 20 مرات (أقصى موعد إغلاق ممكن: 1 أكتوبر 2026، 8:40 م).",
+    "تُحتسب أوقات العروض عند استلامها في خادم بافو.",
+    "الأسعار لا تشمل ضريبة القيمة المضافة."
+   ],
+   "schedule": {
+    "bidding_opens_at": "2026-09-29T15:47:12.947Z",
+    "scheduled_close_at": "2026-10-01T17:00:00.000Z",
+    "effective_close_at": "2026-10-01T17:00:00.000Z",
+    "hard_stop_at": "2026-10-01T17:40:00.000Z",
+    "final_window_starts_at": null,
+    "invitation_cutoff_at": "2026-10-01T16:00:00.000Z",
+    "extension_count": 0,
+    "published_at": "2026-09-29T15:47:12.947Z",
+    "opened_at": "2026-09-29T15:47:12.947Z",
+    "closed_at": null,
+    "offers_opened_at": null,
+    "awarded_at": null,
+    "not_awarded_at": null,
+    "cancelled_at": null
+   },
+   "issuer": {
+    "id": "01m3q4e4vys8t1rn3kfnvf54cr",
+    "name": "Issuer Co",
+    "logo_url": null,
+    "verified": true
+   },
+   "bafo_round": null,
+   "cancellation": null,
+   "not_awarded": null,
+   "participation": {
+    "participant_id": "01m3q4e76b8jmyq87p7pteacaw",
+    "alias_no": 28,
+    "joined_at": "2026-09-29T17:47:12.000Z",
+    "terms_accepted_at": "2026-09-29T17:47:12.000Z"
+   },
+   "access": {
+    "state": "full",
+    "coverage": "own_plan",
+    "sponsor_name": null,
+    "join_deadline": "2026-10-01T16:00:00.000Z"
+   },
+   "result": {
+    "outcome": null,
+    "winning_amount_minor": null
+   },
+   "permissions": {
+    "can_edit": false,
+    "can_delete": false,
+    "can_publish": false,
+    "can_invite": false,
+    "can_extend": false,
+    "can_cancel": false,
+    "can_start_bafo": false,
+    "can_award": false,
+    "can_revoke_award": false,
+    "can_close_without_award": false,
+    "can_manage_sponsorship": false,
+    "can_comment": true,
+    "can_join": false,
+    "can_decline": false,
+    "can_submit_offer": true
+   },
+   "viewer_role": "participant",
+   "live": {
+    "v": 3,
+    "competition_id": "01m3q4e75cveqqa28aks6nak37",
+    "direction": "auction",
+    "status": "live",
+    "phase": "open",
+    "server_time": "2026-09-29T17:52:19.098Z",
+    "bidding_opens_at": "2026-09-29T15:47:12.947Z",
+    "effective_close_at": "2026-10-01T17:00:00.000Z",
+    "hard_stop_at": "2026-10-01T17:40:00.000Z",
+    "extension_count": 0,
+    "accepting_offers": true,
+    "start_price_minor": 5000000,
+    "min_step": {
+     "minor": 50000,
+     "bps": null
+    },
+    "amount_granularity_minor": 100,
+    "my_offer": {
+     "id": "01m3q4e76z5p8hc1yshen78kjm",
+     "seq": 2,
+     "amount_minor": 5100000,
+     "stage": "live",
+     "accepted_at": "2026-09-29T17:47:12.990Z"
+    },
+    "my_offers_count": 1,
+    "is_leading": true,
+    "rank": null,
+    "ranked_count": null,
+    "leading_amount_minor": 5100000,
+    "ladder": null,
+    "required_next_amount_minor": 5150000,
+    "bafo": null,
+    "result": null,
+    "last_change": {
+     "kind": "snapshot",
+     "reason": null
+    }
+   },
+   "server_time": "2026-09-29T17:52:19.101Z",
+   "created_at": "2026-09-29T17:47:12.940Z",
+   "updated_at": "2026-09-29T17:47:12.978Z"
+  },
+  "meta": {
+   "server_time": "2026-09-29T17:52:19.101Z"
+  }
+ }
+}

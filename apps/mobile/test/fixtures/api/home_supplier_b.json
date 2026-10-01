@@ -1,0 +1,53 @@
+{
+ "status": 200,
+ "body": {
+  "data": {
+   "issuer": {
+    "active_competitions": 0,
+    "draft_competitions": 0,
+    "live_now": 0,
+    "awaiting_award": 0,
+    "offers_received_30d": 0
+   },
+   "participant": {
+    "pending_invitations": 0,
+    "active_participations": 1,
+    "offers_submitted_30d": 0,
+    "awards_won": 0
+   },
+   "team": {
+    "members": 1,
+    "seats_total": 1
+   },
+   "subscription": null,
+   "alerts": [
+    {
+     "code": "plan_required",
+     "params": []
+    },
+    {
+     "code": "trial_available",
+     "params": []
+    }
+   ],
+   "activities": [
+    {
+     "id": "7198e054b5fba44fb2503d8c1b",
+     "action": "invitation.joined",
+     "occurred_at": "2026-09-29T17:47:13.474Z",
+     "actor": {
+      "name": "فهد مورد ب"
+     },
+     "subject": {
+      "type": "competition",
+      "id": "01m3q4e7myd08bs5aeeywrp8ah",
+      "title": "خدمات النظافة للفروع (رسوم مغطّاة)"
+     }
+    }
+   ]
+  },
+  "meta": {
+   "server_time": "2026-09-29T17:52:17.794Z"
+  }
+ }
+}

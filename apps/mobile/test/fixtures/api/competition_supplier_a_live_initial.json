@@ -1,0 +1,163 @@
+{
+ "status": 200,
+ "body": {
+  "data": {
+   "id": "01m3q4e6z5n2cq79mmr4h3ezb4",
+   "reference_no": "BAFO-T-2026-000002",
+   "title": "توريد مستلزمات مكتبية للعام المالي 2027",
+   "direction": "tender",
+   "format": "live",
+   "status": "live",
+   "phase": "initial",
+   "currency": "SAR",
+   "price_basis": "excl_vat",
+   "description": "نطاق العمل: توريد وتنفيذ وفق كراسة الشروط والمواصفات المرفقة، مع ضمان لمدة سنة من تاريخ الاستلام. الأسعار لا تشمل ضريبة القيمة المضافة.",
+   "category": {
+    "id": "01m3q4e4eac63az0kartfdkmjc",
+    "code": "office_supplies",
+    "name": "مستلزمات مكتبية",
+    "is_other": false,
+    "auction_allowed": true
+   },
+   "category_other_text": null,
+   "region": {
+    "id": "01m3q4e4dxk4j1fh9rp64kd65j",
+    "code": "RIY",
+    "name": "الرياض"
+   },
+   "preset_code": "standard_live_tender",
+   "rules": {
+    "start_price_minor": 25000000,
+    "min_step_minor": null,
+    "min_step_bps": 50,
+    "amount_granularity_minor": 100,
+    "must_beat": "own",
+    "rank_visibility": "leading_flag",
+    "show_prices": false,
+    "auto_extend": {
+     "enabled": true,
+     "window_seconds": 180,
+     "by_seconds": 180,
+     "max_extensions": 10
+    },
+    "final_window_minutes": 60,
+    "bafo_round": {
+     "enabled": false,
+     "duration_minutes": null
+    },
+    "min_participants": 2,
+    "result_publication": "outcome_only"
+   },
+   "rules_summary": [
+    "مناقصة: العرض الأقل سعرًا يتصدر.",
+    "منافسة مباشرة: تُقدَّم العروض وتُحدَّث حتى وقت الإغلاق.",
+    "سعر السقف: 250,000.00 ر.س",
+    "يجب أن يحسّن كل عرض جديد عرضك السابق.",
+    "الحد الأدنى للتحسين: 0.5%",
+    "يرى كل متنافس ما إذا كان عرضه متصدرًا، دون أسعار المتنافسين الآخرين.",
+    "تبدأ فترة التسعير النهائية قبل الإغلاق بـ 60 دقيقة، وقبلها لا يظهر إلا عرضك.",
+    "العروض التي تغيّر العرض المتصدر في آخر 3 دقيقة تمدد الإغلاق 3 دقيقة، بحد أقصى 10 مرات (أقصى موعد إغلاق ممكن: 2 أكتوبر 2026، 8:30 م).",
+    "تُحتسب أوقات العروض عند استلامها في خادم بافو.",
+    "الأسعار لا تشمل ضريبة القيمة المضافة."
+   ],
+   "schedule": {
+    "bidding_opens_at": "2026-09-29T16:47:12.751Z",
+    "scheduled_close_at": "2026-10-02T17:00:00.000Z",
+    "effective_close_at": "2026-10-02T17:00:00.000Z",
+    "hard_stop_at": "2026-10-02T17:30:00.000Z",
+    "final_window_starts_at": "2026-10-02T16:00:00.000Z",
+    "invitation_cutoff_at": "2026-10-02T16:00:00.000Z",
+    "extension_count": 0,
+    "published_at": "2026-09-29T16:47:12.751Z",
+    "opened_at": "2026-09-29T16:47:12.751Z",
+    "closed_at": null,
+    "offers_opened_at": null,
+    "awarded_at": null,
+    "not_awarded_at": null,
+    "cancelled_at": null
+   },
+   "issuer": {
+    "id": "01m3q4e4vys8t1rn3kfnvf54cr",
+    "name": "Issuer Co",
+    "logo_url": null,
+    "verified": true
+   },
+   "bafo_round": null,
+   "cancellation": null,
+   "not_awarded": null,
+   "participation": {
+    "participant_id": "01m3q4e70fn40adg3ssz5dejsq",
+    "alias_no": 69,
+    "joined_at": "2026-09-29T17:47:12.000Z",
+    "terms_accepted_at": "2026-09-29T17:47:12.000Z"
+   },
+   "access": {
+    "state": "full",
+    "coverage": "own_plan",
+    "sponsor_name": null,
+    "join_deadline": "2026-10-02T16:00:00.000Z"
+   },
+   "result": {
+    "outcome": null,
+    "winning_amount_minor": null
+   },
+   "permissions": {
+    "can_edit": false,
+    "can_delete": false,
+    "can_publish": false,
+    "can_invite": false,
+    "can_extend": false,
+    "can_cancel": false,
+    "can_start_bafo": false,
+    "can_award": false,
+    "can_revoke_award": false,
+    "can_close_without_award": false,
+    "can_manage_sponsorship": false,
+    "can_comment": true,
+    "can_join": false,
+    "can_decline": false,
+    "can_submit_offer": true
+   },
+   "viewer_role": "participant",
+   "live": {
+    "v": 1,
+    "competition_id": "01m3q4e6z5n2cq79mmr4h3ezb4",
+    "direction": "tender",
+    "status": "live",
+    "phase": "initial",
+    "server_time": "2026-09-29T17:52:19.019Z",
+    "bidding_opens_at": "2026-09-29T16:47:12.751Z",
+    "effective_close_at": "2026-10-02T17:00:00.000Z",
+    "hard_stop_at": "2026-10-02T17:30:00.000Z",
+    "extension_count": 0,
+    "accepting_offers": true,
+    "start_price_minor": 25000000,
+    "min_step": {
+     "minor": null,
+     "bps": 50
+    },
+    "amount_granularity_minor": 100,
+    "my_offer": null,
+    "my_offers_count": 0,
+    "is_leading": null,
+    "rank": null,
+    "ranked_count": null,
+    "leading_amount_minor": null,
+    "ladder": null,
+    "required_next_amount_minor": null,
+    "bafo": null,
+    "result": null,
+    "last_change": {
+     "kind": "snapshot",
+     "reason": null
+    }
+   },
+   "server_time": "2026-09-29T17:52:19.022Z",
+   "created_at": "2026-09-29T17:47:12.741Z",
+   "updated_at": "2026-09-29T17:47:12.777Z"
+  },
+  "meta": {
+   "server_time": "2026-09-29T17:52:19.022Z"
+  }
+ }
+}

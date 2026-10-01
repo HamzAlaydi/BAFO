@@ -1,0 +1,8 @@
+{
+  "API_BASE_URL": "http://10.0.2.2:8000/api/app/v1",
+  "REVERB_AUTH_URL": "",
+  "REVERB_APP_KEY": "",
+  "REVERB_HOST": "",
+  "REVERB_PORT": "",
+  "REVERB_SCHEME": ""
+}

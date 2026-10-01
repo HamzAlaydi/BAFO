@@ -1,0 +1,4 @@
+/* Localized Info.plist values (English). */
+"CFBundleDisplayName" = "BAFO";
+"CFBundleName" = "BAFO";
+"NSPhotoLibraryUsageDescription" = "BAFO uses a photo you choose as your profile picture or your organisation's logo.";

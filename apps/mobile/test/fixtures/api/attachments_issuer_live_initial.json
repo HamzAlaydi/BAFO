@@ -1,0 +1,38 @@
+{
+ "status": 200,
+ "body": {
+  "data": [
+   {
+    "id": "01m3q4e703k20seq4gzgqpz352",
+    "kind": "document",
+    "title": "كراسة الشروط والمواصفات",
+    "file": {
+     "id": "01m3q4e70173055t7pcdv1tba5",
+     "name": "specifications.pdf",
+     "mime_type": "application/pdf",
+     "extension": "pdf",
+     "size_bytes": 218,
+     "download_path": "/api/app/v1/files/01m3q4e70173055t7pcdv1tba5/download",
+     "created_at": "2026-09-29T17:47:12.000Z"
+    },
+    "url": null,
+    "is_addendum": true,
+    "sort_order": 1,
+    "created_at": "2026-09-29T17:47:12.000Z"
+   },
+   {
+    "id": "01m3q4e7066d1q8ksxza7nbmtm",
+    "kind": "external_link",
+    "title": "دليل الأصناف",
+    "file": null,
+    "url": "https://docs.demo.bafo.test/office-supplies/catalogue",
+    "is_addendum": true,
+    "sort_order": 2,
+    "created_at": "2026-09-29T17:47:12.000Z"
+   }
+  ],
+  "meta": {
+   "server_time": "2026-09-29T17:52:18.495Z"
+  }
+ }
+}

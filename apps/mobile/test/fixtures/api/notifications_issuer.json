@@ -1,0 +1,381 @@
+{
+ "status": 200,
+ "body": {
+  "data": [
+   {
+    "id": "01m3q4es4cmh3w54f0vafqz0kc",
+    "type": "invitation.joined",
+    "title": "انضم متنافس",
+    "body": "انضمت Supplier A إلى «خدمات النظافة للفروع (رسوم مغطّاة)».",
+    "subject": {
+     "id": "01m3q4e7myd08bs5aeeywrp8ah",
+     "type": "competition"
+    },
+    "route": "/competitions/01m3q4e7myd08bs5aeeywrp8ah",
+    "params": {
+     "direction": "tender",
+     "sponsored": false,
+     "competition_title": "خدمات النظافة للفروع (رسوم مغطّاة)",
+     "organization_name": "Supplier A"
+    },
+    "read_at": null,
+    "created_at": "2026-09-29T17:47:32.000Z"
+   },
+   {
+    "id": "01m3q4es43b92wn4g5ts610pxa",
+    "type": "invitation.joined",
+    "title": "انضم متنافس",
+    "body": "انضمت Supplier B إلى «خدمات النظافة للفروع (رسوم مغطّاة)». رسوم المشاركة مغطّاة.",
+    "subject": {
+     "id": "01m3q4e7myd08bs5aeeywrp8ah",
+     "type": "competition"
+    },
+    "route": "/competitions/01m3q4e7myd08bs5aeeywrp8ah",
+    "params": {
+     "direction": "tender",
+     "sponsored": true,
+     "competition_title": "خدمات النظافة للفروع (رسوم مغطّاة)",
+     "organization_name": "Supplier B"
+    },
+    "read_at": null,
+    "created_at": "2026-09-29T17:47:32.000Z"
+   },
+   {
+    "id": "01m3q4es2vcfmfs8ysc7qv2f1n",
+    "type": "competition.closed",
+    "title": "أُغلقت المنافسة",
+    "body": "أُغلق استقبال العروض في «بيع خردة حديد ومعادن».",
+    "subject": {
+     "id": "01m3q4e7hysr6j09xnvx6ak8b5",
+     "type": "competition"
+    },
+    "route": "/competitions/01m3q4e7hysr6j09xnvx6ak8b5",
+    "params": {
+     "direction": "auction",
+     "competition_title": "بيع خردة حديد ومعادن"
+    },
+    "read_at": null,
+    "created_at": "2026-09-29T17:47:32.000Z"
+   },
+   {
+    "id": "01m3q4es2njkf0dtcq4wsbzjpp",
+    "type": "offer.received",
+    "title": "عروض جديدة",
+    "body": "وصلت عروض جديدة في «بيع خردة حديد ومعادن».",
+    "subject": {
+     "id": "01m3q4e7hysr6j09xnvx6ak8b5",
+     "type": "competition"
+    },
+    "route": "/competitions/01m3q4e7hysr6j09xnvx6ak8b5/live",
+    "params": {
+     "direction": "auction",
+     "competition_title": "بيع خردة حديد ومعادن"
+    },
+    "read_at": null,
+    "created_at": "2026-09-29T17:47:32.000Z"
+   },
+   {
+    "id": "01m3q4es2drkcprxr28xdwb9fp",
+    "type": "invitation.joined",
+    "title": "انضم متنافس",
+    "body": "انضمت Buyer D إلى «بيع خردة حديد ومعادن».",
+    "subject": {
+     "id": "01m3q4e7hysr6j09xnvx6ak8b5",
+     "type": "competition"
+    },
+    "route": "/competitions/01m3q4e7hysr6j09xnvx6ak8b5",
+    "params": {
+     "direction": "auction",
+     "sponsored": false,
+     "competition_title": "بيع خردة حديد ومعادن",
+     "organization_name": "Buyer D"
+    },
+    "read_at": null,
+    "created_at": "2026-09-29T17:47:32.000Z"
+   },
+   {
+    "id": "01m3q4es1c6w95bff1j32e2ect",
+    "type": "competition.closed",
+    "title": "أُغلقت المنافسة",
+    "body": "أُغلق استقبال العروض في «توريد أثاث مكتبي للمقر الرئيسي».",
+    "subject": {
+     "id": "01m3q4e7f92zkv3d6bz13k7bgs",
+     "type": "competition"
+    },
+    "route": "/competitions/01m3q4e7f92zkv3d6bz13k7bgs",
+    "params": {
+     "direction": "tender",
+     "competition_title": "توريد أثاث مكتبي للمقر الرئيسي"
+    },
+    "read_at": null,
+    "created_at": "2026-09-29T17:47:32.000Z"
+   },
+   {
+    "id": "01m3q4es128kg61td7zpbebbbh",
+    "type": "offer.received",
+    "title": "عروض جديدة",
+    "body": "وصلت عروض جديدة في «توريد أثاث مكتبي للمقر الرئيسي».",
+    "subject": {
+     "id": "01m3q4e7f92zkv3d6bz13k7bgs",
+     "type": "competition"
+    },
+    "route": "/competitions/01m3q4e7f92zkv3d6bz13k7bgs/live",
+    "params": {
+     "direction": "tender",
+     "competition_title": "توريد أثاث مكتبي للمقر الرئيسي"
+    },
+    "read_at": null,
+    "created_at": "2026-09-29T17:47:32.000Z"
+   },
+   {
+    "id": "01m3q4es0t0bcg0v06er03q7s7",
+    "type": "invitation.joined",
+    "title": "انضم متنافس",
+    "body": "انضمت Supplier C إلى «توريد أثاث مكتبي للمقر الرئيسي».",
+    "subject": {
+     "id": "01m3q4e7f92zkv3d6bz13k7bgs",
+     "type": "competition"
+    },
+    "route": "/competitions/01m3q4e7f92zkv3d6bz13k7bgs",
+    "params": {
+     "direction": "tender",
+     "sponsored": false,
+     "competition_title": "توريد أثاث مكتبي للمقر الرئيسي",
+     "organization_name": "Supplier C"
+    },
+    "read_at": null,
+    "created_at": "2026-09-29T17:47:32.000Z"
+   },
+   {
+    "id": "01m3q4es0h69gy9qtk9gtwbt1a",
+    "type": "invitation.joined",
+    "title": "انضم متنافس",
+    "body": "انضمت Supplier A إلى «توريد أثاث مكتبي للمقر الرئيسي».",
+    "subject": {
+     "id": "01m3q4e7f92zkv3d6bz13k7bgs",
+     "type": "competition"
+    },
+    "route": "/competitions/01m3q4e7f92zkv3d6bz13k7bgs",
+    "params": {
+     "direction": "tender",
+     "sponsored": false,
+     "competition_title": "توريد أثاث مكتبي للمقر الرئيسي",
+     "organization_name": "Supplier A"
+    },
+    "read_at": null,
+    "created_at": "2026-09-29T17:47:32.000Z"
+   },
+   {
+    "id": "01m3q4erzj9dbkqgexck5tmqnn",
+    "type": "competition.closed",
+    "title": "أُغلقت المنافسة",
+    "body": "أُغلق استقبال العروض في «توريد خوادم ومعدات مركز البيانات».",
+    "subject": {
+     "id": "01m3q4e7btzj85vknn9k5m2stt",
+     "type": "competition"
+    },
+    "route": "/competitions/01m3q4e7btzj85vknn9k5m2stt",
+    "params": {
+     "direction": "tender",
+     "competition_title": "توريد خوادم ومعدات مركز البيانات"
+    },
+    "read_at": null,
+    "created_at": "2026-09-29T17:47:32.000Z"
+   },
+   {
+    "id": "01m3q4erz44h9pcfrtbyav1wj9",
+    "type": "offer.received",
+    "title": "عروض جديدة",
+    "body": "وصلت عروض جديدة في «توريد خوادم ومعدات مركز البيانات».",
+    "subject": {
+     "id": "01m3q4e7btzj85vknn9k5m2stt",
+     "type": "competition"
+    },
+    "route": "/competitions/01m3q4e7btzj85vknn9k5m2stt/live",
+    "params": {
+     "direction": "tender",
+     "competition_title": "توريد خوادم ومعدات مركز البيانات"
+    },
+    "read_at": null,
+    "created_at": "2026-09-29T17:47:32.000Z"
+   },
+   {
+    "id": "01m3q4eryxajym9c503x6t841q",
+    "type": "invitation.joined",
+    "title": "انضم متنافس",
+    "body": "انضمت Buyer D إلى «توريد خوادم ومعدات مركز البيانات».",
+    "subject": {
+     "id": "01m3q4e7btzj85vknn9k5m2stt",
+     "type": "competition"
+    },
+    "route": "/competitions/01m3q4e7btzj85vknn9k5m2stt",
+    "params": {
+     "direction": "tender",
+     "sponsored": false,
+     "competition_title": "توريد خوادم ومعدات مركز البيانات",
+     "organization_name": "Buyer D"
+    },
+    "read_at": null,
+    "created_at": "2026-09-29T17:47:32.000Z"
+   },
+   {
+    "id": "01m3q4erynqr9d02ca3bew7np2",
+    "type": "invitation.joined",
+    "title": "انضم متنافس",
+    "body": "انضمت Supplier C إلى «توريد خوادم ومعدات مركز البيانات».",
+    "subject": {
+     "id": "01m3q4e7btzj85vknn9k5m2stt",
+     "type": "competition"
+    },
+    "route": "/competitions/01m3q4e7btzj85vknn9k5m2stt",
+    "params": {
+     "direction": "tender",
+     "sponsored": false,
+     "competition_title": "توريد خوادم ومعدات مركز البيانات",
+     "organization_name": "Supplier C"
+    },
+    "read_at": null,
+    "created_at": "2026-09-29T17:47:32.000Z"
+   },
+   {
+    "id": "01m3q4eryc45zrf4xgxhwaknds",
+    "type": "invitation.joined",
+    "title": "انضم متنافس",
+    "body": "انضمت Supplier A إلى «توريد خوادم ومعدات مركز البيانات».",
+    "subject": {
+     "id": "01m3q4e7btzj85vknn9k5m2stt",
+     "type": "competition"
+    },
+    "route": "/competitions/01m3q4e7btzj85vknn9k5m2stt",
+    "params": {
+     "direction": "tender",
+     "sponsored": false,
+     "competition_title": "توريد خوادم ومعدات مركز البيانات",
+     "organization_name": "Supplier A"
+    },
+    "read_at": null,
+    "created_at": "2026-09-29T17:47:32.000Z"
+   },
+   {
+    "id": "01m3q4erxfnwg5kjmrc41en2ke",
+    "type": "competition.closed",
+    "title": "أُغلقت المنافسة",
+    "body": "أُغلق استقبال العروض في «نقل وتخزين البضائع بين المستودعات».",
+    "subject": {
+     "id": "01m3q4e78rq2b0b506qbyt6pr2",
+     "type": "competition"
+    },
+    "route": "/competitions/01m3q4e78rq2b0b506qbyt6pr2",
+    "params": {
+     "direction": "tender",
+     "competition_title": "نقل وتخزين البضائع بين المستودعات"
+    },
+    "read_at": null,
+    "created_at": "2026-09-29T17:47:32.000Z"
+   },
+   {
+    "id": "01m3q4erx0e25nzwrq6b0hcjp9",
+    "type": "offer.received",
+    "title": "عروض جديدة",
+    "body": "وصلت عروض جديدة في «نقل وتخزين البضائع بين المستودعات».",
+    "subject": {
+     "id": "01m3q4e78rq2b0b506qbyt6pr2",
+     "type": "competition"
+    },
+    "route": "/competitions/01m3q4e78rq2b0b506qbyt6pr2/live",
+    "params": {
+     "direction": "tender",
+     "competition_title": "نقل وتخزين البضائع بين المستودعات"
+    },
+    "read_at": null,
+    "created_at": "2026-09-29T17:47:32.000Z"
+   },
+   {
+    "id": "01m3q4erwrc1n95s4nkemwaman",
+    "type": "invitation.joined",
+    "title": "انضم متنافس",
+    "body": "انضمت Buyer D إلى «نقل وتخزين البضائع بين المستودعات».",
+    "subject": {
+     "id": "01m3q4e78rq2b0b506qbyt6pr2",
+     "type": "competition"
+    },
+    "route": "/competitions/01m3q4e78rq2b0b506qbyt6pr2",
+    "params": {
+     "direction": "tender",
+     "sponsored": false,
+     "competition_title": "نقل وتخزين البضائع بين المستودعات",
+     "organization_name": "Buyer D"
+    },
+    "read_at": null,
+    "created_at": "2026-09-29T17:47:32.000Z"
+   },
+   {
+    "id": "01m3q4erwga4v5633ck8zy8bbm",
+    "type": "invitation.joined",
+    "title": "انضم متنافس",
+    "body": "انضمت Supplier C إلى «نقل وتخزين البضائع بين المستودعات».",
+    "subject": {
+     "id": "01m3q4e78rq2b0b506qbyt6pr2",
+     "type": "competition"
+    },
+    "route": "/competitions/01m3q4e78rq2b0b506qbyt6pr2",
+    "params": {
+     "direction": "tender",
+     "sponsored": false,
+     "competition_title": "نقل وتخزين البضائع بين المستودعات",
+     "organization_name": "Supplier C"
+    },
+    "read_at": null,
+    "created_at": "2026-09-29T17:47:32.000Z"
+   },
+   {
+    "id": "01m3q4erw75zm52smdnk7bg9t4",
+    "type": "invitation.joined",
+    "title": "انضم متنافس",
+    "body": "انضمت Supplier A إلى «نقل وتخزين البضائع بين المستودعات».",
+    "subject": {
+     "id": "01m3q4e78rq2b0b506qbyt6pr2",
+     "type": "competition"
+    },
+    "route": "/competitions/01m3q4e78rq2b0b506qbyt6pr2",
+    "params": {
+     "direction": "tender",
+     "sponsored": false,
+     "competition_title": "نقل وتخزين البضائع بين المستودعات",
+     "organization_name": "Supplier A"
+    },
+    "read_at": null,
+    "created_at": "2026-09-29T17:47:32.000Z"
+   },
+   {
+    "id": "01m3q4ervd8a9j4f7785baa0ns",
+    "type": "offer.received",
+    "title": "عروض جديدة",
+    "body": "وصلت عروض جديدة في «تطوير بوابة إلكترونية لخدمات العملاء (عروض مغلقة)».",
+    "subject": {
+     "id": "01m3q4e776fekgx7wd0qfenna1",
+     "type": "competition"
+    },
+    "route": "/competitions/01m3q4e776fekgx7wd0qfenna1/live",
+    "params": {
+     "direction": "tender",
+     "competition_title": "تطوير بوابة إلكترونية لخدمات العملاء (عروض مغلقة)"
+    },
+    "read_at": null,
+    "created_at": "2026-09-29T17:47:32.000Z"
+   }
+  ],
+  "meta": {
+   "pagination": {
+    "type": "page",
+    "current_page": 1,
+    "per_page": 20,
+    "has_more": true,
+    "total": 41,
+    "last_page": 3
+   },
+   "unread_count": 38,
+   "server_time": "2026-09-29T17:52:20.197Z"
+  }
+ }
+}

@@ -1,0 +1,39 @@
+{
+ "status": 200,
+ "body": {
+  "data": {
+   "current": {
+    "id": "01m3q4e68sv6ca5xsfde2rabp3",
+    "plan": {
+     "id": "01m3q4e4f3mfmsbkssknnpn6cg",
+     "code": "pro",
+     "name": "باقة برو"
+    },
+    "source": "paid",
+    "interval": "monthly",
+    "seats": 3,
+    "status": "active",
+    "starts_at": "2026-09-29T17:47:12.000Z",
+    "ends_at": "2026-10-29T17:47:12.000Z",
+    "days_left": 30,
+    "total_days": 30,
+    "amounts": {
+     "subtotal_minor": 150000,
+     "credit_minor": 0,
+     "discount_minor": 0,
+     "vat_minor": 22500,
+     "total_minor": 172500
+    },
+    "created_at": "2026-09-29T17:47:12.000Z"
+   },
+   "upcoming": null,
+   "history": [],
+   "trial_available": false,
+   "seats_used": 3,
+   "seats_total": 3
+  },
+  "meta": {
+   "server_time": "2026-09-29T17:52:20.045Z"
+  }
+ }
+}

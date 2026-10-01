@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Brand charcoal (#1C1F26): adaptive icon background (dark variant is the store default). -->
+    <color name="ic_launcher_background">#1C1F26</color>
+    <!-- Accent tint for the status-bar notification icon (@drawable/ic_stat_bafo): green-dark. -->
+    <color name="notification_color">#0B7A55</color>
+</resources>

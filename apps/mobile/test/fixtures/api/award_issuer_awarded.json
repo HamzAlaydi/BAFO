@@ -1,0 +1,51 @@
+{
+ "status": 200,
+ "body": {
+  "data": {
+   "id": "01m3q4e7hkwwa1q73zbvj93nkb",
+   "status": "issued",
+   "participant": {
+    "id": "01m3q4e7g850q39tgabtjnatfq",
+    "alias_no": 96,
+    "organization": {
+     "id": "01m3q4e5x5xjb27j4p8pyx5pve",
+     "name": "Supplier C",
+     "cr_number": "1010000004",
+     "vat_number": "300000000000043"
+    }
+   },
+   "amount_minor": 21800000,
+   "currency": "SAR",
+   "price_basis": "excl_vat",
+   "is_leading_offer": true,
+   "rank_at_award": 1,
+   "reserve_met": true,
+   "justification": null,
+   "message_to_winner": "نبارك لكم الترسية، وسيتواصل معكم فريق المشتريات لاستكمال الإجراءات.",
+   "internal_notes": "أفضل عرض ومطابق فنيًا.",
+   "offer": {
+    "id": "01m3q4e7gy67zr2y64z48n0ef2",
+    "seq": 2,
+    "accepted_at": "2026-09-29T17:47:13.308Z"
+   },
+   "awarded_by": {
+    "id": "01m3q4e56gqh65sag0th21ftkn",
+    "name": "سارة المالكة"
+   },
+   "awarded_at": "2026-09-29T17:47:13.329Z",
+   "revoked_at": null,
+   "revoke_reason": null,
+   "erp_sync": {
+    "status": "pending",
+    "message": null,
+    "synced_at": null,
+    "refs": []
+   },
+   "ledger_head_hash": "fad8568171a2404a3f87dbc3d18c42b06fb3621739a2d9dc307110810f6f13bf",
+   "created_at": "2026-09-29T17:47:13.331Z"
+  },
+  "meta": {
+   "server_time": "2026-09-29T17:52:18.932Z"
+  }
+ }
+}

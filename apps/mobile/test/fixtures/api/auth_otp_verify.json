@@ -1,0 +1,100 @@
+{
+ "status": 200,
+ "body": {
+  "data": {
+   "user": {
+    "id": "01m3q4x68g133wq64asbep5hz4",
+    "name": "اختبار التطبيق",
+    "email": "mobile.capture.1790704523@demo.bafo.test",
+    "phone": "+966512345678",
+    "locale": "ar",
+    "avatar_url": null,
+    "status": "active",
+    "email_verified_at": "2026-09-29T17:58:44.000Z",
+    "created_at": "2026-09-29T17:55:23.000Z"
+   },
+   "organization": {
+    "id": "01m3q4x636tk4jh9x4k683vh2q",
+    "name": "شركة اختبار التطبيق",
+    "legal_name_ar": null,
+    "legal_name_en": null,
+    "cr_number": "7790704523",
+    "vat_registered": true,
+    "vat_number": "312345678901233",
+    "region": {
+     "id": "01m3q4e4dxk4j1fh9rp64kd65j",
+     "code": "RIY",
+     "name": "الرياض"
+    },
+    "city": "الرياض",
+    "national_address": {
+     "building_number": "1234",
+     "street": "شارع الاختبار",
+     "district": "حي الاختبار",
+     "postal_code": "12345",
+     "additional_number": "5678",
+     "short_address": "ABCD1234"
+    },
+    "website": null,
+    "email": "mobile.capture.1790704523@demo.bafo.test",
+    "phone": "+966512345678",
+    "logo_url": null,
+    "profile_document": null,
+    "categories": [
+     {
+      "id": "01m3q4e4e6hpsddbmfwbr8tsed",
+      "code": "it_hardware",
+      "name": "أجهزة ومعدات تقنية",
+      "is_other": false,
+      "auction_allowed": true
+     }
+    ],
+    "visible_in_suggestions": true,
+    "status": "active",
+    "verified": false,
+    "features": {
+     "api_enabled": false,
+     "auction_enabled": false,
+     "sponsorship_enabled": false
+    },
+    "billing_profile_complete": false,
+    "billing_profile_missing": [
+     "legal_name_ar"
+    ],
+    "trial_available": true,
+    "created_at": "2026-09-29T17:55:23.000Z"
+   },
+   "membership": {
+    "id": "01m3q4x68h147anxa0m4fag6tf",
+    "role": "owner",
+    "can_award": true,
+    "can_purchase": true,
+    "status": "active"
+   },
+   "permissions": [
+    "organization.update",
+    "team.manage",
+    "billing.view",
+    "billing.purchase",
+    "competitions.create",
+    "competitions.manage_all",
+    "competitions.award",
+    "participation.submit_offers",
+    "integrations.manage",
+    "account.delete_organization"
+   ],
+   "subscription": null,
+   "entitlements": {
+    "can_issue": false,
+    "seats_used": 1,
+    "seats_total": 1
+   },
+   "unread_notifications_count": 0,
+   "token": "test-token-redacted",
+   "token_type": "Bearer"
+  },
+  "meta": {
+   "server_time": "2026-09-29T17:58:44.789Z"
+  }
+ }
+}

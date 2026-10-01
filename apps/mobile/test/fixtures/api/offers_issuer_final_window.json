@@ -1,0 +1,97 @@
+{
+ "status": 200,
+ "body": {
+  "data": [
+   {
+    "participant": {
+     "id": "01m3q4e72y98d9dfyrtkgcgs90",
+     "alias_no": 9,
+     "joined_at": "2026-09-29T17:47:12.000Z",
+     "organization": {
+      "id": "01m3q4e5x5xjb27j4p8pyx5pve",
+      "name": "Supplier C",
+      "logo_url": null,
+      "email": "supplier-c.owner@demo.bafo.test",
+      "phone": "+966500000004",
+      "cr_number": "1010000004"
+     },
+     "coverage": "own_plan"
+    },
+    "current_amount_minor": 23800000,
+    "first_amount_minor": 23800000,
+    "offers_count": 1,
+    "last_offer_at": "2026-09-29T17:47:12.914Z",
+    "rank": 1,
+    "is_leader": true,
+    "change_ratio_bps": 0,
+    "submitted": true,
+    "bafo": {
+     "shortlisted": false,
+     "submitted": false,
+     "reference_amount_minor": null
+    }
+   },
+   {
+    "participant": {
+     "id": "01m3q4e739p2mh8gcn98rkc8w7",
+     "alias_no": 45,
+     "joined_at": "2026-09-29T17:47:12.000Z",
+     "organization": {
+      "id": "01m3q4e62g1ybjnjpk9mp7tmmv",
+      "name": "Buyer D",
+      "logo_url": null,
+      "email": "buyer-d.owner@demo.bafo.test",
+      "phone": "+966500000005",
+      "cr_number": "1010000005"
+     },
+     "coverage": "own_plan"
+    },
+    "current_amount_minor": 23900000,
+    "first_amount_minor": 23900000,
+    "offers_count": 1,
+    "last_offer_at": "2026-09-29T17:47:12.929Z",
+    "rank": 2,
+    "is_leader": false,
+    "change_ratio_bps": 0,
+    "submitted": true,
+    "bafo": {
+     "shortlisted": false,
+     "submitted": false,
+     "reference_amount_minor": null
+    }
+   },
+   {
+    "participant": {
+     "id": "01m3q4e72j3fwgmbmebj6zkvp2",
+     "alias_no": 63,
+     "joined_at": "2026-09-29T17:47:12.000Z",
+     "organization": {
+      "id": "01m3q4e5hv0x1wy43sgxkq0v5j",
+      "name": "Supplier A",
+      "logo_url": null,
+      "email": "supplier-a.owner@demo.bafo.test",
+      "phone": "+966500000002",
+      "cr_number": "1010000002"
+     },
+     "coverage": "own_plan"
+    },
+    "current_amount_minor": 24000000,
+    "first_amount_minor": 24000000,
+    "offers_count": 1,
+    "last_offer_at": "2026-09-29T17:47:12.892Z",
+    "rank": 3,
+    "is_leader": false,
+    "change_ratio_bps": 0,
+    "submitted": true,
+    "bafo": {
+     "shortlisted": false,
+     "submitted": false,
+     "reference_amount_minor": null
+    }
+   }
+  ],
+  "meta": {
+   "server_time": "2026-09-29T17:52:18.818Z"
+  }
+ }
+}

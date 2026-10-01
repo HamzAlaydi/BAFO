@@ -1,0 +1,28 @@
+{
+ "status": 200,
+ "body": {
+  "message": "The given data is invalid.",
+  "code": "validation_failed",
+  "errors": {
+   "email": [
+    "The e-mail address field must be a valid email address."
+   ],
+   "phone": [
+    "Enter a Saudi mobile number in the format +9665XXXXXXXX."
+   ],
+   "password": [
+    "The password field confirmation does not match.",
+    "The password field must be at least 8 characters.",
+    "The password field must contain at least one uppercase and one lowercase letter.",
+    "The password field must contain at least one symbol.",
+    "The password field must contain at least one number."
+   ],
+   "organization.cr_number": [
+    "The commercial registration number must be exactly 10 digits."
+   ],
+   "organization.vat_number": [
+    "The VAT number must be 15 digits that start and end with 3."
+   ]
+  }
+ }
+}

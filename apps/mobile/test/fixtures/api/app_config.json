@@ -1,0 +1,58 @@
+{
+ "status": 200,
+ "body": {
+  "data": {
+   "min_version": {
+    "ios": "1.0.0",
+    "android": "1.0.0"
+   },
+   "latest_version": {
+    "ios": "1.0.0",
+    "android": "1.0.0"
+   },
+   "store_links": {
+    "ios": "",
+    "android": ""
+   },
+   "maintenance": {
+    "enabled": false,
+    "message": ""
+   },
+   "support": {
+    "email": "",
+    "phone": "",
+    "whatsapp": ""
+   },
+   "realtime": {
+    "key": "bc057998ba78aaf3f840",
+    "host": "localhost",
+    "port": 8085,
+    "scheme": "http"
+   },
+   "legal": {
+    "terms": {
+     "version": "2026-10-01"
+    },
+    "privacy": {
+     "version": "2026-10-01"
+    },
+    "competition_rules": {
+     "version": "2026-10-01"
+    }
+   },
+   "features": {
+    "sponsorship": true
+   },
+   "currency": "SAR",
+   "vat_rate_bp": 1500,
+   "supported_locales": [
+    "ar",
+    "en"
+   ],
+   "server_time": "2026-09-29T17:51:30.075Z"
+  },
+  "meta": {
+   "server_time": "2026-09-29T17:51:30.075Z"
+  }
+ }
+}

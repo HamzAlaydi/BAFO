@@ -1,0 +1,4817 @@
+{
+  "@@locale": "ar",
+  "appName": "بافو",
+  "@appName": {
+    "description": "Brand name, used as the accessible label of the logo mark."
+  },
+  "appTagline": "أفضل عرض نهائي",
+  "@appTagline": {
+    "description": "Brand tagline (EN: Best and Final Offer). The Arabic line is a candidate pending client approval (05_brand.md §2.9)."
+  },
+  "navHome": "الرئيسية",
+  "@navHome": {
+    "description": "Bottom navigation: home tab."
+  },
+  "navCompetitions": "مشاركاتي",
+  "@navCompetitions": {
+    "description": "Bottom navigation: competitions the organisation takes part in (participant side)."
+  },
+  "navMyCompetitions": "منافساتي",
+  "@navMyCompetitions": {
+    "description": "Bottom navigation: competitions the organisation issues (issuer side)."
+  },
+  "navMyCompetitionsTab": "منافساتي",
+  "@navMyCompetitionsTab": {
+    "description": "Short label of the issuer-side tab in the bottom navigation (fits one line in a five-tab bar); the page title stays navMyCompetitions."
+  },
+  "navNotifications": "الإشعارات",
+  "@navNotifications": {
+    "description": "Bottom navigation: notifications tab."
+  },
+  "navAccount": "الحساب",
+  "@navAccount": {
+    "description": "Bottom navigation: account tab."
+  },
+  "commonLanguageArabic": "العربية",
+  "@commonLanguageArabic": {
+    "description": "Name of the Arabic language, always written in Arabic."
+  },
+  "commonLanguageEnglish": "English",
+  "@commonLanguageEnglish": {
+    "description": "Name of the English language, always written in English."
+  },
+  "commonLanguageSwitch": "تغيير اللغة",
+  "@commonLanguageSwitch": {
+    "description": "Accessible label of the pre-login language switch."
+  },
+  "authLoginTitle": "تسجيل الدخول",
+  "@authLoginTitle": {
+    "description": "Login screen title."
+  },
+  "authLoginSubtitle": "سجّل الدخول إلى حساب منشأتك في بافو.",
+  "@authLoginSubtitle": {
+    "description": "Login screen subtitle."
+  },
+  "authFieldsEmailLabel": "البريد الإلكتروني",
+  "@authFieldsEmailLabel": {
+    "description": "E-mail field label."
+  },
+  "authFieldsEmailHint": "name@company.sa",
+  "@authFieldsEmailHint": {
+    "description": "E-mail field placeholder."
+  },
+  "authFieldsPasswordLabel": "كلمة المرور",
+  "@authFieldsPasswordLabel": {
+    "description": "Password field label."
+  },
+  "commonPasswordShow": "إظهار كلمة المرور",
+  "@commonPasswordShow": {
+    "description": "Accessible label: reveal the password."
+  },
+  "commonPasswordHide": "إخفاء كلمة المرور",
+  "@commonPasswordHide": {
+    "description": "Accessible label: hide the password."
+  },
+  "authLoginSubmit": "تسجيل الدخول",
+  "@authLoginSubmit": {
+    "description": "Login submit button."
+  },
+  "validationRequired": "هذا الحقل مطلوب.",
+  "@validationRequired": {
+    "description": "Form validation: empty required field."
+  },
+  "validationEmail": "أدخل بريداً إلكترونياً صحيحاً.",
+  "@validationEmail": {
+    "description": "Form validation: malformed e-mail."
+  },
+  "competitionsParticipatingEmptyTitle": "لا توجد دعوات حتى الآن",
+  "@competitionsParticipatingEmptyTitle": {
+    "description": "Participant competitions empty state title."
+  },
+  "competitionsParticipatingEmptyMessage": "عندما يدعوك طارح منافسة للمشاركة ستظهر الدعوة هنا.",
+  "@competitionsParticipatingEmptyMessage": {
+    "description": "Participant competitions empty state message."
+  },
+  "notificationsEmptyTitle": "لا توجد إشعارات",
+  "@notificationsEmptyTitle": {
+    "description": "Notifications empty state title."
+  },
+  "notificationsEmptyMessage": "ستظهر هنا تحديثات المنافسات والعروض.",
+  "@notificationsEmptyMessage": {
+    "description": "Notifications empty state message."
+  },
+  "profileLanguageTitle": "لغة التطبيق",
+  "@profileLanguageTitle": {
+    "description": "Account screen: language setting header."
+  },
+  "authLogoutAction": "تسجيل الخروج",
+  "@authLogoutAction": {
+    "description": "Account screen: sign-out button and dialog confirm action."
+  },
+  "authLogoutConfirmTitle": "تسجيل الخروج؟",
+  "@authLogoutConfirmTitle": {
+    "description": "Sign-out confirmation dialog title."
+  },
+  "authLogoutConfirmMessage": "ستحتاج إلى تسجيل الدخول مرة أخرى للوصول إلى حسابك.",
+  "@authLogoutConfirmMessage": {
+    "description": "Sign-out confirmation dialog message."
+  },
+  "commonActionsRetry": "إعادة المحاولة",
+  "@commonActionsRetry": {
+    "description": "Generic retry action."
+  },
+  "commonActionsCancel": "إلغاء",
+  "@commonActionsCancel": {
+    "description": "Generic cancel action."
+  },
+  "commonActionsConfirm": "تأكيد",
+  "@commonActionsConfirm": {
+    "description": "Generic confirm action."
+  },
+  "commonActionsClose": "إغلاق",
+  "@commonActionsClose": {
+    "description": "Generic close action (sheets, dialogs)."
+  },
+  "commonLoading": "جارٍ التحميل",
+  "@commonLoading": {
+    "description": "Accessible label for loading indicators and skeletons."
+  },
+  "commonErrorTitle": "تعذّر إكمال الطلب",
+  "@commonErrorTitle": {
+    "description": "Error state title."
+  },
+  "errorsServerError": "حدث خطأ غير متوقع. حاول مرة أخرى.",
+  "@errorsServerError": {
+    "description": "Fallback error message when the server gives none."
+  },
+  "errorsNetworkError": "تعذّر الاتصال بالخادم. تحقّق من اتصالك بالإنترنت.",
+  "@errorsNetworkError": {
+    "description": "No connection / host unreachable."
+  },
+  "errorsTimeout": "استغرق الطلب وقتاً أطول من المتوقع. حاول مرة أخرى.",
+  "@errorsTimeout": {
+    "description": "Request timed out."
+  },
+  "errorsUnauthenticated": "انتهت جلستك. سجّل الدخول مرة أخرى.",
+  "@errorsUnauthenticated": {
+    "description": "Shown after the API rejected the stored token."
+  },
+  "commonUpdateRequiredTitle": "يلزم تحديث التطبيق",
+  "@commonUpdateRequiredTitle": {
+    "description": "Blocking screen when the API answers 426 app_version_unsupported."
+  },
+  "commonUpdateRequiredMessage": "هذا الإصدار من بافو لم يعد مدعوماً. حدّث التطبيق من المتجر للمتابعة.",
+  "@commonUpdateRequiredMessage": {
+    "description": "Update-required explanation."
+  },
+  "commonMaintenanceTitle": "بافو تحت الصيانة",
+  "@commonMaintenanceTitle": {
+    "description": "Blocking screen when the API answers 503 maintenance."
+  },
+  "commonMaintenanceMessage": "نعمل على تحسين الخدمة. حاول مرة أخرى بعد قليل.",
+  "@commonMaintenanceMessage": {
+    "description": "Fallback maintenance text when the server sends none."
+  },
+  "commonCountdownDays": "{count, plural, =1{يوم واحد} =2{يومان} few{{count} أيام} many{{count} يوماً} other{{count} يوم}}",
+  "@commonCountdownDays": {
+    "description": "Whole days left in a countdown, followed by HH:MM:SS.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "commonCountdownEnded": "انتهى الوقت",
+  "@commonCountdownEnded": {
+    "description": "Countdown reached zero."
+  },
+  "commonCountdownRemaining": "الوقت المتبقي {time}",
+  "@commonCountdownRemaining": {
+    "description": "Accessible label of a countdown.",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "navNotificationsUnread": "{count, plural, =0{لا توجد إشعارات غير مقروءة} =1{إشعار واحد غير مقروء} =2{إشعاران غير مقروءين} few{{count} إشعارات غير مقروءة} many{{count} إشعاراً غير مقروء} other{{count} إشعار غير مقروء}}",
+  "@navNotificationsUnread": {
+    "description": "Accessible label of the notifications tab badge.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "commonActionsNext": "التالي",
+  "@commonActionsNext": {
+    "description": "Generic next action (steppers, onboarding)."
+  },
+  "commonActionsBack": "السابق",
+  "@commonActionsBack": {
+    "description": "Generic back action (steppers)."
+  },
+  "commonActionsSkip": "تخطي",
+  "@commonActionsSkip": {
+    "description": "Skip the onboarding slides."
+  },
+  "commonActionsSave": "حفظ",
+  "@commonActionsSave": {
+    "description": "Generic save action."
+  },
+  "commonActionsDownload": "تنزيل",
+  "@commonActionsDownload": {
+    "description": "Download a file."
+  },
+  "commonActionsOpen": "فتح",
+  "@commonActionsOpen": {
+    "description": "Open a file or link."
+  },
+  "commonActionsDone": "تم",
+  "@commonActionsDone": {
+    "description": "Generic done action."
+  },
+  "commonActionsClear": "مسح",
+  "@commonActionsClear": {
+    "description": "Clear a search field."
+  },
+  "commonActionsSearch": "بحث",
+  "@commonActionsSearch": {
+    "description": "Search field label."
+  },
+  "commonActionsSelect": "اختيار",
+  "@commonActionsSelect": {
+    "description": "Open a picker."
+  },
+  "commonActionsRemove": "إزالة",
+  "@commonActionsRemove": {
+    "description": "Remove an item."
+  },
+  "commonActionsCamera": "التقاط صورة",
+  "@commonActionsCamera": {
+    "description": "Image source sheet: camera."
+  },
+  "commonActionsGallery": "اختيار من الصور",
+  "@commonActionsGallery": {
+    "description": "Image source sheet: photo library."
+  },
+  "commonFieldRequired": "مطلوب",
+  "@commonFieldRequired": {
+    "description": "Suffix announced after the label of a required field."
+  },
+  "commonFieldOptional": "اختياري",
+  "@commonFieldOptional": {
+    "description": "Suffix shown after the label of an optional field."
+  },
+  "commonStepOf": "الخطوة {current} من {total}",
+  "@commonStepOf": {
+    "description": "Stepper position.",
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "commonPageOf": "الصفحة {current} من {total}",
+  "@commonPageOf": {
+    "description": "Accessible label of a page indicator.",
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "commonRetryIn": "أعد المحاولة بعد {seconds} ث",
+  "@commonRetryIn": {
+    "description": "Disabled button label during a 429 cooldown.",
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "commonPricesExcludeVat": "الأسعار لا تشمل ضريبة القيمة المضافة",
+  "@commonPricesExcludeVat": {
+    "description": "Shown under every price input and price list."
+  },
+  "commonOfflineBanner": "لا يوجد اتصال بالإنترنت.",
+  "@commonOfflineBanner": {
+    "description": "Offline banner (M05)."
+  },
+  "commonOfflineActionsDisabled": "لا يمكن تنفيذ هذا الإجراء دون اتصال بالإنترنت.",
+  "@commonOfflineActionsDisabled": {
+    "description": "Shown when a mutation is attempted offline."
+  },
+  "commonDownloading": "جارٍ التنزيل",
+  "@commonDownloading": {
+    "description": "A file is downloading."
+  },
+  "commonDownloadFailed": "تعذّر تنزيل الملف.",
+  "@commonDownloadFailed": {
+    "description": "Download error."
+  },
+  "commonNoAppToOpen": "لا يوجد تطبيق على جهازك يفتح هذا الملف.",
+  "@commonNoAppToOpen": {
+    "description": "Opening a downloaded file failed."
+  },
+  "commonLinkOpenFailed": "تعذّر فتح الرابط.",
+  "@commonLinkOpenFailed": {
+    "description": "Opening an external link failed."
+  },
+  "commonExternalLink": "رابط خارجي",
+  "@commonExternalLink": {
+    "description": "Accessible label of an external link attachment."
+  },
+  "commonAddendum": "ملحق",
+  "@commonAddendum": {
+    "description": "Badge on a document added after publish."
+  },
+  "commonFileSizeBytes": "{size} بايت",
+  "@commonFileSizeBytes": {
+    "description": "File size in bytes.",
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "commonFileSizeKb": "{size} كيلوبايت",
+  "@commonFileSizeKb": {
+    "description": "File size in kilobytes.",
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "commonFileSizeMb": "{size} ميجابايت",
+  "@commonFileSizeMb": {
+    "description": "File size in megabytes.",
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "commonTimeRiyadh": "{dateTime} بتوقيت الرياض",
+  "@commonTimeRiyadh": {
+    "description": "A deadline in Riyadh time.",
+    "placeholders": {
+      "dateTime": {
+        "type": "String"
+      }
+    }
+  },
+  "commonTimeJustNow": "الآن",
+  "@commonTimeJustNow": {
+    "description": "Relative time under one minute."
+  },
+  "commonTimeMinutesAgo": "{count, plural, =1{منذ دقيقة} =2{منذ دقيقتين} few{منذ {count} دقائق} many{منذ {count} دقيقة} other{منذ {count} دقيقة}}",
+  "@commonTimeMinutesAgo": {
+    "description": "Relative time in minutes.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "commonTimeHoursAgo": "{count, plural, =1{منذ ساعة} =2{منذ ساعتين} few{منذ {count} ساعات} many{منذ {count} ساعة} other{منذ {count} ساعة}}",
+  "@commonTimeHoursAgo": {
+    "description": "Relative time in hours.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "commonTimeDaysAgo": "{count, plural, =1{منذ يوم} =2{منذ يومين} few{منذ {count} أيام} many{منذ {count} يوماً} other{منذ {count} يوم}}",
+  "@commonTimeDaysAgo": {
+    "description": "Relative time in days (under 7).",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "commonForbiddenTitle": "لا تملك صلاحية الوصول",
+  "@commonForbiddenTitle": {
+    "description": "Forbidden state title (S8 F)."
+  },
+  "commonNotFoundTitle": "غير متاحة",
+  "@commonNotFoundTitle": {
+    "description": "Not-found state title (S8 N)."
+  },
+  "commonSupportTitle": "تواصل مع دعم بافو",
+  "@commonSupportTitle": {
+    "description": "Support contacts header on account gates."
+  },
+  "commonSupportEmail": "البريد الإلكتروني",
+  "@commonSupportEmail": {
+    "description": "Support contact: e-mail."
+  },
+  "commonSupportPhone": "الهاتف",
+  "@commonSupportPhone": {
+    "description": "Support contact: phone."
+  },
+  "commonSupportWhatsapp": "واتساب",
+  "@commonSupportWhatsapp": {
+    "description": "Support contact: WhatsApp."
+  },
+  "commonUpdateAction": "تحديث التطبيق",
+  "@commonUpdateAction": {
+    "description": "Opens the store listing on the update-required screen (not a purchase)."
+  },
+  "commonAccountBlockedTitle": "لا يمكن استخدام الحساب حالياً",
+  "@commonAccountBlockedTitle": {
+    "description": "Full-page account gate (account_inactive, organization_suspended)."
+  },
+  "commonRuleMet": "متحقق",
+  "@commonRuleMet": {
+    "description": "Accessible state of a satisfied password rule."
+  },
+  "commonRuleNotMet": "غير متحقق",
+  "@commonRuleNotMet": {
+    "description": "Accessible state of an unsatisfied password rule."
+  },
+  "commonSelectedCount": "{count, plural, =0{لم يُختر شيء} =1{عنصر واحد مختار} =2{عنصران مختاران} few{{count} عناصر مختارة} many{{count} عنصراً مختاراً} other{{count} عنصر مختار}}",
+  "@commonSelectedCount": {
+    "description": "Multi-select summary.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "commonDateTimePick": "اختر التاريخ والوقت",
+  "@commonDateTimePick": {
+    "description": "Date-time field placeholder (Riyadh time)."
+  },
+  "validationPhone": "أدخل رقم جوال سعودي من 9 أرقام يبدأ بالرقم 5.",
+  "@validationPhone": {
+    "description": "Phone format (+9665XXXXXXXX)."
+  },
+  "validationCr": "رقم السجل التجاري 10 أرقام.",
+  "@validationCr": {
+    "description": "CR format."
+  },
+  "validationVat": "الرقم الضريبي 15 رقماً يبدأ وينتهي بالرقم 3.",
+  "@validationVat": {
+    "description": "VAT format."
+  },
+  "validationPasswordRules": "كلمة المرور لا تستوفي الشروط.",
+  "@validationPasswordRules": {
+    "description": "Password rule failure."
+  },
+  "validationPasswordMismatch": "كلمتا المرور غير متطابقتين.",
+  "@validationPasswordMismatch": {
+    "description": "Confirmation mismatch."
+  },
+  "validationUrlHttps": "أدخل رابطاً يبدأ بـ https://",
+  "@validationUrlHttps": {
+    "description": "Website must be https."
+  },
+  "validationMaxLength": "الحد الأقصى {max} حرفاً.",
+  "@validationMaxLength": {
+    "description": "Text too long.",
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "validationExactDigits": "أدخل {count} أرقام.",
+  "@validationExactDigits": {
+    "description": "A numeric field of a fixed length (4, 5 or 10).",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "validationShortAddress": "العنوان المختصر 4 أحرف إنجليزية كبيرة ثم 4 أرقام، مثل ABCD1234.",
+  "@validationShortAddress": {
+    "description": "National short address format."
+  },
+  "validationOtp": "أدخل الرمز المكوّن من 6 أرقام.",
+  "@validationOtp": {
+    "description": "OTP format."
+  },
+  "validationCategoriesMax": "يمكنك اختيار 20 فئة كحد أقصى.",
+  "@validationCategoriesMax": {
+    "description": "Too many categories."
+  },
+  "validationAmount": "أدخل مبلغاً صحيحاً بخانتين عشريتين كحد أقصى.",
+  "@validationAmount": {
+    "description": "Money input format."
+  },
+  "validationAmountPositive": "يجب أن يكون المبلغ أكبر من صفر.",
+  "@validationAmountPositive": {
+    "description": "Money input must be > 0."
+  },
+  "validationAmountWholeRiyals": "أدخل المبلغ بالريال دون هللات.",
+  "@validationAmountWholeRiyals": {
+    "description": "Money input granularity 100."
+  },
+  "authWelcomeLanguageTitle": "اختر لغة التطبيق",
+  "@authWelcomeLanguageTitle": {
+    "description": "Welcome slide 1: language switch header."
+  },
+  "authWelcomeSlide1Title": "اطرح منافستك",
+  "@authWelcomeSlide1Title": {
+    "description": "Welcome slide 1 title."
+  },
+  "authWelcomeSlide1Body": "أنشئ مناقصة أو مزايدة بقواعد واضحة وجدول زمني محدد.",
+  "@authWelcomeSlide1Body": {
+    "description": "Welcome slide 1 body."
+  },
+  "authWelcomeSlide2Title": "ادعُ المتنافسين",
+  "@authWelcomeSlide2Title": {
+    "description": "Welcome slide 2 title."
+  },
+  "authWelcomeSlide2Body": "ادعُ الموردين أو المزايدين بالبريد الإلكتروني أو من الاقتراحات، وتابع انضمامهم.",
+  "@authWelcomeSlide2Body": {
+    "description": "Welcome slide 2 body."
+  },
+  "authWelcomeSlide3Title": "منافسة مباشرة وترسية",
+  "@authWelcomeSlide3Title": {
+    "description": "Welcome slide 3 title."
+  },
+  "authWelcomeSlide3Body": "تصل العروض مباشرة ويُعتمد وقتها على خادم بافو، ثم تتم الترسية بوضوح.",
+  "@authWelcomeSlide3Body": {
+    "description": "Welcome slide 3 body."
+  },
+  "authWelcomeCreateAccount": "إنشاء حساب منشأة",
+  "@authWelcomeCreateAccount": {
+    "description": "Welcome CTA to register."
+  },
+  "authLoginForgot": "نسيت كلمة المرور؟",
+  "@authLoginForgot": {
+    "description": "Link to the forgot-password screen."
+  },
+  "authLoginNoAccount": "ليس لدى منشأتك حساب؟",
+  "@authLoginNoAccount": {
+    "description": "Prompt before the register link."
+  },
+  "authLoginCreateAccount": "أنشئ حساباً",
+  "@authLoginCreateAccount": {
+    "description": "Link to register."
+  },
+  "authRegisterTitle": "إنشاء حساب منشأة",
+  "@authRegisterTitle": {
+    "description": "Register screen title."
+  },
+  "authRegisterStepAccount": "بيانات الحساب",
+  "@authRegisterStepAccount": {
+    "description": "Register step 1 title."
+  },
+  "authRegisterStepCompany": "بيانات المنشأة",
+  "@authRegisterStepCompany": {
+    "description": "Register step 2 title."
+  },
+  "authRegisterStepAddress": "العنوان والموافقة",
+  "@authRegisterStepAddress": {
+    "description": "Register step 3 title."
+  },
+  "authRegisterSubmit": "إنشاء الحساب",
+  "@authRegisterSubmit": {
+    "description": "Register submit button."
+  },
+  "authRegisterHaveAccount": "لدى منشأتك حساب؟",
+  "@authRegisterHaveAccount": {
+    "description": "Prompt before the sign-in link."
+  },
+  "authRegisterSignIn": "سجّل الدخول",
+  "@authRegisterSignIn": {
+    "description": "Link back to sign in."
+  },
+  "authRegisterFixErrors": "راجع الحقول المشار إليها ثم أعد المحاولة.",
+  "@authRegisterFixErrors": {
+    "description": "Shown when server errors move the user back to a step."
+  },
+  "authRegisterAcceptTerms": "أوافق على الشروط والأحكام",
+  "@authRegisterAcceptTerms": {
+    "description": "Consent checkbox: terms."
+  },
+  "authRegisterAcceptPrivacy": "أوافق على سياسة الخصوصية",
+  "@authRegisterAcceptPrivacy": {
+    "description": "Consent checkbox: privacy."
+  },
+  "authRegisterConsentRequired": "يلزم الموافقة للمتابعة.",
+  "@authRegisterConsentRequired": {
+    "description": "Consent checkbox error."
+  },
+  "authRegisterReadDocument": "قراءة",
+  "@authRegisterReadDocument": {
+    "description": "Opens a legal document from a consent row."
+  },
+  "authFieldsNameLabel": "الاسم الكامل",
+  "@authFieldsNameLabel": {
+    "description": "Contact person name."
+  },
+  "authFieldsPhoneLabel": "رقم الجوال",
+  "@authFieldsPhoneLabel": {
+    "description": "Phone field label."
+  },
+  "authFieldsPhoneHint": "5XXXXXXXX",
+  "@authFieldsPhoneHint": {
+    "description": "Phone field placeholder (after the fixed +966)."
+  },
+  "authFieldsPasswordConfirmLabel": "تأكيد كلمة المرور",
+  "@authFieldsPasswordConfirmLabel": {
+    "description": "Password confirmation label."
+  },
+  "authPasswordRulesTitle": "يجب أن تحتوي كلمة المرور على:",
+  "@authPasswordRulesTitle": {
+    "description": "Password checklist header."
+  },
+  "authPasswordRuleLength": "8 أحرف على الأقل",
+  "@authPasswordRuleLength": {
+    "description": "Password rule."
+  },
+  "authPasswordRuleLower": "حرف إنجليزي صغير",
+  "@authPasswordRuleLower": {
+    "description": "Password rule."
+  },
+  "authPasswordRuleUpper": "حرف إنجليزي كبير",
+  "@authPasswordRuleUpper": {
+    "description": "Password rule."
+  },
+  "authPasswordRuleDigit": "رقم واحد على الأقل",
+  "@authPasswordRuleDigit": {
+    "description": "Password rule."
+  },
+  "authPasswordRuleSymbol": "رمز خاص مثل @ أو #",
+  "@authPasswordRuleSymbol": {
+    "description": "Password rule."
+  },
+  "organizationFieldsNameLabel": "اسم المنشأة",
+  "@organizationFieldsNameLabel": {
+    "description": "Organisation name."
+  },
+  "organizationFieldsCrLabel": "رقم السجل التجاري",
+  "@organizationFieldsCrLabel": {
+    "description": "CR label."
+  },
+  "organizationFieldsCrHelper": "10 أرقام",
+  "@organizationFieldsCrHelper": {
+    "description": "CR helper."
+  },
+  "organizationFieldsRegionLabel": "المنطقة",
+  "@organizationFieldsRegionLabel": {
+    "description": "Region picker."
+  },
+  "organizationFieldsCityLabel": "المدينة",
+  "@organizationFieldsCityLabel": {
+    "description": "City field."
+  },
+  "organizationFieldsVatRegisteredLabel": "المنشأة مسجّلة في ضريبة القيمة المضافة",
+  "@organizationFieldsVatRegisteredLabel": {
+    "description": "VAT switch."
+  },
+  "organizationFieldsVatLabel": "الرقم الضريبي",
+  "@organizationFieldsVatLabel": {
+    "description": "VAT number field."
+  },
+  "organizationFieldsVatHelper": "15 رقماً يبدأ وينتهي بالرقم 3",
+  "@organizationFieldsVatHelper": {
+    "description": "VAT helper."
+  },
+  "organizationFieldsLegalNameArLabel": "الاسم القانوني بالعربية",
+  "@organizationFieldsLegalNameArLabel": {
+    "description": "Legal name AR."
+  },
+  "organizationFieldsLegalNameEnLabel": "الاسم القانوني بالإنجليزية",
+  "@organizationFieldsLegalNameEnLabel": {
+    "description": "Legal name EN."
+  },
+  "organizationFieldsWebsiteLabel": "الموقع الإلكتروني",
+  "@organizationFieldsWebsiteLabel": {
+    "description": "Website field."
+  },
+  "organizationFieldsWebsiteHint": "https://example.sa",
+  "@organizationFieldsWebsiteHint": {
+    "description": "Website placeholder."
+  },
+  "organizationFieldsCategoriesLabel": "الفئات",
+  "@organizationFieldsCategoriesLabel": {
+    "description": "Categories multi-select."
+  },
+  "organizationFieldsCategoriesHelper": "اختر حتى 20 فئة تعمل فيها منشأتك.",
+  "@organizationFieldsCategoriesHelper": {
+    "description": "Categories helper."
+  },
+  "organizationFieldsVisibleInSuggestions": "أظهر منشأتي في اقتراحات طارحي المنافسات",
+  "@organizationFieldsVisibleInSuggestions": {
+    "description": "Suggestions switch."
+  },
+  "organizationAddressTitle": "العنوان الوطني",
+  "@organizationAddressTitle": {
+    "description": "National address section."
+  },
+  "organizationAddressHelper": "اختياري الآن، ويلزم لاحقاً لإصدار الفواتير.",
+  "@organizationAddressHelper": {
+    "description": "National address helper."
+  },
+  "organizationAddressBuildingNumber": "رقم المبنى",
+  "@organizationAddressBuildingNumber": {
+    "description": "Address part."
+  },
+  "organizationAddressStreet": "الشارع",
+  "@organizationAddressStreet": {
+    "description": "Address part."
+  },
+  "organizationAddressDistrict": "الحي",
+  "@organizationAddressDistrict": {
+    "description": "Address part."
+  },
+  "organizationAddressPostalCode": "الرمز البريدي",
+  "@organizationAddressPostalCode": {
+    "description": "Address part."
+  },
+  "organizationAddressAdditionalNumber": "الرقم الإضافي",
+  "@organizationAddressAdditionalNumber": {
+    "description": "Address part."
+  },
+  "organizationAddressShortAddress": "العنوان المختصر",
+  "@organizationAddressShortAddress": {
+    "description": "Address part."
+  },
+  "authVerifyTitle": "تأكيد البريد الإلكتروني",
+  "@authVerifyTitle": {
+    "description": "OTP screen title."
+  },
+  "authVerifyMessage": "أرسلنا رمز تحقق من 6 أرقام إلى {email}.",
+  "@authVerifyMessage": {
+    "description": "OTP screen message; the e-mail is an LTR island.",
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "authVerifySubmit": "تأكيد",
+  "@authVerifySubmit": {
+    "description": "OTP submit."
+  },
+  "authOtpLabel": "رمز التحقق",
+  "@authOtpLabel": {
+    "description": "OTP input label."
+  },
+  "authOtpExpiresIn": "تنتهي صلاحية الرمز خلال {time}",
+  "@authOtpExpiresIn": {
+    "description": "OTP expiry countdown.",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "authOtpExpired": "انتهت صلاحية الرمز. اطلب رمزاً جديداً.",
+  "@authOtpExpired": {
+    "description": "OTP expired."
+  },
+  "authOtpResend": "إعادة إرسال الرمز",
+  "@authOtpResend": {
+    "description": "Resend button."
+  },
+  "authOtpResendIn": "إعادة الإرسال بعد {seconds} ث",
+  "@authOtpResendIn": {
+    "description": "Resend cooldown.",
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "authOtpResent": "أرسلنا رمزاً جديداً.",
+  "@authOtpResent": {
+    "description": "Toast after resend."
+  },
+  "authForgotTitle": "استعادة كلمة المرور",
+  "@authForgotTitle": {
+    "description": "Forgot screen title."
+  },
+  "authForgotMessage": "أدخل البريد الإلكتروني المسجّل وسنرسل إليك رمز تحقق.",
+  "@authForgotMessage": {
+    "description": "Forgot screen message."
+  },
+  "authForgotSubmit": "إرسال الرمز",
+  "@authForgotSubmit": {
+    "description": "Forgot submit."
+  },
+  "authForgotSent": "إذا كان البريد مسجلاً فستصلك رسالة برمز التحقق.",
+  "@authForgotSent": {
+    "description": "Neutral message after forgot (never reveals the account)."
+  },
+  "authResetTitle": "تعيين كلمة مرور جديدة",
+  "@authResetTitle": {
+    "description": "Reset screen title."
+  },
+  "authResetMessage": "أدخل الرمز المرسل إلى {email} ثم اختر كلمة مرور جديدة.",
+  "@authResetMessage": {
+    "description": "Reset screen message.",
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "authResetCodeValid": "الرمز صحيح.",
+  "@authResetCodeValid": {
+    "description": "Early OTP check succeeded."
+  },
+  "authResetNewPasswordLabel": "كلمة المرور الجديدة",
+  "@authResetNewPasswordLabel": {
+    "description": "New password label."
+  },
+  "authResetSubmit": "حفظ كلمة المرور",
+  "@authResetSubmit": {
+    "description": "Reset submit."
+  },
+  "authResetDone": "تم تغيير كلمة المرور. سجّل الدخول.",
+  "@authResetDone": {
+    "description": "Toast after a reset."
+  },
+  "legalLinksTerms": "الشروط والأحكام",
+  "@legalLinksTerms": {
+    "description": "Link to the terms."
+  },
+  "legalLinksPrivacy": "سياسة الخصوصية",
+  "@legalLinksPrivacy": {
+    "description": "Link to the privacy policy."
+  },
+  "legalLinksCompetitionRules": "قواعد المنافسات",
+  "@legalLinksCompetitionRules": {
+    "description": "Link to the competition rules."
+  },
+  "legalVersion": "الإصدار {version}",
+  "@legalVersion": {
+    "description": "Legal document version.",
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "legalPublishedOn": "نُشر في {date}",
+  "@legalPublishedOn": {
+    "description": "Legal document date.",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "legalUnavailable": "هذه الوثيقة غير متاحة حالياً.",
+  "@legalUnavailable": {
+    "description": "Legal document not published (404)."
+  },
+  "competitionsDirectionLabel": "{direction, select, tender{مناقصة} auction{مزايدة} other{منافسة}}",
+  "@competitionsDirectionLabel": {
+    "description": "Direction name.",
+    "placeholders": {
+      "direction": {
+        "type": "String"
+      }
+    }
+  },
+  "competitionsDirectionRule": "{direction, select, tender{الأقل سعراً يفوز} auction{الأعلى سعراً يفوز} other{منافسة}}",
+  "@competitionsDirectionRule": {
+    "description": "Direction rule on the direction chip.",
+    "placeholders": {
+      "direction": {
+        "type": "String"
+      }
+    }
+  },
+  "competitionsFormatLive": "مباشرة",
+  "@competitionsFormatLive": {
+    "description": "Format chip: live."
+  },
+  "competitionsFormatSealed": "بظرف مغلق",
+  "@competitionsFormatSealed": {
+    "description": "Format chip: sealed."
+  },
+  "competitionsStatusDraft": "مسودة",
+  "@competitionsStatusDraft": {
+    "description": "Status chip."
+  },
+  "competitionsStatusScheduled": "مجدولة",
+  "@competitionsStatusScheduled": {
+    "description": "Status chip."
+  },
+  "competitionsStatusLive": "مفتوحة للعروض",
+  "@competitionsStatusLive": {
+    "description": "Status chip (live, initial or open)."
+  },
+  "competitionsStatusFinalWindow": "فترة التسعير النهائية",
+  "@competitionsStatusFinalWindow": {
+    "description": "Status chip (live, final window)."
+  },
+  "competitionsStatusLiveSealed": "مفتوحة · عروض مغلقة",
+  "@competitionsStatusLiveSealed": {
+    "description": "Status chip (live, sealed)."
+  },
+  "competitionsStatusClosed": "قيد التقييم",
+  "@competitionsStatusClosed": {
+    "description": "Status chip (closed)."
+  },
+  "competitionsStatusBafoRound": "جولة العرض النهائي",
+  "@competitionsStatusBafoRound": {
+    "description": "Status chip (bafo_round)."
+  },
+  "competitionsStatusAwarded": "تمت الترسية",
+  "@competitionsStatusAwarded": {
+    "description": "Status chip."
+  },
+  "competitionsStatusNotAwarded": "أُغلقت دون ترسية",
+  "@competitionsStatusNotAwarded": {
+    "description": "Status chip."
+  },
+  "competitionsStatusCancelled": "ملغاة",
+  "@competitionsStatusCancelled": {
+    "description": "Status chip."
+  },
+  "competitionsStatusUnknown": "حالة غير معروفة",
+  "@competitionsStatusUnknown": {
+    "description": "Status chip for an unknown value."
+  },
+  "competitionsStatusClosingSoon": "تُغلق قريباً",
+  "@competitionsStatusClosingSoon": {
+    "description": "Overlay pill: under 10 minutes left."
+  },
+  "competitionsStatusExtended": "مُدّد الإغلاق",
+  "@competitionsStatusExtended": {
+    "description": "Overlay pill: the close was extended."
+  },
+  "competitionsCountdownOpensIn": "تبدأ خلال",
+  "@competitionsCountdownOpensIn": {
+    "description": "Countdown label before opening."
+  },
+  "competitionsCountdownClosesIn": "تُغلق خلال",
+  "@competitionsCountdownClosesIn": {
+    "description": "Countdown label while live."
+  },
+  "competitionsCountdownJoinBefore": "الانضمام قبل",
+  "@competitionsCountdownJoinBefore": {
+    "description": "Countdown label for invitees."
+  },
+  "competitionsCountdownBafoEndsIn": "تنتهي جولة العرض النهائي خلال",
+  "@competitionsCountdownBafoEndsIn": {
+    "description": "Countdown label during a BAFO round."
+  },
+  "competitionsCountdownClosing": "جارٍ الإغلاق…",
+  "@competitionsCountdownClosing": {
+    "description": "At zero, until the server confirms the close."
+  },
+  "competitionsCountdownAnnounceMinutes": "{count, plural, =1{تبقّت دقيقة واحدة على الإغلاق} =2{تبقّت دقيقتان على الإغلاق} few{تبقّت {count} دقائق على الإغلاق} many{تبقّت {count} دقيقة على الإغلاق} other{تبقّت {count} دقيقة على الإغلاق}}",
+  "@competitionsCountdownAnnounceMinutes": {
+    "description": "Screen-reader announcement at 10, 5 and 1 minutes.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "competitionsExtensionBanner": "{count, plural, =1{مُدّد وقت الإغلاق مرة واحدة.} =2{مُدّد وقت الإغلاق مرتين.} few{مُدّد وقت الإغلاق {count} مرات.} many{مُدّد وقت الإغلاق {count} مرة.} other{مُدّد وقت الإغلاق {count} مرة.}}",
+  "@competitionsExtensionBanner": {
+    "description": "Extension banner under a countdown.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "competitionsLatestPossibleClose": "أقصى موعد للإغلاق: {time}",
+  "@competitionsLatestPossibleClose": {
+    "description": "hard_stop_at when auto-extend is on.",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "rulesSummaryTitle": "قواعد المنافسة",
+  "@rulesSummaryTitle": {
+    "description": "Rules summary card title."
+  },
+  "liveStatusLeading": "عرضك هو العرض المتصدر",
+  "@liveStatusLeading": {
+    "description": "Standing: leading."
+  },
+  "liveStatusNotLeading": "{direction, select, tender{عرضك ليس العرض المتصدر. خفّض عرضك لتنافس.} auction{عرضك ليس العرض المتصدر. ارفع عرضك لتنافس.} other{عرضك ليس العرض المتصدر.}}",
+  "@liveStatusNotLeading": {
+    "description": "Standing: not leading (amber, never red).",
+    "placeholders": {
+      "direction": {
+        "type": "String"
+      }
+    }
+  },
+  "liveStatusRank": "ترتيبك {rank} من {count}",
+  "@liveStatusRank": {
+    "description": "Standing: rank.",
+    "placeholders": {
+      "rank": {
+        "type": "int"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "liveStatusHidden": "استُلم عرضك. لا تُظهر هذه المنافسة الترتيب.",
+  "@liveStatusHidden": {
+    "description": "Standing hidden by the rules."
+  },
+  "liveStatusNoOffer": "لم تقدّم عرضاً بعد.",
+  "@liveStatusNoOffer": {
+    "description": "Standing before the first offer."
+  },
+  "liveBadgeLeading": "متصدر",
+  "@liveBadgeLeading": {
+    "description": "Compact standing badge: leading."
+  },
+  "liveBadgeNotLeading": "غير متصدر",
+  "@liveBadgeNotLeading": {
+    "description": "Compact standing badge: not leading."
+  },
+  "invitationsAccessJoinRequired": "بانتظار انضمامك",
+  "@invitationsAccessJoinRequired": {
+    "description": "Access chip."
+  },
+  "invitationsAccessPlanRequired": "تتطلب باقة",
+  "@invitationsAccessPlanRequired": {
+    "description": "Access chip."
+  },
+  "invitationsAccessFull": "منضم",
+  "@invitationsAccessFull": {
+    "description": "Access chip."
+  },
+  "invitationsAccessReadOnly": "للاطلاع فقط",
+  "@invitationsAccessReadOnly": {
+    "description": "Access chip."
+  },
+  "invitationsAccessUnavailable": "غير متاحة",
+  "@invitationsAccessUnavailable": {
+    "description": "Access chip."
+  },
+  "sponsorshipBadgeFeesCovered": "رسوم مغطّاة",
+  "@sponsorshipBadgeFeesCovered": {
+    "description": "Badge shown only to the covered participant."
+  },
+  "sponsorshipCoveredBy": "تغطي {issuer} رسوم مشاركتكم في هذه المنافسة.",
+  "@sponsorshipCoveredBy": {
+    "description": "Sponsored line under the fees-covered badge.",
+    "placeholders": {
+      "issuer": {
+        "type": "String"
+      }
+    }
+  },
+  "sponsorshipManagedOnWeb": "تُدفع رسوم المشاركة لهذه المنافسة من لوحة تحكم بافو على الويب. حُفظت المسودة.",
+  "@sponsorshipManagedOnWeb": {
+    "description": "Entitlement-only notice (no purchase in the app)."
+  },
+  "awardOutcomeWon": "تمت الترسية عليكم",
+  "@awardOutcomeWon": {
+    "description": "Result chip."
+  },
+  "awardOutcomeNotSelected": "لم يتم اختياركم",
+  "@awardOutcomeNotSelected": {
+    "description": "Result chip."
+  },
+  "awardOutcomeNotAwarded": "أُغلقت دون ترسية",
+  "@awardOutcomeNotAwarded": {
+    "description": "Result chip."
+  },
+  "competitionsDetailTitle": "تفاصيل المنافسة",
+  "@competitionsDetailTitle": {
+    "description": "Competition detail app bar."
+  },
+  "competitionsDetailIssuer": "طارح المنافسة",
+  "@competitionsDetailIssuer": {
+    "description": "Issuer row."
+  },
+  "competitionsDetailCategory": "الفئة",
+  "@competitionsDetailCategory": {
+    "description": "Category row."
+  },
+  "competitionsDetailRegion": "المنطقة",
+  "@competitionsDetailRegion": {
+    "description": "Region row."
+  },
+  "competitionsDetailReference": "الرقم المرجعي",
+  "@competitionsDetailReference": {
+    "description": "Reference number row."
+  },
+  "competitionsDetailDescription": "الوصف",
+  "@competitionsDetailDescription": {
+    "description": "Description section."
+  },
+  "competitionsDetailSchedule": "المواعيد",
+  "@competitionsDetailSchedule": {
+    "description": "Schedule section."
+  },
+  "competitionsDetailDocuments": "المستندات",
+  "@competitionsDetailDocuments": {
+    "description": "Documents section."
+  },
+  "competitionsDetailNoDocuments": "لا توجد مستندات.",
+  "@competitionsDetailNoDocuments": {
+    "description": "Empty documents section."
+  },
+  "competitionsDetailNotFound": "هذه المنافسة غير موجودة أو ليست لديك صلاحية الوصول إليها.",
+  "@competitionsDetailNotFound": {
+    "description": "Competition not found (never reveals existence)."
+  },
+  "competitionsDetailCancelled": "سبب الإلغاء: {reason}",
+  "@competitionsDetailCancelled": {
+    "description": "Cancelled competition.",
+    "placeholders": {
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+  "competitionsDetailNotAwarded": "سبب الإغلاق دون ترسية: {reason}",
+  "@competitionsDetailNotAwarded": {
+    "description": "Not awarded competition.",
+    "placeholders": {
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+  "competitionsScheduleOpensAt": "بدء استقبال العروض",
+  "@competitionsScheduleOpensAt": {
+    "description": "Schedule row."
+  },
+  "competitionsScheduleClosesAt": "موعد الإغلاق",
+  "@competitionsScheduleClosesAt": {
+    "description": "Schedule row."
+  },
+  "competitionsScheduleJoinDeadline": "آخر موعد للانضمام",
+  "@competitionsScheduleJoinDeadline": {
+    "description": "Schedule row."
+  },
+  "competitionsScheduleFinalWindow": "بدء فترة التسعير النهائية",
+  "@competitionsScheduleFinalWindow": {
+    "description": "Schedule row."
+  },
+  "competitionsScheduleOpensOnPublish": "عند النشر",
+  "@competitionsScheduleOpensOnPublish": {
+    "description": "Draft without an opening time."
+  },
+  "billingManagedOnWeb": "تُدار الاشتراكات والمدفوعات من لوحة تحكم بافو على الويب.",
+  "@billingManagedOnWeb": {
+    "description": "Entitlement-only notice: no link, no button."
+  },
+  "billingInvoicesOnWeb": "الفواتير متاحة في لوحة تحكم بافو على الويب.",
+  "@billingInvoicesOnWeb": {
+    "description": "Invoices are not shown in the app."
+  },
+  "billingStatusTitle": "الباقة والاشتراك",
+  "@billingStatusTitle": {
+    "description": "M58 title."
+  },
+  "billingStatusPlan": "الباقة",
+  "@billingStatusPlan": {
+    "description": "M58 row."
+  },
+  "billingStatusSource": "نوع الاشتراك",
+  "@billingStatusSource": {
+    "description": "M58 row."
+  },
+  "billingStatusState": "الحالة",
+  "@billingStatusState": {
+    "description": "M58 row."
+  },
+  "billingStatusEnds": "ينتهي في",
+  "@billingStatusEnds": {
+    "description": "M58 row."
+  },
+  "billingStatusSeats": "المقاعد",
+  "@billingStatusSeats": {
+    "description": "M58 row."
+  },
+  "billingStatusSeatsValue": "{used} من {total}",
+  "@billingStatusSeatsValue": {
+    "description": "Seats used of total.",
+    "placeholders": {
+      "used": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "billingStatusDaysLeft": "{count, plural, =0{ينتهي اليوم} =1{يوم واحد متبقٍ} =2{يومان متبقيان} few{{count} أيام متبقية} many{{count} يوماً متبقياً} other{{count} يوم متبقٍ}}",
+  "@billingStatusDaysLeft": {
+    "description": "Days left of the subscription.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "billingStatusNoPlan": "لا توجد باقة فعّالة لمنشأتكم.",
+  "@billingStatusNoPlan": {
+    "description": "M58 without a subscription."
+  },
+  "billingStatusUpcoming": "الاشتراك التالي",
+  "@billingStatusUpcoming": {
+    "description": "M58 upcoming subscription."
+  },
+  "billingSourcePaid": "اشتراك مدفوع",
+  "@billingSourcePaid": {
+    "description": "Subscription source."
+  },
+  "billingSourceTrial": "تجربة مجانية",
+  "@billingSourceTrial": {
+    "description": "Subscription source."
+  },
+  "billingSourceGrant": "مقدّم من بافو",
+  "@billingSourceGrant": {
+    "description": "Subscription source."
+  },
+  "billingSubscriptionActive": "فعّال",
+  "@billingSubscriptionActive": {
+    "description": "Subscription status."
+  },
+  "billingSubscriptionPendingPayment": "بانتظار الدفع",
+  "@billingSubscriptionPendingPayment": {
+    "description": "Subscription status."
+  },
+  "billingSubscriptionExpired": "منتهٍ",
+  "@billingSubscriptionExpired": {
+    "description": "Subscription status."
+  },
+  "billingSubscriptionSuperseded": "استُبدل",
+  "@billingSubscriptionSuperseded": {
+    "description": "Subscription status."
+  },
+  "billingSubscriptionCancelled": "ملغى",
+  "@billingSubscriptionCancelled": {
+    "description": "Subscription status."
+  },
+  "billingSubscriptionUnknown": "غير معروف",
+  "@billingSubscriptionUnknown": {
+    "description": "Subscription status (unknown value)."
+  },
+  "errorsBadRequest": "تعذّر فهم الطلب.",
+  "@errorsBadRequest": {
+    "description": "errors.bad_request (CONVENTIONS §8)."
+  },
+  "errorsForbidden": "ليست لديك صلاحية لهذه الصفحة. تواصل مع مالك الحساب.",
+  "@errorsForbidden": {
+    "description": "errors.forbidden (CONVENTIONS §8)."
+  },
+  "errorsNotFound": "العنصر المطلوب غير موجود أو ليست لديك صلاحية الوصول إليه.",
+  "@errorsNotFound": {
+    "description": "errors.not_found (CONVENTIONS §8)."
+  },
+  "errorsConflict": "تعذّر تنفيذ الطلب بسبب تعارض. حدّث الصفحة وحاول مرة أخرى.",
+  "@errorsConflict": {
+    "description": "errors.conflict (CONVENTIONS §8)."
+  },
+  "errorsPayloadTooLarge": "حجم الطلب أكبر من المسموح.",
+  "@errorsPayloadTooLarge": {
+    "description": "errors.payload_too_large (CONVENTIONS §8)."
+  },
+  "errorsUnsupportedMediaType": "نوع المحتوى غير مدعوم.",
+  "@errorsUnsupportedMediaType": {
+    "description": "errors.unsupported_media_type (CONVENTIONS §8)."
+  },
+  "errorsValidationFailed": "راجع البيانات المُدخلة.",
+  "@errorsValidationFailed": {
+    "description": "errors.validation_failed (CONVENTIONS §8)."
+  },
+  "errorsAppVersionUnsupported": "هذا الإصدار من التطبيق لم يعد مدعوماً. حدّث التطبيق للمتابعة.",
+  "@errorsAppVersionUnsupported": {
+    "description": "errors.app_version_unsupported (CONVENTIONS §8)."
+  },
+  "errorsTooManyRequests": "طلبات كثيرة. حاول مرة أخرى بعد قليل.",
+  "@errorsTooManyRequests": {
+    "description": "errors.too_many_requests (CONVENTIONS §8)."
+  },
+  "errorsServiceUnavailable": "الخدمة غير متاحة مؤقتاً. حاول مرة أخرى بعد قليل.",
+  "@errorsServiceUnavailable": {
+    "description": "errors.service_unavailable (CONVENTIONS §8)."
+  },
+  "errorsMaintenance": "بافو تحت الصيانة. حاول مرة أخرى بعد قليل.",
+  "@errorsMaintenance": {
+    "description": "errors.maintenance (CONVENTIONS §8)."
+  },
+  "errorsIdempotencyKeyRequired": "تعذّر إرسال الطلب. حاول مرة أخرى.",
+  "@errorsIdempotencyKeyRequired": {
+    "description": "errors.idempotency_key_required (CONVENTIONS §8)."
+  },
+  "errorsIdempotencyKeyReused": "تعذّر تأكيد الطلب. أكّد العملية من جديد.",
+  "@errorsIdempotencyKeyReused": {
+    "description": "errors.idempotency_key_reused (CONVENTIONS §8)."
+  },
+  "errorsIdempotencyRequestInProgress": "ما زال طلبك السابق قيد المعالجة. انتظر قليلاً.",
+  "@errorsIdempotencyRequestInProgress": {
+    "description": "errors.idempotency_request_in_progress (CONVENTIONS §8)."
+  },
+  "errorsInvalidStateTransition": "لم يعد هذا الإجراء متاحاً في الحالة الحالية.",
+  "@errorsInvalidStateTransition": {
+    "description": "errors.invalid_state_transition (CONVENTIONS §8)."
+  },
+  "errorsFileTypeNotAllowed": "نوع الملف غير مسموح.",
+  "@errorsFileTypeNotAllowed": {
+    "description": "errors.file_type_not_allowed (CONVENTIONS §8)."
+  },
+  "errorsFileTooLarge": "حجم الملف أكبر من المسموح.",
+  "@errorsFileTooLarge": {
+    "description": "errors.file_too_large (CONVENTIONS §8)."
+  },
+  "errorsBadResponse": "وصل رد غير متوقع من الخادم. حاول مرة أخرى.",
+  "@errorsBadResponse": {
+    "description": "errors.bad_response (CONVENTIONS §8)."
+  },
+  "errorsOffline": "لا يوجد اتصال بالإنترنت.",
+  "@errorsOffline": {
+    "description": "errors.offline (CONVENTIONS §8)."
+  },
+  "errorsInvalidCredentials": "البريد الإلكتروني أو كلمة المرور غير صحيحة.",
+  "@errorsInvalidCredentials": {
+    "description": "errors.invalid_credentials (CONVENTIONS §8)."
+  },
+  "errorsEmailNotVerified": "أكّد بريدك الإلكتروني للمتابعة. أرسلنا إليك رمز تحقق.",
+  "@errorsEmailNotVerified": {
+    "description": "errors.email_not_verified (CONVENTIONS §8)."
+  },
+  "errorsAccountInactive": "حسابك غير مفعّل في هذه المنشأة. تواصل مع مالك الحساب.",
+  "@errorsAccountInactive": {
+    "description": "errors.account_inactive (CONVENTIONS §8)."
+  },
+  "errorsOrganizationSuspended": "أُوقف حساب منشأتكم مؤقتاً. تواصل مع دعم بافو.",
+  "@errorsOrganizationSuspended": {
+    "description": "errors.organization_suspended (CONVENTIONS §8)."
+  },
+  "errorsOtpInvalid": "الرمز غير صحيح.",
+  "@errorsOtpInvalid": {
+    "description": "errors.otp_invalid (CONVENTIONS §8)."
+  },
+  "errorsOtpExpired": "انتهت صلاحية الرمز. اطلب رمزاً جديداً.",
+  "@errorsOtpExpired": {
+    "description": "errors.otp_expired (CONVENTIONS §8)."
+  },
+  "errorsOtpTooManyAttempts": "أُبطل الرمز بعد محاولات كثيرة. اطلب رمزاً جديداً.",
+  "@errorsOtpTooManyAttempts": {
+    "description": "errors.otp_too_many_attempts (CONVENTIONS §8)."
+  },
+  "errorsOtpResendCooldown": "انتظر قليلاً قبل طلب رمز جديد.",
+  "@errorsOtpResendCooldown": {
+    "description": "errors.otp_resend_cooldown (CONVENTIONS §8)."
+  },
+  "errorsPasswordIncorrect": "كلمة المرور الحالية غير صحيحة.",
+  "@errorsPasswordIncorrect": {
+    "description": "errors.password_incorrect (CONVENTIONS §8)."
+  },
+  "errorsTeamInvitationInvalid": "رابط الدعوة غير صالح أو منتهٍ. اطلب من مدير الحساب إعادة الإرسال.",
+  "@errorsTeamInvitationInvalid": {
+    "description": "errors.team_invitation_invalid (CONVENTIONS §8)."
+  },
+  "errorsSeatLimitReached": "اكتملت مقاعد باقتكم.",
+  "@errorsSeatLimitReached": {
+    "description": "errors.seat_limit_reached (CONVENTIONS §8)."
+  },
+  "errorsCannotModifyOwner": "لا يمكن تعديل مالك الحساب أو إزالته.",
+  "@errorsCannotModifyOwner": {
+    "description": "errors.cannot_modify_owner (CONVENTIONS §8)."
+  },
+  "errorsCannotModifySelf": "لا يمكنك تعديل عضويتك أو إزالتها بنفسك.",
+  "@errorsCannotModifySelf": {
+    "description": "errors.cannot_modify_self (CONVENTIONS §8)."
+  },
+  "errorsAccountDeletionBlocked": "لا يمكن حذف الحساب قبل انتهاء المنافسات والمشاركات المفتوحة.",
+  "@errorsAccountDeletionBlocked": {
+    "description": "errors.account_deletion_blocked (CONVENTIONS §8)."
+  },
+  "errorsAccountDeletionPending": "يوجد طلب حذف قيد المعالجة.",
+  "@errorsAccountDeletionPending": {
+    "description": "errors.account_deletion_pending (CONVENTIONS §8)."
+  },
+  "errorsInvitationEmailMismatch": "يجب التسجيل بالبريد الإلكتروني المدعو.",
+  "@errorsInvitationEmailMismatch": {
+    "description": "errors.invitation_email_mismatch (CONVENTIONS §8)."
+  },
+  "errorsCompetitionNotEditable": "لا يمكن تعديل هذه البيانات في حالة المنافسة الحالية.",
+  "@errorsCompetitionNotEditable": {
+    "description": "errors.competition_not_editable (CONVENTIONS §8)."
+  },
+  "errorsIssuerPlanRequired": "تحتاج منشأتكم إلى باقة فعّالة لطرح المنافسات.",
+  "@errorsIssuerPlanRequired": {
+    "description": "errors.issuer_plan_required (CONVENTIONS §8)."
+  },
+  "errorsAuctionNotEnabled": "المزايدات غير مفعّلة لمنشأتكم. تواصل مع بافو.",
+  "@errorsAuctionNotEnabled": {
+    "description": "errors.auction_not_enabled (CONVENTIONS §8)."
+  },
+  "errorsMinParticipantsNotMet": "عدد المدعوين أقل من الحد الأدنى للمتنافسين.",
+  "@errorsMinParticipantsNotMet": {
+    "description": "errors.min_participants_not_met (CONVENTIONS §8)."
+  },
+  "errorsMaxParticipantsExceeded": "تجاوزت الحد الأقصى لعدد المتنافسين.",
+  "@errorsMaxParticipantsExceeded": {
+    "description": "errors.max_participants_exceeded (CONVENTIONS §8)."
+  },
+  "errorsLiveEventCapacityReached": "بلغ عدد المنافسات المباشرة في هذا الوقت الحد الأقصى. اختر وقتاً آخر.",
+  "@errorsLiveEventCapacityReached": {
+    "description": "errors.live_event_capacity_reached (CONVENTIONS §8)."
+  },
+  "errorsExtendInvalid": "موعد الإغلاق الجديد غير مسموح.",
+  "@errorsExtendInvalid": {
+    "description": "errors.extend_invalid (CONVENTIONS §8)."
+  },
+  "errorsInvitationCutoffPassed": "انتهى موعد إرسال الدعوات لهذه المنافسة.",
+  "@errorsInvitationCutoffPassed": {
+    "description": "errors.invitation_cutoff_passed (CONVENTIONS §8)."
+  },
+  "errorsInvitationInvalid": "رابط الدعوة غير صالح أو منتهٍ.",
+  "@errorsInvitationInvalid": {
+    "description": "errors.invitation_invalid (CONVENTIONS §8)."
+  },
+  "errorsInvitationBelongsToAnotherOrganization": "هذه الدعوة مرتبطة بمنشأة أخرى.",
+  "@errorsInvitationBelongsToAnotherOrganization": {
+    "description": "errors.invitation_belongs_to_another_organization (CONVENTIONS §8)."
+  },
+  "errorsJoinDeadlinePassed": "انتهى موعد الانضمام إلى هذه المنافسة.",
+  "@errorsJoinDeadlinePassed": {
+    "description": "errors.join_deadline_passed (CONVENTIONS §8)."
+  },
+  "errorsAlreadyParticipating": "منشأتكم منضمة إلى هذه المنافسة بالفعل.",
+  "@errorsAlreadyParticipating": {
+    "description": "errors.already_participating (CONVENTIONS §8)."
+  },
+  "errorsTermsNotAccepted": "يلزم قبول قواعد المنافسة للانضمام.",
+  "@errorsTermsNotAccepted": {
+    "description": "errors.terms_not_accepted (CONVENTIONS §8)."
+  },
+  "errorsNotAParticipant": "هذا الإجراء متاح للمنشآت المنضمة إلى المنافسة فقط.",
+  "@errorsNotAParticipant": {
+    "description": "errors.not_a_participant (CONVENTIONS §8)."
+  },
+  "errorsCommentsClosed": "الاستفسارات مغلقة لهذه المنافسة.",
+  "@errorsCommentsClosed": {
+    "description": "errors.comments_closed (CONVENTIONS §8)."
+  },
+  "errorsReportNotAvailable": "التقرير غير متاح قبل إغلاق المنافسة.",
+  "@errorsReportNotAvailable": {
+    "description": "errors.report_not_available (CONVENTIONS §8)."
+  },
+  "errorsOfferAmountInvalid": "أدخل مبلغاً صحيحاً أكبر من صفر.",
+  "@errorsOfferAmountInvalid": {
+    "description": "errors.offer_amount_invalid (CONVENTIONS §8)."
+  },
+  "errorsOfferAmountTooLarge": "المبلغ أكبر من الحد المسموح.",
+  "@errorsOfferAmountTooLarge": {
+    "description": "errors.offer_amount_too_large (CONVENTIONS §8)."
+  },
+  "errorsOfferGranularity": "المبلغ لا يطابق دقة المبالغ في هذه المنافسة.",
+  "@errorsOfferGranularity": {
+    "description": "errors.offer_granularity (CONVENTIONS §8)."
+  },
+  "errorsOfferNotAccepting": "لا تستقبل المنافسة العروض الآن.",
+  "@errorsOfferNotAccepting": {
+    "description": "errors.offer_not_accepting (CONVENTIONS §8)."
+  },
+  "errorsOfferClosed": "أُغلق استقبال العروض.",
+  "@errorsOfferClosed": {
+    "description": "errors.offer_closed (CONVENTIONS §8)."
+  },
+  "errorsOfferNotShortlisted": "منشأتكم ليست ضمن القائمة المختصرة لجولة العرض النهائي.",
+  "@errorsOfferNotShortlisted": {
+    "description": "errors.offer_not_shortlisted (CONVENTIONS §8)."
+  },
+  "errorsOfferBafoAlreadySubmitted": "قدّمتم عرضكم النهائي بالفعل.",
+  "@errorsOfferBafoAlreadySubmitted": {
+    "description": "errors.offer_bafo_already_submitted (CONVENTIONS §8)."
+  },
+  "errorsOfferStartPrice": "العرض لا يستوفي سعر البداية.",
+  "@errorsOfferStartPrice": {
+    "description": "errors.offer_start_price (CONVENTIONS §8)."
+  },
+  "errorsOfferStepNotMet": "العرض لا يستوفي الحد الأدنى للتحسين.",
+  "@errorsOfferStepNotMet": {
+    "description": "errors.offer_step_not_met (CONVENTIONS §8)."
+  },
+  "errorsOfferBafoWorseThanReference": "لا يمكن أن يكون عرضك النهائي أسوأ من عرضك الأخير.",
+  "@errorsOfferBafoWorseThanReference": {
+    "description": "errors.offer_bafo_worse_than_reference (CONVENTIONS §8)."
+  },
+  "errorsOfferOutlierConfirmRequired": "يختلف هذا العرض كثيراً عن عرضك الحالي. أكّده للمتابعة.",
+  "@errorsOfferOutlierConfirmRequired": {
+    "description": "errors.offer_outlier_confirm_required (CONVENTIONS §8)."
+  },
+  "errorsBafoNotEnabled": "جولة العرض النهائي غير مفعّلة لهذه المنافسة.",
+  "@errorsBafoNotEnabled": {
+    "description": "errors.bafo_not_enabled (CONVENTIONS §8)."
+  },
+  "errorsBafoAlreadyUsed": "أُجريت جولة العرض النهائي لهذه المنافسة من قبل.",
+  "@errorsBafoAlreadyUsed": {
+    "description": "errors.bafo_already_used (CONVENTIONS §8)."
+  },
+  "errorsAwardParticipantHasNoOffer": "لا يوجد عرض حالي لهذا المتنافس.",
+  "@errorsAwardParticipantHasNoOffer": {
+    "description": "errors.award_participant_has_no_offer (CONVENTIONS §8)."
+  },
+  "errorsAwardJustificationRequired": "يلزم مبرر لهذه الترسية.",
+  "@errorsAwardJustificationRequired": {
+    "description": "errors.award_justification_required (CONVENTIONS §8)."
+  },
+  "errorsAwardReserveConfirmationRequired": "يلزم تأكيد الترسية رغم عدم تحقق السعر المستهدف أو الحد الأدنى المقبول.",
+  "@errorsAwardReserveConfirmationRequired": {
+    "description": "errors.award_reserve_confirmation_required (CONVENTIONS §8)."
+  },
+  "errorsPlanRequired": "تحتاج منشأتكم إلى باقة فعّالة للانضمام.",
+  "@errorsPlanRequired": {
+    "description": "errors.plan_required (CONVENTIONS §8)."
+  },
+  "errorsPurchaseNotAvailableOnPlatform": "تُدار الاشتراكات والمدفوعات من لوحة تحكم بافو على الويب.",
+  "@errorsPurchaseNotAvailableOnPlatform": {
+    "description": "errors.purchase_not_available_on_platform (CONVENTIONS §8)."
+  },
+  "errorsBillingProfileIncomplete": "بيانات الفوترة للمنشأة غير مكتملة.",
+  "@errorsBillingProfileIncomplete": {
+    "description": "errors.billing_profile_incomplete (CONVENTIONS §8)."
+  },
+  "errorsSponsorshipNotEnabled": "تغطية رسوم المشاركة غير مفعّلة لمنشأتكم.",
+  "@errorsSponsorshipNotEnabled": {
+    "description": "errors.sponsorship_not_enabled (CONVENTIONS §8)."
+  },
+  "errorsSponsorshipPaymentRequired": "تُدفع رسوم المشاركة لهذه المنافسة من لوحة تحكم بافو على الويب.",
+  "@errorsSponsorshipPaymentRequired": {
+    "description": "errors.sponsorship_payment_required (CONVENTIONS §8)."
+  },
+  "errorsInvoicePdfNotReady": "الفاتورة غير جاهزة بعد.",
+  "@errorsInvoicePdfNotReady": {
+    "description": "errors.invoice_pdf_not_ready (CONVENTIONS §8)."
+  },
+  "commonNoteLabel": "ملاحظة",
+  "@commonNoteLabel": {
+    "description": "Free-text note field (reasons)."
+  },
+  "homeGreeting": "مرحباً، {name}",
+  "@homeGreeting": {
+    "description": "M14 greeting with the user name.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "homeGreetingFallback": "مرحباً",
+  "@homeGreetingFallback": {
+    "description": "M14 greeting before the account is loaded."
+  },
+  "homeIssuerSectionTitle": "المنافسات التي تطرحونها",
+  "@homeIssuerSectionTitle": {
+    "description": "M14 issuer stat tiles section."
+  },
+  "homeParticipantSectionTitle": "مشاركاتكم",
+  "@homeParticipantSectionTitle": {
+    "description": "M14 participant stat tiles section."
+  },
+  "homeStatsActiveCompetitions": "منافسات نشطة",
+  "@homeStatsActiveCompetitions": {
+    "description": "Home issuer tile: active_competitions."
+  },
+  "homeStatsDraftCompetitions": "مسودات",
+  "@homeStatsDraftCompetitions": {
+    "description": "Home issuer tile: draft_competitions."
+  },
+  "homeStatsLiveNow": "مفتوحة للعروض الآن",
+  "@homeStatsLiveNow": {
+    "description": "Home issuer tile: live_now."
+  },
+  "homeStatsAwaitingAward": "بانتظار الترسية",
+  "@homeStatsAwaitingAward": {
+    "description": "Home issuer tile: awaiting_award."
+  },
+  "homeStatsOffersReceived30d": "عروض مستلمة خلال 30 يوماً",
+  "@homeStatsOffersReceived30d": {
+    "description": "Home issuer tile: offers_received_30d."
+  },
+  "homeStatsPendingInvitations": "دعوات بانتظار ردّكم",
+  "@homeStatsPendingInvitations": {
+    "description": "Home participant tile: pending_invitations."
+  },
+  "homeStatsActiveParticipations": "مشاركات نشطة",
+  "@homeStatsActiveParticipations": {
+    "description": "Home participant tile: active_participations."
+  },
+  "homeStatsOffersSubmitted30d": "عروض مقدّمة خلال 30 يوماً",
+  "@homeStatsOffersSubmitted30d": {
+    "description": "Home participant tile: offers_submitted_30d."
+  },
+  "homeStatsAwardsWon": "ترسيات لصالحكم",
+  "@homeStatsAwardsWon": {
+    "description": "Home participant tile: awards_won."
+  },
+  "homeQuickActionsTitle": "إجراءات سريعة",
+  "@homeQuickActionsTitle": {
+    "description": "M14 quick actions section."
+  },
+  "homeActionCreateCompetition": "طرح منافسة جديدة",
+  "@homeActionCreateCompetition": {
+    "description": "M14 quick action (S10: competitions.create and can_issue)."
+  },
+  "homeActionParticipating": "استعراض مشاركاتي",
+  "@homeActionParticipating": {
+    "description": "M14 quick action to the participating tab."
+  },
+  "homeActionMyCompetitions": "استعراض منافساتي",
+  "@homeActionMyCompetitions": {
+    "description": "M14 quick action to the issued competitions tab."
+  },
+  "homeCreateNeedsPlan": "تحتاج إلى باقة فعّالة لطرح المنافسات.",
+  "@homeCreateNeedsPlan": {
+    "description": "S10: create competition without can_issue (no purchase action on mobile)."
+  },
+  "homeSubscriptionTitle": "الباقة",
+  "@homeSubscriptionTitle": {
+    "description": "M14 subscription card title."
+  },
+  "homeSubscriptionEnds": "ينتهي في {date}",
+  "@homeSubscriptionEnds": {
+    "description": "M14 subscription end date.",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "homeSubscriptionOpen": "تفاصيل الباقة",
+  "@homeSubscriptionOpen": {
+    "description": "Accessible hint of the subscription card (opens M58)."
+  },
+  "homeAlertSubscriptionExpiring": "{count, plural, =0{ينتهي اشتراك منشأتكم اليوم.} =1{ينتهي اشتراك منشأتكم غداً.} =2{ينتهي اشتراك منشأتكم خلال يومين.} few{ينتهي اشتراك منشأتكم خلال {count} أيام.} many{ينتهي اشتراك منشأتكم خلال {count} يوماً.} other{ينتهي اشتراك منشأتكم خلال {count} يوم.}}",
+  "@homeAlertSubscriptionExpiring": {
+    "description": "Home alert subscription_expiring with params.days_left.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "homeAlertSubscriptionExpiringSoon": "ينتهي اشتراك منشأتكم قريباً.",
+  "@homeAlertSubscriptionExpiringSoon": {
+    "description": "Home alert subscription_expiring without days_left."
+  },
+  "homeAlertSubscriptionExpired": "انتهى اشتراك منشأتكم.",
+  "@homeAlertSubscriptionExpired": {
+    "description": "Home alert subscription_expired."
+  },
+  "homeAlertPlanRequired": "تحتاج منشأتكم إلى باقة فعّالة لطرح المنافسات والانضمام إليها.",
+  "@homeAlertPlanRequired": {
+    "description": "Home alert plan_required (no purchase action, SCREENS §3.2)."
+  },
+  "homeAlertTrialAvailable": "تتوفر لمنشأتكم فترة تجريبية مجانية.",
+  "@homeAlertTrialAvailable": {
+    "description": "Home alert trial_available (no action button on mobile)."
+  },
+  "homeAlertBillingProfileIncomplete": "بيانات الفوترة لمنشأتكم غير مكتملة.",
+  "@homeAlertBillingProfileIncomplete": {
+    "description": "Home alert billing_profile_incomplete."
+  },
+  "homeAlertBillingProfileAction": "أكملوها من صفحة بيانات المنشأة.",
+  "@homeAlertBillingProfileAction": {
+    "description": "Second line of the billing-profile alert when the user may edit the organisation."
+  },
+  "homeActivityTitle": "آخر النشاطات",
+  "@homeActivityTitle": {
+    "description": "M14 recent activity section."
+  },
+  "homeActivityEmpty": "لا توجد نشاطات بعد.",
+  "@homeActivityEmpty": {
+    "description": "M14 empty activity list (home.activity.empty)."
+  },
+  "homeActivityCompetitionCreated": "أُنشئت مسودة «{title}».",
+  "@homeActivityCompetitionCreated": {
+    "description": "home.activity.competition_created.",
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "homeActivityCompetitionPublished": "نُشرت «{title}».",
+  "@homeActivityCompetitionPublished": {
+    "description": "home.activity.competition_published.",
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "homeActivityCompetitionCancelled": "أُلغيت «{title}».",
+  "@homeActivityCompetitionCancelled": {
+    "description": "home.activity.competition_cancelled.",
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "homeActivityCompetitionClosed": "أُغلق استقبال العروض في «{title}».",
+  "@homeActivityCompetitionClosed": {
+    "description": "home.activity.competition_closed.",
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "homeActivityAwardIssued": "تمت ترسية «{title}».",
+  "@homeActivityAwardIssued": {
+    "description": "home.activity.award_issued.",
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "homeActivityInvitationJoined": "انضممتم إلى «{title}».",
+  "@homeActivityInvitationJoined": {
+    "description": "home.activity.invitation_joined.",
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "homeActivityMemberAdded": "أُضيف عضو إلى الفريق.",
+  "@homeActivityMemberAdded": {
+    "description": "home.activity.member_added."
+  },
+  "homeActivitySubscriptionActivated": "فُعِّل اشتراك منشأتكم.",
+  "@homeActivitySubscriptionActivated": {
+    "description": "home.activity.subscription_activated."
+  },
+  "homeActivityOther": "تحديث على حساب المنشأة.",
+  "@homeActivityOther": {
+    "description": "An activity action the app does not know yet."
+  },
+  "homeActivityActorSystem": "النظام",
+  "@homeActivityActorSystem": {
+    "description": "Activity actor shown for automatic actions (API actor name \"system\")."
+  },
+  "homeRefreshFailed": "تعذّر تحديث البيانات، وتظهر آخر بيانات محمّلة.",
+  "@homeRefreshFailed": {
+    "description": "S8: a refetch failed and stale data stays visible."
+  },
+  "notificationsFilterAll": "الكل",
+  "@notificationsFilterAll": {
+    "description": "M49 filter: all notifications."
+  },
+  "notificationsFilterUnread": "غير المقروءة",
+  "@notificationsFilterUnread": {
+    "description": "M49 filter: unread notifications."
+  },
+  "notificationsUnreadEmptyTitle": "لا توجد إشعارات غير مقروءة",
+  "@notificationsUnreadEmptyTitle": {
+    "description": "M49 empty state of the unread filter."
+  },
+  "notificationsUnreadEmptyMessage": "اطّلعتم على جميع إشعاراتكم.",
+  "@notificationsUnreadEmptyMessage": {
+    "description": "M49 empty state of the unread filter."
+  },
+  "notificationsMarkAllRead": "تعليم الكل كمقروء",
+  "@notificationsMarkAllRead": {
+    "description": "M49 header action."
+  },
+  "notificationsMarkRead": "تعليم كمقروء",
+  "@notificationsMarkRead": {
+    "description": "M49 row action."
+  },
+  "notificationsDelete": "حذف الإشعار",
+  "@notificationsDelete": {
+    "description": "M49 row action and swipe label."
+  },
+  "notificationsDeleteAll": "حذف كل الإشعارات",
+  "@notificationsDeleteAll": {
+    "description": "M49 header action (destructive, confirmed)."
+  },
+  "notificationsDeleteAllConfirmTitle": "حذف كل الإشعارات؟",
+  "@notificationsDeleteAllConfirmTitle": {
+    "description": "M49 delete-all confirmation title."
+  },
+  "notificationsDeleteAllConfirmMessage": "ستُحذف جميع إشعاراتكم نهائياً.",
+  "@notificationsDeleteAllConfirmMessage": {
+    "description": "M49 delete-all confirmation message."
+  },
+  "notificationsDeleted": "حُذف الإشعار.",
+  "@notificationsDeleted": {
+    "description": "M49 toast after a delete."
+  },
+  "notificationsAllMarkedRead": "عُلّمت جميع الإشعارات كمقروءة.",
+  "@notificationsAllMarkedRead": {
+    "description": "M49 toast after mark all read."
+  },
+  "notificationsAllDeleted": "حُذفت جميع الإشعارات.",
+  "@notificationsAllDeleted": {
+    "description": "M49 toast after delete all."
+  },
+  "notificationsUnreadLabel": "غير مقروء",
+  "@notificationsUnreadLabel": {
+    "description": "Accessible label of the unread dot."
+  },
+  "notificationsMoreActions": "إجراءات إضافية",
+  "@notificationsMoreActions": {
+    "description": "Tooltip of the overflow menus."
+  },
+  "notificationsLoadMoreFailed": "تعذّر تحميل المزيد.",
+  "@notificationsLoadMoreFailed": {
+    "description": "Paging footer error."
+  },
+  "notificationsPushTitle": "فعّلوا التنبيهات الفورية",
+  "@notificationsPushTitle": {
+    "description": "M50 push explainer title."
+  },
+  "notificationsPushBody": "نرسل إليكم تنبيهاً عند وصول دعوة جديدة، وعند بدء استقبال العروض واقتراب الإغلاق، وعند صدور النتيجة. لا تتضمن التنبيهات أي مبالغ.",
+  "@notificationsPushBody": {
+    "description": "M50 push explainer body."
+  },
+  "notificationsPushAllow": "تفعيل التنبيهات",
+  "@notificationsPushAllow": {
+    "description": "M50 allow button (then the OS prompt)."
+  },
+  "notificationsPushNotNow": "ليس الآن",
+  "@notificationsPushNotNow": {
+    "description": "M50 dismiss button."
+  },
+  "notificationsPushEnabled": "فُعِّلت التنبيهات الفورية على هذا الجهاز.",
+  "@notificationsPushEnabled": {
+    "description": "M50/M59 result: device registered."
+  },
+  "notificationsPushDenied": "التنبيهات الفورية مرفوضة. يمكنكم السماح بها من إعدادات الجهاز.",
+  "@notificationsPushDenied": {
+    "description": "M50/M59 result: permission denied."
+  },
+  "notificationsPushUnavailable": "التنبيهات الفورية غير متاحة على هذا الجهاز حالياً، وتصلكم الإشعارات داخل التطبيق.",
+  "@notificationsPushUnavailable": {
+    "description": "M50/M59 result: no permission prompt or no device token."
+  },
+  "notificationsPushOff": "التنبيهات الفورية غير مفعّلة.",
+  "@notificationsPushOff": {
+    "description": "M59 status: not registered yet."
+  },
+  "notificationsPushSettingTitle": "التنبيهات الفورية",
+  "@notificationsPushSettingTitle": {
+    "description": "M59 row title."
+  },
+  "notificationsPushTurnOn": "تفعيل",
+  "@notificationsPushTurnOn": {
+    "description": "M59 button to request the permission."
+  },
+  "accountSectionAccount": "حسابي",
+  "@accountSectionAccount": {
+    "description": "M51 section."
+  },
+  "accountSectionOrganization": "المنشأة",
+  "@accountSectionOrganization": {
+    "description": "M51 section."
+  },
+  "accountSectionApp": "التطبيق",
+  "@accountSectionApp": {
+    "description": "M51 section."
+  },
+  "accountRoleOwner": "المالك",
+  "@accountRoleOwner": {
+    "description": "Membership role owner."
+  },
+  "accountRoleAdmin": "مدير",
+  "@accountRoleAdmin": {
+    "description": "Membership role admin."
+  },
+  "accountRoleMember": "عضو",
+  "@accountRoleMember": {
+    "description": "Membership role member."
+  },
+  "accountVerified": "منشأة موثّقة",
+  "@accountVerified": {
+    "description": "Verified organisation badge (read-only)."
+  },
+  "accountVersion": "الإصدار {version}",
+  "@accountVersion": {
+    "description": "App version line.",
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "accountMeUnavailable": "تعذّر تحميل بيانات الحساب. اسحبوا الشاشة للتحديث عند توفر الاتصال.",
+  "@accountMeUnavailable": {
+    "description": "M51 without Me (offline start)."
+  },
+  "accountSaved": "حُفظت التغييرات.",
+  "@accountSaved": {
+    "description": "Toast after a successful save."
+  },
+  "accountDiscardTitle": "تجاهل التغييرات؟",
+  "@accountDiscardTitle": {
+    "description": "Unsaved-changes guard title (S7)."
+  },
+  "accountDiscardMessage": "لم تُحفظ تعديلاتكم بعد.",
+  "@accountDiscardMessage": {
+    "description": "Unsaved-changes guard message."
+  },
+  "accountDiscardAction": "تجاهل",
+  "@accountDiscardAction": {
+    "description": "Unsaved-changes guard confirm."
+  },
+  "accountNotSet": "غير محدد",
+  "@accountNotSet": {
+    "description": "An empty optional value."
+  },
+  "accountImagePick": "اختيار صورة",
+  "@accountImagePick": {
+    "description": "Image sheet (M53): pick from the device."
+  },
+  "accountImageRemove": "إزالة الصورة",
+  "@accountImageRemove": {
+    "description": "Image sheet (M53): remove the current image."
+  },
+  "accountProfileTitle": "الملف الشخصي",
+  "@accountProfileTitle": {
+    "description": "M52 title and hub link."
+  },
+  "accountProfileEmailHelper": "يُستخدم لتسجيل الدخول ولا يمكن تغييره.",
+  "@accountProfileEmailHelper": {
+    "description": "M52 e-mail helper."
+  },
+  "accountProfileAvatarChange": "تغيير الصورة الشخصية",
+  "@accountProfileAvatarChange": {
+    "description": "M52 avatar button."
+  },
+  "accountProfileAvatarHint": "PNG أو JPG أو WEBP بحجم أقصاه 2 ميجابايت.",
+  "@accountProfileAvatarHint": {
+    "description": "M52 avatar rules."
+  },
+  "accountProfileAvatarUpdated": "حُدّثت الصورة الشخصية.",
+  "@accountProfileAvatarUpdated": {
+    "description": "M52 toast."
+  },
+  "accountProfileAvatarRemoved": "أُزيلت الصورة الشخصية.",
+  "@accountProfileAvatarRemoved": {
+    "description": "M52 toast."
+  },
+  "accountPasswordTitle": "تغيير كلمة المرور",
+  "@accountPasswordTitle": {
+    "description": "M54 title, hub link and submit."
+  },
+  "accountPasswordCurrent": "كلمة المرور الحالية",
+  "@accountPasswordCurrent": {
+    "description": "M54 field."
+  },
+  "accountPasswordNew": "كلمة المرور الجديدة",
+  "@accountPasswordNew": {
+    "description": "M54 field."
+  },
+  "accountPasswordConfirm": "تأكيد كلمة المرور الجديدة",
+  "@accountPasswordConfirm": {
+    "description": "M54 field."
+  },
+  "accountPasswordOtherDevices": "سيُسجَّل خروجكم من الأجهزة الأخرى.",
+  "@accountPasswordOtherDevices": {
+    "description": "M54 notice (PUT /me/password revokes other tokens)."
+  },
+  "accountPasswordChanged": "تم تغيير كلمة المرور، وسُجّل خروجكم من الأجهزة الأخرى.",
+  "@accountPasswordChanged": {
+    "description": "M54 success toast."
+  },
+  "accountOrganizationTitle": "بيانات المنشأة",
+  "@accountOrganizationTitle": {
+    "description": "M55 title and hub link."
+  },
+  "accountOrganizationEdit": "تعديل البيانات",
+  "@accountOrganizationEdit": {
+    "description": "M55 edit action."
+  },
+  "accountOrganizationReadOnly": "يعدّل مالك الحساب أو مديره بيانات المنشأة.",
+  "@accountOrganizationReadOnly": {
+    "description": "M55 without organization.update."
+  },
+  "accountOrganizationIdentity": "الهوية",
+  "@accountOrganizationIdentity": {
+    "description": "M55 section."
+  },
+  "accountOrganizationTax": "الضريبة",
+  "@accountOrganizationTax": {
+    "description": "M55 section."
+  },
+  "accountOrganizationLocation": "الموقع",
+  "@accountOrganizationLocation": {
+    "description": "M55 section."
+  },
+  "accountOrganizationContact": "التواصل",
+  "@accountOrganizationContact": {
+    "description": "M55 section."
+  },
+  "accountOrganizationActivity": "النشاط",
+  "@accountOrganizationActivity": {
+    "description": "M55 section: categories and suggestions."
+  },
+  "accountOrganizationEmail": "البريد الإلكتروني للمنشأة",
+  "@accountOrganizationEmail": {
+    "description": "M55 read-only field."
+  },
+  "accountOrganizationPhone": "هاتف المنشأة",
+  "@accountOrganizationPhone": {
+    "description": "M55 read-only field."
+  },
+  "accountOrganizationCrReadOnly": "لا يمكن تغيير رقم السجل التجاري.",
+  "@accountOrganizationCrReadOnly": {
+    "description": "M55 CR helper."
+  },
+  "accountOrganizationVatRegistered": "مسجّلة",
+  "@accountOrganizationVatRegistered": {
+    "description": "M55 VAT status."
+  },
+  "accountOrganizationVatNotRegistered": "غير مسجّلة",
+  "@accountOrganizationVatNotRegistered": {
+    "description": "M55 VAT status."
+  },
+  "accountOrganizationSuggestionsOn": "تظهر في اقتراحات طارحي المنافسات",
+  "@accountOrganizationSuggestionsOn": {
+    "description": "M55 suggestions visibility."
+  },
+  "accountOrganizationSuggestionsOff": "لا تظهر في اقتراحات طارحي المنافسات",
+  "@accountOrganizationSuggestionsOff": {
+    "description": "M55 suggestions visibility."
+  },
+  "accountOrganizationFeatures": "الخصائص",
+  "@accountOrganizationFeatures": {
+    "description": "M55 features section."
+  },
+  "accountOrganizationFeatureApi": "الربط البرمجي (API)",
+  "@accountOrganizationFeatureApi": {
+    "description": "M55 feature api_enabled."
+  },
+  "accountOrganizationFeatureAuction": "المزايدات",
+  "@accountOrganizationFeatureAuction": {
+    "description": "M55 feature auction_enabled."
+  },
+  "accountOrganizationFeatureSponsorship": "تغطية رسوم المشاركة",
+  "@accountOrganizationFeatureSponsorship": {
+    "description": "M55 feature sponsorship_enabled."
+  },
+  "accountOrganizationFeatureOn": "مفعّلة",
+  "@accountOrganizationFeatureOn": {
+    "description": "M55 feature state."
+  },
+  "accountOrganizationFeatureOff": "غير مفعّلة",
+  "@accountOrganizationFeatureOff": {
+    "description": "M55 feature state."
+  },
+  "accountOrganizationFeaturesNote": "لتفعيلها تواصلوا مع بافو.",
+  "@accountOrganizationFeaturesNote": {
+    "description": "M55 features note."
+  },
+  "accountOrganizationBillingIncomplete": "بيانات الفوترة غير مكتملة. المطلوب: {fields}.",
+  "@accountOrganizationBillingIncomplete": {
+    "description": "M55 billing-profile banner (no purchase action).",
+    "placeholders": {
+      "fields": {
+        "type": "String"
+      }
+    }
+  },
+  "accountOrganizationOtherFields": "حقول أخرى",
+  "@accountOrganizationOtherFields": {
+    "description": "M55 banner: a missing field the app has no label for."
+  },
+  "accountOrganizationComplete": "إكمال البيانات",
+  "@accountOrganizationComplete": {
+    "description": "M55 banner action (opens the edit form)."
+  },
+  "accountOrganizationLogoChange": "تغيير الشعار",
+  "@accountOrganizationLogoChange": {
+    "description": "M55 logo button."
+  },
+  "accountOrganizationLogoHint": "صورة بحجم أقصاه 2 ميجابايت.",
+  "@accountOrganizationLogoHint": {
+    "description": "M55 logo rules."
+  },
+  "accountOrganizationLogoUpdated": "حُدّث الشعار.",
+  "@accountOrganizationLogoUpdated": {
+    "description": "M55 toast."
+  },
+  "accountOrganizationLogoRemoved": "أُزيل الشعار.",
+  "@accountOrganizationLogoRemoved": {
+    "description": "M55 toast."
+  },
+  "accountOrganizationProfileDocument": "ملف تعريف المنشأة",
+  "@accountOrganizationProfileDocument": {
+    "description": "M55 profile document."
+  },
+  "accountOrganizationProfileDocumentNone": "لم يُرفع ملف تعريف بعد.",
+  "@accountOrganizationProfileDocumentNone": {
+    "description": "M55 without a profile document."
+  },
+  "accountOrganizationProfileDocumentWeb": "يُرفع ملف التعريف من لوحة تحكم بافو على الويب.",
+  "@accountOrganizationProfileDocumentWeb": {
+    "description": "M55 note: the PDF upload is web-only."
+  },
+  "accountTeamTitle": "فريق العمل",
+  "@accountTeamTitle": {
+    "description": "M56 title and hub link."
+  },
+  "accountTeamSeats": "المقاعد المستخدمة",
+  "@accountTeamSeats": {
+    "description": "M56 seats meter label."
+  },
+  "accountTeamSeatsFull": "اكتملت مقاعد باقتكم ({used}/{total}).",
+  "@accountTeamSeatsFull": {
+    "description": "seat_limit_reached with details.seats (§3.2).",
+    "placeholders": {
+      "used": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "accountTeamInvite": "دعوة عضو",
+  "@accountTeamInvite": {
+    "description": "M56 action and M57 new title."
+  },
+  "accountTeamEmptyTitle": "لم تضيفوا أعضاء بعد",
+  "@accountTeamEmptyTitle": {
+    "description": "M56 empty state."
+  },
+  "accountTeamEmptyMessage": "ادعوا زملاءكم لإدارة المنافسات والعروض معكم.",
+  "@accountTeamEmptyMessage": {
+    "description": "M56 empty state."
+  },
+  "accountTeamStatusInvited": "بانتظار قبول الدعوة",
+  "@accountTeamStatusInvited": {
+    "description": "Membership status invited."
+  },
+  "accountTeamStatusActive": "نشط",
+  "@accountTeamStatusActive": {
+    "description": "Membership status active."
+  },
+  "accountTeamStatusInactive": "موقوف",
+  "@accountTeamStatusInactive": {
+    "description": "Membership status inactive."
+  },
+  "accountTeamCanAward": "صلاحية الترسية",
+  "@accountTeamCanAward": {
+    "description": "Membership flag can_award."
+  },
+  "accountTeamCanPurchase": "صلاحية الشراء",
+  "@accountTeamCanPurchase": {
+    "description": "Membership flag can_purchase."
+  },
+  "accountTeamCanAwardHint": "يستطيع ترسية المنافسات.",
+  "@accountTeamCanAwardHint": {
+    "description": "M57 can_award helper."
+  },
+  "accountTeamCanPurchaseHint": "يستطيع الشراء من لوحة تحكم بافو على الويب.",
+  "@accountTeamCanPurchaseHint": {
+    "description": "M57 can_purchase helper."
+  },
+  "accountTeamYou": "أنت",
+  "@accountTeamYou": {
+    "description": "M56 marker of the signed-in user row."
+  },
+  "accountTeamLocked": "لا يمكن تعديل هذا العضو.",
+  "@accountTeamLocked": {
+    "description": "M56 owner or own row (locked)."
+  },
+  "accountTeamInvitedOn": "دُعي في {date}",
+  "@accountTeamInvitedOn": {
+    "description": "M56 invited date.",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "accountTeamJoinedOn": "انضم في {date}",
+  "@accountTeamJoinedOn": {
+    "description": "M56 joined date.",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "accountTeamMemberTitle": "عضو الفريق",
+  "@accountTeamMemberTitle": {
+    "description": "M57 edit title."
+  },
+  "accountTeamRole": "الدور",
+  "@accountTeamRole": {
+    "description": "M57 role group."
+  },
+  "accountTeamRoleAdminHint": "يدير بيانات المنشأة والفريق وجميع المنافسات.",
+  "@accountTeamRoleAdminHint": {
+    "description": "M57 admin role helper."
+  },
+  "accountTeamRoleMemberHint": "يطرح المنافسات ويدير ما أنشأه منها، ويقدّم العروض.",
+  "@accountTeamRoleMemberHint": {
+    "description": "M57 member role helper."
+  },
+  "accountTeamSendInvite": "إرسال الدعوة",
+  "@accountTeamSendInvite": {
+    "description": "M57 submit (new)."
+  },
+  "accountTeamInviteSent": "أُرسلت الدعوة إلى {email}.",
+  "@accountTeamInviteSent": {
+    "description": "M57 toast after an invite.",
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "accountTeamResend": "إعادة إرسال الدعوة",
+  "@accountTeamResend": {
+    "description": "M57 action (invited members)."
+  },
+  "accountTeamResent": "أُعيد إرسال الدعوة.",
+  "@accountTeamResent": {
+    "description": "M57 toast."
+  },
+  "accountTeamDeactivate": "إيقاف العضو",
+  "@accountTeamDeactivate": {
+    "description": "M57 action."
+  },
+  "accountTeamDeactivateConfirmMessage": "لن يتمكن العضو من تسجيل الدخول حتى إعادة تفعيله.",
+  "@accountTeamDeactivateConfirmMessage": {
+    "description": "M57 deactivate confirmation."
+  },
+  "accountTeamDeactivated": "أُوقف العضو.",
+  "@accountTeamDeactivated": {
+    "description": "M57 toast."
+  },
+  "accountTeamReactivate": "إعادة تفعيل العضو",
+  "@accountTeamReactivate": {
+    "description": "M57 action."
+  },
+  "accountTeamReactivated": "أُعيد تفعيل العضو.",
+  "@accountTeamReactivated": {
+    "description": "M57 toast."
+  },
+  "accountTeamRemove": "إزالة العضو",
+  "@accountTeamRemove": {
+    "description": "M57 destructive action."
+  },
+  "accountTeamRemoveConfirmTitle": "إزالة {name} من الفريق؟",
+  "@accountTeamRemoveConfirmTitle": {
+    "description": "M57 remove confirmation.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "accountTeamRemoveConfirmMessage": "سيفقد العضو الوصول إلى حساب المنشأة، ويبقى سجل ما أنجزه.",
+  "@accountTeamRemoveConfirmMessage": {
+    "description": "M57 remove confirmation."
+  },
+  "accountTeamRemoved": "أُزيل العضو من الفريق.",
+  "@accountTeamRemoved": {
+    "description": "M57 toast."
+  },
+  "accountTeamMemberNotFound": "هذا العضو غير موجود في فريقكم.",
+  "@accountTeamMemberNotFound": {
+    "description": "M57 unknown membership id."
+  },
+  "accountInvoicesTitle": "الفواتير",
+  "@accountInvoicesTitle": {
+    "description": "Invoices list title and hub link."
+  },
+  "accountInvoicesEmptyTitle": "لا توجد فواتير بعد",
+  "@accountInvoicesEmptyTitle": {
+    "description": "Invoices empty state."
+  },
+  "accountInvoicesTypeTax": "فاتورة ضريبية",
+  "@accountInvoicesTypeTax": {
+    "description": "Invoice type tax_invoice."
+  },
+  "accountInvoicesTypeCredit": "إشعار دائن",
+  "@accountInvoicesTypeCredit": {
+    "description": "Invoice type credit_note."
+  },
+  "accountInvoicesStatusCleared": "معتمدة",
+  "@accountInvoicesStatusCleared": {
+    "description": "E-invoice status cleared."
+  },
+  "accountInvoicesStatusReported": "مُبلَّغ عنها",
+  "@accountInvoicesStatusReported": {
+    "description": "E-invoice status reported."
+  },
+  "accountInvoicesStatusPending": "قيد الإصدار",
+  "@accountInvoicesStatusPending": {
+    "description": "E-invoice status pending."
+  },
+  "accountInvoicesStatusRejected": "مرفوضة",
+  "@accountInvoicesStatusRejected": {
+    "description": "E-invoice status rejected."
+  },
+  "accountInvoicesStatusFailed": "تعذّر الإصدار",
+  "@accountInvoicesStatusFailed": {
+    "description": "E-invoice status failed."
+  },
+  "accountInvoicesIssued": "صدرت في {date}",
+  "@accountInvoicesIssued": {
+    "description": "Invoice issue date.",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "accountSettingsTitle": "الإعدادات",
+  "@accountSettingsTitle": {
+    "description": "M59 title and hub link."
+  },
+  "accountSettingsAbout": "حول التطبيق",
+  "@accountSettingsAbout": {
+    "description": "M59 section."
+  },
+  "accountSettingsVersion": "إصدار التطبيق",
+  "@accountSettingsVersion": {
+    "description": "M59 row."
+  },
+  "accountSettingsLegal": "الوثائق القانونية",
+  "@accountSettingsLegal": {
+    "description": "M59 section."
+  },
+  "accountSettingsLicenses": "تراخيص البرمجيات مفتوحة المصدر",
+  "@accountSettingsLicenses": {
+    "description": "M59 row."
+  },
+  "accountHelpTitle": "المساعدة والتواصل",
+  "@accountHelpTitle": {
+    "description": "M60 title and hub link."
+  },
+  "accountHelpIntro": "نسعد بمساعدتكم. تواصلوا معنا مباشرة أو أرسلوا رسالة.",
+  "@accountHelpIntro": {
+    "description": "M60 intro."
+  },
+  "accountHelpNoContacts": "بيانات التواصل غير متاحة حالياً، ويمكنكم مراسلتنا عبر النموذج.",
+  "@accountHelpNoContacts": {
+    "description": "M60 when app-config has no support contacts."
+  },
+  "accountHelpFormTitle": "راسلونا",
+  "@accountHelpFormTitle": {
+    "description": "M60 form title."
+  },
+  "accountHelpSubject": "الموضوع",
+  "@accountHelpSubject": {
+    "description": "M60 field."
+  },
+  "accountHelpMessage": "الرسالة",
+  "@accountHelpMessage": {
+    "description": "M60 field."
+  },
+  "accountHelpSend": "إرسال",
+  "@accountHelpSend": {
+    "description": "M60 submit."
+  },
+  "accountHelpSentTitle": "استلمنا رسالتكم",
+  "@accountHelpSentTitle": {
+    "description": "M60 success."
+  },
+  "accountHelpSentMessage": "سيتواصل معكم فريق بافو قريباً عبر البريد الإلكتروني.",
+  "@accountHelpSentMessage": {
+    "description": "M60 success."
+  },
+  "accountHelpSendAnother": "إرسال رسالة أخرى",
+  "@accountHelpSendAnother": {
+    "description": "M60 success action."
+  },
+  "accountDeleteTitle": "حذف الحساب",
+  "@accountDeleteTitle": {
+    "description": "M61 title, hub link and destructive button."
+  },
+  "accountDeleteScopeOrganization": "سيُحذف حساب المنشأة وجميع أعضائها بعد 14 يوماً.",
+  "@accountDeleteScopeOrganization": {
+    "description": "M61 scope for the owner."
+  },
+  "accountDeleteScopeUser": "سيُحذف حسابكم الشخصي فقط بعد 14 يوماً، وتبقى المنشأة وبقية أعضائها.",
+  "@accountDeleteScopeUser": {
+    "description": "M61 scope for other users."
+  },
+  "accountDeleteCancelWindow": "يمكنكم إلغاء الطلب خلال هذه المدة.",
+  "@accountDeleteCancelWindow": {
+    "description": "M61 note."
+  },
+  "accountDeleteKeptTitle": "ما الذي يبقى محفوظاً",
+  "@accountDeleteKeptTitle": {
+    "description": "M61 kept-records title."
+  },
+  "accountDeleteKept": "نحتفظ بالسجلات النظامية والمالية: الفواتير والمدفوعات والمنافسات وسجل العروض.",
+  "@accountDeleteKept": {
+    "description": "M61 kept records."
+  },
+  "accountDeleteReason": "سبب الحذف",
+  "@accountDeleteReason": {
+    "description": "M61 optional reason."
+  },
+  "accountDeleteConfirmTitle": "حذف الحساب؟",
+  "@accountDeleteConfirmTitle": {
+    "description": "M61 confirmation title."
+  },
+  "accountDeletePending": "سيُحذف الحساب في {date}.",
+  "@accountDeletePending": {
+    "description": "M61 pending request.",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "accountDeleteCancel": "إلغاء طلب الحذف",
+  "@accountDeleteCancel": {
+    "description": "M61 cancel action."
+  },
+  "accountDeleteCancelled": "أُلغي طلب الحذف.",
+  "@accountDeleteCancelled": {
+    "description": "M61 toast."
+  },
+  "accountDeleteRequested": "سُجّل طلب حذف الحساب.",
+  "@accountDeleteRequested": {
+    "description": "M61 toast."
+  },
+  "accountDeleteBlockedTitle": "لا يمكن حذف الحساب الآن",
+  "@accountDeleteBlockedTitle": {
+    "description": "M61 account_deletion_blocked."
+  },
+  "accountDeleteBlockedMessage": "أنهوا المنافسات والمشاركات المفتوحة التالية أولاً.",
+  "@accountDeleteBlockedMessage": {
+    "description": "M61 account_deletion_blocked."
+  },
+  "accountDeleteBlockerIssued": "منافسة تطرحونها",
+  "@accountDeleteBlockerIssued": {
+    "description": "M61 blocker type issued_competition."
+  },
+  "accountDeleteBlockerParticipation": "مشاركة في منافسة",
+  "@accountDeleteBlockerParticipation": {
+    "description": "M61 blocker type participation."
+  },
+  "competitionsParticipatingFilterActive": "النشطة",
+  "@competitionsParticipatingFilterActive": {
+    "description": "M16 status group segment: scheduled, live, evaluation, BAFO round."
+  },
+  "competitionsParticipatingFilterEnded": "المنتهية",
+  "@competitionsParticipatingFilterEnded": {
+    "description": "M16 status group segment: awarded, closed without award, cancelled."
+  },
+  "competitionsParticipatingFilterAll": "الكل",
+  "@competitionsParticipatingFilterAll": {
+    "description": "M16 status group segment: every competition."
+  },
+  "competitionsParticipatingDirectionAll": "كل الأنواع",
+  "@competitionsParticipatingDirectionAll": {
+    "description": "M16 direction filter: tenders and auctions."
+  },
+  "competitionsParticipatingSearchHint": "ابحث في عناوين المنافسات",
+  "@competitionsParticipatingSearchHint": {
+    "description": "M16 search field hint."
+  },
+  "competitionsParticipatingNoResultsTitle": "لا توجد نتائج",
+  "@competitionsParticipatingNoResultsTitle": {
+    "description": "M16 empty state when a search or filter matches nothing."
+  },
+  "competitionsParticipatingNoResultsMessage": "جرّب كلمات بحث أو تصفية أخرى.",
+  "@competitionsParticipatingNoResultsMessage": {
+    "description": "M16 empty state body for a narrowed list."
+  },
+  "competitionsParticipatingNeedsAction": "{count, plural, =1{دعوة واحدة بانتظار ردّكم} =2{دعوتان بانتظار ردّكم} few{{count} دعوات بانتظار ردّكم} many{{count} دعوة بانتظار ردّكم} other{{count} دعوة بانتظار ردّكم}}",
+  "@competitionsParticipatingNeedsAction": {
+    "description": "M16 notice: loaded invitations that need a join or decline.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "competitionsParticipatingMyOffer": "عرضك: {amount}",
+  "@competitionsParticipatingMyOffer": {
+    "description": "M16 card: the organisation's current offer (formatted amount).",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "competitionsParticipatingLoadMoreFailed": "تعذّر تحميل المزيد.",
+  "@competitionsParticipatingLoadMoreFailed": {
+    "description": "M16 infinite scroll: the next page failed."
+  },
+  "competitionsParticipatingCardSemantics": "{title}، {status}",
+  "@competitionsParticipatingCardSemantics": {
+    "description": "M16 card semantics label: title and status.",
+    "placeholders": {
+      "title": {
+        "type": "String"
+      },
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "invitationsJoinAction": "الانضمام",
+  "@invitationsJoinAction": {
+    "description": "M16/M17 button: open the join sheet."
+  },
+  "invitationsDeclineAction": "الاعتذار",
+  "@invitationsDeclineAction": {
+    "description": "M16/M17 button: open the decline sheet."
+  },
+  "invitationsCardTitle": "دعوة للمشاركة",
+  "@invitationsCardTitle": {
+    "description": "M17 access card title."
+  },
+  "invitationsInvitedBy": "دعاكم {issuer} للمشاركة في هذه المنافسة.",
+  "@invitationsInvitedBy": {
+    "description": "M17 teaser line with the issuer name.",
+    "placeholders": {
+      "issuer": {
+        "type": "String"
+      }
+    }
+  },
+  "invitationsSentAt": "أُرسلت الدعوة في {date}",
+  "@invitationsSentAt": {
+    "description": "M17 teaser: when the invitation was sent.",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "invitationsOwnPlan": "تنضمون بباقتكم الحالية.",
+  "@invitationsOwnPlan": {
+    "description": "M17/M18 access: join_required with own_plan."
+  },
+  "invitationsSponsoredOnly": "تغطي {sponsor} رسوم مشاركتكم في هذه المنافسة فقط.",
+  "@invitationsSponsoredOnly": {
+    "description": "M17/M18 access: join_required with a sponsored pass.",
+    "placeholders": {
+      "sponsor": {
+        "type": "String"
+      }
+    }
+  },
+  "invitationsPlanRequiredBody": "تحتاجون إلى باقة فعّالة للانضمام إلى هذه المنافسة.",
+  "@invitationsPlanRequiredBody": {
+    "description": "M17 access: plan_required (information only, no purchase)."
+  },
+  "invitationsPlanRequiredMore": "لماذا؟",
+  "@invitationsPlanRequiredMore": {
+    "description": "M17 access: opens the access info sheet (M20)."
+  },
+  "invitationsUnavailableDeclined": "اعتذرتم عن المشاركة في هذه المنافسة.",
+  "@invitationsUnavailableDeclined": {
+    "description": "M17 access unavailable: declined."
+  },
+  "invitationsUnavailableExpired": "انتهت صلاحية هذه الدعوة.",
+  "@invitationsUnavailableExpired": {
+    "description": "M17 access unavailable: expired."
+  },
+  "invitationsUnavailableRevoked": "ألغى طارح المنافسة هذه الدعوة.",
+  "@invitationsUnavailableRevoked": {
+    "description": "M17 access unavailable: revoked."
+  },
+  "invitationsUnavailableDeadline": "انتهى موعد الانضمام إلى هذه المنافسة.",
+  "@invitationsUnavailableDeadline": {
+    "description": "M17 access unavailable: after the join deadline."
+  },
+  "invitationsUnavailableClosed": "لم تعد هذه المنافسة تقبل متنافسين جدداً.",
+  "@invitationsUnavailableClosed": {
+    "description": "M17 access unavailable: competition status."
+  },
+  "invitationsDocumentsTitle": "مستندات الدعوة",
+  "@invitationsDocumentsTitle": {
+    "description": "M17 section: invitation documents."
+  },
+  "invitationsJoinTitle": "الانضمام إلى المنافسة",
+  "@invitationsJoinTitle": {
+    "description": "M18 sheet title."
+  },
+  "invitationsJoinIntro": "راجعوا قواعد المنافسة قبل الانضمام. بعد الانضمام تصبح منشأتكم متنافساً ويمكنكم تقديم العروض.",
+  "@invitationsJoinIntro": {
+    "description": "M18 sheet intro."
+  },
+  "invitationsJoinAcceptTerms": "أوافق على شروط المنافسة",
+  "@invitationsJoinAcceptTerms": {
+    "description": "M18 required checkbox."
+  },
+  "invitationsJoinTermsRequired": "وافقوا على شروط المنافسة للمتابعة.",
+  "@invitationsJoinTermsRequired": {
+    "description": "M18 checkbox error."
+  },
+  "invitationsJoinConfirm": "تأكيد الانضمام",
+  "@invitationsJoinConfirm": {
+    "description": "M18 confirm button."
+  },
+  "invitationsJoinSucceeded": "انضممتم إلى المنافسة",
+  "@invitationsJoinSucceeded": {
+    "description": "M18 success toast."
+  },
+  "invitationsDeclineTitle": "الاعتذار عن المشاركة",
+  "@invitationsDeclineTitle": {
+    "description": "M19 sheet title."
+  },
+  "invitationsDeclineMessage": "لن تتمكنوا من الانضمام إلى هذه المنافسة بعد الاعتذار.",
+  "@invitationsDeclineMessage": {
+    "description": "M19 sheet body."
+  },
+  "invitationsDeclineReasonLabel": "سبب الاعتذار",
+  "@invitationsDeclineReasonLabel": {
+    "description": "M19 optional reason field label."
+  },
+  "invitationsDeclineReasonHelper": "اختياري، ويطّلع عليه طارح المنافسة.",
+  "@invitationsDeclineReasonHelper": {
+    "description": "M19 reason helper text."
+  },
+  "invitationsDeclineConfirm": "تأكيد الاعتذار",
+  "@invitationsDeclineConfirm": {
+    "description": "M19 destructive confirm button (names the action)."
+  },
+  "invitationsDeclineSucceeded": "أُرسل اعتذاركم إلى طارح المنافسة.",
+  "@invitationsDeclineSucceeded": {
+    "description": "M19 success toast."
+  },
+  "invitationsAccessInfoTitle": "الانضمام يتطلب باقة فعّالة",
+  "@invitationsAccessInfoTitle": {
+    "description": "M20 access info sheet title (plan_required)."
+  },
+  "invitationsAccessInfoPlanRequired": "تحتاج منشأتكم إلى باقة فعّالة للانضمام.",
+  "@invitationsAccessInfoPlanRequired": {
+    "description": "M20 access info body (plan_required)."
+  },
+  "invitationsAccessInfoUnavailableTitle": "الانضمام غير متاح",
+  "@invitationsAccessInfoUnavailableTitle": {
+    "description": "M20 access info sheet title (unavailable)."
+  },
+  "invitationsAccessInfoDeclineHint": "يمكنكم الاعتذار عن الدعوة إن لم ترغبوا في المشاركة.",
+  "@invitationsAccessInfoDeclineHint": {
+    "description": "M20: decline stays available."
+  },
+  "competitionsParticipantLiveRoom": "غرفة العروض",
+  "@competitionsParticipantLiveRoom": {
+    "description": "M21 link to the live room."
+  },
+  "competitionsParticipantQa": "الاستفسارات",
+  "@competitionsParticipantQa": {
+    "description": "M21 link to Q&A."
+  },
+  "competitionsParticipantMyOffers": "عروضي",
+  "@competitionsParticipantMyOffers": {
+    "description": "M21 link to my offers."
+  },
+  "competitionsParticipantStandingTitle": "موقف عرضكم",
+  "@competitionsParticipantStandingTitle": {
+    "description": "M21 standing summary title."
+  },
+  "competitionsParticipantCurrentOffer": "عرضكم الحالي",
+  "@competitionsParticipantCurrentOffer": {
+    "description": "M21 standing summary: current offer label."
+  },
+  "competitionsParticipantAlias": "رقمكم في هذه المنافسة: المتنافس {alias}",
+  "@competitionsParticipantAlias": {
+    "description": "M21: the organisation's own alias.",
+    "placeholders": {
+      "alias": {
+        "type": "int"
+      }
+    }
+  },
+  "competitionsParticipantVerified": "منشأة موثّقة",
+  "@competitionsParticipantVerified": {
+    "description": "M21 issuer card: verified badge."
+  },
+  "competitionsParticipantEvaluation": "أُغلق استقبال العروض، والمنافسة الآن قيد التقييم.",
+  "@competitionsParticipantEvaluation": {
+    "description": "M21: status closed."
+  },
+  "competitionsParticipantScheduled": "تبدأ العروض عند موعد البدء، ويمكنكم متابعة الاستفسارات حتى ذلك الحين.",
+  "@competitionsParticipantScheduled": {
+    "description": "M21: status scheduled."
+  },
+  "competitionsParticipantResultTitle": "النتيجة",
+  "@competitionsParticipantResultTitle": {
+    "description": "M29 result panel title."
+  },
+  "competitionsParticipantResultWon": "تمت ترسية هذه المنافسة عليكم.",
+  "@competitionsParticipantResultWon": {
+    "description": "M29: won."
+  },
+  "competitionsParticipantResultWinningAmount": "قيمة العرض الفائز: {amount}",
+  "@competitionsParticipantResultWinningAmount": {
+    "description": "M29: winning amount when published.",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "competitionsParticipantResultNotSelected": "أُرسيت المنافسة على متنافس آخر.",
+  "@competitionsParticipantResultNotSelected": {
+    "description": "M29: not selected."
+  },
+  "competitionsParticipantResultNotAwarded": "أُغلقت المنافسة دون ترسية.",
+  "@competitionsParticipantResultNotAwarded": {
+    "description": "M29: not awarded."
+  },
+  "competitionsParticipantResultHidden": "لا تنشر هذه المنافسة نتائجها للمتنافسين.",
+  "@competitionsParticipantResultHidden": {
+    "description": "M29: result_publication none."
+  },
+  "competitionsParticipantResultMessage": "رسالة طارح المنافسة",
+  "@competitionsParticipantResultMessage": {
+    "description": "M29: message to the winner."
+  },
+  "liveRoomTitle": "غرفة العروض",
+  "@liveRoomTitle": {
+    "description": "M23 app bar title."
+  },
+  "liveLeadingAmount": "العرض المتصدر: {amount}",
+  "@liveLeadingAmount": {
+    "description": "M23: leading amount when show_prices.",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "liveExtended": "{minutes, plural, =1{مُدّد وقت الإغلاق دقيقة واحدة بسبب عرض في الدقائق الأخيرة.} =2{مُدّد وقت الإغلاق دقيقتين بسبب عرض في الدقائق الأخيرة.} few{مُدّد وقت الإغلاق {minutes} دقائق بسبب عرض في الدقائق الأخيرة.} many{مُدّد وقت الإغلاق {minutes} دقيقة بسبب عرض في الدقائق الأخيرة.} other{مُدّد وقت الإغلاق {minutes} دقيقة بسبب عرض في الدقائق الأخيرة.}}",
+  "@liveExtended": {
+    "description": "M23 anti-sniping banner (auto extension, whole minutes).",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "liveExtendedSeconds": "{seconds, plural, =1{مُدّد وقت الإغلاق ثانية واحدة بسبب عرض في الدقائق الأخيرة.} =2{مُدّد وقت الإغلاق ثانيتين بسبب عرض في الدقائق الأخيرة.} few{مُدّد وقت الإغلاق {seconds} ثوانٍ بسبب عرض في الدقائق الأخيرة.} many{مُدّد وقت الإغلاق {seconds} ثانية بسبب عرض في الدقائق الأخيرة.} other{مُدّد وقت الإغلاق {seconds} ثانية بسبب عرض في الدقائق الأخيرة.}}",
+  "@liveExtendedSeconds": {
+    "description": "M23 anti-sniping banner (auto extension, seconds).",
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "liveExtendedGeneric": "مُدّد وقت الإغلاق بسبب عرض في الدقائق الأخيرة.",
+  "@liveExtendedGeneric": {
+    "description": "M23 anti-sniping banner without a known duration."
+  },
+  "liveExtendedManual": "مدّد طارح المنافسة موعد الإغلاق.",
+  "@liveExtendedManual": {
+    "description": "M23 banner: a manual or admin extension."
+  },
+  "liveHintServerTiming": "يُعتمد وقت استلام العرض على خادم بافو.",
+  "@liveHintServerTiming": {
+    "description": "M23 hint in the last 10 seconds."
+  },
+  "liveHintSlowConnection": "الاتصال بطيء، فقدّم عرضك مبكراً.",
+  "@liveHintSlowConnection": {
+    "description": "M23 hint when a clock round trip exceeds 2 s."
+  },
+  "liveConnectionConnecting": "جارٍ الاتصال…",
+  "@liveConnectionConnecting": {
+    "description": "M23 connection indicator: connecting."
+  },
+  "liveConnectionLive": "مباشر",
+  "@liveConnectionLive": {
+    "description": "M23 connection indicator: connected."
+  },
+  "liveConnectionReconnecting": "جارٍ إعادة الاتصال…",
+  "@liveConnectionReconnecting": {
+    "description": "M23 connection banner: reconnecting (submit disabled)."
+  },
+  "liveConnectionPolling": "{seconds, plural, =1{التحديثات المباشرة متأخرة، ونحدّث كل ثانية.} =2{التحديثات المباشرة متأخرة، ونحدّث كل ثانيتين.} few{التحديثات المباشرة متأخرة، ونحدّث كل {seconds} ثوانٍ.} many{التحديثات المباشرة متأخرة، ونحدّث كل {seconds} ثانية.} other{التحديثات المباشرة متأخرة، ونحدّث كل {seconds} ثانية.}}",
+  "@liveConnectionPolling": {
+    "description": "M23 connection banner: polling fallback.",
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "liveConnectionOffline": "لا يوجد اتصال بالإنترنت.",
+  "@liveConnectionOffline": {
+    "description": "M23 connection banner: offline."
+  },
+  "liveConnectionSubmitPaused": "يتوقف تقديم العروض حتى يعود الاتصال.",
+  "@liveConnectionSubmitPaused": {
+    "description": "M23: why the composer is disabled."
+  },
+  "liveInitialPhaseNote": "قبل فترة التسعير النهائية يظهر عرضك فقط.",
+  "@liveInitialPhaseNote": {
+    "description": "M23: initial phase note."
+  },
+  "liveLadderTitle": "ترتيب العروض",
+  "@liveLadderTitle": {
+    "description": "M23 ladder title (only when the competition shows it)."
+  },
+  "liveLadderParticipant": "المتنافس {alias}",
+  "@liveLadderParticipant": {
+    "description": "M23 ladder row: another participant by alias.",
+    "placeholders": {
+      "alias": {
+        "type": "int"
+      }
+    }
+  },
+  "liveLadderYou": "أنتم",
+  "@liveLadderYou": {
+    "description": "M23 ladder row: the viewer."
+  },
+  "liveLadderRowSemantics": "المرتبة {rank}، {name}، {amount}",
+  "@liveLadderRowSemantics": {
+    "description": "M23 ladder row semantics.",
+    "placeholders": {
+      "rank": {
+        "type": "int"
+      },
+      "name": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "liveMyOfferTitle": "عرضك الحالي",
+  "@liveMyOfferTitle": {
+    "description": "M23 my offer card title."
+  },
+  "liveMyOfferReceivedAt": "استُلم في {time}",
+  "@liveMyOfferReceivedAt": {
+    "description": "M23 my offer card: accepted_at with milliseconds, Riyadh time.",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "liveMyOfferCount": "{count, plural, =1{عرض واحد مقدّم} =2{عرضان مقدّمان} few{{count} عروض مقدّمة} many{{count} عرضاً مقدّماً} other{{count} عرض مقدّم}}",
+  "@liveMyOfferCount": {
+    "description": "M23 my offer card: offers count.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "liveMyOffersLink": "سجل عروضي",
+  "@liveMyOffersLink": {
+    "description": "M23 link to my offers (M28)."
+  },
+  "liveComposerLabel": "مبلغ عرضك",
+  "@liveComposerLabel": {
+    "description": "M23 composer amount field label."
+  },
+  "liveComposerSubmitFirst": "تقديم العرض",
+  "@liveComposerSubmitFirst": {
+    "description": "M23 composer button: first offer."
+  },
+  "liveComposerSubmitImprove": "تحسين العرض",
+  "@liveComposerSubmitImprove": {
+    "description": "M23 composer button: a new offer after one exists (live)."
+  },
+  "liveComposerSubmitRevise": "تعديل العرض",
+  "@liveComposerSubmitRevise": {
+    "description": "M23 composer button: sealed revision."
+  },
+  "liveComposerSubmitBafo": "تقديم العرض النهائي",
+  "@liveComposerSubmitBafo": {
+    "description": "M23 composer button: BAFO round."
+  },
+  "liveComposerUseAmount": "استخدم {amount}",
+  "@liveComposerUseAmount": {
+    "description": "M23 chip: fill the required next amount.",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "liveComposerWholeRiyals": "بالريال دون هللات",
+  "@liveComposerWholeRiyals": {
+    "description": "M23 granularity hint (100)."
+  },
+  "liveComposerDecimalsAllowed": "يمكن إدخال الهللات (رقمان عشريان)",
+  "@liveComposerDecimalsAllowed": {
+    "description": "M23 granularity hint (1)."
+  },
+  "liveComposerOpensIn": "تبدأ العروض خلال {time}",
+  "@liveComposerOpensIn": {
+    "description": "M23 composer before opening (live countdown).",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "liveComposerOpensAt": "تبدأ العروض في {time}",
+  "@liveComposerOpensAt": {
+    "description": "M23 after offer_not_accepting with opens_at.",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "liveComposerClosed": "أُغلق استقبال العروض.",
+  "@liveComposerClosed": {
+    "description": "M23 composer after the close."
+  },
+  "liveComposerNotShortlisted": "يجري طارح المنافسة جولة عرض نهائي مع قائمة مختصرة، ويبقى عرضكم الأخير قائماً.",
+  "@liveComposerNotShortlisted": {
+    "description": "M27: not shortlisted."
+  },
+  "liveSealedTitle": "عروض بظرف مغلق",
+  "@liveSealedTitle": {
+    "description": "M26 sealed lock panel title."
+  },
+  "liveSealedBody": "عرضكم مغلق، وتُفتح العروض عند الإغلاق.",
+  "@liveSealedBody": {
+    "description": "M26 sealed lock panel."
+  },
+  "liveSealedNoOffer": "قدّموا عرضكم المغلق قبل الإغلاق، ويمكنكم تعديله حتى ذلك الحين.",
+  "@liveSealedNoOffer": {
+    "description": "M26 sealed panel before a first offer."
+  },
+  "liveNotLiveYet": "لم تبدأ العروض بعد.",
+  "@liveNotLiveYet": {
+    "description": "M23: scheduled competition."
+  },
+  "offersHintRequiredNext": "{direction, select, tender{يجب ألا يزيد عرضك التالي عن {amount}.} auction{يجب ألا يقل عرضك التالي عن {amount}.} other{الحد التالي لعرضك: {amount}.}}",
+  "@offersHintRequiredNext": {
+    "description": "offers.hint.required_next (direction variant).",
+    "placeholders": {
+      "direction": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "offersHintStartPrice": "{direction, select, tender{لا يتجاوز سعر السقف {amount}.} auction{لا يقل عن سعر الافتتاح {amount}.} other{سعر البداية: {amount}.}}",
+  "@offersHintStartPrice": {
+    "description": "offers.hint.start_price (direction variant).",
+    "placeholders": {
+      "direction": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "offersErrorStartPrice": "{direction, select, tender{لا يمكن أن يتجاوز عرضك سعر السقف {amount}.} auction{لا يمكن أن يقل عرضك عن سعر الافتتاح {amount}.} other{العرض لا يستوفي سعر البداية {amount}.}}",
+  "@offersErrorStartPrice": {
+    "description": "offers.error.start_price (direction variant).",
+    "placeholders": {
+      "direction": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "offersErrorStepNotMet": "{direction, select, tender{يجب ألا يزيد عرضك عن {amount}.} auction{يجب ألا يقل عرضك عن {amount}.} other{العرض لا يستوفي الحد الأدنى للتحسين ({amount}).}}",
+  "@offersErrorStepNotMet": {
+    "description": "offers.error.step_not_met (direction variant).",
+    "placeholders": {
+      "direction": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "offersErrorGranularity": "يجب أن يكون المبلغ من مضاعفات {amount}.",
+  "@offersErrorGranularity": {
+    "description": "offers.error.granularity with details.granularity_minor.",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "offersErrorAmountTooLarge": "يجب ألا يزيد المبلغ عن {amount}.",
+  "@offersErrorAmountTooLarge": {
+    "description": "offers.error.amount_too_large with details.max_amount_minor.",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "offersErrorBafoReference": "{direction, select, tender{لا يمكن أن يزيد عرضك النهائي عن عرضك الأخير {amount}.} auction{لا يمكن أن يقل عرضك النهائي عن عرضك الأخير {amount}.} other{لا يمكن أن يكون عرضك النهائي أسوأ من عرضك الأخير {amount}.}}",
+  "@offersErrorBafoReference": {
+    "description": "offers.error.bafo_reference (direction variant).",
+    "placeholders": {
+      "direction": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "offersUseThisAmount": "استخدم هذا المبلغ",
+  "@offersUseThisAmount": {
+    "description": "Inline error action: fill the required amount."
+  },
+  "offersConfirmTitle": "تأكيد العرض",
+  "@offersConfirmTitle": {
+    "description": "M24 confirm sheet title."
+  },
+  "offersConfirmBafoTitle": "تأكيد العرض النهائي",
+  "@offersConfirmBafoTitle": {
+    "description": "M24/M27 confirm sheet title in a BAFO round."
+  },
+  "offersConfirmExclVat": "لا يشمل ضريبة القيمة المضافة",
+  "@offersConfirmExclVat": {
+    "description": "M24 under the amount."
+  },
+  "offersConfirmSealed": "عرضك مغلق ولا يراه غيرك، ويمكنك تعديله حتى الإغلاق.",
+  "@offersConfirmSealed": {
+    "description": "M24 sealed note."
+  },
+  "offersConfirmBafo": "هذا عرضك النهائي الوحيد ولا يمكن تعديله.",
+  "@offersConfirmBafo": {
+    "description": "M24/M27 BAFO note."
+  },
+  "offersConfirmAction": "تأكيد وإرسال",
+  "@offersConfirmAction": {
+    "description": "M24 confirm button."
+  },
+  "offersConfirmOutlierTitle": "تحقق من المبلغ",
+  "@offersConfirmOutlierTitle": {
+    "description": "M25 outlier dialog title."
+  },
+  "offersConfirmOutlierLower": "هذا العرض أقل من عرضك الحالي بنسبة {pct}.",
+  "@offersConfirmOutlierLower": {
+    "description": "offers.confirm.outlier.lower.",
+    "placeholders": {
+      "pct": {
+        "type": "String"
+      }
+    }
+  },
+  "offersConfirmOutlierHigher": "هذا العرض أعلى من عرضك الحالي بنسبة {pct}.",
+  "@offersConfirmOutlierHigher": {
+    "description": "offers.confirm.outlier.higher.",
+    "placeholders": {
+      "pct": {
+        "type": "String"
+      }
+    }
+  },
+  "offersConfirmOutlierSend": "إرسال العرض بهذا المبلغ",
+  "@offersConfirmOutlierSend": {
+    "description": "M25 confirm button."
+  },
+  "offersConfirmOutlierEdit": "تعديل المبلغ",
+  "@offersConfirmOutlierEdit": {
+    "description": "M25 cancel button."
+  },
+  "offersSubmitted": "استُلم عرضك في {time}",
+  "@offersSubmitted": {
+    "description": "offers.submitted toast (accepted_at, HH:mm:ss.SSS Riyadh).",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "offersUnconfirmed": "لم نتأكد من استلام عرضك. أعد المحاولة.",
+  "@offersUnconfirmed": {
+    "description": "M24 after a network failure (same key on retry)."
+  },
+  "offersKeyReused": "تعذّر تأكيد العرض. راجع المبلغ وأكّده من جديد.",
+  "@offersKeyReused": {
+    "description": "M24 after idempotency_key_reused."
+  },
+  "offersRateLimited": "انتظر لحظات قبل تقديم عرض جديد.",
+  "@offersRateLimited": {
+    "description": "M23 after too_many_requests."
+  },
+  "offersSealedReceived": "استُلم عرضكم المغلق",
+  "@offersSealedReceived": {
+    "description": "M26 receipt sheet title."
+  },
+  "offersReceiptSeq": "رقم الاستلام",
+  "@offersReceiptSeq": {
+    "description": "M26 receipt: offer seq."
+  },
+  "offersReceiptTime": "وقت الاستلام",
+  "@offersReceiptTime": {
+    "description": "M26 receipt: accepted_at."
+  },
+  "offersReceiptAmount": "المبلغ",
+  "@offersReceiptAmount": {
+    "description": "M26 receipt: amount."
+  },
+  "offersStageSealed": "مغلق",
+  "@offersStageSealed": {
+    "description": "offers.stage.sealed."
+  },
+  "offersStageInitial": "أولي",
+  "@offersStageInitial": {
+    "description": "offers.stage.initial."
+  },
+  "offersStageLive": "مباشر",
+  "@offersStageLive": {
+    "description": "offers.stage.live."
+  },
+  "offersStageBafo": "نهائي",
+  "@offersStageBafo": {
+    "description": "offers.stage.bafo."
+  },
+  "offersVoided": "ملغى",
+  "@offersVoided": {
+    "description": "M28 voided badge."
+  },
+  "offersMyEmptyTitle": "لم تقدّموا عروضاً بعد",
+  "@offersMyEmptyTitle": {
+    "description": "M28 empty title."
+  },
+  "offersMyEmptyMessage": "قدّموا عرضكم من غرفة العروض.",
+  "@offersMyEmptyMessage": {
+    "description": "M28 empty body."
+  },
+  "offersMySeq": "العرض رقم {seq}",
+  "@offersMySeq": {
+    "description": "M28 row: the offer sequence number.",
+    "placeholders": {
+      "seq": {
+        "type": "int"
+      }
+    }
+  },
+  "offersMyChangeDown": "أقل من عرضكم السابق بنسبة {pct}",
+  "@offersMyChangeDown": {
+    "description": "M28 row: neutral change (semantics).",
+    "placeholders": {
+      "pct": {
+        "type": "String"
+      }
+    }
+  },
+  "offersMyChangeUp": "أعلى من عرضكم السابق بنسبة {pct}",
+  "@offersMyChangeUp": {
+    "description": "M28 row: neutral change (semantics).",
+    "placeholders": {
+      "pct": {
+        "type": "String"
+      }
+    }
+  },
+  "bafoInvite": "أنتم مدعوون لتقديم أفضل وآخر عرض قبل {cutoff}.",
+  "@bafoInvite": {
+    "description": "M27 BAFO banner.",
+    "placeholders": {
+      "cutoff": {
+        "type": "String"
+      }
+    }
+  },
+  "bafoReferenceAmount": "عرضكم الأخير: {amount}",
+  "@bafoReferenceAmount": {
+    "description": "M27 BAFO reference amount.",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "bafoRule": "{direction, select, tender{لا يمكن أن يكون عرضك النهائي أعلى من عرضك الأخير.} auction{لا يمكن أن يكون عرضك النهائي أقل من عرضك الأخير.} other{لا يمكن أن يكون عرضك النهائي أسوأ من عرضك الأخير.}}",
+  "@bafoRule": {
+    "description": "bafo.rule (direction variant).",
+    "placeholders": {
+      "direction": {
+        "type": "String"
+      }
+    }
+  },
+  "bafoSubmitted": "استُلم عرضكم النهائي.",
+  "@bafoSubmitted": {
+    "description": "M27 after the BAFO offer."
+  },
+  "qaTitle": "الاستفسارات",
+  "@qaTitle": {
+    "description": "M31 title."
+  },
+  "qaAskAction": "اطرح سؤالاً",
+  "@qaAskAction": {
+    "description": "M31 participant composer action."
+  },
+  "qaAnnounceAction": "انشر إعلاناً لجميع المتنافسين",
+  "@qaAnnounceAction": {
+    "description": "M31 issuer composer action."
+  },
+  "qaReplyAction": "ردّ",
+  "@qaReplyAction": {
+    "description": "M31 reply button."
+  },
+  "qaReplyTitle": "الرد على الاستفسار",
+  "@qaReplyTitle": {
+    "description": "M32 reply sheet title."
+  },
+  "qaQuestionLabel": "نص السؤال",
+  "@qaQuestionLabel": {
+    "description": "M32 question field label."
+  },
+  "qaAnnouncementLabel": "نص الإعلان",
+  "@qaAnnouncementLabel": {
+    "description": "M32 announcement field label."
+  },
+  "qaReplyLabel": "نص الرد",
+  "@qaReplyLabel": {
+    "description": "M32 reply field label."
+  },
+  "qaQuestionHelper": "يرى جميع المتنافسين السؤال دون اسم منشأتكم.",
+  "@qaQuestionHelper": {
+    "description": "M32 helper: participants see aliases only."
+  },
+  "qaSend": "إرسال",
+  "@qaSend": {
+    "description": "M32 send button."
+  },
+  "qaPosted": "نُشر الاستفسار.",
+  "@qaPosted": {
+    "description": "M32 success toast (question)."
+  },
+  "qaAnnouncementPosted": "نُشر الإعلان.",
+  "@qaAnnouncementPosted": {
+    "description": "M32 success toast (announcement)."
+  },
+  "qaReplyPosted": "نُشر الرد.",
+  "@qaReplyPosted": {
+    "description": "M32 success toast (reply)."
+  },
+  "qaClosedTitle": "أُغلقت الاستفسارات",
+  "@qaClosedTitle": {
+    "description": "M31 read-only notice title."
+  },
+  "qaClosedBody": "لا يمكن نشر استفسارات جديدة في حالة المنافسة الحالية.",
+  "@qaClosedBody": {
+    "description": "M31 read-only notice body."
+  },
+  "qaEmptyTitle": "لا توجد استفسارات بعد",
+  "@qaEmptyTitle": {
+    "description": "qa.list.empty.title."
+  },
+  "qaEmptyMessage": "تظهر هنا الأسئلة والردود وإعلانات طارح المنافسة.",
+  "@qaEmptyMessage": {
+    "description": "qa.list.empty.body."
+  },
+  "qaAuthorParticipant": "المتنافس {alias}",
+  "@qaAuthorParticipant": {
+    "description": "M31 author: another participant (alias only).",
+    "placeholders": {
+      "alias": {
+        "type": "int"
+      }
+    }
+  },
+  "qaAuthorParticipantNamed": "المتنافس {alias} · {organization}",
+  "@qaAuthorParticipantNamed": {
+    "description": "M31 author as the issuer sees a participant.",
+    "placeholders": {
+      "alias": {
+        "type": "int"
+      },
+      "organization": {
+        "type": "String"
+      }
+    }
+  },
+  "qaAuthorMe": "أنتم",
+  "@qaAuthorMe": {
+    "description": "M31 author: the viewer's organisation."
+  },
+  "qaAuthorUnknown": "متنافس",
+  "@qaAuthorUnknown": {
+    "description": "M31 author fallback."
+  },
+  "qaAnnouncement": "إعلان",
+  "@qaAnnouncement": {
+    "description": "M31 badge on an issuer's top-level post."
+  },
+  "qaNewMessages": "{count, plural, =1{رسالة جديدة} =2{رسالتان جديدتان} few{{count} رسائل جديدة} many{{count} رسالة جديدة} other{{count} رسالة جديدة}}",
+  "@qaNewMessages": {
+    "description": "M31 pill when new comments arrive off screen.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "qaRepliesCount": "{count, plural, =1{رد واحد} =2{ردّان} few{{count} ردود} many{{count} رداً} other{{count} رد}}",
+  "@qaRepliesCount": {
+    "description": "M31 thread: replies count (semantics).",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "issuerWebOnly": "متاح في لوحة التحكم على الويب.",
+  "@issuerWebOnly": {
+    "description": "Issuer actions that are web-only on mobile (SCREENS §3.7, CD5)."
+  },
+  "issuerWebOnlyActions": "تمديد الإغلاق وجولة العرض النهائي والترسية وإلغاؤها والإغلاق دون ترسية متاحة في لوحة التحكم على الويب.",
+  "@issuerWebOnlyActions": {
+    "description": "M38 notice when web-only issuer actions are open to the user."
+  },
+  "issuerPlanRequired": "تحتاج منشأتكم إلى باقة فعّالة لطرح المنافسات.",
+  "@issuerPlanRequired": {
+    "description": "S10 / §3.2: issuer_plan_required, always with billing.managed_on_web."
+  },
+  "issuerNoValue": "—",
+  "@issuerNoValue": {
+    "description": "Placeholder for a missing value."
+  },
+  "issuerYes": "نعم",
+  "@issuerYes": {
+    "description": "Yes value in key-value lists."
+  },
+  "issuerNo": "لا",
+  "@issuerNo": {
+    "description": "No value in key-value lists."
+  },
+  "issuerDiscard": "تجاهل",
+  "@issuerDiscard": {
+    "description": "Confirm button of the unsaved-changes dialogs."
+  },
+  "issuerParticipantAlias": "المتنافس {alias}",
+  "@issuerParticipantAlias": {
+    "description": "A participant by alias number.",
+    "placeholders": {
+      "alias": {
+        "type": "int"
+      }
+    }
+  },
+  "issuerParticipantLabel": "المتنافس {alias} · {name}",
+  "@issuerParticipantLabel": {
+    "description": "A participant as the issuer sees it: alias and organisation.",
+    "placeholders": {
+      "alias": {
+        "type": "int"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "issuerListCreate": "منافسة جديدة",
+  "@issuerListCreate": {
+    "description": "M33 create button (S10)."
+  },
+  "issuerListSearchHint": "ابحث بعنوان المنافسة",
+  "@issuerListSearchHint": {
+    "description": "M33 search hint."
+  },
+  "issuerListSegmentActive": "النشطة",
+  "@issuerListSegmentActive": {
+    "description": "M33 segment: status_group=active."
+  },
+  "issuerListSegmentDrafts": "المسودات",
+  "@issuerListSegmentDrafts": {
+    "description": "M33 segment: status_group=draft."
+  },
+  "issuerListSegmentEnded": "المنتهية",
+  "@issuerListSegmentEnded": {
+    "description": "M33 segment: status_group=ended."
+  },
+  "issuerListEmptyActiveTitle": "لا توجد منافسات نشطة",
+  "@issuerListEmptyActiveTitle": {
+    "description": "M33 empty (active)."
+  },
+  "issuerListEmptyActiveMessage": "تظهر هنا المنافسات المجدولة والمفتوحة للعروض وقيد التقييم.",
+  "@issuerListEmptyActiveMessage": {
+    "description": "M33 empty (active)."
+  },
+  "issuerListEmptyDraftsTitle": "لا توجد مسودات",
+  "@issuerListEmptyDraftsTitle": {
+    "description": "M33 empty (drafts)."
+  },
+  "issuerListEmptyDraftsMessage": "تُحفظ المنافسة الجديدة مسودةً حتى تنشرها.",
+  "@issuerListEmptyDraftsMessage": {
+    "description": "M33 empty (drafts)."
+  },
+  "issuerListEmptyEndedTitle": "لا توجد منافسات منتهية",
+  "@issuerListEmptyEndedTitle": {
+    "description": "M33 empty (ended)."
+  },
+  "issuerListEmptyEndedMessage": "تظهر هنا المنافسات التي تمت ترسيتها أو أُغلقت دون ترسية أو أُلغيت.",
+  "@issuerListEmptyEndedMessage": {
+    "description": "M33 empty (ended)."
+  },
+  "issuerListNoResultsTitle": "لا توجد نتائج مطابقة",
+  "@issuerListNoResultsTitle": {
+    "description": "M33 search without results."
+  },
+  "issuerListNoResultsMessage": "جرّب كلمات بحث أخرى.",
+  "@issuerListNoResultsMessage": {
+    "description": "M33 search without results."
+  },
+  "issuerListOpensAt": "تبدأ العروض في {time}",
+  "@issuerListOpensAt": {
+    "description": "M33 row of a scheduled competition.",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "issuerListUpdatedAt": "آخر تحديث في {date}",
+  "@issuerListUpdatedAt": {
+    "description": "M33 row of a draft.",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "issuerListCounts": "المدعوون {invited} · المنضمون {joined} · بعروض {withOffers}",
+  "@issuerListCounts": {
+    "description": "M33 row counts.",
+    "placeholders": {
+      "invited": {
+        "type": "int"
+      },
+      "joined": {
+        "type": "int"
+      },
+      "withOffers": {
+        "type": "int"
+      }
+    }
+  },
+  "issuerCreateTitle": "منافسة جديدة",
+  "@issuerCreateTitle": {
+    "description": "Wizard title."
+  },
+  "issuerCreateStepType": "النوع والإعداد المسبق",
+  "@issuerCreateStepType": {
+    "description": "M34 step title."
+  },
+  "issuerCreateStepBasics": "البيانات الأساسية",
+  "@issuerCreateStepBasics": {
+    "description": "M35 step title."
+  },
+  "issuerCreateStepSchedule": "الأسعار والمواعيد",
+  "@issuerCreateStepSchedule": {
+    "description": "M36 step title."
+  },
+  "issuerCreateStepReview": "المراجعة والحفظ",
+  "@issuerCreateStepReview": {
+    "description": "M37 step title."
+  },
+  "issuerCreateDirectionTitle": "نوع المنافسة",
+  "@issuerCreateDirectionTitle": {
+    "description": "M34 direction section."
+  },
+  "issuerCreateIssuerRole": "{direction, select, tender{أنت المشتري} auction{أنت البائع} other{طارح المنافسة}}",
+  "@issuerCreateIssuerRole": {
+    "description": "M34 direction card: the issuer role by direction.",
+    "placeholders": {
+      "direction": {
+        "type": "String"
+      }
+    }
+  },
+  "issuerCreateAuctionDisabled": "المزايدات غير مفعّلة لمنشأتك. تواصل مع بافو.",
+  "@issuerCreateAuctionDisabled": {
+    "description": "S10 auction gate."
+  },
+  "issuerCreateFormatTitle": "طريقة تقديم العروض",
+  "@issuerCreateFormatTitle": {
+    "description": "M34 format section."
+  },
+  "issuerCreateFormatLiveHint": "عروض مباشرة قابلة للتحسين حتى الإغلاق",
+  "@issuerCreateFormatLiveHint": {
+    "description": "M34 live format card."
+  },
+  "issuerCreateFormatSealedHint": "عرض مغلق لكل متنافس يُفتح عند الإغلاق",
+  "@issuerCreateFormatSealedHint": {
+    "description": "M34 sealed format card."
+  },
+  "issuerCreatePresetTitle": "الإعداد المسبق للقواعد",
+  "@issuerCreatePresetTitle": {
+    "description": "M34 preset section."
+  },
+  "issuerCreatePresetRequired": "اختر إعداداً مسبقاً للمتابعة.",
+  "@issuerCreatePresetRequired": {
+    "description": "M34 validation."
+  },
+  "issuerCreateNoPreset": "لا يوجد إعداد مسبق لهذا الاختيار في التطبيق. يمكنك إنشاء هذه المنافسة من لوحة التحكم على الويب.",
+  "@issuerCreateNoPreset": {
+    "description": "M34 when no preset matches the direction and format."
+  },
+  "issuerCreateAdvancedOnWeb": "الإعدادات المتقدمة متاحة في لوحة التحكم على الويب.",
+  "@issuerCreateAdvancedOnWeb": {
+    "description": "M34 (CD4)."
+  },
+  "issuerCreatePricesTitle": "الأسعار",
+  "@issuerCreatePricesTitle": {
+    "description": "M36 prices section."
+  },
+  "issuerCreateScheduleTitle": "المواعيد",
+  "@issuerCreateScheduleTitle": {
+    "description": "M36 schedule section."
+  },
+  "issuerCreateDiscardTitle": "تجاهل المنافسة؟",
+  "@issuerCreateDiscardTitle": {
+    "description": "Wizard unsaved-changes guard."
+  },
+  "issuerCreateDiscardMessage": "لن تُحفظ البيانات التي أدخلتها.",
+  "@issuerCreateDiscardMessage": {
+    "description": "Wizard unsaved-changes guard."
+  },
+  "issuerCreateSaved": "حُفظت المسودة. ادعُ المتنافسين وأضف المستندات ثم انشرها.",
+  "@issuerCreateSaved": {
+    "description": "M37 success toast."
+  },
+  "issuerPresetChipStep": "خطوة التحسين {step}",
+  "@issuerPresetChipStep": {
+    "description": "Preset card chip.",
+    "placeholders": {
+      "step": {
+        "type": "String"
+      }
+    }
+  },
+  "issuerPresetChipRankFull": "الترتيب ظاهر",
+  "@issuerPresetChipRankFull": {
+    "description": "Preset card chip."
+  },
+  "issuerPresetChipLeadingFlag": "مؤشر العرض المتصدر",
+  "@issuerPresetChipLeadingFlag": {
+    "description": "Preset card chip."
+  },
+  "issuerPresetChipRankHidden": "الترتيب مخفي",
+  "@issuerPresetChipRankHidden": {
+    "description": "Preset card chip."
+  },
+  "issuerPresetChipPricesShown": "الأسعار ظاهرة",
+  "@issuerPresetChipPricesShown": {
+    "description": "Preset card chip."
+  },
+  "issuerPresetChipAutoExtend": "تمديد تلقائي",
+  "@issuerPresetChipAutoExtend": {
+    "description": "Preset card chip."
+  },
+  "issuerPresetChipBafo": "جولة عرض نهائي",
+  "@issuerPresetChipBafo": {
+    "description": "Preset card chip."
+  },
+  "issuerFieldTitle": "عنوان المنافسة",
+  "@issuerFieldTitle": {
+    "description": "Title field."
+  },
+  "issuerFieldDescription": "الوصف ونطاق العمل",
+  "@issuerFieldDescription": {
+    "description": "Description field."
+  },
+  "issuerFieldDescriptionHelper": "مطلوب قبل النشر.",
+  "@issuerFieldDescriptionHelper": {
+    "description": "Description helper (R18)."
+  },
+  "issuerFieldCategoryOther": "حدّد الفئة",
+  "@issuerFieldCategoryOther": {
+    "description": "Other-category text (R15)."
+  },
+  "issuerFieldCategoryNoAuction": "لا تسمح هذه الفئة بالمزايدات.",
+  "@issuerFieldCategoryNoAuction": {
+    "description": "R14 category check."
+  },
+  "issuerFieldStartPrice": "{direction, select, tender{سعر السقف} auction{سعر الافتتاح} other{سعر البداية}}",
+  "@issuerFieldStartPrice": {
+    "description": "rules.start_price.label by direction.",
+    "placeholders": {
+      "direction": {
+        "type": "String"
+      }
+    }
+  },
+  "issuerFieldStartPriceHelper": "{direction, select, tender{اختياري. لا يُقبل عرض يتجاوزه.} auction{مطلوب قبل النشر. لا يُقبل عرض أقل منه.} other{اختياري.}}",
+  "@issuerFieldStartPriceHelper": {
+    "description": "Start price helper by direction.",
+    "placeholders": {
+      "direction": {
+        "type": "String"
+      }
+    }
+  },
+  "issuerFieldReservePrice": "{direction, select, tender{السعر المستهدف} auction{الحد الأدنى المقبول} other{السعر المستهدف أو الحد الأدنى المقبول}}",
+  "@issuerFieldReservePrice": {
+    "description": "rules.reserve_price.label by direction.",
+    "placeholders": {
+      "direction": {
+        "type": "String"
+      }
+    }
+  },
+  "issuerFieldReserveHelper": "اختياري. مخفي عن المتنافسين ويؤثر في الترسية فقط.",
+  "@issuerFieldReserveHelper": {
+    "description": "Reserve helper."
+  },
+  "issuerFieldReserveVersusStart": "{direction, select, tender{يجب ألا يزيد السعر المستهدف عن سعر السقف.} auction{يجب ألا يقل الحد الأدنى المقبول عن سعر الافتتاح.} other{السعر المستهدف أو الحد الأدنى المقبول لا يتوافق مع سعر البداية.}}",
+  "@issuerFieldReserveVersusStart": {
+    "description": "R6 hint by direction.",
+    "placeholders": {
+      "direction": {
+        "type": "String"
+      }
+    }
+  },
+  "issuerFieldOpensOnPublish": "فور النشر",
+  "@issuerFieldOpensOnPublish": {
+    "description": "Opening option."
+  },
+  "issuerFieldOpensAtTime": "في موعد محدد",
+  "@issuerFieldOpensAtTime": {
+    "description": "Opening option."
+  },
+  "issuerFieldRiyadhTime": "المواعيد بتوقيت الرياض.",
+  "@issuerFieldRiyadhTime": {
+    "description": "Date field helper."
+  },
+  "issuerFieldCloseBeforeOpen": "يجب أن يكون موعد الإغلاق بعد بدء استقبال العروض.",
+  "@issuerFieldCloseBeforeOpen": {
+    "description": "R16 hint."
+  },
+  "issuerFieldOpensInPast": "اختر موعداً لم يمضِ بعد.",
+  "@issuerFieldOpensInPast": {
+    "description": "R16 hint."
+  },
+  "issuerFieldDurationTooShort": "يجب ألا تقل مدة استقبال العروض عن {minutes, plural, =1{دقيقة واحدة} =2{دقيقتين} few{{minutes} دقائق} many{{minutes} دقيقة} other{{minutes} دقيقة}}.",
+  "@issuerFieldDurationTooShort": {
+    "description": "R16 minimum duration.",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "issuerFieldDurationTooLong": "يجب ألا تزيد المدة عن {days, plural, =1{يوم واحد} =2{يومين} few{{days} أيام} many{{days} يوماً} other{{days} يوم}}.",
+  "@issuerFieldDurationTooLong": {
+    "description": "R16 maximum duration.",
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "issuerSchedulePreviewTitle": "الجدول الزمني المتوقع",
+  "@issuerSchedulePreviewTitle": {
+    "description": "G3 preview card."
+  },
+  "issuerSchedulePreviewNote": "تقديري، يُثبَّت عند النشر",
+  "@issuerSchedulePreviewNote": {
+    "description": "G3 label."
+  },
+  "issuerReviewEdit": "تعديل",
+  "@issuerReviewEdit": {
+    "description": "M37 edit link of a step."
+  },
+  "issuerReviewSave": "حفظ المسودة",
+  "@issuerReviewSave": {
+    "description": "M37 primary button."
+  },
+  "issuerReviewDraftNote": "تُحفظ المنافسة مسودةً. يمكنك بعدها إضافة المستندات ودعوة المتنافسين ثم نشرها.",
+  "@issuerReviewDraftNote": {
+    "description": "M37 note."
+  },
+  "issuerReviewNoDescription": "لم يُضف بعد (مطلوب قبل النشر)",
+  "@issuerReviewNoDescription": {
+    "description": "M37 description summary."
+  },
+  "issuerReviewDescriptionAdded": "أُضيف",
+  "@issuerReviewDescriptionAdded": {
+    "description": "M37 description summary."
+  },
+  "issuerActionsMenu": "الإجراءات",
+  "@issuerActionsMenu": {
+    "description": "M38 action sheet."
+  },
+  "issuerActionPublish": "نشر المنافسة",
+  "@issuerActionPublish": {
+    "description": "M38 action."
+  },
+  "issuerActionEdit": "تعديل البيانات",
+  "@issuerActionEdit": {
+    "description": "M38 action."
+  },
+  "issuerActionInvite": "دعوة متنافسين",
+  "@issuerActionInvite": {
+    "description": "M38 action."
+  },
+  "issuerActionInviteMore": "دعوة المزيد",
+  "@issuerActionInviteMore": {
+    "description": "M41 action."
+  },
+  "issuerActionDocuments": "المستندات",
+  "@issuerActionDocuments": {
+    "description": "M38 action."
+  },
+  "issuerActionExtend": "تمديد الإغلاق",
+  "@issuerActionExtend": {
+    "description": "Web-only action row."
+  },
+  "issuerActionStartBafo": "بدء جولة العرض النهائي",
+  "@issuerActionStartBafo": {
+    "description": "Web-only action row."
+  },
+  "issuerActionAward": "الترسية",
+  "@issuerActionAward": {
+    "description": "Web-only action row."
+  },
+  "issuerActionRevokeAward": "إلغاء الترسية",
+  "@issuerActionRevokeAward": {
+    "description": "Web-only action row."
+  },
+  "issuerActionCloseWithoutAward": "إغلاق دون ترسية",
+  "@issuerActionCloseWithoutAward": {
+    "description": "Web-only action row."
+  },
+  "issuerActionCancel": "إلغاء المنافسة",
+  "@issuerActionCancel": {
+    "description": "M44 destructive action."
+  },
+  "issuerActionDeleteDraft": "حذف المسودة",
+  "@issuerActionDeleteDraft": {
+    "description": "M45 destructive action."
+  },
+  "issuerDetailCreatedViaApi": "أُنشئت عبر واجهة برمجة التطبيقات",
+  "@issuerDetailCreatedViaApi": {
+    "description": "M38 badge when source = api."
+  },
+  "issuerDetailLeadingOffer": "العرض المتصدر",
+  "@issuerDetailLeadingOffer": {
+    "description": "Leading amount label."
+  },
+  "issuerDetailCounts": "ملخص المشاركة",
+  "@issuerDetailCounts": {
+    "description": "M38 counts section."
+  },
+  "issuerDetailCreatedBy": "أنشأها",
+  "@issuerDetailCreatedBy": {
+    "description": "M38 created_by."
+  },
+  "issuerCountInvitations": "المدعوون",
+  "@issuerCountInvitations": {
+    "description": "Count tile."
+  },
+  "issuerCountJoined": "المنضمون",
+  "@issuerCountJoined": {
+    "description": "Count tile."
+  },
+  "issuerCountDeclined": "المعتذرون",
+  "@issuerCountDeclined": {
+    "description": "Count tile."
+  },
+  "issuerCountWithOffers": "قدّموا عروضاً",
+  "@issuerCountWithOffers": {
+    "description": "Count tile."
+  },
+  "issuerCountOffers": "العروض",
+  "@issuerCountOffers": {
+    "description": "Count tile."
+  },
+  "issuerCountComments": "الاستفسارات",
+  "@issuerCountComments": {
+    "description": "Count tile."
+  },
+  "issuerNavLive": "المتابعة المباشرة",
+  "@issuerNavLive": {
+    "description": "M38 link to M46."
+  },
+  "issuerNavOffers": "سجل العروض",
+  "@issuerNavOffers": {
+    "description": "M38 link to M47."
+  },
+  "issuerNavParticipants": "المتنافسون والدعوات",
+  "@issuerNavParticipants": {
+    "description": "M38 link to M41."
+  },
+  "issuerNavQa": "الاستفسارات",
+  "@issuerNavQa": {
+    "description": "M38 link to M31."
+  },
+  "issuerNavAward": "التقييم والترسية",
+  "@issuerNavAward": {
+    "description": "M38 link to M48."
+  },
+  "issuerNavDocuments": "المستندات",
+  "@issuerNavDocuments": {
+    "description": "M38 link to M42."
+  },
+  "issuerDocumentsManage": "إدارة",
+  "@issuerDocumentsManage": {
+    "description": "M38 documents section action."
+  },
+  "issuerAwardSummary": "تمت الترسية على {participant}",
+  "@issuerAwardSummary": {
+    "description": "M38 award summary.",
+    "placeholders": {
+      "participant": {
+        "type": "String"
+      }
+    }
+  },
+  "issuerTimelinePublished": "النشر",
+  "@issuerTimelinePublished": {
+    "description": "Timeline row."
+  },
+  "issuerTimelineScheduledClose": "موعد الإغلاق المجدول",
+  "@issuerTimelineScheduledClose": {
+    "description": "Timeline row."
+  },
+  "issuerTimelineEffectiveClose": "موعد الإغلاق الحالي",
+  "@issuerTimelineEffectiveClose": {
+    "description": "Timeline row."
+  },
+  "issuerTimelineHardStop": "أقصى موعد للإغلاق",
+  "@issuerTimelineHardStop": {
+    "description": "Timeline row."
+  },
+  "issuerTimelineExtensions": "مرات التمديد",
+  "@issuerTimelineExtensions": {
+    "description": "Timeline row."
+  },
+  "issuerTimelineClosed": "الإغلاق",
+  "@issuerTimelineClosed": {
+    "description": "Timeline row."
+  },
+  "issuerTimelineAwarded": "الترسية",
+  "@issuerTimelineAwarded": {
+    "description": "Timeline row."
+  },
+  "issuerTimelineNotAwarded": "الإغلاق دون ترسية",
+  "@issuerTimelineNotAwarded": {
+    "description": "Timeline row."
+  },
+  "issuerTimelineCancelled": "الإلغاء",
+  "@issuerTimelineCancelled": {
+    "description": "Timeline row."
+  },
+  "issuerChecklistTitle": "قبل النشر",
+  "@issuerChecklistTitle": {
+    "description": "Setup checklist title."
+  },
+  "issuerChecklistDescription": "أضف الوصف ونطاق العمل",
+  "@issuerChecklistDescription": {
+    "description": "Checklist (R18)."
+  },
+  "issuerChecklistSchedule": "حدّد موعد الإغلاق",
+  "@issuerChecklistSchedule": {
+    "description": "Checklist (R16)."
+  },
+  "issuerChecklistStartPrice": "حدّد سعر الافتتاح",
+  "@issuerChecklistStartPrice": {
+    "description": "Checklist (R5)."
+  },
+  "issuerChecklistOtherText": "حدّد الفئة",
+  "@issuerChecklistOtherText": {
+    "description": "Checklist (R15)."
+  },
+  "issuerChecklistInvitations": "ادعُ {min, plural, =1{متنافساً واحداً} =2{متنافسَين} few{{min} متنافسين} many{{min} متنافساً} other{{min} متنافس}} على الأقل (المدعوون الآن: {current})",
+  "@issuerChecklistInvitations": {
+    "description": "Checklist (R17).",
+    "placeholders": {
+      "min": {
+        "type": "int"
+      },
+      "current": {
+        "type": "int"
+      }
+    }
+  },
+  "issuerPublishTitle": "نشر المنافسة",
+  "@issuerPublishTitle": {
+    "description": "M43 sheet title."
+  },
+  "issuerPublishNote": "عند النشر تُرسل الدعوات إلى المدعوين، وتصبح القواعد ثابتة.",
+  "@issuerPublishNote": {
+    "description": "M43 note."
+  },
+  "issuerPublishConfirm": "نشر",
+  "@issuerPublishConfirm": {
+    "description": "M43 confirm button."
+  },
+  "issuerPublishDone": "نُشرت المنافسة وأُرسلت الدعوات",
+  "@issuerPublishDone": {
+    "description": "M43 success toast."
+  },
+  "issuerPublishFixFields": "أكمل ما يلي ثم أعد المحاولة:",
+  "@issuerPublishFixFields": {
+    "description": "M43 validation_failed title."
+  },
+  "issuerPublishMissingInvitations": "أضف {count, plural, =1{مدعواً واحداً} =2{مدعوَّين} few{{count} مدعوين} many{{count} مدعواً} other{{count} مدعو}} على الأقل.",
+  "@issuerPublishMissingInvitations": {
+    "description": "M43 min_participants_not_met (required − current).",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "issuerPublishCapacity": "بلغ عدد الفعاليات المباشرة المتزامنة حدّه في هذه الفترة. اختر موعداً آخر.",
+  "@issuerPublishCapacity": {
+    "description": "M43 live_event_capacity_reached."
+  },
+  "issuerCancelTitle": "إلغاء المنافسة",
+  "@issuerCancelTitle": {
+    "description": "M44 sheet title."
+  },
+  "issuerCancelDone": "أُلغيت المنافسة.",
+  "@issuerCancelDone": {
+    "description": "M44 success toast."
+  },
+  "issuerDeleteTitle": "حذف المسودة؟",
+  "@issuerDeleteTitle": {
+    "description": "M45 dialog title."
+  },
+  "issuerDeleteMessage": "تُحذف المسودة ودعواتها، ولا يمكن استعادتها.",
+  "@issuerDeleteMessage": {
+    "description": "M45 dialog message."
+  },
+  "issuerDeleteDone": "حُذفت المسودة.",
+  "@issuerDeleteDone": {
+    "description": "M45 success toast."
+  },
+  "issuerSponsorshipTitle": "رسوم المشاركة",
+  "@issuerSponsorshipTitle": {
+    "description": "Sponsorship card."
+  },
+  "issuerSponsorshipMode": "{mode, select, all{تغطية الرسوم لجميع المدعوين} selected{تغطية الرسوم لمدعوين محددين} other{لا تغطية للرسوم}}",
+  "@issuerSponsorshipMode": {
+    "description": "Sponsorship mode.",
+    "placeholders": {
+      "mode": {
+        "type": "String"
+      }
+    }
+  },
+  "issuerSponsorshipCap": "الحد الأقصى للمتنافسين المغطّين",
+  "@issuerSponsorshipCap": {
+    "description": "Sponsorship card."
+  },
+  "issuerSponsorshipFunded": "التصاريح الممولة",
+  "@issuerSponsorshipFunded": {
+    "description": "Sponsorship card."
+  },
+  "issuerSponsorshipJoined": "تصاريح مستخدمة",
+  "@issuerSponsorshipJoined": {
+    "description": "Sponsorship card."
+  },
+  "issuerSponsorshipReserved": "تصاريح محجوزة",
+  "@issuerSponsorshipReserved": {
+    "description": "Sponsorship card."
+  },
+  "issuerSponsorshipFreeSlots": "تصاريح متاحة",
+  "@issuerSponsorshipFreeSlots": {
+    "description": "Sponsorship card."
+  },
+  "issuerSponsorshipPending": "بانتظار الدفع",
+  "@issuerSponsorshipPending": {
+    "description": "Sponsorship card."
+  },
+  "issuerSponsorshipUnused": "تصاريح غير مستخدمة",
+  "@issuerSponsorshipUnused": {
+    "description": "Sponsorship card."
+  },
+  "issuerSponsorshipOnWeb": "تُدار رسوم المشاركة ومدفوعاتها من لوحة تحكم بافو على الويب.",
+  "@issuerSponsorshipOnWeb": {
+    "description": "Sponsorship card (entitlement-only, §3.2)."
+  },
+  "issuerEditTitle": "تعديل المنافسة",
+  "@issuerEditTitle": {
+    "description": "M39 title."
+  },
+  "issuerEditSaved": "حُفظت التعديلات.",
+  "@issuerEditSaved": {
+    "description": "M39 success toast."
+  },
+  "issuerEditNotifyNote": "سيُبلَّغ المتنافسون بالتحديث.",
+  "@issuerEditNotifyNote": {
+    "description": "W16 note."
+  },
+  "issuerEditRulesFixed": "القواعد والأسعار ثابتة بعد النشر.",
+  "@issuerEditRulesFixed": {
+    "description": "W16 note (scheduled)."
+  },
+  "issuerEditLiveScope": "أثناء استقبال العروض يمكن تعديل العنوان والوصف فقط.",
+  "@issuerEditLiveScope": {
+    "description": "W16 note (live)."
+  },
+  "issuerEditTypeOnWeb": "يُغيَّر نوع المنافسة وطريقة العروض والقواعد من لوحة التحكم على الويب.",
+  "@issuerEditTypeOnWeb": {
+    "description": "M39 draft note."
+  },
+  "issuerEditDiscardTitle": "تجاهل التعديلات؟",
+  "@issuerEditDiscardTitle": {
+    "description": "M39 unsaved-changes guard."
+  },
+  "issuerEditDiscardMessage": "لن تُحفظ التعديلات التي أجريتها.",
+  "@issuerEditDiscardMessage": {
+    "description": "M39 unsaved-changes guard."
+  },
+  "issuerInviteTitle": "دعوة متنافسين",
+  "@issuerInviteTitle": {
+    "description": "M40 title."
+  },
+  "issuerInviteTabSuggestions": "مقترحون",
+  "@issuerInviteTabSuggestions": {
+    "description": "M40 segment."
+  },
+  "issuerInviteTabEmail": "بالبريد",
+  "@issuerInviteTabEmail": {
+    "description": "M40 segment."
+  },
+  "issuerInviteTabVendors": "دليل الموردين",
+  "@issuerInviteTabVendors": {
+    "description": "M40 segment."
+  },
+  "issuerInviteSearchSuggestions": "ابحث باسم المنشأة",
+  "@issuerInviteSearchSuggestions": {
+    "description": "M40 search."
+  },
+  "issuerInviteSearchVendors": "ابحث في دليل الموردين",
+  "@issuerInviteSearchVendors": {
+    "description": "M40 search."
+  },
+  "issuerInviteNoSuggestions": "لا توجد منشآت مقترحة مطابقة.",
+  "@issuerInviteNoSuggestions": {
+    "description": "M40 empty."
+  },
+  "issuerInviteNoVendors": "لا يوجد موردون مطابقون.",
+  "@issuerInviteNoVendors": {
+    "description": "M40 empty."
+  },
+  "issuerInviteVerified": "منشأة موثّقة",
+  "@issuerInviteVerified": {
+    "description": "Verified badge label."
+  },
+  "issuerInviteMatchCategory": "نفس الفئة",
+  "@issuerInviteMatchCategory": {
+    "description": "Suggestion match chip."
+  },
+  "issuerInviteMatchRegion": "نفس المنطقة",
+  "@issuerInviteMatchRegion": {
+    "description": "Suggestion match chip."
+  },
+  "issuerInviteHasPlan": "لديها باقة فعّالة",
+  "@issuerInviteHasPlan": {
+    "description": "Suggestion chip."
+  },
+  "issuerInviteVendorRegistered": "مسجّل في بافو",
+  "@issuerInviteVendorRegistered": {
+    "description": "Vendor with a BAFO account."
+  },
+  "issuerInviteEmailsLabel": "عناوين البريد الإلكتروني",
+  "@issuerInviteEmailsLabel": {
+    "description": "M40 e-mail field."
+  },
+  "issuerInviteEmailsHelper": "افصل بين العناوين بفاصلة أو مسافة أو سطر جديد.",
+  "@issuerInviteEmailsHelper": {
+    "description": "M40 e-mail helper."
+  },
+  "issuerInviteEmailsAdd": "إضافة",
+  "@issuerInviteEmailsAdd": {
+    "description": "M40 add e-mails."
+  },
+  "issuerInviteEmailsAdded": "{count, plural, =1{أُضيف عنوان واحد.} =2{أُضيف عنوانان.} few{أُضيفت {count} عناوين.} many{أُضيف {count} عنواناً.} other{أُضيف {count} عنوان.}}",
+  "@issuerInviteEmailsAdded": {
+    "description": "M40 toast after adding e-mails.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "issuerInviteEmailsInvalid": "عناوين غير صالحة: {emails}",
+  "@issuerInviteEmailsInvalid": {
+    "description": "M40 invalid pasted e-mails.",
+    "placeholders": {
+      "emails": {
+        "type": "String"
+      }
+    }
+  },
+  "issuerInviteStaged": "المختارون ({count})",
+  "@issuerInviteStaged": {
+    "description": "M40 staged header.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "issuerInviteStagedEmpty": "اختر من المقترحين أو دليل الموردين، أو أضف عناوين بريد.",
+  "@issuerInviteStagedEmpty": {
+    "description": "M40 staged empty."
+  },
+  "issuerInviteRemove": "إزالة {name}",
+  "@issuerInviteRemove": {
+    "description": "Remove a staged row.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "issuerInviteCoverFees": "تغطية رسوم المشاركة",
+  "@issuerInviteCoverFees": {
+    "description": "Selected mode switch."
+  },
+  "issuerInviteFreeSlots": "{count, plural, =0{لا توجد تصاريح مغطّاة متاحة.} =1{تصريح مغطّى واحد متاح.} =2{تصريحان مغطّيان متاحان.} few{{count} تصاريح مغطّاة متاحة.} many{{count} تصريحاً مغطّى متاحاً.} other{{count} تصريح مغطّى متاح.}}",
+  "@issuerInviteFreeSlots": {
+    "description": "Free sponsored slots (selected mode).",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "issuerInviteNothingSent": "لم تُرسل أي دعوة. صحّح الصفوف المحددة ثم أعد المحاولة.",
+  "@issuerInviteNothingSent": {
+    "description": "All-or-nothing row errors."
+  },
+  "issuerInviteFeesOnWeb": "تُدفع رسوم مشاركة هذه الدعوات من لوحة تحكم بافو على الويب. لم تُرسل الدعوات.",
+  "@issuerInviteFeesOnWeb": {
+    "description": "sponsorship_payment_required on invite (§3.2)."
+  },
+  "issuerInviteSendWithoutFees": "إرسال دون تغطية الرسوم",
+  "@issuerInviteSendWithoutFees": {
+    "description": "Selected mode."
+  },
+  "issuerInviteChooseFirst": "اختر المدعوين أولاً",
+  "@issuerInviteChooseFirst": {
+    "description": "Disabled send button."
+  },
+  "issuerInviteSend": "{count, plural, =1{إرسال دعوة واحدة} =2{إرسال دعوتين} few{إرسال {count} دعوات} many{إرسال {count} دعوة} other{إرسال {count} دعوة}}",
+  "@issuerInviteSend": {
+    "description": "M40 send button.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "issuerInviteAdd": "{count, plural, =1{إضافة مدعو واحد} =2{إضافة مدعوَّين} few{إضافة {count} مدعوين} many{إضافة {count} مدعواً} other{إضافة {count} مدعو}}",
+  "@issuerInviteAdd": {
+    "description": "M40 button on a draft.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "issuerInviteDone": "أُرسلت الدعوات.",
+  "@issuerInviteDone": {
+    "description": "M40 success toast."
+  },
+  "issuerInviteAddedToDraft": "أُضيف المدعوون إلى المسودة، وتُرسل الدعوات عند النشر.",
+  "@issuerInviteAddedToDraft": {
+    "description": "M40 success on a draft."
+  },
+  "issuerInviteRowDuplicate": "مدعو من قبل في هذه المنافسة.",
+  "@issuerInviteRowDuplicate": {
+    "description": "item_codes: invitation_duplicate."
+  },
+  "issuerInviteRowOwnOrganization": "لا يمكن دعوة منشأتكم.",
+  "@issuerInviteRowOwnOrganization": {
+    "description": "item_codes: cannot_invite_own_organization."
+  },
+  "issuerInviteRowVendorBlocked": "هذا المورد محظور في دليلكم.",
+  "@issuerInviteRowVendorBlocked": {
+    "description": "item_codes: vendor_blocked."
+  },
+  "issuerInviteRowVendorNotFound": "لم يُعثر على هذا المورد.",
+  "@issuerInviteRowVendorNotFound": {
+    "description": "item_codes: vendor_not_found."
+  },
+  "issuerInviteDiscardTitle": "تجاهل المختارين؟",
+  "@issuerInviteDiscardTitle": {
+    "description": "M40 unsaved guard."
+  },
+  "issuerInviteDiscardMessage": "لم تُرسل الدعوات بعد، ولن يُحفظ اختيارك.",
+  "@issuerInviteDiscardMessage": {
+    "description": "M40 unsaved guard."
+  },
+  "issuerParticipantsTitle": "المتنافسون والدعوات",
+  "@issuerParticipantsTitle": {
+    "description": "M41 title."
+  },
+  "issuerParticipantsFilterAll": "الكل ({count})",
+  "@issuerParticipantsFilterAll": {
+    "description": "M41 filter.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "issuerParticipantsFilterStatus": "{status} ({count})",
+  "@issuerParticipantsFilterStatus": {
+    "description": "M41 filter.",
+    "placeholders": {
+      "status": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "issuerParticipantsFilterEmpty": "لا توجد دعوات بهذه الحالة.",
+  "@issuerParticipantsFilterEmpty": {
+    "description": "M41 filter empty."
+  },
+  "issuerParticipantsEmptyTitle": "لم تُرسل دعوات بعد",
+  "@issuerParticipantsEmptyTitle": {
+    "description": "M41 empty."
+  },
+  "issuerParticipantsEmptyMessage": "ادعُ المتنافسين من المقترحين أو بالبريد الإلكتروني أو من دليل الموردين.",
+  "@issuerParticipantsEmptyMessage": {
+    "description": "M41 empty."
+  },
+  "issuerInvitationStatus": "{status, select, draft{مسودة} sent{أُرسلت} viewed{اطُّلع عليها} joined{انضم} declined{اعتذر} revoked{أُلغيت} expired{انتهت} other{غير معروفة}}",
+  "@issuerInvitationStatus": {
+    "description": "invitations.status.* (S2).",
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "issuerCoverage": "{coverage, select, sponsored{مغطّاة منكم} own_plan{باقة المتنافس} none{غير مغطّاة} other{غير معروفة}}",
+  "@issuerCoverage": {
+    "description": "sponsorship.coverage.* (S2).",
+    "placeholders": {
+      "coverage": {
+        "type": "String"
+      }
+    }
+  },
+  "issuerPassStatus": "{status, select, pending{تصريح بانتظار الدفع} reserved{تصريح محجوز} joined{تصريح مستخدَم} released{تصريح مُعاد} unused{تصريح غير مستخدَم} void{تصريح ملغى} other{تصريح}}",
+  "@issuerPassStatus": {
+    "description": "sponsorship.pass_status.* (S2).",
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "issuerInvitationSentAt": "أُرسلت {time}",
+  "@issuerInvitationSentAt": {
+    "description": "Invitation history.",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "issuerInvitationViewedAt": "اطُّلع عليها {time}",
+  "@issuerInvitationViewedAt": {
+    "description": "Invitation history.",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "issuerInvitationJoinedAt": "انضم {time}",
+  "@issuerInvitationJoinedAt": {
+    "description": "Invitation history.",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "issuerInvitationDeclinedAt": "اعتذر {time}",
+  "@issuerInvitationDeclinedAt": {
+    "description": "Invitation history.",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "issuerInvitationRevokedAt": "أُلغيت {time}",
+  "@issuerInvitationRevokedAt": {
+    "description": "Invitation history.",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "issuerInvitationReason": "السبب: {reason}",
+  "@issuerInvitationReason": {
+    "description": "Decline reason.",
+    "placeholders": {
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+  "issuerInvitationResend": "إعادة الإرسال",
+  "@issuerInvitationResend": {
+    "description": "M41 action."
+  },
+  "issuerInvitationRevoke": "إلغاء الدعوة",
+  "@issuerInvitationRevoke": {
+    "description": "M41 destructive action."
+  },
+  "issuerInvitationRemove": "إزالة المدعو",
+  "@issuerInvitationRemove": {
+    "description": "M41 destructive action (draft)."
+  },
+  "issuerInvitationResent": "أُعيد إرسال الدعوة.",
+  "@issuerInvitationResent": {
+    "description": "M41 toast."
+  },
+  "issuerInvitationRevoked": "أُلغيت الدعوة.",
+  "@issuerInvitationRevoked": {
+    "description": "M41 toast."
+  },
+  "issuerInvitationRemoved": "أُزيل المدعو من المسودة.",
+  "@issuerInvitationRemoved": {
+    "description": "M41 toast."
+  },
+  "issuerInvitationResendLimit": "بلغت الحد اليومي لإعادة إرسال هذه الدعوة.",
+  "@issuerInvitationResendLimit": {
+    "description": "Resend 429."
+  },
+  "issuerRevokeTitle": "إلغاء الدعوة؟",
+  "@issuerRevokeTitle": {
+    "description": "M41 confirm."
+  },
+  "issuerRevokeMessage": "لن يتمكن المدعو من الانضمام بهذه الدعوة.",
+  "@issuerRevokeMessage": {
+    "description": "M41 confirm."
+  },
+  "issuerRemoveInviteeTitle": "إزالة المدعو؟",
+  "@issuerRemoveInviteeTitle": {
+    "description": "M41 confirm (draft)."
+  },
+  "issuerRemoveInviteeMessage": "يُحذف هذا المدعو من المسودة.",
+  "@issuerRemoveInviteeMessage": {
+    "description": "M41 confirm (draft)."
+  },
+  "issuerDocumentsTitle": "مستندات المنافسة",
+  "@issuerDocumentsTitle": {
+    "description": "M42 title."
+  },
+  "issuerDocumentsUpload": "رفع مستند",
+  "@issuerDocumentsUpload": {
+    "description": "M42 upload button."
+  },
+  "issuerDocumentsLimits": "PDF أو Word أو Excel أو صور أو ZIP، بحد أقصى 100 ميجابايت للملف.",
+  "@issuerDocumentsLimits": {
+    "description": "M42 limits."
+  },
+  "issuerDocumentsAddendumNote": "المستندات المضافة بعد النشر تُعلَن للمتنافسين ملحقاً.",
+  "@issuerDocumentsAddendumNote": {
+    "description": "M42 addendum note."
+  },
+  "issuerDocumentsDeleteClosed": "لا يمكن حذف المستندات بعد بدء استقبال العروض.",
+  "@issuerDocumentsDeleteClosed": {
+    "description": "M42 note (live)."
+  },
+  "issuerDocumentsWebOnly": "الروابط الخارجية ومستندات الدعوة تُضاف من لوحة التحكم على الويب.",
+  "@issuerDocumentsWebOnly": {
+    "description": "M42 web-only note."
+  },
+  "issuerDocumentsEmptyTitle": "لا توجد مستندات",
+  "@issuerDocumentsEmptyTitle": {
+    "description": "M42 empty."
+  },
+  "issuerDocumentsEmptyMessage": "ارفع كراسة الشروط والمواصفات ليطّلع عليها المتنافسون بعد انضمامهم.",
+  "@issuerDocumentsEmptyMessage": {
+    "description": "M42 empty."
+  },
+  "issuerDocumentsUploadFailed": "تعذّر رفع الملف.",
+  "@issuerDocumentsUploadFailed": {
+    "description": "M42 upload error."
+  },
+  "issuerDocumentsUploading": "جارٍ رفع {name}",
+  "@issuerDocumentsUploading": {
+    "description": "M42 progress label.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "issuerDocumentDeleteTitle": "حذف المستند؟",
+  "@issuerDocumentDeleteTitle": {
+    "description": "M42 confirm."
+  },
+  "issuerDocumentDeleteMessage": "يُحذف المستند {name} من المنافسة.",
+  "@issuerDocumentDeleteMessage": {
+    "description": "M42 confirm.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "issuerDocumentDelete": "حذف المستند",
+  "@issuerDocumentDelete": {
+    "description": "M42 destructive confirm."
+  },
+  "issuerLiveTitle": "المتابعة المباشرة",
+  "@issuerLiveTitle": {
+    "description": "M46 title."
+  },
+  "issuerLiveConnected": "مباشر",
+  "@issuerLiveConnected": {
+    "description": "S4 connected indicator."
+  },
+  "issuerLiveReconnecting": "جارٍ إعادة الاتصال…",
+  "@issuerLiveReconnecting": {
+    "description": "S4 reconnecting."
+  },
+  "issuerLivePolling": "التحديثات المباشرة متأخرة، ونحدّث كل {seconds} ثوانٍ.",
+  "@issuerLivePolling": {
+    "description": "S4 polling (3 or 10 s).",
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "issuerLiveDraftTitle": "لم تُنشر المنافسة بعد",
+  "@issuerLiveDraftTitle": {
+    "description": "M46 on a draft."
+  },
+  "issuerLiveDraftMessage": "تبدأ المتابعة المباشرة بعد نشر المنافسة.",
+  "@issuerLiveDraftMessage": {
+    "description": "M46 on a draft."
+  },
+  "issuerLiveOnline": "{count, plural, =0{لا يوجد متنافسون متصلون الآن} =1{متنافس واحد متصل الآن} =2{متنافسان متصلان الآن} few{{count} متنافسين متصلون الآن} many{{count} متنافساً متصلاً الآن} other{{count} متنافس متصل الآن}}",
+  "@issuerLiveOnline": {
+    "description": "online_participants_count.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "issuerLiveExtended": "{reason, select, auto{مُدّد الإغلاق تلقائياً بسبب عرض في الدقائق الأخيرة.} manual{مدّد طارح المنافسة موعد الإغلاق.} admin{مدّدت بافو موعد الإغلاق.} other{مُدّد موعد الإغلاق.}}",
+  "@issuerLiveExtended": {
+    "description": "last_change.reason of an extension.",
+    "placeholders": {
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+  "issuerLiveBafoProgress": "قدّم {submitted} من {shortlist} عروضهم النهائية",
+  "@issuerLiveBafoProgress": {
+    "description": "BAFO round progress.",
+    "placeholders": {
+      "submitted": {
+        "type": "int"
+      },
+      "shortlist": {
+        "type": "int"
+      }
+    }
+  },
+  "issuerLiveNoOffers": "لم تصل عروض بعد",
+  "@issuerLiveNoOffers": {
+    "description": "No leader yet."
+  },
+  "issuerLiveSealedLock": "تُفتح العروض عند الإغلاق",
+  "@issuerLiveSealedLock": {
+    "description": "Sealed lock."
+  },
+  "issuerLiveReceivedAt": "استُلم في {time}",
+  "@issuerLiveReceivedAt": {
+    "description": "Leader accepted_at.",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "issuerLiveReserveMet": "{direction, select, tender{تحقق السعر المستهدف} auction{تحقق الحد الأدنى المقبول} other{تحقق السعر المستهدف أو الحد الأدنى المقبول}}",
+  "@issuerLiveReserveMet": {
+    "description": "ReserveMetIndicator (issuer only).",
+    "placeholders": {
+      "direction": {
+        "type": "String"
+      }
+    }
+  },
+  "issuerLiveReserveNotMet": "{direction, select, tender{لم يتحقق السعر المستهدف} auction{لم يتحقق الحد الأدنى المقبول} other{لم يتحقق السعر المستهدف أو الحد الأدنى المقبول}}",
+  "@issuerLiveReserveNotMet": {
+    "description": "ReserveMetIndicator (issuer only).",
+    "placeholders": {
+      "direction": {
+        "type": "String"
+      }
+    }
+  },
+  "issuerLiveImprovement": "{direction, select, tender{التوفير مقارنة بسعر السقف} auction{الزيادة مقارنة بسعر الافتتاح} other{التحسّن مقارنة بسعر البداية}}",
+  "@issuerLiveImprovement": {
+    "description": "live.metric.improvement (server-signed).",
+    "placeholders": {
+      "direction": {
+        "type": "String"
+      }
+    }
+  },
+  "issuerLiveLeaderAnnouncement": "العرض المتصدر الآن من {participant}: {amount}",
+  "@issuerLiveLeaderAnnouncement": {
+    "description": "Throttled live region.",
+    "placeholders": {
+      "participant": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "issuerLiveRankingTitle": "ترتيب المتنافسين",
+  "@issuerLiveRankingTitle": {
+    "description": "M46 ranking."
+  },
+  "issuerLiveNoParticipants": "لم ينضم متنافسون بعد.",
+  "@issuerLiveNoParticipants": {
+    "description": "Empty ranking."
+  },
+  "issuerLiveRank": "المرتبة {rank}",
+  "@issuerLiveRank": {
+    "description": "Rank semantics label.",
+    "placeholders": {
+      "rank": {
+        "type": "int"
+      }
+    }
+  },
+  "issuerLiveSubmitted": "قدّم عرضاً",
+  "@issuerLiveSubmitted": {
+    "description": "Sealed row."
+  },
+  "issuerLiveNotSubmitted": "لم يقدّم عرضاً بعد",
+  "@issuerLiveNotSubmitted": {
+    "description": "Sealed row."
+  },
+  "issuerLiveFirstOffer": "العرض الأول: {amount}",
+  "@issuerLiveFirstOffer": {
+    "description": "Ranking row.",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "issuerLiveOffersCount": "{count, plural, =0{لا عروض} =1{عرض واحد} =2{عرضان} few{{count} عروض} many{{count} عرضاً} other{{count} عرض}}",
+  "@issuerLiveOffersCount": {
+    "description": "Offers per participant.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "issuerLiveLastOffer": "آخر عرض {time}",
+  "@issuerLiveLastOffer": {
+    "description": "Ranking row.",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "issuerLiveBafoShortlisted": "في القائمة المختصرة",
+  "@issuerLiveBafoShortlisted": {
+    "description": "BAFO flag."
+  },
+  "issuerLiveBafoSubmitted": "قدّم العرض النهائي",
+  "@issuerLiveBafoSubmitted": {
+    "description": "BAFO flag."
+  },
+  "issuerLiveExtendOnWeb": "تمديد الإغلاق متاح في لوحة التحكم على الويب.",
+  "@issuerLiveExtendOnWeb": {
+    "description": "M46 (CD5)."
+  },
+  "issuerOffersTitle": "سجل العروض",
+  "@issuerOffersTitle": {
+    "description": "M47 title."
+  },
+  "issuerOffersEmptyTitle": "لم تصل عروض بعد",
+  "@issuerOffersEmptyTitle": {
+    "description": "M47 empty."
+  },
+  "issuerOffersEmptyMessage": "تظهر العروض هنا فور استلامها.",
+  "@issuerOffersEmptyMessage": {
+    "description": "M47 empty."
+  },
+  "issuerOfferSeq": "العرض رقم {seq}",
+  "@issuerOfferSeq": {
+    "description": "seq semantics label.",
+    "placeholders": {
+      "seq": {
+        "type": "int"
+      }
+    }
+  },
+  "issuerOfferSealed": "مغلق",
+  "@issuerOfferSealed": {
+    "description": "Sealed amount (null)."
+  },
+  "issuerOfferStage": "{stage, select, sealed{مغلق} initial{أولي} live{مباشر} bafo{نهائي} other{—}}",
+  "@issuerOfferStage": {
+    "description": "offers.stage.* (S2).",
+    "placeholders": {
+      "stage": {
+        "type": "String"
+      }
+    }
+  },
+  "issuerOfferChannel": "{channel, select, web{الويب} ios{iOS} android{أندرويد} api{واجهة برمجية} other{غير محدد}}",
+  "@issuerOfferChannel": {
+    "description": "Offer channel.",
+    "placeholders": {
+      "channel": {
+        "type": "String"
+      }
+    }
+  },
+  "issuerOfferVoided": "ملغى",
+  "@issuerOfferVoided": {
+    "description": "Voided offer badge."
+  },
+  "issuerAwardTitle": "التقييم والترسية",
+  "@issuerAwardTitle": {
+    "description": "M48 title."
+  },
+  "issuerAwardOnWeb": "تتم الترسية من لوحة التحكم على الويب.",
+  "@issuerAwardOnWeb": {
+    "description": "M48 in closed."
+  },
+  "issuerAwardChangesOnWeb": "إلغاء الترسية متاح في لوحة التحكم على الويب.",
+  "@issuerAwardChangesOnWeb": {
+    "description": "M48 (CD5)."
+  },
+  "issuerAwardWinner": "الترسية",
+  "@issuerAwardWinner": {
+    "description": "Award card title."
+  },
+  "issuerAwardRevokedTitle": "ترسية ملغاة",
+  "@issuerAwardRevokedTitle": {
+    "description": "Award card title (revoked)."
+  },
+  "issuerAwardRevoked": "أُلغيت هذه الترسية في {date}. السبب: {reason}",
+  "@issuerAwardRevoked": {
+    "description": "Revoked award.",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+  "issuerAwardCr": "السجل التجاري",
+  "@issuerAwardCr": {
+    "description": "Award card."
+  },
+  "issuerAwardVat": "الرقم الضريبي",
+  "@issuerAwardVat": {
+    "description": "Award card."
+  },
+  "issuerAwardLeading": "العرض المتصدر عند الترسية",
+  "@issuerAwardLeading": {
+    "description": "Award card."
+  },
+  "issuerAwardRank": "الترتيب عند الترسية",
+  "@issuerAwardRank": {
+    "description": "Award card."
+  },
+  "issuerAwardJustification": "مبرر الترسية",
+  "@issuerAwardJustification": {
+    "description": "Award card."
+  },
+  "issuerAwardMessage": "رسالة إلى المتنافس الفائز",
+  "@issuerAwardMessage": {
+    "description": "Award card."
+  },
+  "issuerAwardNotes": "ملاحظات داخلية",
+  "@issuerAwardNotes": {
+    "description": "Award card."
+  },
+  "issuerAwardBy": "تمت الترسية بواسطة",
+  "@issuerAwardBy": {
+    "description": "Award card."
+  },
+  "issuerAwardAt": "تاريخ الترسية",
+  "@issuerAwardAt": {
+    "description": "Award card."
+  },
+  "issuerAwardOfferAt": "وقت استلام العرض",
+  "@issuerAwardOfferAt": {
+    "description": "Award card."
+  },
+  "issuerAwardErpSync": "المزامنة مع نظام تخطيط الموارد",
+  "@issuerAwardErpSync": {
+    "description": "Award card."
+  },
+  "issuerAwardErpStatus": "{status, select, pending{قيد الانتظار} synced{تمت المزامنة} failed{تعذّرت المزامنة} not_required{غير مطلوبة} other{—}}",
+  "@issuerAwardErpStatus": {
+    "description": "erp_sync.status.",
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "issuerAwardLedgerHash": "بصمة السجل",
+  "@issuerAwardLedgerHash": {
+    "description": "Award card."
+  },
+  "issuerAwardStandings": "الترتيب النهائي",
+  "@issuerAwardStandings": {
+    "description": "M48 standings."
+  },
+  "issuerAwardChange": "التحسّن {value}",
+  "@issuerAwardChange": {
+    "description": "change_ratio_bps (server-signed).",
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "issuerReportTitle": "تقرير النتائج",
+  "@issuerReportTitle": {
+    "description": "Result PDF section."
+  },
+  "issuerReportShareHint": "يفتح التقرير في عارض الملفات، ومنه يمكنك مشاركته.",
+  "@issuerReportShareHint": {
+    "description": "Result PDF section."
+  },
+  "issuerReportArabic": "بالعربية",
+  "@issuerReportArabic": {
+    "description": "Result PDF locale."
+  },
+  "issuerReportEnglish": "بالإنجليزية",
+  "@issuerReportEnglish": {
+    "description": "Result PDF locale."
+  },
+  "issuerReportGenerating": "جارٍ إعداد التقرير…",
+  "@issuerReportGenerating": {
+    "description": "202 pending."
+  },
+  "issuerReportFailed": "تعذّر تجهيز التقرير. حاول مرة أخرى.",
+  "@issuerReportFailed": {
+    "description": "Report failure."
+  },
+  "issuerReportTimeout": "ما زال التقرير قيد الإعداد. حاول بعد قليل.",
+  "@issuerReportTimeout": {
+    "description": "Report still pending after 2 minutes."
+  },
+  "invitationsJoinBy": "الانضمام قبل {date}",
+  "@invitationsJoinBy": {
+    "description": "M16/M17: the join deadline as a date.",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  }
+}

@@ -1,0 +1,1880 @@
+{
+    "info": {
+        "name": "BAFO Public API v1",
+        "description": "Requests of the BAFO public API (ERP integrations). Set `client_id` and `client_secret` (dashboard → Integrations → API clients), run **Get an access token**, then call any request: the token is stored in `access_token`. To use an API key instead, set the collection auth token to `{{api_key}}`.\n\nThe OpenAPI 3.1 document is at `{{base_url}}/openapi.yaml`; the reference is at `/docs/api`. No real credentials are stored in this file.",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "auth": {
+        "type": "bearer",
+        "bearer": [
+            {
+                "key": "token",
+                "value": "{{access_token}}",
+                "type": "string"
+            }
+        ]
+    },
+    "variable": [
+        {
+            "key": "base_url",
+            "value": "http://localhost:8000/api/public/v1"
+        },
+        {
+            "key": "client_id",
+            "value": ""
+        },
+        {
+            "key": "client_secret",
+            "value": ""
+        },
+        {
+            "key": "access_token",
+            "value": ""
+        },
+        {
+            "key": "api_key",
+            "value": ""
+        }
+    ],
+    "item": [
+        {
+            "name": "Authentication",
+            "item": [
+                {
+                    "name": "Get an access token (OAuth2 client credentials)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Accept-Language",
+                                "value": "en"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/oauth/token",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "oauth",
+                                "token"
+                            ]
+                        },
+                        "description": "Get an access token (OAuth2 client credentials)\n\nRFC 6749 client-credentials grant. Send the client credentials with HTTP Basic (`client_id:client_secret`) or in the body. `scope` (space-separated) must be a subset of the client's scopes; all of them when omitted. Tokens last 30 minutes. This is the only response without the `{data}` envelope. Limited to 20 requests per minute per IP and client_id.",
+                        "auth": {
+                            "type": "basic",
+                            "basic": [
+                                {
+                                    "key": "username",
+                                    "value": "{{client_id}}",
+                                    "type": "string"
+                                },
+                                {
+                                    "key": "password",
+                                    "value": "{{client_secret}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "body": {
+                            "mode": "urlencoded",
+                            "urlencoded": [
+                                {
+                                    "key": "grant_type",
+                                    "value": "client_credentials"
+                                },
+                                {
+                                    "key": "scope",
+                                    "value": "",
+                                    "disabled": true
+                                }
+                            ]
+                        }
+                    },
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "if (pm.response.code === 200) {",
+                                    "    pm.collectionVariables.set(\"access_token\", pm.response.json().access_token);",
+                                    "}"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Check a credential",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Accept-Language",
+                                "value": "en"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/ping",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "ping"
+                            ]
+                        },
+                        "description": "Check a credential"
+                    }
+                },
+                {
+                    "name": "Describe the calling client",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Accept-Language",
+                                "value": "en"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/client",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "client"
+                            ]
+                        },
+                        "description": "Describe the calling client"
+                    }
+                },
+                {
+                    "name": "This OpenAPI document (YAML)",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Accept-Language",
+                                "value": "en"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/openapi.yaml",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "openapi.yaml"
+                            ]
+                        },
+                        "description": "This OpenAPI document (YAML)",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Organization",
+            "item": [
+                {
+                    "name": "Your organization",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Accept-Language",
+                                "value": "en"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/organization",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "organization"
+                            ]
+                        },
+                        "description": "Your organization\n\nScope: `organization:read`."
+                    }
+                },
+                {
+                    "name": "Lookup values (regions, categories, close reasons)",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Accept-Language",
+                                "value": "en"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/lookups/:type",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "lookups",
+                                ":type"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "type",
+                                    "value": "regions",
+                                    "description": "ULID"
+                                }
+                            ]
+                        },
+                        "description": "Lookup values (regions, categories, close reasons)\n\nScope: `lookups:read`."
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Vendors",
+            "item": [
+                {
+                    "name": "List vendors",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Accept-Language",
+                                "value": "en"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/vendors",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "vendors"
+                            ],
+                            "query": [
+                                {
+                                    "key": "cursor",
+                                    "value": "",
+                                    "disabled": true,
+                                    "description": "Opaque cursor from meta.pagination.next_cursor."
+                                },
+                                {
+                                    "key": "per_page",
+                                    "value": "",
+                                    "disabled": true,
+                                    "description": ""
+                                },
+                                {
+                                    "key": "updated_since",
+                                    "value": "",
+                                    "disabled": true,
+                                    "description": "RFC 3339; rows with updated_at ≥ this."
+                                },
+                                {
+                                    "key": "status",
+                                    "value": "",
+                                    "disabled": true,
+                                    "description": ""
+                                },
+                                {
+                                    "key": "q",
+                                    "value": "",
+                                    "disabled": true,
+                                    "description": "Name, English name, e-mail or CR."
+                                },
+                                {
+                                    "key": "external_system",
+                                    "value": "",
+                                    "disabled": true,
+                                    "description": "With external_id: exact match on an ERP key."
+                                },
+                                {
+                                    "key": "external_id",
+                                    "value": "",
+                                    "disabled": true,
+                                    "description": ""
+                                },
+                                {
+                                    "key": "linked",
+                                    "value": "",
+                                    "disabled": true,
+                                    "description": "Only vendors matched (or not) to a BAFO organization."
+                                }
+                            ]
+                        },
+                        "description": "List vendors\n\nScope: `vendors:read`.\n\nOrdered by updated_at, id."
+                    }
+                },
+                {
+                    "name": "Create a vendor",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Accept-Language",
+                                "value": "en"
+                            },
+                            {
+                                "key": "Idempotency-Key",
+                                "value": "{{$guid}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/vendors",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "vendors"
+                            ]
+                        },
+                        "description": "Create a vendor\n\nScope: `vendors:write`.\n\nErrors: vendor_email_taken (409, details.existing_id), external_ref_conflict (409, details.existing_id).",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"name\": \"شركة الريادة\",\n    \"name_en\": \"Al Riyada Co.\",\n    \"email\": \"sales@riyada.sa\",\n    \"region_code\": \"RIY\",\n    \"category_codes\": [\n        \"it_hardware\"\n    ],\n    \"external_refs\": [\n        {\n            \"system\": \"sap_s4\",\n            \"type\": \"supplier\",\n            \"id\": \"100045\"\n        }\n    ]\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "Get a vendor",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Accept-Language",
+                                "value": "en"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/vendors/:vendor",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "vendors",
+                                ":vendor"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "vendor",
+                                    "value": "",
+                                    "description": "ULID"
+                                }
+                            ]
+                        },
+                        "description": "Get a vendor\n\nScope: `vendors:read`."
+                    }
+                },
+                {
+                    "name": "Update a vendor",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Accept-Language",
+                                "value": "en"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/vendors/:vendor",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "vendors",
+                                ":vendor"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "vendor",
+                                    "value": "",
+                                    "description": "ULID"
+                                }
+                            ]
+                        },
+                        "description": "Update a vendor\n\nScope: `vendors:write`.",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"contact_name\": \"Khalid\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "Create or replace a vendor by ERP key",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Accept-Language",
+                                "value": "en"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/vendors/external/:system/:external_id",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "vendors",
+                                "external",
+                                ":system",
+                                ":external_id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "system",
+                                    "value": "sap_s4",
+                                    "description": "ERP slug; URL-encode the `:` of custom:<name>."
+                                },
+                                {
+                                    "key": "external_id",
+                                    "value": "100045",
+                                    "description": "The supplier key in the ERP."
+                                }
+                            ]
+                        },
+                        "description": "Create or replace a vendor by ERP key\n\nScope: `vendors:write`.\n\nIdempotent upsert by the supplier ERP key. An unknown key with the e-mail of an existing vendor attaches the key to that vendor.",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"name\": \"شركة الريادة\",\n    \"email\": \"sales@riyada.sa\",\n    \"cr_number\": \"1010987654\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "Find a vendor by ERP key",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Accept-Language",
+                                "value": "en"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/vendors/external/:system/:external_id",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "vendors",
+                                "external",
+                                ":system",
+                                ":external_id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "system",
+                                    "value": "sap_s4",
+                                    "description": "ERP slug; URL-encode the `:` of custom:<name>."
+                                },
+                                {
+                                    "key": "external_id",
+                                    "value": "100045",
+                                    "description": "The supplier key in the ERP."
+                                }
+                            ]
+                        },
+                        "description": "Find a vendor by ERP key\n\nScope: `vendors:read`."
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Competitions",
+            "item": [
+                {
+                    "name": "List your competitions",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Accept-Language",
+                                "value": "en"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/competitions",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "competitions"
+                            ],
+                            "query": [
+                                {
+                                    "key": "cursor",
+                                    "value": "",
+                                    "disabled": true,
+                                    "description": "Opaque cursor from meta.pagination.next_cursor."
+                                },
+                                {
+                                    "key": "per_page",
+                                    "value": "",
+                                    "disabled": true,
+                                    "description": ""
+                                },
+                                {
+                                    "key": "updated_since",
+                                    "value": "",
+                                    "disabled": true,
+                                    "description": "RFC 3339; rows with updated_at ≥ this."
+                                },
+                                {
+                                    "key": "status",
+                                    "value": "",
+                                    "disabled": true,
+                                    "description": "Comma-separated statuses."
+                                },
+                                {
+                                    "key": "direction",
+                                    "value": "",
+                                    "disabled": true,
+                                    "description": ""
+                                },
+                                {
+                                    "key": "format",
+                                    "value": "",
+                                    "disabled": true,
+                                    "description": ""
+                                },
+                                {
+                                    "key": "external_system",
+                                    "value": "",
+                                    "disabled": true,
+                                    "description": ""
+                                },
+                                {
+                                    "key": "external_id",
+                                    "value": "",
+                                    "disabled": true,
+                                    "description": ""
+                                }
+                            ]
+                        },
+                        "description": "List your competitions\n\nScope: `competitions:read`."
+                    }
+                },
+                {
+                    "name": "Create a draft competition",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Accept-Language",
+                                "value": "en"
+                            },
+                            {
+                                "key": "Idempotency-Key",
+                                "value": "{{$guid}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/competitions",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "competitions"
+                            ]
+                        },
+                        "description": "Create a draft competition\n\nScope: `competitions:write`.\n\n`rules` is a partial RulesInput filled from the preset; invitations and sponsorship are optional.",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"title\": \"توريد أجهزة حاسب محمول 2026\",\n    \"description\": \"…\",\n    \"category_code\": \"it_hardware\",\n    \"region_code\": \"RIY\",\n    \"direction\": \"tender\",\n    \"format\": \"live\",\n    \"preset_code\": \"standard_live_tender\",\n    \"rules\": {\n        \"start_price_minor\": 25000000,\n        \"reserve_price_minor\": 21000000\n    },\n    \"bidding_opens_at\": \"2026-11-02T06:00:00Z\",\n    \"scheduled_close_at\": \"2026-11-09T12:00:00Z\",\n    \"external_refs\": [\n        {\n            \"system\": \"sap_s4\",\n            \"type\": \"purchase_requisition\",\n            \"id\": \"10004567\"\n        }\n    ],\n    \"invitations\": [\n        {\n            \"vendor_external\": {\n                \"system\": \"sap_s4\",\n                \"id\": \"100045\"\n            }\n        },\n        {\n            \"email\": \"sales@newsupplier.sa\",\n            \"name\": \"Sales\"\n        }\n    ]\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "Get a competition",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Accept-Language",
+                                "value": "en"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/competitions/:competition",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "competitions",
+                                ":competition"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "competition",
+                                    "value": "",
+                                    "description": "ULID"
+                                }
+                            ]
+                        },
+                        "description": "Get a competition\n\nScope: `competitions:read`."
+                    }
+                },
+                {
+                    "name": "Update a competition",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Accept-Language",
+                                "value": "en"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/competitions/:competition",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "competitions",
+                                ":competition"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "competition",
+                                    "value": "",
+                                    "description": "ULID"
+                                }
+                            ]
+                        },
+                        "description": "Update a competition\n\nScope: `competitions:write`.\n\ncompetition_not_editable (409, details.fields).",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "Delete a draft",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Accept-Language",
+                                "value": "en"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/competitions/:competition",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "competitions",
+                                ":competition"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "competition",
+                                    "value": "",
+                                    "description": "ULID"
+                                }
+                            ]
+                        },
+                        "description": "Delete a draft\n\nScope: `competitions:write`."
+                    }
+                },
+                {
+                    "name": "Publish a draft",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Accept-Language",
+                                "value": "en"
+                            },
+                            {
+                                "key": "Idempotency-Key",
+                                "value": "{{$guid}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/competitions/:competition/publish",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "competitions",
+                                ":competition",
+                                "publish"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "competition",
+                                    "value": "",
+                                    "description": "ULID"
+                                }
+                            ]
+                        },
+                        "description": "Publish a draft\n\nScope: `competitions:publish`.\n\nRuns the publish checks. sponsorship_payment_required (409, details.quote) when passes must be bought first (payment is web-only)."
+                    }
+                },
+                {
+                    "name": "Extend the closing time",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Accept-Language",
+                                "value": "en"
+                            },
+                            {
+                                "key": "Idempotency-Key",
+                                "value": "{{$guid}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/competitions/:competition/extend",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "competitions",
+                                ":competition",
+                                "extend"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "competition",
+                                    "value": "",
+                                    "description": "ULID"
+                                }
+                            ]
+                        },
+                        "description": "Extend the closing time\n\nScope: `competitions:manage`.\n\nextend_invalid (422, details.min_new_close_at); invalid_state_transition (409) unless live.",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"new_close_at\": \"2026-11-10T12:00:00Z\",\n    \"reason\": \"Extra time requested by suppliers\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "Cancel a competition",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Accept-Language",
+                                "value": "en"
+                            },
+                            {
+                                "key": "Idempotency-Key",
+                                "value": "{{$guid}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/competitions/:competition/cancel",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "competitions",
+                                ":competition",
+                                "cancel"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "competition",
+                                    "value": "",
+                                    "description": "ULID"
+                                }
+                            ]
+                        },
+                        "description": "Cancel a competition\n\nScope: `competitions:manage`.\n\nAllowed while scheduled, live or in the BAFO round.",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"close_reason_code\": \"cancel_budget_withdrawn\",\n    \"note\": null\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "Close without award",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Accept-Language",
+                                "value": "en"
+                            },
+                            {
+                                "key": "Idempotency-Key",
+                                "value": "{{$guid}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/competitions/:competition/close",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "competitions",
+                                ":competition",
+                                "close"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "competition",
+                                    "value": "",
+                                    "description": "ULID"
+                                }
+                            ]
+                        },
+                        "description": "Close without award\n\nScope: `competitions:manage`.\n\nAllowed while closed (evaluation).",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"close_reason_code\": \"not_awarded_prices_above_budget\",\n    \"note\": null\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "List attachments",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Accept-Language",
+                                "value": "en"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/competitions/:competition/attachments",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "competitions",
+                                ":competition",
+                                "attachments"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "competition",
+                                    "value": "",
+                                    "description": "ULID"
+                                }
+                            ]
+                        },
+                        "description": "List attachments\n\nScope: `competitions:read`."
+                    }
+                },
+                {
+                    "name": "Add an attachment or link",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Accept-Language",
+                                "value": "en"
+                            },
+                            {
+                                "key": "Idempotency-Key",
+                                "value": "{{$guid}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/competitions/:competition/attachments",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "competitions",
+                                ":competition",
+                                "attachments"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "competition",
+                                    "value": "",
+                                    "description": "ULID"
+                                }
+                            ]
+                        },
+                        "description": "Add an attachment or link\n\nScope: `competitions:write`.",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"kind\": \"external_link\",\n    \"url\": \"https://erp.example.sa/bafo/webhooks\",\n    \"title\": \"string\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "Remove an attachment (draft or scheduled)",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Accept-Language",
+                                "value": "en"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/competitions/:competition/attachments/:attachment",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "competitions",
+                                ":competition",
+                                "attachments",
+                                ":attachment"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "competition",
+                                    "value": "",
+                                    "description": "ULID"
+                                },
+                                {
+                                    "key": "attachment",
+                                    "value": "",
+                                    "description": "ULID"
+                                }
+                            ]
+                        },
+                        "description": "Remove an attachment (draft or scheduled)\n\nScope: `competitions:write`."
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Invitations",
+            "item": [
+                {
+                    "name": "List invitations",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Accept-Language",
+                                "value": "en"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/competitions/:competition/invitations",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "competitions",
+                                ":competition",
+                                "invitations"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "competition",
+                                    "value": "",
+                                    "description": "ULID"
+                                }
+                            ]
+                        },
+                        "description": "List invitations\n\nScope: `invitations:read`."
+                    }
+                },
+                {
+                    "name": "Invite participants (all-or-nothing)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Accept-Language",
+                                "value": "en"
+                            },
+                            {
+                                "key": "Idempotency-Key",
+                                "value": "{{$guid}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/competitions/:competition/invitations",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "competitions",
+                                ":competition",
+                                "invitations"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "competition",
+                                    "value": "",
+                                    "description": "ULID"
+                                }
+                            ]
+                        },
+                        "description": "Invite participants (all-or-nothing)\n\nScope: `invitations:write`.\n\nPer-item codes in details.item_codes: invitation_duplicate, cannot_invite_own_organization, vendor_blocked, vendor_not_found.",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"invitations\": [\n        {\n            \"vendor_external\": {\n                \"system\": \"sap_s4\",\n                \"id\": \"100045\"\n            }\n        }\n    ]\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "Remove (draft) or revoke (sent, viewed) an invitation",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Accept-Language",
+                                "value": "en"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/competitions/:competition/invitations/:invitation",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "competitions",
+                                ":competition",
+                                "invitations",
+                                ":invitation"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "competition",
+                                    "value": "",
+                                    "description": "ULID"
+                                },
+                                {
+                                    "key": "invitation",
+                                    "value": "",
+                                    "description": "ULID"
+                                }
+                            ]
+                        },
+                        "description": "Remove (draft) or revoke (sent, viewed) an invitation\n\nScope: `invitations:write`."
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Offers and awards",
+            "item": [
+                {
+                    "name": "Current standing of every participant",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Accept-Language",
+                                "value": "en"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/competitions/:competition/offers",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "competitions",
+                                ":competition",
+                                "offers"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "competition",
+                                    "value": "",
+                                    "description": "ULID"
+                                }
+                            ]
+                        },
+                        "description": "Current standing of every participant\n\nScope: `offers:read`.\n\nSealed competitions before the offers are opened: amounts and ranks are null."
+                    }
+                },
+                {
+                    "name": "Results after close",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Accept-Language",
+                                "value": "en"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/competitions/:competition/results",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "competitions",
+                                ":competition",
+                                "results"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "competition",
+                                    "value": "",
+                                    "description": "ULID"
+                                }
+                            ]
+                        },
+                        "description": "Results after close\n\nScope: `offers:read`.\n\nresults_not_available (409) before the close."
+                    }
+                },
+                {
+                    "name": "List awards (the polling endpoint for firewalled ERPs)",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Accept-Language",
+                                "value": "en"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/awards",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "awards"
+                            ],
+                            "query": [
+                                {
+                                    "key": "cursor",
+                                    "value": "",
+                                    "disabled": true,
+                                    "description": "Opaque cursor from meta.pagination.next_cursor."
+                                },
+                                {
+                                    "key": "per_page",
+                                    "value": "",
+                                    "disabled": true,
+                                    "description": ""
+                                },
+                                {
+                                    "key": "updated_since",
+                                    "value": "",
+                                    "disabled": true,
+                                    "description": "RFC 3339; rows with updated_at ≥ this."
+                                },
+                                {
+                                    "key": "status",
+                                    "value": "",
+                                    "disabled": true,
+                                    "description": ""
+                                },
+                                {
+                                    "key": "erp_sync_status",
+                                    "value": "",
+                                    "disabled": true,
+                                    "description": ""
+                                },
+                                {
+                                    "key": "competition_id",
+                                    "value": "",
+                                    "disabled": true,
+                                    "description": ""
+                                },
+                                {
+                                    "key": "external_system",
+                                    "value": "",
+                                    "disabled": true,
+                                    "description": ""
+                                },
+                                {
+                                    "key": "external_id",
+                                    "value": "",
+                                    "disabled": true,
+                                    "description": ""
+                                }
+                            ]
+                        },
+                        "description": "List awards (the polling endpoint for firewalled ERPs)\n\nScope: `awards:read`."
+                    }
+                },
+                {
+                    "name": "Get an award",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Accept-Language",
+                                "value": "en"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/awards/:award",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "awards",
+                                ":award"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "award",
+                                    "value": "",
+                                    "description": "ULID"
+                                }
+                            ]
+                        },
+                        "description": "Get an award\n\nScope: `awards:read`."
+                    }
+                },
+                {
+                    "name": "Report the ERP sync of an award",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Accept-Language",
+                                "value": "en"
+                            },
+                            {
+                                "key": "Idempotency-Key",
+                                "value": "{{$guid}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/awards/:award/erp-sync",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "awards",
+                                ":award",
+                                "erp-sync"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "award",
+                                    "value": "",
+                                    "description": "ULID"
+                                }
+                            ]
+                        },
+                        "description": "Report the ERP sync of an award\n\nScope: `awards:sync`.\n\naward_not_active (409) when the award was revoked. The refs are stored on the award (e.g. the purchase order).",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"status\": \"synced\",\n    \"message\": null,\n    \"external_refs\": [\n        {\n            \"system\": \"sap_s4\",\n            \"type\": \"purchase_order\",\n            \"id\": \"4500001234\"\n        }\n    ]\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Webhooks",
+            "item": [
+                {
+                    "name": "The webhook event catalogue",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Accept-Language",
+                                "value": "en"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/webhook-event-types",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "webhook-event-types"
+                            ]
+                        },
+                        "description": "The webhook event catalogue\n\nScope: `webhooks:manage`."
+                    }
+                },
+                {
+                    "name": "List endpoints",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Accept-Language",
+                                "value": "en"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/webhook-endpoints",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "webhook-endpoints"
+                            ]
+                        },
+                        "description": "List endpoints\n\nScope: `webhooks:manage`."
+                    }
+                },
+                {
+                    "name": "Create an endpoint (the secret is shown once)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Accept-Language",
+                                "value": "en"
+                            },
+                            {
+                                "key": "Idempotency-Key",
+                                "value": "{{$guid}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/webhook-endpoints",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "webhook-endpoints"
+                            ]
+                        },
+                        "description": "Create an endpoint (the secret is shown once)\n\nScope: `webhooks:manage`.\n\nwebhook_url_invalid (422): not https, credentials in the URL, a port other than 443 or 1024–65535, or a private address.",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"url\": \"https://erp.example.sa/bafo/webhooks\",\n    \"event_types\": [\n        \"award.issued\",\n        \"competition.closed\"\n    ],\n    \"description\": \"ERP gateway\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "Get an endpoint",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Accept-Language",
+                                "value": "en"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/webhook-endpoints/:endpoint",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "webhook-endpoints",
+                                ":endpoint"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "endpoint",
+                                    "value": "",
+                                    "description": "ULID"
+                                }
+                            ]
+                        },
+                        "description": "Get an endpoint\n\nScope: `webhooks:manage`."
+                    }
+                },
+                {
+                    "name": "Update an endpoint",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Accept-Language",
+                                "value": "en"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/webhook-endpoints/:endpoint",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "webhook-endpoints",
+                                ":endpoint"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "endpoint",
+                                    "value": "",
+                                    "description": "ULID"
+                                }
+                            ]
+                        },
+                        "description": "Update an endpoint\n\nScope: `webhooks:manage`.",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"status\": \"active\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "Delete an endpoint",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Accept-Language",
+                                "value": "en"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/webhook-endpoints/:endpoint",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "webhook-endpoints",
+                                ":endpoint"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "endpoint",
+                                    "value": "",
+                                    "description": "ULID"
+                                }
+                            ]
+                        },
+                        "description": "Delete an endpoint\n\nScope: `webhooks:manage`."
+                    }
+                },
+                {
+                    "name": "Send a webhook.test event to this endpoint",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Accept-Language",
+                                "value": "en"
+                            },
+                            {
+                                "key": "Idempotency-Key",
+                                "value": "{{$guid}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/webhook-endpoints/:endpoint/test",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "webhook-endpoints",
+                                ":endpoint",
+                                "test"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "endpoint",
+                                    "value": "",
+                                    "description": "ULID"
+                                }
+                            ]
+                        },
+                        "description": "Send a webhook.test event to this endpoint\n\nScope: `webhooks:manage`."
+                    }
+                },
+                {
+                    "name": "Replace the signing secret (shown once)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Accept-Language",
+                                "value": "en"
+                            },
+                            {
+                                "key": "Idempotency-Key",
+                                "value": "{{$guid}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/webhook-endpoints/:endpoint/rotate-secret",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "webhook-endpoints",
+                                ":endpoint",
+                                "rotate-secret"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "endpoint",
+                                    "value": "",
+                                    "description": "ULID"
+                                }
+                            ]
+                        },
+                        "description": "Replace the signing secret (shown once)\n\nScope: `webhooks:manage`."
+                    }
+                },
+                {
+                    "name": "Delivery log (newest first)",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Accept-Language",
+                                "value": "en"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/webhook-endpoints/:endpoint/deliveries",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "webhook-endpoints",
+                                ":endpoint",
+                                "deliveries"
+                            ],
+                            "query": [
+                                {
+                                    "key": "cursor",
+                                    "value": "",
+                                    "disabled": true,
+                                    "description": "Opaque cursor from meta.pagination.next_cursor."
+                                },
+                                {
+                                    "key": "per_page",
+                                    "value": "",
+                                    "disabled": true,
+                                    "description": ""
+                                },
+                                {
+                                    "key": "status",
+                                    "value": "",
+                                    "disabled": true,
+                                    "description": ""
+                                }
+                            ],
+                            "variable": [
+                                {
+                                    "key": "endpoint",
+                                    "value": "",
+                                    "description": "ULID"
+                                }
+                            ]
+                        },
+                        "description": "Delivery log (newest first)\n\nScope: `webhooks:manage`."
+                    }
+                },
+                {
+                    "name": "Redeliver a failed delivery",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Accept-Language",
+                                "value": "en"
+                            },
+                            {
+                                "key": "Idempotency-Key",
+                                "value": "{{$guid}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/webhook-deliveries/:delivery/redeliver",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "webhook-deliveries",
+                                ":delivery",
+                                "redeliver"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "delivery",
+                                    "value": "",
+                                    "description": "ULID"
+                                }
+                            ]
+                        },
+                        "description": "Redeliver a failed delivery\n\nScope: `webhooks:manage`.\n\nSets the delivery to pending with next_attempt_at = now; the attempt count is kept. invalid_state_transition (409) unless failed."
+                    }
+                }
+            ]
+        }
+    ]
+}

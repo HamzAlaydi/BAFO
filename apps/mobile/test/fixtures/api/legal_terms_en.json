@@ -1,0 +1,16 @@
+{
+ "status": 200,
+ "body": {
+  "data": {
+   "code": "terms",
+   "locale": "en",
+   "version": "2026-10-01",
+   "title": "Terms and conditions",
+   "body_markdown": "Draft text – counsel to provide.\n\n# Terms and conditions\n\nThis placeholder will be replaced by the text approved by legal counsel.\n",
+   "published_at": "2026-09-29T17:47:10.000Z"
+  },
+  "meta": {
+   "server_time": "2026-09-29T17:51:30.186Z"
+  }
+ }
+}

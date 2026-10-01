@@ -1,0 +1,33 @@
+/// The BAFO widget kit. Import this instead of the individual files.
+library;
+
+export 'package:bafo/widgets/attachment_tile.dart';
+export 'package:bafo/widgets/bafo_app_bar.dart';
+export 'package:bafo/widgets/bafo_bottom_sheet.dart';
+export 'package:bafo/widgets/bafo_button.dart';
+export 'package:bafo/widgets/bafo_card.dart';
+export 'package:bafo/widgets/bafo_dropdown.dart';
+export 'package:bafo/widgets/bafo_text_field.dart';
+export 'package:bafo/widgets/bafo_toast.dart';
+export 'package:bafo/widgets/brand_mark.dart';
+export 'package:bafo/widgets/competition_chips.dart';
+export 'package:bafo/widgets/competition_countdown.dart';
+export 'package:bafo/widgets/confirm_dialog.dart';
+export 'package:bafo/widgets/content_blocks.dart';
+export 'package:bafo/widgets/countdown_text.dart';
+export 'package:bafo/widgets/empty_state.dart';
+export 'package:bafo/widgets/error_state.dart';
+export 'package:bafo/widgets/form_fields.dart';
+export 'package:bafo/widgets/language_switch.dart';
+export 'package:bafo/widgets/loading_skeleton.dart';
+export 'package:bafo/widgets/ltr.dart';
+export 'package:bafo/widgets/markdown_view.dart';
+export 'package:bafo/widgets/money_input_field.dart';
+export 'package:bafo/widgets/money_text.dart';
+export 'package:bafo/widgets/navigation_controls.dart';
+export 'package:bafo/widgets/org_avatar.dart';
+export 'package:bafo/widgets/page_states.dart';
+export 'package:bafo/widgets/pickers.dart';
+export 'package:bafo/widgets/section_header.dart';
+export 'package:bafo/widgets/standing_banner.dart';
+export 'package:bafo/widgets/status_pill.dart';

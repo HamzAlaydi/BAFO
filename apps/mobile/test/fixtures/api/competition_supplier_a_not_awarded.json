@@ -1,0 +1,108 @@
+{
+ "status": 200,
+ "body": {
+  "data": {
+   "id": "01m3q4e7hysr6j09xnvx6ak8b5",
+   "reference_no": "BAFO-A-2026-000009",
+   "title": "بيع خردة حديد ومعادن",
+   "direction": "auction",
+   "format": "live",
+   "status": "not_awarded",
+   "phase": null,
+   "currency": "SAR",
+   "price_basis": "excl_vat",
+   "category": {
+    "id": "01m3q4e4ee9khcdvhjj7awh7m4",
+    "code": "surplus_scrap",
+    "name": "فائض ومخلفات",
+    "is_other": false,
+    "auction_allowed": true
+   },
+   "region": {
+    "id": "01m3q4e4dxk4j1fh9rp64kd65j",
+    "code": "RIY",
+    "name": "الرياض"
+   },
+   "issuer": {
+    "id": "01m3q4e4vys8t1rn3kfnvf54cr",
+    "name": "Issuer Co",
+    "logo_url": null,
+    "verified": true
+   },
+   "rules": {
+    "start_price_minor": 5000000,
+    "min_step_minor": 50000,
+    "min_step_bps": null,
+    "amount_granularity_minor": 100,
+    "must_beat": "best",
+    "rank_visibility": "leading_flag",
+    "show_prices": true,
+    "auto_extend": {
+     "enabled": true,
+     "window_seconds": 120,
+     "by_seconds": 120,
+     "max_extensions": 20
+    },
+    "final_window_minutes": null,
+    "bafo_round": {
+     "enabled": false,
+     "duration_minutes": null
+    },
+    "min_participants": 2,
+    "result_publication": "outcome_and_amount"
+   },
+   "rules_summary": [
+    "مزايدة: العرض الأعلى سعرًا يتصدر.",
+    "منافسة مباشرة: تُقدَّم العروض وتُحدَّث حتى وقت الإغلاق.",
+    "سعر الافتتاح: 50,000.00 ر.س",
+    "يجب أن يتجاوز كل عرض جديد العرض المتصدر.",
+    "الحد الأدنى للتحسين: 500.00 ر.س",
+    "يرى كل متنافس ما إذا كان عرضه متصدرًا، ويظهر مبلغ العرض المتصدر.",
+    "العروض التي تغيّر العرض المتصدر في آخر 2 دقيقة تمدد الإغلاق 2 دقيقة، بحد أقصى 20 مرات (أقصى موعد إغلاق ممكن: 29 سبتمبر 2026، 9:27 م).",
+    "تُحتسب أوقات العروض عند استلامها في خادم بافو.",
+    "الأسعار لا تشمل ضريبة القيمة المضافة."
+   ],
+   "schedule": {
+    "bidding_opens_at": "2026-09-29T13:47:13.349Z",
+    "scheduled_close_at": "2026-09-29T17:47:12.386Z",
+    "effective_close_at": "2026-09-29T17:47:12.386Z",
+    "invitation_cutoff_at": "2026-09-29T17:47:12.386Z"
+   },
+   "invitation": {
+    "id": "01m3q4e7j3berjpjg58fk7bnen",
+    "status": "expired",
+    "join_deadline": "2026-09-29T17:47:12.386Z",
+    "sent_at": "2026-09-29T17:47:13.000Z"
+   },
+   "access": {
+    "state": "unavailable",
+    "coverage": "none",
+    "sponsor_name": null,
+    "join_deadline": "2026-09-29T17:47:12.386Z"
+   },
+   "invitation_documents": [],
+   "permissions": {
+    "can_edit": false,
+    "can_delete": false,
+    "can_publish": false,
+    "can_invite": false,
+    "can_extend": false,
+    "can_cancel": false,
+    "can_start_bafo": false,
+    "can_award": false,
+    "can_revoke_award": false,
+    "can_close_without_award": false,
+    "can_manage_sponsorship": false,
+    "can_comment": false,
+    "can_join": false,
+    "can_decline": false,
+    "can_submit_offer": false
+   },
+   "viewer_role": "invitee",
+   "server_time": "2026-09-29T17:52:19.286Z"
+  },
+  "meta": {
+   "server_time": "2026-09-29T17:52:19.286Z"
+  }
+ }
+}

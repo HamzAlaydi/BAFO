@@ -1,0 +1,38 @@
+{
+ "status": 200,
+ "body": {
+  "data": [
+   {
+    "id": "01m3q4e4ehmkpszxrynqdwvzkg",
+    "code": "cancel_requirements_changed",
+    "kind": "cancel",
+    "name": "تغيّرت المتطلبات",
+    "requires_note": false
+   },
+   {
+    "id": "01m3q4e4ejgp9a9n275a0q6t3w",
+    "code": "cancel_budget_withdrawn",
+    "kind": "cancel",
+    "name": "سُحبت الميزانية المخصصة",
+    "requires_note": false
+   },
+   {
+    "id": "01m3q4e4ektr71emk4fkcc3mt6",
+    "code": "cancel_insufficient_participants",
+    "kind": "cancel",
+    "name": "عدد المتنافسين غير كافٍ",
+    "requires_note": false
+   },
+   {
+    "id": "01m3q4e4ektr71emk4fkcc3mt7",
+    "code": "cancel_other",
+    "kind": "cancel",
+    "name": "سبب آخر",
+    "requires_note": true
+   }
+  ],
+  "meta": {
+   "server_time": "2026-09-29T17:51:30.122Z"
+  }
+ }
+}

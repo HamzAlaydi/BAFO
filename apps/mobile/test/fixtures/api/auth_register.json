@@ -1,0 +1,13 @@
+{
+ "status": 200,
+ "body": {
+  "data": {
+   "email": "mobile.capture.1790704523@demo.bafo.test",
+   "verification_required": true,
+   "otp_expires_at": "2026-09-29T18:05:23.000Z"
+  },
+  "meta": {
+   "server_time": "2026-09-29T17:55:23.569Z"
+  }
+ }
+}

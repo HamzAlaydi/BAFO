@@ -1,0 +1,232 @@
+{
+ "status": 200,
+ "body": {
+  "data": {
+   "id": "01m3q4e78rq2b0b506qbyt6pr2",
+   "reference_no": "BAFO-T-2026-000006",
+   "title": "نقل وتخزين البضائع بين المستودعات",
+   "direction": "tender",
+   "format": "live",
+   "status": "closed",
+   "phase": null,
+   "currency": "SAR",
+   "price_basis": "excl_vat",
+   "description": "نطاق العمل: توريد وتنفيذ وفق كراسة الشروط والمواصفات المرفقة، مع ضمان لمدة سنة من تاريخ الاستلام. الأسعار لا تشمل ضريبة القيمة المضافة.",
+   "category": {
+    "id": "01m3q4e4eac63az0kartfdkmjc",
+    "code": "office_supplies",
+    "name": "مستلزمات مكتبية",
+    "is_other": false,
+    "auction_allowed": true
+   },
+   "category_other_text": null,
+   "region": {
+    "id": "01m3q4e4dxk4j1fh9rp64kd65j",
+    "code": "RIY",
+    "name": "الرياض"
+   },
+   "preset_code": "standard_live_tender",
+   "rules": {
+    "start_price_minor": 25000000,
+    "reserve_price_minor": 22000000,
+    "min_step_minor": null,
+    "min_step_bps": 50,
+    "amount_granularity_minor": 100,
+    "must_beat": "own",
+    "rank_visibility": "leading_flag",
+    "show_prices": false,
+    "auto_extend": {
+     "enabled": true,
+     "window_seconds": 180,
+     "by_seconds": 180,
+     "max_extensions": 10
+    },
+    "final_window_minutes": 60,
+    "bafo_round": {
+     "enabled": false,
+     "duration_minutes": null
+    },
+    "min_participants": 2,
+    "result_publication": "outcome_only"
+   },
+   "rules_summary": [
+    "مناقصة: العرض الأقل سعرًا يتصدر.",
+    "منافسة مباشرة: تُقدَّم العروض وتُحدَّث حتى وقت الإغلاق.",
+    "سعر السقف: 250,000.00 ر.س",
+    "يجب أن يحسّن كل عرض جديد عرضك السابق.",
+    "الحد الأدنى للتحسين: 0.5%",
+    "يرى كل متنافس ما إذا كان عرضه متصدرًا، دون أسعار المتنافسين الآخرين.",
+    "تبدأ فترة التسعير النهائية قبل الإغلاق بـ 60 دقيقة، وقبلها لا يظهر إلا عرضك.",
+    "العروض التي تغيّر العرض المتصدر في آخر 3 دقيقة تمدد الإغلاق 3 دقيقة، بحد أقصى 10 مرات (أقصى موعد إغلاق ممكن: 29 سبتمبر 2026، 9:17 م).",
+    "تُحتسب أوقات العروض عند استلامها في خادم بافو.",
+    "الأسعار لا تشمل ضريبة القيمة المضافة.",
+    "السعر التحفظي (220,000.00 ر.س) مخفي عن المتنافسين."
+   ],
+   "schedule": {
+    "bidding_opens_at": "2026-09-29T13:47:13.055Z",
+    "scheduled_close_at": "2026-09-29T17:47:12.131Z",
+    "effective_close_at": "2026-09-29T17:47:12.131Z",
+    "hard_stop_at": "2026-09-29T18:17:12.131Z",
+    "final_window_starts_at": "2026-09-29T16:47:12.131Z",
+    "invitation_cutoff_at": "2026-09-29T17:47:12.131Z",
+    "extension_count": 0,
+    "published_at": "2026-09-29T13:47:13.055Z",
+    "opened_at": "2026-09-29T13:47:13.055Z",
+    "closed_at": "2026-09-29T17:47:12.131Z",
+    "offers_opened_at": null,
+    "awarded_at": null,
+    "not_awarded_at": null,
+    "cancelled_at": null
+   },
+   "issuer": {
+    "id": "01m3q4e4vys8t1rn3kfnvf54cr",
+    "name": "Issuer Co",
+    "logo_url": null,
+    "verified": true
+   },
+   "counts": {
+    "invitations": 3,
+    "joined": 3,
+    "declined": 0,
+    "participants_with_offers": 3,
+    "offers": 3,
+    "comments": 0,
+    "attachments": 0
+   },
+   "leading_amount_minor": 23700000,
+   "sponsorship": null,
+   "bafo_round": null,
+   "award": null,
+   "cancellation": null,
+   "not_awarded": null,
+   "created_by": {
+    "type": "user",
+    "id": "01m3q4e56gqh65sag0th21ftkn",
+    "name": "سارة المالكة"
+   },
+   "source": "web",
+   "permissions": {
+    "can_edit": false,
+    "can_delete": false,
+    "can_publish": false,
+    "can_invite": false,
+    "can_extend": false,
+    "can_cancel": false,
+    "can_start_bafo": false,
+    "can_award": true,
+    "can_revoke_award": false,
+    "can_close_without_award": true,
+    "can_manage_sponsorship": false,
+    "can_comment": false,
+    "can_join": false,
+    "can_decline": false,
+    "can_submit_offer": false
+   },
+   "viewer_role": "issuer",
+   "live": {
+    "v": 6,
+    "competition_id": "01m3q4e78rq2b0b506qbyt6pr2",
+    "direction": "tender",
+    "status": "closed",
+    "phase": null,
+    "server_time": "2026-09-29T17:52:18.264Z",
+    "bidding_opens_at": "2026-09-29T13:47:13.055Z",
+    "effective_close_at": "2026-09-29T17:47:12.131Z",
+    "hard_stop_at": "2026-09-29T18:17:12.131Z",
+    "extension_count": 0,
+    "leader": {
+     "participant_id": "01m3q4e7a3g4a98w0m1a84cdys",
+     "alias_no": 81,
+     "organization": {
+      "id": "01m3q4e62g1ybjnjpk9mp7tmmv",
+      "name": "Buyer D"
+     },
+     "amount_minor": 23700000,
+     "accepted_at": "2026-09-29T17:47:13.122Z"
+    },
+    "reserve_met": false,
+    "ranking": [
+     {
+      "participant_id": "01m3q4e7a3g4a98w0m1a84cdys",
+      "alias_no": 81,
+      "organization": {
+       "id": "01m3q4e62g1ybjnjpk9mp7tmmv",
+       "name": "Buyer D",
+       "logo_url": null
+      },
+      "current_amount_minor": 23700000,
+      "first_amount_minor": 23700000,
+      "rank": 1,
+      "is_leader": true,
+      "offers_count": 1,
+      "last_offer_at": "2026-09-29T17:47:13.122Z",
+      "submitted": true,
+      "bafo": {
+       "shortlisted": false,
+       "submitted": false
+      }
+     },
+     {
+      "participant_id": "01m3q4e79stgj458ata0htn588",
+      "alias_no": 88,
+      "organization": {
+       "id": "01m3q4e5x5xjb27j4p8pyx5pve",
+       "name": "Supplier C",
+       "logo_url": null
+      },
+      "current_amount_minor": 24000000,
+      "first_amount_minor": 24000000,
+      "rank": 2,
+      "is_leader": false,
+      "offers_count": 1,
+      "last_offer_at": "2026-09-29T17:47:13.111Z",
+      "submitted": true,
+      "bafo": {
+       "shortlisted": false,
+       "submitted": false
+      }
+     },
+     {
+      "participant_id": "01m3q4e79g4sk3cvzhwq42e3dr",
+      "alias_no": 12,
+      "organization": {
+       "id": "01m3q4e5hv0x1wy43sgxkq0v5j",
+       "name": "Supplier A",
+       "logo_url": null
+      },
+      "current_amount_minor": 24500000,
+      "first_amount_minor": 24500000,
+      "rank": 3,
+      "is_leader": false,
+      "offers_count": 1,
+      "last_offer_at": "2026-09-29T17:47:13.100Z",
+      "submitted": true,
+      "bafo": {
+       "shortlisted": false,
+       "submitted": false
+      }
+     }
+    ],
+    "metrics": {
+     "offers_count": 3,
+     "participants_joined": 3,
+     "participants_with_offers": 3,
+     "invitations_count": 3,
+     "improvement_vs_start_bps": 520
+    },
+    "online_participants_count": 0,
+    "bafo": null,
+    "last_change": {
+     "kind": "snapshot",
+     "reason": null
+    }
+   },
+   "server_time": "2026-09-29T17:52:18.266Z",
+   "created_at": "2026-09-29T17:47:13.048Z",
+   "updated_at": "2026-09-29T17:47:13.138Z"
+  },
+  "meta": {
+   "server_time": "2026-09-29T17:52:18.266Z"
+  }
+ }
+}

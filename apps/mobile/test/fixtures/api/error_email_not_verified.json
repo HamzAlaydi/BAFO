@@ -1,0 +1,11 @@
+{
+ "status": 200,
+ "body": {
+  "message": "أكّد بريدك الإلكتروني للمتابعة. أرسلنا إليك رمز التحقق.",
+  "code": "email_not_verified",
+  "errors": {},
+  "details": {
+   "otp_expires_at": "2026-09-29T18:05:23.000Z"
+  }
+ }
+}

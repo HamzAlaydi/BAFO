@@ -1,0 +1,44 @@
+{
+ "status": 200,
+ "body": {
+  "data": [
+   {
+    "organization": {
+     "id": "01m3q4e5qneqhzenf9gda1c18t",
+     "name": "Supplier B",
+     "logo_url": null,
+     "verified": true
+    },
+    "region": {
+     "id": "01m3q4e4dzvm64tkzeq6zhsw0s",
+     "code": "EAS",
+     "name": "المنطقة الشرقية"
+    },
+    "categories": [
+     {
+      "id": "01m3q4e4e6hpsddbmfwbr8tsed",
+      "code": "it_hardware",
+      "name": "أجهزة ومعدات تقنية",
+      "is_other": false,
+      "auction_allowed": true
+     },
+     {
+      "id": "01m3q4e4eac63az0kartfdkmjc",
+      "code": "office_supplies",
+      "name": "مستلزمات مكتبية",
+      "is_other": false,
+      "auction_allowed": true
+     }
+    ],
+    "has_active_plan": false,
+    "match": {
+     "category": true,
+     "region": false
+    }
+   }
+  ],
+  "meta": {
+   "server_time": "2026-09-29T17:52:18.618Z"
+  }
+ }
+}

@@ -1,0 +1,13 @@
+{
+ "status": 200,
+ "body": {
+  "data": {
+   "outcome": "won",
+   "winning_amount_minor": null,
+   "message_to_winner": "نبارك لكم الترسية، وسيتواصل معكم فريق المشتريات لاستكمال الإجراءات."
+  },
+  "meta": {
+   "server_time": "2026-09-29T17:52:19.776Z"
+  }
+ }
+}

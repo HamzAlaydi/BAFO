@@ -1,0 +1,63 @@
+{
+ "status": 200,
+ "body": {
+  "data": [
+   {
+    "id": "01m3q4e741v3b0gzdxp9wyv06t",
+    "seq": 1,
+    "participant": {
+     "id": "01m3q4e72j3fwgmbmebj6zkvp2",
+     "alias_no": 63,
+     "organization": {
+      "id": "01m3q4e5hv0x1wy43sgxkq0v5j",
+      "name": "Supplier A"
+     }
+    },
+    "amount_minor": 24000000,
+    "stage": "live",
+    "accepted_at": "2026-09-29T17:47:12.892Z",
+    "channel": "web",
+    "voided": false
+   },
+   {
+    "id": "01m3q4e74n46c91phdab11yghq",
+    "seq": 2,
+    "participant": {
+     "id": "01m3q4e72y98d9dfyrtkgcgs90",
+     "alias_no": 9,
+     "organization": {
+      "id": "01m3q4e5x5xjb27j4p8pyx5pve",
+      "name": "Supplier C"
+     }
+    },
+    "amount_minor": 23800000,
+    "stage": "live",
+    "accepted_at": "2026-09-29T17:47:12.914Z",
+    "channel": "web",
+    "voided": false
+   },
+   {
+    "id": "01m3q4e752w9z0seyaq4chw8n7",
+    "seq": 3,
+    "participant": {
+     "id": "01m3q4e739p2mh8gcn98rkc8w7",
+     "alias_no": 45,
+     "organization": {
+      "id": "01m3q4e62g1ybjnjpk9mp7tmmv",
+      "name": "Buyer D"
+     }
+    },
+    "amount_minor": 23900000,
+    "stage": "live",
+    "accepted_at": "2026-09-29T17:47:12.929Z",
+    "channel": "web",
+    "voided": false
+   }
+  ],
+  "meta": {
+   "last_seq": 3,
+   "has_more": false,
+   "server_time": "2026-09-29T17:52:18.875Z"
+  }
+ }
+}

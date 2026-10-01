@@ -1,0 +1,414 @@
+{
+ "status": 200,
+ "body": {
+  "data": [
+   {
+    "id": "01m3q4e7myd08bs5aeeywrp8ah",
+    "reference_no": "BAFO-T-2026-000011",
+    "title": "خدمات النظافة للفروع (رسوم مغطّاة)",
+    "direction": "tender",
+    "format": "live",
+    "status": "live",
+    "phase": "initial",
+    "category": {
+     "id": "01m3q4e4eac63az0kartfdkmjc",
+     "code": "office_supplies",
+     "name": "مستلزمات مكتبية",
+     "is_other": false,
+     "auction_allowed": true
+    },
+    "region": {
+     "id": "01m3q4e4dxk4j1fh9rp64kd65j",
+     "code": "RIY",
+     "name": "الرياض"
+    },
+    "schedule": {
+     "bidding_opens_at": "2026-09-29T14:47:13.453Z",
+     "effective_close_at": "2026-10-03T17:00:00.000Z"
+    },
+    "counts": {
+     "invitations": 2,
+     "joined": 2,
+     "participants_with_offers": 0
+    },
+    "leading_amount_minor": null,
+    "created_at": "2026-09-29T17:47:13.438Z",
+    "updated_at": "2026-09-29T17:47:13.490Z"
+   },
+   {
+    "id": "01m3q4e7kycnbff05zqtegmmc5",
+    "reference_no": "BAFO-T-2026-000010",
+    "title": "خدمات تسويق وطباعة المواد الترويجية",
+    "direction": "tender",
+    "format": "live",
+    "status": "cancelled",
+    "phase": null,
+    "category": {
+     "id": "01m3q4e4eac63az0kartfdkmjc",
+     "code": "office_supplies",
+     "name": "مستلزمات مكتبية",
+     "is_other": false,
+     "auction_allowed": true
+    },
+    "region": {
+     "id": "01m3q4e4dxk4j1fh9rp64kd65j",
+     "code": "RIY",
+     "name": "الرياض"
+    },
+    "schedule": {
+     "bidding_opens_at": "2026-10-01T17:00:00.000Z",
+     "effective_close_at": "2026-10-04T17:00:00.000Z"
+    },
+    "counts": {
+     "invitations": 2,
+     "joined": 0,
+     "participants_with_offers": 0
+    },
+    "leading_amount_minor": null,
+    "created_at": "2026-09-29T17:47:13.406Z",
+    "updated_at": "2026-09-29T17:47:13.429Z"
+   },
+   {
+    "id": "01m3q4e7hysr6j09xnvx6ak8b5",
+    "reference_no": "BAFO-A-2026-000009",
+    "title": "بيع خردة حديد ومعادن",
+    "direction": "auction",
+    "format": "live",
+    "status": "not_awarded",
+    "phase": null,
+    "category": {
+     "id": "01m3q4e4ee9khcdvhjj7awh7m4",
+     "code": "surplus_scrap",
+     "name": "فائض ومخلفات",
+     "is_other": false,
+     "auction_allowed": true
+    },
+    "region": {
+     "id": "01m3q4e4dxk4j1fh9rp64kd65j",
+     "code": "RIY",
+     "name": "الرياض"
+    },
+    "schedule": {
+     "bidding_opens_at": "2026-09-29T13:47:13.349Z",
+     "effective_close_at": "2026-09-29T17:47:12.386Z"
+    },
+    "counts": {
+     "invitations": 2,
+     "joined": 1,
+     "participants_with_offers": 1
+    },
+    "leading_amount_minor": 5000000,
+    "created_at": "2026-09-29T17:47:13.342Z",
+    "updated_at": "2026-09-29T17:47:13.399Z"
+   },
+   {
+    "id": "01m3q4e7f92zkv3d6bz13k7bgs",
+    "reference_no": "BAFO-T-2026-000008",
+    "title": "توريد أثاث مكتبي للمقر الرئيسي",
+    "direction": "tender",
+    "format": "live",
+    "status": "awarded",
+    "phase": null,
+    "category": {
+     "id": "01m3q4e4eac63az0kartfdkmjc",
+     "code": "office_supplies",
+     "name": "مستلزمات مكتبية",
+     "is_other": false,
+     "auction_allowed": true
+    },
+    "region": {
+     "id": "01m3q4e4dxk4j1fh9rp64kd65j",
+     "code": "RIY",
+     "name": "الرياض"
+    },
+    "schedule": {
+     "bidding_opens_at": "2026-09-29T13:47:13.263Z",
+     "effective_close_at": "2026-09-29T17:47:12.316Z"
+    },
+    "counts": {
+     "invitations": 2,
+     "joined": 2,
+     "participants_with_offers": 2
+    },
+    "leading_amount_minor": 21800000,
+    "created_at": "2026-09-29T17:47:13.257Z",
+    "updated_at": "2026-09-29T17:47:13.333Z"
+   },
+   {
+    "id": "01m3q4e7btzj85vknn9k5m2stt",
+    "reference_no": "BAFO-T-2026-000007",
+    "title": "توريد خوادم ومعدات مركز البيانات",
+    "direction": "tender",
+    "format": "live",
+    "status": "bafo_round",
+    "phase": null,
+    "category": {
+     "id": "01m3q4e4eac63az0kartfdkmjc",
+     "code": "office_supplies",
+     "name": "مستلزمات مكتبية",
+     "is_other": false,
+     "auction_allowed": true
+    },
+    "region": {
+     "id": "01m3q4e4dxk4j1fh9rp64kd65j",
+     "code": "RIY",
+     "name": "الرياض"
+    },
+    "schedule": {
+     "bidding_opens_at": "2026-09-29T13:47:13.155Z",
+     "effective_close_at": "2026-09-29T17:47:12.238Z"
+    },
+    "counts": {
+     "invitations": 3,
+     "joined": 3,
+     "participants_with_offers": 3
+    },
+    "leading_amount_minor": 23900000,
+    "created_at": "2026-09-29T17:47:13.146Z",
+    "updated_at": "2026-09-29T17:47:13.252Z"
+   },
+   {
+    "id": "01m3q4e78rq2b0b506qbyt6pr2",
+    "reference_no": "BAFO-T-2026-000006",
+    "title": "نقل وتخزين البضائع بين المستودعات",
+    "direction": "tender",
+    "format": "live",
+    "status": "closed",
+    "phase": null,
+    "category": {
+     "id": "01m3q4e4eac63az0kartfdkmjc",
+     "code": "office_supplies",
+     "name": "مستلزمات مكتبية",
+     "is_other": false,
+     "auction_allowed": true
+    },
+    "region": {
+     "id": "01m3q4e4dxk4j1fh9rp64kd65j",
+     "code": "RIY",
+     "name": "الرياض"
+    },
+    "schedule": {
+     "bidding_opens_at": "2026-09-29T13:47:13.055Z",
+     "effective_close_at": "2026-09-29T17:47:12.131Z"
+    },
+    "counts": {
+     "invitations": 3,
+     "joined": 3,
+     "participants_with_offers": 3
+    },
+    "leading_amount_minor": 23700000,
+    "created_at": "2026-09-29T17:47:13.048Z",
+    "updated_at": "2026-09-29T17:47:13.138Z"
+   },
+   {
+    "id": "01m3q4e776fekgx7wd0qfenna1",
+    "reference_no": "BAFO-T-2026-000005",
+    "title": "تطوير بوابة إلكترونية لخدمات العملاء (عروض مغلقة)",
+    "direction": "tender",
+    "format": "sealed",
+    "status": "live",
+    "phase": "sealed",
+    "category": {
+     "id": "01m3q4e4eac63az0kartfdkmjc",
+     "code": "office_supplies",
+     "name": "مستلزمات مكتبية",
+     "is_other": false,
+     "auction_allowed": true
+    },
+    "region": {
+     "id": "01m3q4e4dxk4j1fh9rp64kd65j",
+     "code": "RIY",
+     "name": "الرياض"
+    },
+    "schedule": {
+     "bidding_opens_at": "2026-09-29T16:47:13.004Z",
+     "effective_close_at": "2026-09-30T17:00:00.000Z"
+    },
+    "counts": {
+     "invitations": 2,
+     "joined": 2,
+     "participants_with_offers": 1
+    },
+    "leading_amount_minor": null,
+    "created_at": "2026-09-29T17:47:12.998Z",
+    "updated_at": "2026-09-29T17:47:13.036Z"
+   },
+   {
+    "id": "01m3q4e75cveqqa28aks6nak37",
+    "reference_no": "BAFO-A-2026-000004",
+    "title": "بيع معدات صناعية فائضة",
+    "direction": "auction",
+    "format": "live",
+    "status": "live",
+    "phase": "open",
+    "category": {
+     "id": "01m3q4e4ee9khcdvhjj7awh7m4",
+     "code": "surplus_scrap",
+     "name": "فائض ومخلفات",
+     "is_other": false,
+     "auction_allowed": true
+    },
+    "region": {
+     "id": "01m3q4e4dxk4j1fh9rp64kd65j",
+     "code": "RIY",
+     "name": "الرياض"
+    },
+    "schedule": {
+     "bidding_opens_at": "2026-09-29T15:47:12.947Z",
+     "effective_close_at": "2026-10-01T17:00:00.000Z"
+    },
+    "counts": {
+     "invitations": 2,
+     "joined": 2,
+     "participants_with_offers": 2
+    },
+    "leading_amount_minor": 5100000,
+    "created_at": "2026-09-29T17:47:12.940Z",
+    "updated_at": "2026-09-29T17:47:12.978Z"
+   },
+   {
+    "id": "01m3q4e71m4tnkvsecsj2f351b",
+    "reference_no": "BAFO-T-2026-000003",
+    "title": "توريد أجهزة ومستلزمات طبية للمستودع المركزي",
+    "direction": "tender",
+    "format": "live",
+    "status": "live",
+    "phase": "final_window",
+    "category": {
+     "id": "01m3q4e4eac63az0kartfdkmjc",
+     "code": "office_supplies",
+     "name": "مستلزمات مكتبية",
+     "is_other": false,
+     "auction_allowed": true
+    },
+    "region": {
+     "id": "01m3q4e4dxk4j1fh9rp64kd65j",
+     "code": "RIY",
+     "name": "الرياض"
+    },
+    "schedule": {
+     "bidding_opens_at": "2026-09-29T14:47:12.829Z",
+     "effective_close_at": "2026-09-29T18:17:12.667Z"
+    },
+    "counts": {
+     "invitations": 3,
+     "joined": 3,
+     "participants_with_offers": 3
+    },
+    "leading_amount_minor": 23800000,
+    "created_at": "2026-09-29T17:47:12.820Z",
+    "updated_at": "2026-09-29T17:47:12.884Z"
+   },
+   {
+    "id": "01m3q4e6z5n2cq79mmr4h3ezb4",
+    "reference_no": "BAFO-T-2026-000002",
+    "title": "توريد مستلزمات مكتبية للعام المالي 2027",
+    "direction": "tender",
+    "format": "live",
+    "status": "live",
+    "phase": "initial",
+    "category": {
+     "id": "01m3q4e4eac63az0kartfdkmjc",
+     "code": "office_supplies",
+     "name": "مستلزمات مكتبية",
+     "is_other": false,
+     "auction_allowed": true
+    },
+    "region": {
+     "id": "01m3q4e4dxk4j1fh9rp64kd65j",
+     "code": "RIY",
+     "name": "الرياض"
+    },
+    "schedule": {
+     "bidding_opens_at": "2026-09-29T16:47:12.751Z",
+     "effective_close_at": "2026-10-02T17:00:00.000Z"
+    },
+    "counts": {
+     "invitations": 3,
+     "joined": 2,
+     "participants_with_offers": 0
+    },
+    "leading_amount_minor": null,
+    "created_at": "2026-09-29T17:47:12.741Z",
+    "updated_at": "2026-09-29T17:47:12.777Z"
+   },
+   {
+    "id": "01m3q4e6xd2x1q3ayy9qyfsyb3",
+    "reference_no": "BAFO-T-2026-000001",
+    "title": "صيانة وتشغيل المباني الإدارية 2027",
+    "direction": "tender",
+    "format": "live",
+    "status": "scheduled",
+    "phase": null,
+    "category": {
+     "id": "01m3q4e4eac63az0kartfdkmjc",
+     "code": "office_supplies",
+     "name": "مستلزمات مكتبية",
+     "is_other": false,
+     "auction_allowed": true
+    },
+    "region": {
+     "id": "01m3q4e4dxk4j1fh9rp64kd65j",
+     "code": "RIY",
+     "name": "الرياض"
+    },
+    "schedule": {
+     "bidding_opens_at": "2026-09-30T17:00:00.000Z",
+     "effective_close_at": "2026-10-03T17:00:00.000Z"
+    },
+    "counts": {
+     "invitations": 3,
+     "joined": 0,
+     "participants_with_offers": 0
+    },
+    "leading_amount_minor": null,
+    "created_at": "2026-09-29T17:47:12.685Z",
+    "updated_at": "2026-09-29T17:47:12.702Z"
+   },
+   {
+    "id": "01m3q4e6x1zyw3p52dwgs2mwga",
+    "reference_no": null,
+    "title": "توريد أجهزة حاسب محمول للإدارة العامة",
+    "direction": "tender",
+    "format": "live",
+    "status": "draft",
+    "phase": null,
+    "category": {
+     "id": "01m3q4e4eac63az0kartfdkmjc",
+     "code": "office_supplies",
+     "name": "مستلزمات مكتبية",
+     "is_other": false,
+     "auction_allowed": true
+    },
+    "region": {
+     "id": "01m3q4e4dxk4j1fh9rp64kd65j",
+     "code": "RIY",
+     "name": "الرياض"
+    },
+    "schedule": {
+     "bidding_opens_at": "2026-10-02T17:00:00.000Z",
+     "effective_close_at": null
+    },
+    "counts": {
+     "invitations": 2,
+     "joined": 0,
+     "participants_with_offers": 0
+    },
+    "leading_amount_minor": null,
+    "created_at": "2026-09-29T17:47:12.673Z",
+    "updated_at": "2026-09-29T17:47:12.673Z"
+   }
+  ],
+  "meta": {
+   "pagination": {
+    "type": "page",
+    "current_page": 1,
+    "per_page": 50,
+    "has_more": false,
+    "total": 12,
+    "last_page": 1
+   },
+   "server_time": "2026-09-29T17:52:17.842Z"
+  }
+ }
+}
