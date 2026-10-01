@@ -58,6 +58,9 @@ return Application::configure(basePath: dirname(__DIR__))
             SetLocaleFromHeader::class,
         ]);
 
+        // Hosted behind a TLS-terminating proxy (Railway): trust X-Forwarded-* so URLs are https.
+        $middleware->trustProxies(at: '*');
+
         // Response hardening on every route (SECURITY_REVIEW S-05): nosniff, referrer and frame
         // policies, HSTS over HTTPS, and a deny-all CSP on API responses.
         $middleware->append(SecurityHeaders::class);

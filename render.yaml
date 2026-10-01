@@ -1,0 +1,77 @@
+# BAFO hosted demo on Render (free plan). New → Blueprint → this repo.
+# The web app (apps/web) is deployed on Vercel and points at bafo-api-demo.
+databases:
+  - name: bafo-db
+    plan: free
+    databaseName: bafo
+    user: bafo
+
+services:
+  - type: keyvalue
+    name: bafo-redis
+    plan: free
+    ipAllowList: []          # internal connections only
+
+  - type: web
+    name: bafo-api-demo
+    runtime: docker
+    plan: free
+    rootDir: apps/api
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /up
+    envVars:
+      - fromGroup: bafo-shared
+      - key: ROLE
+        value: api
+      - key: DB_URL
+        fromDatabase: { name: bafo-db, property: connectionString }
+      - key: REDIS_URL
+        fromService: { type: keyvalue, name: bafo-redis, property: connectionString }
+
+  - type: web
+    name: bafo-reverb-demo
+    runtime: docker
+    plan: free
+    rootDir: apps/api
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - fromGroup: bafo-shared
+      - key: ROLE
+        value: reverb
+      - key: DB_URL
+        fromDatabase: { name: bafo-db, property: connectionString }
+      - key: REDIS_URL
+        fromService: { type: keyvalue, name: bafo-redis, property: connectionString }
+
+envVarGroups:
+  - name: bafo-shared
+    envVars:
+      - { key: APP_ENV, value: staging }
+      - { key: APP_DEBUG, value: "false" }
+      - { key: APP_KEY, generateValue: true }
+      - { key: APP_URL, value: https://bafo-api-demo.onrender.com }
+      - { key: WEB_URL, value: https://bafo-web-demo.vercel.app }
+      - { key: CORS_ALLOWED_ORIGINS, value: https://bafo-web-demo.vercel.app }
+      - { key: APP_LOCALE, value: ar }
+      - { key: LOG_CHANNEL, value: stderr }
+      - { key: DB_CONNECTION, value: pgsql }
+      - { key: REDIS_CLIENT, value: predis }
+      - { key: CACHE_STORE, value: redis }
+      - { key: QUEUE_CONNECTION, value: redis }
+      - { key: SESSION_DRIVER, value: redis }
+      - { key: BROADCAST_CONNECTION, value: reverb }
+      - { key: REVERB_APP_ID, value: "100001" }
+      - { key: REVERB_APP_KEY, generateValue: true }
+      - { key: REVERB_APP_SECRET, generateValue: true }
+      - { key: REVERB_HOST, value: bafo-reverb-demo.onrender.com }
+      - { key: REVERB_PUBLIC_HOST, value: bafo-reverb-demo.onrender.com }
+      - { key: REVERB_PORT, value: "443" }
+      - { key: REVERB_SCHEME, value: https }
+      - { key: MAIL_MAILER, value: log }
+      - { key: PAYMENT_GATEWAY, value: fake }
+      - { key: EINVOICING_DRIVER, value: fake }
+      - { key: PUSH_DRIVER, value: log }
+      - { key: OTP_FAKE_CODE, value: "123456" }
+      - { key: ADMIN_SEED_EMAIL, value: admin@demo.bafo.test }
+      - { key: ADMIN_SEED_PASSWORD, generateValue: true }
+      - { key: ADMIN_MFA_REQUIRED, value: "false" }
