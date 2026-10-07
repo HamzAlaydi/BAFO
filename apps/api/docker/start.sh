@@ -30,9 +30,11 @@ php artisan storage:link >/dev/null 2>&1 || true
 case "${ROLE:-api}" in
   api)
     php artisan migrate --force
-    # Seed reference + demo data once (DemoSeeder refuses APP_ENV=production).
-    if [ "$(php artisan tinker --execute='echo \App\Modules\Admin\Models\Admin::query()->count();' 2>/dev/null | tail -n1)" = "0" ]; then
-      php artisan db:seed --force
+    # Reference data on every boot (idempotent: lookups, tier presets, plans, settings defaults),
+    # demo data only on the first boot (DemoSeeder refuses APP_ENV=production).
+    FIRST_BOOT="$(php artisan tinker --execute='echo \App\Modules\Admin\Models\Admin::query()->count();' 2>/dev/null | tail -n1)"
+    php artisan db:seed --force
+    if [ "$FIRST_BOOT" = "0" ]; then
       php artisan db:seed --class=DemoSeeder --force || true
     fi
     # Free hosting has no separate worker: run the queue and scheduler alongside the API
