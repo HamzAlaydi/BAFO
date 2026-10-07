@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:bafo/core/config/app_config.dart';
+import 'package:bafo/core/config/feature_gate.dart';
 import 'package:bafo/core/l10n/l10n.dart';
 import 'package:bafo/core/models/competition_enums.dart';
 import 'package:bafo/core/theme/spacing.dart';
@@ -18,7 +20,8 @@ import 'package:material_ui/material_ui.dart';
 
 /// M16 «مشاركاتي»: competitions the organisation is invited to or takes
 /// part in, with the Active / Ended / All segments, a direction filter and
-/// title search. Refetched on resume and after a join or decline.
+/// title search. Refetched on resume and after a join or decline. Core
+/// (RELEASE_SCOPE.md §4.1) keeps the status segments only.
 class ParticipatingListScreen extends StatelessWidget {
   const ParticipatingListScreen({super.key});
 
@@ -174,6 +177,7 @@ class _Filters extends StatelessWidget {
       (bloc) => bloc.state.filter,
     );
     final bloc = context.read<ParticipatingListBloc>();
+    final advanced = context.surfaces.enabled(MobileSurface.listFilters);
     return Padding(
       padding: const EdgeInsetsDirectional.fromSTEB(
         BafoSpacing.page,
@@ -203,56 +207,62 @@ class _Filters extends StatelessWidget {
             onChanged: (group) =>
                 bloc.add(ParticipatingListGroupChanged(group)),
           ),
-          const SizedBox(height: BafoSpacing.sm),
-          SearchField(
-            hint: l10n.competitionsParticipatingSearchHint,
-            initialValue: filter.query,
-            // The bloc debounces (300 ms).
-            debounce: Duration.zero,
-            onChanged: (query) =>
-                bloc.add(ParticipatingListQueryChanged(query)),
-          ),
-          const SizedBox(height: BafoSpacing.sm),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              children: [
-                for (final direction in [
-                  null,
-                  Direction.tender,
-                  Direction.auction,
-                ])
-                  Padding(
-                    padding: const EdgeInsetsDirectional.only(
-                      end: BafoSpacing.xs,
-                    ),
-                    child: ChoiceChip(
-                      label: Text(
-                        direction == null
-                            ? l10n.competitionsParticipatingDirectionAll
-                            : l10n.competitionsDirectionLabel(direction.wire),
-                      ),
-                      avatar: direction == null
-                          ? null
-                          : Icon(
-                              direction == Direction.tender
-                                  ? Icons.south_rounded
-                                  : Icons.north_rounded,
-                              size: 16,
-                            ),
-                      showCheckmark: false,
-                      selected: filter.direction == direction,
-                      onSelected: (_) => bloc.add(
-                        ParticipatingListDirectionChanged(direction),
-                      ),
-                    ),
-                  ),
-              ],
-            ),
-          ),
+          if (advanced) ..._advanced(context, filter, bloc),
         ],
       ),
     );
+  }
+
+  /// Search and the direction chips (the `listFilters` surface).
+  List<Widget> _advanced(
+    BuildContext context,
+    ParticipatingFilter filter,
+    ParticipatingListBloc bloc,
+  ) {
+    final l10n = context.l10n;
+    return [
+      const SizedBox(height: BafoSpacing.sm),
+      SearchField(
+        key: const Key('participating.search'),
+        hint: l10n.competitionsParticipatingSearchHint,
+        initialValue: filter.query,
+        // The bloc debounces (300 ms).
+        debounce: Duration.zero,
+        onChanged: (query) => bloc.add(ParticipatingListQueryChanged(query)),
+      ),
+      const SizedBox(height: BafoSpacing.sm),
+      SingleChildScrollView(
+        key: const Key('participating.direction'),
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: [
+            for (final direction in [null, Direction.tender, Direction.auction])
+              Padding(
+                padding: const EdgeInsetsDirectional.only(end: BafoSpacing.xs),
+                child: ChoiceChip(
+                  label: Text(
+                    direction == null
+                        ? l10n.competitionsParticipatingDirectionAll
+                        : l10n.competitionsDirectionLabel(direction.wire),
+                  ),
+                  avatar: direction == null
+                      ? null
+                      : Icon(
+                          direction == Direction.tender
+                              ? Icons.south_rounded
+                              : Icons.north_rounded,
+                          size: 16,
+                        ),
+                  showCheckmark: false,
+                  selected: filter.direction == direction,
+                  onSelected: (_) =>
+                      bloc.add(ParticipatingListDirectionChanged(direction)),
+                ),
+              ),
+          ],
+        ),
+      ),
+    ];
   }
 }
 

@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:bafo/core/config/app_config.dart';
+import 'package:bafo/core/config/feature_gate.dart';
 import 'package:bafo/core/l10n/l10n.dart';
 import 'package:bafo/core/models/me.dart';
 import 'package:bafo/core/realtime/unread_count_cubit.dart';
@@ -28,6 +30,8 @@ abstract final class HomeLinks {
 
 /// M14 Home: stat tiles for the organisation's roles, the plan (read-only),
 /// alerts without purchase actions, recent activity and quick actions.
+/// Core (RELEASE_SCOPE.md §4.1) keeps the role tiles, the alerts and the
+/// quick actions only.
 ///
 /// Refetches on pull to refresh, on resume and (debounced) when a
 /// notification arrives on the user channel.
@@ -129,8 +133,14 @@ class _HomeContent extends StatelessWidget {
     final home = state.home;
     final me = context.select<SessionCubit, Me?>((cubit) => cubit.state.me);
     final now = context.read<ServerClock>().now();
+    // Release scope (RELEASE_SCOPE.md §4.1): core keeps the role cards and
+    // the quick actions; the plan card (Account tab), recent activity, the
+    // 30-day offer tile and the billing-profile alert are home extras.
+    final surfaces = context.surfaces;
+    final extras = surfaces.enabled(MobileSurface.homeExtras);
     final canEditOrganization =
-        me?.can(Permissions.organizationUpdate) ?? false;
+        (me?.can(Permissions.organizationUpdate) ?? false) &&
+        surfaces.enabled(MobileSurface.organizationManagement);
 
     final issuer = home.issuer;
     final participant = home.participant;
@@ -146,9 +156,13 @@ class _HomeContent extends StatelessWidget {
         participant.offersSubmitted30d +
         participant.awardsWon;
     // Every organisation can take part; the issuer side shows when it is
-    // used or the user may create competitions (S10).
+    // used or the user may create competitions (S10). Core: only when the
+    // organisation can issue now (`can_issue`) or has issued before.
     final showIssuer =
-        issuerTotal > 0 || (me?.can(Permissions.competitionsCreate) ?? false);
+        issuerTotal > 0 ||
+        (extras
+            ? me?.can(Permissions.competitionsCreate) ?? false
+            : me?.canCreateCompetition ?? false);
     final issuerFirst = showIssuer && issuerTotal >= participantTotal;
 
     void goIssued() => context.go(AppRoutes.myCompetitions);
@@ -183,12 +197,14 @@ class _HomeContent extends StatelessWidget {
             icon: Icons.edit_note_rounded,
             onTap: goIssued,
           ),
-          HomeStat(
-            label: l10n.homeStatsOffersReceived30d,
-            value: issuer.offersReceived30d,
-            icon: Icons.local_offer_outlined,
-            onTap: goIssued,
-          ),
+          if (extras)
+            HomeStat(
+              key: const Key('home.stat.offersReceived30d'),
+              label: l10n.homeStatsOffersReceived30d,
+              value: issuer.offersReceived30d,
+              icon: Icons.local_offer_outlined,
+              onTap: goIssued,
+            ),
         ],
       ),
     ];
@@ -226,7 +242,11 @@ class _HomeContent extends StatelessWidget {
     ];
 
     final alerts = home.alerts
-        .where((alert) => HomeAlertCard.renders(alert.code))
+        .where(
+          (alert) =>
+              HomeAlertCard.renders(alert.code) &&
+              (extras || alert.code != HomeAlertCode.billingProfileIncomplete),
+        )
         .toList();
     final name = me?.user.name.trim() ?? '';
 
@@ -288,46 +308,51 @@ class _HomeContent extends StatelessWidget {
           ],
           _SectionTitle(l10n.homeQuickActionsTitle),
           _QuickActions(me: me, issuerFirst: issuerFirst),
-          const SizedBox(height: BafoSpacing.lg),
-          HomeSubscriptionCard(
-            subscription: home.subscription,
-            teamMembers: home.teamMembers,
-            seatsTotal: home.seatsTotal,
-            onOpen: () => context.push(AppRoutes.billing),
-          ),
-          _SectionTitle(l10n.homeActivityTitle),
-          if (home.activities.isEmpty)
-            Padding(
-              padding: const EdgeInsetsDirectional.symmetric(
-                vertical: BafoSpacing.md,
-              ),
-              child: Text(
-                l10n.homeActivityEmpty,
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  color: theme.colorScheme.onSurfaceVariant,
+          if (extras) ...[
+            const SizedBox(height: BafoSpacing.lg),
+            HomeSubscriptionCard(
+              subscription: home.subscription,
+              teamMembers: home.teamMembers,
+              seatsTotal: home.seatsTotal,
+              onOpen: () => context.push(AppRoutes.billing),
+            ),
+            _SectionTitle(l10n.homeActivityTitle),
+            if (home.activities.isEmpty)
+              Padding(
+                key: const Key('home.activity'),
+                padding: const EdgeInsetsDirectional.symmetric(
+                  vertical: BafoSpacing.md,
+                ),
+                child: Text(
+                  l10n.homeActivityEmpty,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
+                ),
+              )
+            else
+              BafoCard(
+                key: const Key('home.activity'),
+                padding: const EdgeInsetsDirectional.symmetric(
+                  vertical: BafoSpacing.xs,
+                ),
+                child: Column(
+                  children: [
+                    for (final (index, activity)
+                        in home.activities.indexed) ...[
+                      if (index > 0) const Divider(height: 1),
+                      ActivityTile(
+                        activity: activity,
+                        now: now,
+                        onTap: _activityTarget(activity) == null
+                            ? null
+                            : () => context.push(_activityTarget(activity)!),
+                      ),
+                    ],
+                  ],
                 ),
               ),
-            )
-          else
-            BafoCard(
-              padding: const EdgeInsetsDirectional.symmetric(
-                vertical: BafoSpacing.xs,
-              ),
-              child: Column(
-                children: [
-                  for (final (index, activity) in home.activities.indexed) ...[
-                    if (index > 0) const Divider(height: 1),
-                    ActivityTile(
-                      activity: activity,
-                      now: now,
-                      onTap: _activityTarget(activity) == null
-                          ? null
-                          : () => context.push(_activityTarget(activity)!),
-                    ),
-                  ],
-                ],
-              ),
-            ),
+          ],
         ],
       ),
     );

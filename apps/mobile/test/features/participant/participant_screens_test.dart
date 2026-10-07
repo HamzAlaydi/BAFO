@@ -1,4 +1,5 @@
 import 'package:bafo/core/api/pagination.dart';
+import 'package:bafo/core/config/app_config.dart';
 import 'package:bafo/core/l10n/l10n.dart';
 import 'package:bafo/core/models/competition_enums.dart';
 import 'package:bafo/core/network/network_status_cubit.dart';
@@ -20,6 +21,7 @@ import 'package:provider/provider.dart';
 
 import '../../helpers/fakes.dart';
 import '../../helpers/pump.dart';
+import '../../helpers/scope.dart';
 import 'harness.dart';
 
 void main() {
@@ -178,6 +180,62 @@ void main() {
     });
   });
 
+  group('M16 release scope (RELEASE_SCOPE.md §4.1)', () {
+    setUp(() {
+      when(
+        () => h.competitions.list(
+          role: any(named: 'role'),
+          group: any(named: 'group'),
+          direction: any(named: 'direction'),
+          query: any(named: 'query'),
+          page: any(named: 'page'),
+        ),
+      ).thenAnswer(
+        (_) async => const Paged<CompetitionListItem>(
+          items: [],
+          meta: PageMeta(currentPage: 1, perPage: 20, hasMore: false),
+        ),
+      );
+    });
+
+    Future<void> pumpList(WidgetTester tester, FeatureFlags flags) async {
+      await pumpRouter(
+        tester,
+        initialLocation: '/competitions',
+        providers: h.providers(flags: flags),
+        routes: [
+          GoRoute(
+            path: '/competitions',
+            builder: (_, _) => const ParticipatingListScreen(),
+          ),
+        ],
+      );
+      await tester.pumpAndSettle();
+    }
+
+    testWidgets('core: the status segments only', (tester) async {
+      await pumpList(tester, ScopeFlags.core);
+      expect(
+        find.text(ar.competitionsParticipatingFilterActive),
+        findsOneWidget,
+      );
+      expect(
+        find.text(ar.competitionsParticipatingFilterEnded),
+        findsOneWidget,
+      );
+      expect(find.byKey(const Key('participating.search')), findsNothing);
+      expect(find.byKey(const Key('participating.direction')), findsNothing);
+    });
+
+    testWidgets('full: search and the direction chips come back', (
+      tester,
+    ) async {
+      await pumpList(tester, ScopeFlags.full);
+      expect(find.byKey(const Key('participating.search')), findsOneWidget);
+      expect(find.byKey(const Key('participating.direction')), findsOneWidget);
+    });
+  });
+
   group('M17 invitee', () {
     final invitee = Competition.fromJson(
       fixtureData('competition_buyer_d_live_initial_invitee'),
@@ -325,6 +383,41 @@ void main() {
       expect(h.realtime.subscribed, [
         'competition.${competition.id}.participant.${h.organizationId}',
       ]);
+    });
+
+    testWidgets('Q&A and documents follow their flags (on in core and full)', (
+      tester,
+    ) async {
+      final competition = Competition.fromJson(
+        fixtureData('competition_supplier_a_live_auction'),
+      );
+      when(() => h.competitions.show(competition.id))
+          .thenAnswer((_) async => competition);
+      when(() => h.attachments.list(competition.id))
+          .thenAnswer((_) async => []);
+      Future<void> pumpWith(FeatureFlags flags) async {
+        await pumpRouter(
+          tester,
+          initialLocation: '/competitions/${competition.id}',
+          providers: h.providers(flags: flags),
+          routes: [detailRoute()],
+        );
+        await tester.pumpAndSettle();
+      }
+
+      await pumpWith(ScopeFlags.core);
+      expect(find.byKey(const Key('open-qa')), findsOneWidget);
+      await tester.scrollUntilVisible(
+        find.text(ar.competitionsDetailDocuments),
+        200,
+      );
+      expect(find.text(ar.competitionsDetailDocuments), findsOneWidget);
+
+      // A later release may switch them off: built conditionally.
+      await pumpWith(FeatureFlags(const {}));
+      expect(find.byKey(const Key('open-qa')), findsNothing);
+      expect(find.byKey(const Key('open-my-offers')), findsOneWidget);
+      expect(find.text(ar.competitionsDetailDocuments), findsNothing);
     });
 
     testWidgets('an awarded competition shows the result panel', (

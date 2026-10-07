@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Modules\Admin\Filament\Resources\ApiClients;
 
 use App\Modules\Admin\Enums\AdminNavigationGroup;
+use App\Modules\Admin\Enums\OpsSurface;
 use App\Modules\Admin\Filament\Resources\ApiClients\Pages\ListApiClients;
 use App\Modules\Admin\Filament\Resources\ApiClients\Pages\ViewApiClient;
 use App\Modules\Admin\Filament\Resources\Organizations\OrganizationResource;
@@ -44,6 +45,8 @@ final class ApiClientResource extends AdminResource
     protected static string $langKey = 'api_clients';
 
     protected static string|UnitEnum|null $navigationGroup = AdminNavigationGroup::Integrations;
+
+    protected static ?OpsSurface $opsSurface = OpsSurface::ApiClients;
 
     protected static ?int $navigationSort = 10;
 

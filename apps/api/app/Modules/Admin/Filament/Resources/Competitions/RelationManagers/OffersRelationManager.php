@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Modules\Admin\Filament\Resources\Competitions\RelationManagers;
 
+use App\Modules\Admin\Enums\OpsSurface;
 use App\Modules\Admin\Filament\Support\AdminRelationManager;
 use App\Modules\Admin\Filament\Support\AdminResource;
 use App\Modules\Admin\Filament\Support\Display;
@@ -11,6 +12,7 @@ use App\Modules\Admin\Filament\Support\Fields;
 use App\Modules\Admin\Filament\Support\Lang;
 use App\Modules\Admin\Filament\Support\ModuleAction;
 use App\Modules\Admin\Support\AdminActor;
+use App\Modules\Admin\Support\AdminScope;
 use App\Modules\Bidding\Actions\VoidOffer;
 use App\Modules\Bidding\Models\Offer;
 use App\Modules\Bidding\Services\VisibilityProjector;
@@ -28,13 +30,18 @@ use Illuminate\Database\Eloquent\Builder;
 /**
  * The offer ledger in the issuer projection, plus voids (§16). Void offer → Bidding `VoidOffer`
  * (a reason of kind `void_offer`, with a note when it requires one). The ledger rows never
- * change; a void adds an `offer_voids` row and re-ranks (§7.13).
+ * change; a void adds an `offer_voids` row and re-ranks (§7.13). Void offer and the void columns
+ * are OpsSurface::CompetitionVoidOffer (`full`, RELEASE_SCOPE.md §11); in `core` the columns
+ * still show on a competition that already has a voided offer.
  */
 final class OffersRelationManager extends AdminRelationManager
 {
     protected static string $relationship = 'offers';
 
     protected static string $langKey = 'offers';
+
+    /** Whether the void columns show, read once per request (null: not read yet). */
+    protected ?bool $showsVoids = null;
 
     public function table(Table $table): Table
     {
@@ -55,8 +62,10 @@ final class OffersRelationManager extends AdminRelationManager
                 TextColumn::make('channel')->label(Lang::get('fields.channel'))
                     ->formatStateUsing(static fn (mixed $state): ?string => Display::enum($state)),
                 IconColumn::make('voided')->label(Lang::get('fields.voided'))->boolean()
+                    ->visible(fn (): bool => $this->showsVoids())
                     ->state(static fn (Offer $record): bool => $record->void !== null),
                 TextColumn::make('void_reason')->label(Lang::get('fields.void_reason'))->placeholder('—')
+                    ->visible(fn (): bool => $this->showsVoids())
                     ->state(static fn (Offer $record): ?string => $record->void !== null
                         ? trim(($record->void->reason->translated('name') ?? '').' '.($record->void->note ?? ''))
                         : null),
@@ -68,7 +77,7 @@ final class OffersRelationManager extends AdminRelationManager
                     ->label(Lang::get('resources.competitions.actions.void_offer'))
                     ->icon(Heroicon::OutlinedNoSymbol)
                     ->color('danger')
-                    ->visible(fn (Offer $record): bool => $record->void === null && ! in_array($this->competition()->status, [
+                    ->visible(fn (Offer $record): bool => AdminScope::visible(OpsSurface::CompetitionVoidOffer) && $record->void === null && ! in_array($this->competition()->status, [
                         CompetitionStatus::Awarded, CompetitionStatus::NotAwarded, CompetitionStatus::Cancelled,
                     ], true))
                     ->requiresConfirmation()
@@ -85,6 +94,13 @@ final class OffersRelationManager extends AdminRelationManager
                     }),
             ])
             ->defaultSort('seq', 'desc');
+    }
+
+    /** The void columns: release scope `full`, or a competition with a voided offer already. */
+    private function showsVoids(): bool
+    {
+        return $this->showsVoids ??= AdminScope::visible(OpsSurface::CompetitionVoidOffer)
+            || $this->competition()->offers()->whereHas('void')->exists();
     }
 
     private function competition(): Competition

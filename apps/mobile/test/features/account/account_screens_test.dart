@@ -159,6 +159,12 @@ void main() {
             body: Text('route:competition ${state.pathParameters['id']}'),
           ),
         ),
+        GoRoute(
+          path: '/legal/:code',
+          builder: (_, state) => Scaffold(
+            body: Text('route:legal ${state.pathParameters['code']}'),
+          ),
+        ),
       ],
       providers: (_) => [
         scopeProvider(flags ?? ScopeFlags.full),
@@ -214,7 +220,7 @@ void main() {
       expect(find.byKey(const Key('account.organization')), findsOneWidget);
     });
 
-    testWidgets('an offline start still offers settings, help and sign-out', (
+    testWidgets('an offline start still offers help, legal and sign-out', (
       tester,
     ) async {
       tester.view
@@ -236,7 +242,10 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.textContaining('تعذّر تحميل بيانات الحساب'), findsOneWidget);
-      expect(find.byKey(const Key('account.settings')), findsOneWidget);
+      // No app config yet reads as the minimal core app (§4.1).
+      expect(find.byKey(const Key('account.help')), findsOneWidget);
+      expect(find.byKey(const Key('account.legal')), findsOneWidget);
+      expect(find.byKey(const Key('account.settings')), findsNothing);
       expect(find.byKey(const Key('account.signOut')), findsOneWidget);
       expect(find.byKey(const Key('account.delete')), findsNothing);
     });
@@ -271,24 +280,97 @@ void main() {
   });
 
   group('release scope core (RELEASE_SCOPE.md §4)', () {
-    testWidgets('the hub hides Team and Invoices and keeps the plan', (
+    testWidgets('the hub is minimal: no empty section, nothing greyed', (
       tester,
     ) async {
-      await pumpAccount(tester, flags: ScopeFlags.core);
+      final router = await pumpAccount(tester, flags: ScopeFlags.core);
 
-      expect(find.byKey(const Key('account.team')), findsNothing);
-      expect(find.byKey(const Key('account.invoices')), findsNothing);
       for (final key in [
         'account.profile',
         'account.password',
-        'account.organization',
-        'account.plan',
-        'account.settings',
+        'account.organizationCard',
+        'home.subscription',
         'account.help',
+        'account.legal',
         'account.delete',
+        'account.signOut',
       ]) {
         expect(find.byKey(Key(key)), findsOneWidget, reason: key);
       }
+      // Hidden, not deleted (§4.1): their routes stay behind the gate.
+      for (final key in [
+        'account.organization',
+        'account.team',
+        'account.plan',
+        'account.invoices',
+        'account.settings',
+        // The Organisation section has no row left, so it is not built.
+        'account.section.organization',
+      ]) {
+        expect(find.byKey(Key(key)), findsNothing, reason: key);
+      }
+      // The organisation name is shown read-only; seats need the team.
+      expect(find.text('Issuer Co'), findsOneWidget);
+      expect(find.text('3 من 3'), findsNothing);
+      await tester.tap(find.byKey(const Key('account.organizationCard')));
+      await tester.pumpAndSettle();
+      expect(router.state.uri.path, '/account');
+      // The plan card is read-only and opens the plan status (M58).
+      await tester.tap(find.byKey(const Key('home.subscription')));
+      await tester.pumpAndSettle();
+      expect(find.text('route:billing'), findsOneWidget);
+    });
+
+    testWidgets('the legal documents open from the hub', (tester) async {
+      await pumpAccount(tester, flags: ScopeFlags.core);
+
+      await tester.tap(find.byKey(const Key('account.legal')));
+      await tester.pumpAndSettle();
+      expect(find.byKey(const Key('account.legal.sheet')), findsOneWidget);
+      for (final code in ['terms', 'privacy', 'competition_rules']) {
+        expect(find.byKey(Key('account.legal.$code')), findsOneWidget);
+      }
+      await tester.tap(find.byKey(const Key('account.legal.terms')));
+      await tester.pumpAndSettle();
+      expect(find.text('route:legal terms'), findsOneWidget);
+    });
+
+    testWidgets('/account/organization says it is managed on the web', (
+      tester,
+    ) async {
+      await pumpAccount(
+        tester,
+        flags: ScopeFlags.core,
+        location: '/account/organization?edit=1',
+      );
+      expect(find.byType(FeatureUnavailableScreen), findsOneWidget);
+      expect(
+        find.text('تُدار بيانات المنشأة من لوحة تحكم بافو على الويب.'),
+        findsOneWidget,
+      );
+      expect(find.byKey(const Key('organization.edit')), findsNothing);
+      verifyNever(organizations.organization);
+    });
+
+    testWidgets('/account/settings is gated; the language is on the profile', (
+      tester,
+    ) async {
+      final router = await pumpAccount(
+        tester,
+        flags: ScopeFlags.core,
+        location: '/account/settings',
+      );
+      expect(find.byType(FeatureUnavailableScreen), findsOneWidget);
+      expect(find.byKey(const Key('settings.push')), findsNothing);
+
+      router.go('/account/profile');
+      await tester.pumpAndSettle();
+      expect(find.text('العربية'), findsOneWidget);
+      expect(find.text('English'), findsOneWidget);
+      expect(find.byKey(const Key('profile.name')), findsOneWidget);
+      expect(find.byKey(const Key('profile.phone')), findsOneWidget);
+      // No photo upload on mobile in core.
+      expect(find.byKey(const Key('profile.photo')), findsNothing);
     });
 
     testWidgets('/account/team shows «غير متاح في هذا الإصدار», not the team', (
@@ -340,10 +422,31 @@ void main() {
       verifyNever(() => billing.invoices());
     });
 
-    testWidgets('scope full brings both back', (tester) async {
-      await pumpAccount(tester, flags: ScopeFlags.full);
-      expect(find.byKey(const Key('account.team')), findsOneWidget);
-      expect(find.byKey(const Key('account.invoices')), findsOneWidget);
+    testWidgets('scope full brings everything back as before', (tester) async {
+      final router = await pumpAccount(tester, flags: ScopeFlags.full);
+      for (final key in [
+        'account.organization',
+        'account.team',
+        'account.plan',
+        'account.invoices',
+        'account.settings',
+        'account.section.organization',
+      ]) {
+        expect(find.byKey(Key(key)), findsOneWidget, reason: key);
+      }
+      // Settings carries the legal documents again.
+      expect(find.byKey(const Key('account.legal')), findsNothing);
+      expect(find.text('3 من 3'), findsOneWidget);
+      await tester.tap(find.byKey(const Key('account.organizationCard')));
+      await tester.pumpAndSettle();
+      expect(router.state.uri.path, '/account/organization');
+
+      router.go('/account/profile');
+      await tester.pumpAndSettle();
+      expect(find.byKey(const Key('profile.photo')), findsOneWidget);
+      router.go('/account/settings');
+      await tester.pumpAndSettle();
+      expect(find.byKey(const Key('settings.push')), findsOneWidget);
     });
   });
 

@@ -1,3 +1,5 @@
+import 'package:bafo/core/config/app_config.dart';
+import 'package:bafo/core/config/feature_gate.dart';
 import 'package:bafo/features/live/presentation/live_room_screen.dart';
 import 'package:bafo/features/live/presentation/my_offers_screen.dart';
 import 'package:bafo/features/notifications/presentation/push_explainer_sheet.dart';
@@ -41,8 +43,9 @@ List<RouteBase> participantRoutes(
           state.uri.queryParameters[ParticipantPaths.intentParameter] ==
           ParticipantPaths.intentJoin,
       issuerView: issuerDetail,
-      // M50, once, after the first successful join (never at cold start).
-      afterJoin: showPushExplainerIfNeeded,
+      // M50, once, after the first successful join (never at cold start;
+      // scope `full` only, RELEASE_SCOPE.md §4.1).
+      afterJoin: showPushExplainerInScope,
     ),
     routes: [
       GoRoute(
@@ -53,11 +56,15 @@ List<RouteBase> participantRoutes(
           issuerView: issuerLive,
         ),
       ),
+      // Q&A behind its flag (`qa_comments`, on in both scopes today).
       GoRoute(
         path: 'qa',
         parentNavigatorKey: rootKey,
-        builder: (_, state) =>
-            QaScreen(competitionId: state.pathParameters['id']!),
+        builder: (_, state) => FeatureGate(
+          feature: Feature.qaComments,
+          fallback: const FeatureUnavailableScreen(),
+          child: QaScreen(competitionId: state.pathParameters['id']!),
+        ),
       ),
       GoRoute(
         path: 'my-offers',

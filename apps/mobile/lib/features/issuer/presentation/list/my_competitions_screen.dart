@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:bafo/core/config/app_config.dart';
+import 'package:bafo/core/config/feature_gate.dart';
 import 'package:bafo/core/l10n/l10n.dart';
 import 'package:bafo/core/models/competition_enums.dart';
 import 'package:bafo/core/models/me.dart';
@@ -19,7 +21,8 @@ import 'package:material_ui/material_ui.dart';
 
 /// M33 "My competitions" (`/my-competitions`): Active / Drafts / Ended,
 /// title search, infinite scroll, and "New competition" when the user may
-/// create one (S10: `competitions.create` and `can_issue`).
+/// create one (S10: `competitions.create` and `can_issue`). Core
+/// (RELEASE_SCOPE.md §4.1) keeps the status segments without search.
 class MyCompetitionsScreen extends StatelessWidget {
   const MyCompetitionsScreen({super.key});
 
@@ -71,6 +74,7 @@ class _MyCompetitionsViewState extends State<_MyCompetitionsView> {
     final me = context.select<SessionCubit, Me?>((cubit) => cubit.state.me);
     final mayCreate = me?.can(Permissions.competitionsCreate) ?? false;
     final canIssue = me?.canCreateCompetition ?? false;
+    final search = context.surfaces.enabled(MobileSurface.listFilters);
     return Scaffold(
       appBar: BafoAppBar(title: l10n.navMyCompetitions),
       floatingActionButton: canIssue
@@ -122,13 +126,16 @@ class _MyCompetitionsViewState extends State<_MyCompetitionsView> {
                       onChanged: (group) =>
                           bloc.add(IssuedListFilterChanged(group)),
                     ),
-                    const SizedBox(height: BafoSpacing.sm),
-                    SearchField(
-                      hint: l10n.issuerListSearchHint,
-                      initialValue: state.query,
-                      onChanged: (value) =>
-                          bloc.add(IssuedListQueryChanged(value)),
-                    ),
+                    if (search) ...[
+                      const SizedBox(height: BafoSpacing.sm),
+                      SearchField(
+                        key: const Key('issuer.list.search'),
+                        hint: l10n.issuerListSearchHint,
+                        initialValue: state.query,
+                        onChanged: (value) =>
+                            bloc.add(IssuedListQueryChanged(value)),
+                      ),
+                    ],
                   ],
                 ),
               ),

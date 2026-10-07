@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace App\Modules\Admin\Filament\Pages;
 
 use App\Modules\Admin\Enums\AdminNavigationGroup;
+use App\Modules\Admin\Enums\OpsSurface;
 use App\Modules\Admin\Filament\Support\Lang;
 use App\Modules\Admin\Filament\Support\ModuleAction;
 use App\Modules\Admin\Filament\Support\SettingsForm;
 use App\Modules\Admin\Support\AdminActor;
+use App\Modules\Admin\Support\AdminScope;
 use BackedEnum;
 use Filament\Actions\Action;
 use Filament\Notifications\Notification;
@@ -23,7 +25,8 @@ use UnitEnum;
 /**
  * §16 Settings: every §15.3 runtime setting (the keys modules registered), super admins only
  * (§8.7). Each changed key is saved through Platform's `UpdateAppSetting` and audited
- * (`setting.updated`).
+ * (`setting.updated`). The page stays in release scope `core` (the release-scope select must
+ * stay reachable), with the essential groups only (SettingsForm, RELEASE_SCOPE.md §11).
  *
  * @property-read Schema $form
  */
@@ -44,7 +47,7 @@ final class ManageSettings extends Page
 
     public static function canAccess(): bool
     {
-        return AdminActor::isSuperAdmin();
+        return AdminScope::visible(OpsSurface::Settings) && AdminActor::isSuperAdmin();
     }
 
     public static function getNavigationLabel(): string

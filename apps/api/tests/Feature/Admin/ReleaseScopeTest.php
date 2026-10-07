@@ -28,8 +28,9 @@ use Tests\Support\Admin\AdminPanel;
 |--------------------------------------------------------------------------
 |
 | The settings page renders `platform.release_scope` as a required select of core / full and
-| saves it through UpdateAppSetting; the admin is never gated, so Extend and Cancel keep working
-| in `core`; presets carry the tier field.
+| saves it through UpdateAppSetting. The minimal ops panel of `core` (RELEASE_SCOPE.md §11,
+| OpsPanelScopeTest) keeps Cancel and Force close and hides Extend, which comes back in `full`;
+| presets carry the tier field.
 |
 */
 
@@ -92,9 +93,16 @@ describe('admin actions in core', function () {
         $this->releaseScope(ReleaseScope::Core);
     });
 
-    it('extends a live competition although extend_competition is hidden from the apps', function () {
+    it('hides extend in core and extends again as an admin extension in full', function () {
         $competition = Competition::factory()->withoutFinalWindow()->live()->create();
         $newClose = $competition->effective_close_at->addHour()->startOfMinute();
+
+        Livewire::test(ViewCompetition::class, ['record' => $competition->public_id])
+            ->assertActionHidden('extend')
+            ->assertActionVisible('forceClose')
+            ->assertActionVisible('cancel');
+
+        $this->releaseScope(ReleaseScope::Full);
 
         Livewire::test(ViewCompetition::class, ['record' => $competition->public_id])
             ->callAction('extend', data: ['new_close_at' => $newClose->setTimezone('Asia/Riyadh')->toDateTimeString(), 'reason' => 'Supplier portal outage'])

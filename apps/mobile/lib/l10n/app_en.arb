@@ -1031,5 +1031,8 @@
   "issuerCreateDraftRestored": "What you entered earlier for this competition was restored.",
   "issuerCreateStartOver": "Start over",
   "commonErrorSummaryTitle": "{count, plural, =1{Please correct the following field:} other{Please correct the following {count} fields:}}",
-  "commonErrorSummaryOtherStep": "In step {step}"
+  "commonErrorSummaryOtherStep": "In step {step}",
+  "accountOrganizationOnWeb": "Organisation details are managed from the BAFO web dashboard.",
+  "issuerDocumentsOnWeb": "Documents are uploaded and managed from the BAFO web dashboard.",
+  "issuerWebOnlyAwardActions": "Awarding, revoking an award and closing without award are available in the web dashboard."
 }

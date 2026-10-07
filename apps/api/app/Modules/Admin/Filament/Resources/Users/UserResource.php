@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace App\Modules\Admin\Filament\Resources\Users;
 
 use App\Modules\Admin\Enums\AdminNavigationGroup;
+use App\Modules\Admin\Enums\OpsSurface;
 use App\Modules\Admin\Filament\Resources\Organizations\OrganizationResource;
 use App\Modules\Admin\Filament\Resources\Users\Pages\ListUsers;
 use App\Modules\Admin\Filament\Resources\Users\Pages\ViewUser;
 use App\Modules\Admin\Filament\Support\AdminResource;
 use App\Modules\Admin\Filament\Support\Display;
+use App\Modules\Admin\Support\AdminScope;
 use App\Modules\Identity\Enums\MembershipStatus;
 use App\Modules\Identity\Enums\OrgRole;
 use App\Modules\Identity\Enums\UserStatus;
@@ -33,7 +35,8 @@ use UnitEnum;
 
 /**
  * §16 Users: search and view the organization users; deactivate / reactivate the membership
- * through Identity's `ChangeMembershipStatus`.
+ * through Identity's `ChangeMembershipStatus`. The award / purchase permissions of a team member
+ * are OpsSurface::TeamPermissions (`full`, RELEASE_SCOPE.md §11).
  */
 final class UserResource extends AdminResource
 {
@@ -42,6 +45,8 @@ final class UserResource extends AdminResource
     protected static string $langKey = 'users';
 
     protected static string|UnitEnum|null $navigationGroup = AdminNavigationGroup::Customers;
+
+    protected static ?OpsSurface $opsSurface = OpsSurface::Users;
 
     protected static ?int $navigationSort = 20;
 
@@ -124,8 +129,10 @@ final class UserResource extends AdminResource
                 TextEntry::make('membership.status')->label(self::field('membership_status'))->badge()->placeholder('—')
                     ->formatStateUsing(static fn (mixed $state): ?string => Display::enum($state))
                     ->color(static fn (mixed $state): string => Display::color($state)),
-                IconEntry::make('membership.can_award')->label(self::field('can_award'))->boolean(),
-                IconEntry::make('membership.can_purchase')->label(self::field('can_purchase'))->boolean(),
+                IconEntry::make('membership.can_award')->label(self::field('can_award'))->boolean()
+                    ->visible(static fn (): bool => AdminScope::visible(OpsSurface::TeamPermissions)),
+                IconEntry::make('membership.can_purchase')->label(self::field('can_purchase'))->boolean()
+                    ->visible(static fn (): bool => AdminScope::visible(OpsSurface::TeamPermissions)),
                 TextEntry::make('membership.joined_at')->label(self::field('joined_at'))->dateTime(Display::DATE_TIME)->placeholder('—'),
             ]),
         ]);

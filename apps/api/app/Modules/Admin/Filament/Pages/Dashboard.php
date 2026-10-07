@@ -9,7 +9,8 @@ use App\Modules\Admin\Filament\Widgets\PlatformStatsOverview;
 use Filament\Pages\Dashboard as BaseDashboard;
 
 /**
- * §16 Dashboard: the six platform counters and the table of live competitions.
+ * §16 Dashboard: the platform counters (four in release scope `core`, seven in `full`,
+ * PlatformStatsOverview) and the table of live competitions.
  */
 final class Dashboard extends BaseDashboard
 {

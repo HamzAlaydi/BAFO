@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Modules\Admin\Filament\Resources\Competitions\RelationManagers;
 
+use App\Modules\Admin\Enums\OpsSurface;
 use App\Modules\Admin\Filament\Support\AdminRelationManager;
 use App\Modules\Admin\Filament\Support\Display;
 use App\Modules\Admin\Filament\Support\Lang;
@@ -11,13 +12,16 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
 /**
- * The competition's extensions: automatic (anti-sniping), manual (issuer) and admin.
+ * The competition's extensions: automatic (anti-sniping), manual (issuer) and admin. Release scope
+ * `full` only (RELEASE_SCOPE.md §11); the summary keeps the extension count in `core`.
  */
 final class ExtensionsRelationManager extends AdminRelationManager
 {
     protected static string $relationship = 'extensions';
 
     protected static string $langKey = 'extensions';
+
+    protected static ?OpsSurface $opsSurface = OpsSurface::CompetitionExtensions;
 
     public function table(Table $table): Table
     {

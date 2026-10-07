@@ -12,12 +12,15 @@ enum NotificationAction { markRead, delete }
 /// One in-app notification (M49): type icon, title, body, relative time and
 /// an unread dot. Swipe towards the start edge to delete; the same actions
 /// are in the row menu and in the semantics actions (screen readers).
+/// Without [canDelete] (core, RELEASE_SCOPE.md §4.1) the row only marks
+/// read: no swipe, and no menu once it is read.
 class NotificationTile extends StatelessWidget {
   const NotificationTile({
     required this.notification,
     required this.now,
     required this.onOpen,
     required this.onAction,
+    this.canDelete = true,
     super.key,
   });
 
@@ -27,6 +30,9 @@ class NotificationTile extends StatelessWidget {
   final DateTime now;
   final VoidCallback onOpen;
   final ValueChanged<NotificationAction> onAction;
+
+  /// Offers delete (swipe, menu, semantics action).
+  final bool canDelete;
 
   /// The type icon of SCREENS.md S11, or null for the BAFO round types,
   /// which show the brand mark.
@@ -89,8 +95,9 @@ class NotificationTile extends StatelessWidget {
         if (unread)
           CustomSemanticsAction(label: l10n.notificationsMarkRead): () =>
               onAction(NotificationAction.markRead),
-        CustomSemanticsAction(label: l10n.notificationsDelete): () =>
-            onAction(NotificationAction.delete),
+        if (canDelete)
+          CustomSemanticsAction(label: l10n.notificationsDelete): () =>
+              onAction(NotificationAction.delete),
       },
       excludeSemantics: true,
       child: InkWell(
@@ -170,31 +177,38 @@ class NotificationTile extends StatelessWidget {
                   ],
                 ),
               ),
-              PopupMenuButton<NotificationAction>(
-                tooltip: l10n.notificationsMoreActions,
-                icon: Icon(
-                  Icons.more_vert_rounded,
-                  color: scheme.onSurfaceVariant,
-                ),
-                onSelected: onAction,
-                itemBuilder: (_) => [
-                  if (unread)
-                    PopupMenuItem(
-                      value: NotificationAction.markRead,
-                      child: Text(l10n.notificationsMarkRead),
-                    ),
-                  PopupMenuItem(
-                    value: NotificationAction.delete,
-                    child: Text(l10n.notificationsDelete),
+              if (unread || canDelete)
+                PopupMenuButton<NotificationAction>(
+                  key: const Key('notification.menu'),
+                  tooltip: l10n.notificationsMoreActions,
+                  icon: Icon(
+                    Icons.more_vert_rounded,
+                    color: scheme.onSurfaceVariant,
                   ),
-                ],
-              ),
+                  onSelected: onAction,
+                  itemBuilder: (_) => [
+                    if (unread)
+                      PopupMenuItem(
+                        value: NotificationAction.markRead,
+                        child: Text(l10n.notificationsMarkRead),
+                      ),
+                    if (canDelete)
+                      PopupMenuItem(
+                        value: NotificationAction.delete,
+                        child: Text(l10n.notificationsDelete),
+                      ),
+                  ],
+                )
+              else
+                // Keeps the text column the same width as menu rows.
+                const SizedBox(width: 48),
             ],
           ),
         ),
       ),
     );
 
+    if (!canDelete) return tile;
     return Dismissible(
       key: ValueKey('notification-${notification.id}'),
       direction: DismissDirection.endToStart,

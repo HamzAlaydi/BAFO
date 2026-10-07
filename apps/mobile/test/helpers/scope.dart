@@ -25,6 +25,13 @@ abstract final class ScopeFlags {
       if (!reserved.contains(feature)) feature: true,
   });
 
+  /// The `release_scope` that goes with [flags] when a test does not name
+  /// one: `full` when the full-only flags are on (they all derive from the
+  /// scope), else `core`. The mobile surfaces (RELEASE_SCOPE.md §4.1) follow
+  /// it.
+  static String scopeOf(FeatureFlags flags) =>
+      flags.enabled(Feature.teamManagement) ? 'full' : 'core';
+
   /// Flags whose feature is not built yet (`false` in both scopes).
   static const Set<Feature> reserved = {
     Feature.deletionApproval,
@@ -66,14 +73,20 @@ final class _FixedConfig implements AppConfigRepository {
   Future<AppConfig> fetch() async => current;
 }
 
-/// An [AppConfigCubit] whose config carries [flags] (closed at tear-down),
-/// so screens read `context.flags` as they do in the app.
-AppConfigCubit scopedAppConfig(FeatureFlags flags, {String scope = 'full'}) {
+/// An [AppConfigCubit] whose config carries [flags] and [scope] (closed at
+/// tear-down), so screens read `context.flags` and `context.surfaces` as
+/// they do in the app. [scope] defaults to [ScopeFlags.scopeOf] the flags.
+AppConfigCubit scopedAppConfig(FeatureFlags flags, {String? scope}) {
   final gate = AppGateCubit();
   final realtime = FakeRealtimeClient();
   final cubit = AppConfigCubit(
     repository: _FixedConfig(
-      AppConfig.fromJson(ScopeFlags.appConfigJson(flags, scope: scope)),
+      AppConfig.fromJson(
+        ScopeFlags.appConfigJson(
+          flags,
+          scope: scope ?? ScopeFlags.scopeOf(flags),
+        ),
+      ),
     ),
     gate: gate,
     realtime: realtime,
@@ -89,7 +102,13 @@ AppConfigCubit scopedAppConfig(FeatureFlags flags, {String scope = 'full'}) {
 }
 
 /// The provider to add to a pumped feature so it runs in the given scope.
-SingleChildWidget scopeProvider(FeatureFlags flags, {String scope = 'full'}) =>
+SingleChildWidget scopeProvider(FeatureFlags flags, {String? scope}) =>
     BlocProvider<AppConfigCubit>.value(
       value: scopedAppConfig(flags, scope: scope),
     );
+
+/// [scopeProvider] for a release scope by name (`core` or `full`).
+SingleChildWidget releaseScopeProvider(String scope) => scopeProvider(
+  scope == 'full' ? ScopeFlags.full : ScopeFlags.core,
+  scope: scope,
+);

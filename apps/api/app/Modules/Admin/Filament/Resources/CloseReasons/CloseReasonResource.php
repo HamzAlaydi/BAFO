@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Modules\Admin\Filament\Resources\CloseReasons;
 
 use App\Modules\Admin\Enums\AdminNavigationGroup;
+use App\Modules\Admin\Enums\OpsSurface;
 use App\Modules\Admin\Filament\Resources\CloseReasons\Pages\CreateCloseReason;
 use App\Modules\Admin\Filament\Resources\CloseReasons\Pages\EditCloseReason;
 use App\Modules\Admin\Filament\Resources\CloseReasons\Pages\ListCloseReasons;
@@ -41,6 +42,8 @@ final class CloseReasonResource extends AdminResource
     protected static array $writableAbilities = ['create', 'update', 'delete'];
 
     protected static string|UnitEnum|null $navigationGroup = AdminNavigationGroup::Lookups;
+
+    protected static ?OpsSurface $opsSurface = OpsSurface::CloseReasons;
 
     protected static ?int $navigationSort = 30;
 

@@ -57,6 +57,53 @@ final class AdminPanel
     ];
 
     /**
+     * The list pages of the minimal ops panel: shown in release scope `core` (RELEASE_SCOPE.md §11).
+     *
+     * @var list<string>
+     */
+    public const array CORE_PAGES = [
+        '/admin',
+        '/admin/organizations',
+        '/admin/users',
+        '/admin/competitions',
+        '/admin/subscriptions',
+        '/admin/settings',
+    ];
+
+    /**
+     * Every other page without a record: hidden in `core` (403), back in `full`.
+     *
+     * @var list<string>
+     */
+    public const array FULL_ONLY_PAGES = [
+        '/admin/account-deletions',
+        '/admin/plans',
+        '/admin/plans/create',
+        '/admin/coupons',
+        '/admin/coupons/create',
+        '/admin/vouchers',
+        '/admin/payments',
+        '/admin/invoices',
+        '/admin/sponsorships',
+        '/admin/api-clients',
+        '/admin/webhook-endpoints',
+        '/admin/regions',
+        '/admin/regions/create',
+        '/admin/categories',
+        '/admin/categories/create',
+        '/admin/close-reasons',
+        '/admin/close-reasons/create',
+        '/admin/presets',
+        '/admin/presets/create',
+        '/admin/legal-documents',
+        '/admin/legal-documents/create',
+        '/admin/contact-messages',
+        '/admin/audit-log',
+        '/admin/admins',
+        '/admin/admins/create',
+    ];
+
+    /**
      * @param  array<string, mixed>  $attributes
      */
     public static function superAdmin(array $attributes = []): Admin

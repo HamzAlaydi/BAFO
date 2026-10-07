@@ -4048,4 +4048,16 @@ class AppLocalizationsAr extends AppLocalizations {
   String commonErrorSummaryOtherStep(int step) {
     return 'في الخطوة $step';
   }
+
+  @override
+  String get accountOrganizationOnWeb =>
+      'تُدار بيانات المنشأة من لوحة تحكم بافو على الويب.';
+
+  @override
+  String get issuerDocumentsOnWeb =>
+      'تُرفع المستندات وتُدار من لوحة تحكم بافو على الويب.';
+
+  @override
+  String get issuerWebOnlyAwardActions =>
+      'الترسية وإلغاؤها والإغلاق دون ترسية متاحة في لوحة التحكم على الويب.';
 }

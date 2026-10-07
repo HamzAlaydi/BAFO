@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Modules\Admin\Filament\Resources\Categories;
 
 use App\Modules\Admin\Enums\AdminNavigationGroup;
+use App\Modules\Admin\Enums\OpsSurface;
 use App\Modules\Admin\Filament\Resources\Categories\Pages\CreateCategory;
 use App\Modules\Admin\Filament\Resources\Categories\Pages\EditCategory;
 use App\Modules\Admin\Filament\Resources\Categories\Pages\ListCategories;
@@ -38,6 +39,8 @@ final class CategoryResource extends AdminResource
     protected static array $writableAbilities = ['create', 'update', 'delete'];
 
     protected static string|UnitEnum|null $navigationGroup = AdminNavigationGroup::Lookups;
+
+    protected static ?OpsSurface $opsSurface = OpsSurface::Categories;
 
     protected static ?int $navigationSort = 20;
 

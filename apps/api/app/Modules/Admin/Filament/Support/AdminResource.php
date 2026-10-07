@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Modules\Admin\Filament\Support;
 
+use App\Modules\Admin\Enums\OpsSurface;
 use App\Modules\Admin\Policies\PanelResourcePolicy;
+use App\Modules\Admin\Support\AdminScope;
 use BackedEnum;
 use Closure;
 use Filament\Resources\Resource;
@@ -22,6 +24,10 @@ use UnitEnum;
  * (those are for organization users). Resources are read-only unless they list writable
  * abilities; the operator-restricted ones set `$superAdminOnly` (§8.7). Labels come from
  * `admin.resources.<langKey>.{label, plural_label}`.
+ *
+ * Release scope (RELEASE_SCOPE.md §11): each resource names its `$opsSurface`. When
+ * AdminScope::visible() says no (scope `core`, a surface outside the core panel), canAccess() is
+ * false, so the resource leaves the navigation and global search and its pages answer 403.
  */
 abstract class AdminResource extends Resource
 {
@@ -36,6 +42,25 @@ abstract class AdminResource extends Resource
      * @var list<string>
      */
     protected static array $writableAbilities = [];
+
+    /** The ops-panel surface this resource is (RELEASE_SCOPE.md §11); null: never hidden. */
+    protected static ?OpsSurface $opsSurface = null;
+
+    public static function opsSurface(): ?OpsSurface
+    {
+        return static::$opsSurface;
+    }
+
+    /**
+     * Navigation, global search and every page of the resource: hidden by the release scope
+     * first, then the panel policy (viewAny).
+     */
+    public static function canAccess(): bool
+    {
+        $surface = static::opsSurface();
+
+        return ($surface === null || AdminScope::visible($surface)) && parent::canAccess();
+    }
 
     public static function getAuthorizationResponse(string|UnitEnum $action, ?Model $record = null): Response
     {

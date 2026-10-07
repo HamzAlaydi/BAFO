@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Modules\Admin\Filament\Resources\Presets;
 
 use App\Modules\Admin\Enums\AdminNavigationGroup;
+use App\Modules\Admin\Enums\OpsSurface;
 use App\Modules\Admin\Filament\Resources\Presets\Pages\CreateCompetitionPreset;
 use App\Modules\Admin\Filament\Resources\Presets\Pages\EditCompetitionPreset;
 use App\Modules\Admin\Filament\Resources\Presets\Pages\ListCompetitionPresets;
@@ -50,6 +51,8 @@ final class CompetitionPresetResource extends AdminResource
     protected static array $writableAbilities = ['create', 'update', 'delete'];
 
     protected static string|UnitEnum|null $navigationGroup = AdminNavigationGroup::Lookups;
+
+    protected static ?OpsSurface $opsSurface = OpsSurface::Presets;
 
     protected static ?int $navigationSort = 40;
 

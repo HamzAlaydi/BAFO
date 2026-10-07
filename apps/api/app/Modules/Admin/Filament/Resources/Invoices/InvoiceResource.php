@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Modules\Admin\Filament\Resources\Invoices;
 
 use App\Modules\Admin\Enums\AdminNavigationGroup;
+use App\Modules\Admin\Enums\OpsSurface;
 use App\Modules\Admin\Filament\Resources\Invoices\Pages\ListInvoices;
 use App\Modules\Admin\Filament\Resources\Invoices\Pages\ViewInvoice;
 use App\Modules\Admin\Filament\Resources\Organizations\OrganizationResource;
@@ -48,6 +49,8 @@ final class InvoiceResource extends AdminResource
     protected static string $langKey = 'invoices';
 
     protected static string|UnitEnum|null $navigationGroup = AdminNavigationGroup::Billing;
+
+    protected static ?OpsSurface $opsSurface = OpsSurface::Invoices;
 
     protected static ?int $navigationSort = 50;
 

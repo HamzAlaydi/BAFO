@@ -10,10 +10,10 @@ The client's direction: the product already has many complex features. The first
 |---|---|
 | **Nothing is deleted** | Every route, controller, Action, component, screen, migration, seed and test stays in the repository and keeps working in scope `full`. Hiding is done by flags only. |
 | **One switch** | One admin-editable setting `platform.release_scope` ∈ `core` \| `full`, default `core`. Flipping it to `full` brings everything back without a deploy. |
-| **Clients read flags, never the scope** | `GET /app-config` exposes `features.release_scope` for display and a derived boolean map `features.flags`. Web and mobile branch on `flags.<name>` only. No client contains `if (scope === 'core')`. |
-| **Enforcement lives at the HTTP edge** | Route middleware, FormRequests, Resources/projections and lookup queries consult the flags. Actions, jobs, listeners, notifications, realtime and the admin panel never do. That is what keeps existing records rendering and keeps the admin complete. |
+| **Clients read flags, never the scope** | `GET /app-config` exposes `features.release_scope` for display and a derived boolean map `features.flags`. Web and mobile branch on `flags.<name>` only. No client contains `if (scope === 'core')`. One mobile exception: the screen details no server flag covers derive from `features.release_scope` in a single table (`MobileSurfaces`, §4.2). |
+| **Enforcement lives at the HTTP edge** | Route middleware, FormRequests, Resources/projections and lookup queries consult the flags. Actions, jobs, listeners, notifications and realtime never do. That is what keeps existing records rendering. The ops panel reads only the scope, through one check (`AdminScope`, §11), to hide its own pages; the module Actions it calls stay ungated. |
 | **Existing records always render** | A competition created while `full` (sealed, with a BAFO round, with covered fees) stays fully readable and playable when the scope is `core`. Only *creating or configuring* the hidden feature is blocked. |
-| **Admin sees everything** | Filament (`/admin`) calls module Actions directly and is never gated. |
+| **Ops panel at its minimum in `core`** | Filament (`/admin`) shows only Dashboard, Organizations, Users, Competitions, Subscriptions and Settings in `core` (§11); every other page is hidden (not deleted) and comes back unchanged in `full`. The panel still calls module Actions directly; the Actions are never gated. |
 | **Glossary and bilingual rule** | Unchanged (BRIEF.md). Every new string exists in `ar` and `en`. |
 
 ---
@@ -135,7 +135,7 @@ Mechanics:
 | reserved flags | – (no endpoints exist) | – | – | – |
 | `qa_comments`, `attachments`, `cancel_competition` | never (true in both scopes); the middleware is still attached so a later release can flip them | | | |
 
-Admin: Filament pages and the module Actions they call ignore the flags entirely. The admin competition view still offers Extend, Cancel, Force close and Void in both scopes.
+Admin: the module Actions the panel calls ignore the flags entirely. The panel itself follows the scope (§11): in `core` the competition view offers Cancel and Force close; Extend and Void come back in `full`.
 
 ### 1.6 Tests for the flag behaviour
 
@@ -144,9 +144,10 @@ Admin: Filament pages and the module Actions they call ignore the flags entirely
 | `tests/TestCase.php` | `setUp()` sets `platform.release_scope = full` through `Settings` so the existing 2 239 tests run against the full product. This is the one place where tests set the scope implicitly. | Platform |
 | `tests/Feature/Platform/ReleaseScopeTest.php` | `GET /app-config` exposes `features.release_scope` and all 22 `features.flags` for both scopes with the exact §1.3 values; `features.sponsorship` equals `flags.sponsorship` and follows `sponsorship.enabled`; the `feature:` middleware answers 404 `feature_disabled` with `details.feature`; the artisan command sets and prints the scope; `UpdateAppSetting` rejects an unknown value. | Platform |
 | `tests/Feature/<Module>/ReleaseScopeTest.php` | Dataset-driven: for every gated route of the module, scope `core` → 404 `feature_disabled`; scope `full` → not 404. Field refusals: each 422 of §1.5 with the exact path. Read-only exceptions: each "kept" GET answers 200 in `core` on a record created in `full`. Projection: `permissions.can_extend / can_start_bafo / can_manage_sponsorship` false in `core`; `GET /lookups` omits the right presets and `GET /plans` omits the custom plan. | Each module |
-| `tests/Feature/Admin/ReleaseScopeTest.php` | Settings page shows the select and saves it; admin extend/cancel work in `core`. | Admin |
+| `tests/Feature/Admin/ReleaseScopeTest.php` | Settings page shows the select and saves it; cancel works in `core`, extend is hidden in `core` and works in `full`. | Admin |
+| `tests/Feature/Admin/OpsPanelScopeTest.php` | §11: the core sidebar (exact groups and items, super admin and operator), every hidden page and record page answers 403 in `core` and 200 in `full`, global search, the four dashboard counters, the competition / organization / user / subscription / settings details of §11.3. | Admin |
 | Web `tests/unit`, `tests/nuxt` | `useFeature` and the app-config fixture (`tests/fixtures/api.ts` gains `flags`, default **full**); nav filtering by `feature`; wizard `wizardStepKeys`, legacy step aliases, `firstIncompleteStep` with 5 steps; gated blocks of `StepRules` absent in core and present in full; quick-pick maths; theme forced light in core; landing SEO head (canonical, hreflang incl. `x-default`, JSON-LD types); `sitemap.xml` and `robots.txt` routes. | Web |
-| Mobile `test/` | `AppConfig.fromJson` parses `flags` (missing → false); Account hub hides Team and Invoices in core; invite screen hides the Vendors segment; `/billing/invoices/{id}` deep link maps to `/billing` in core; `app_test.dart` still shows 5 tabs in both scopes. | Mobile |
+| Mobile `test/` | `AppConfig.fromJson` parses `flags` (missing → false) and derives the mobile surfaces; every hidden item of §4.1 is absent in core and present in full (list in §4.3); invite screen hides the Vendors segment; `/billing/invoices/{id}` deep link maps to `/billing` in core; `app_test.dart` still shows 5 tabs in both scopes. | Mobile |
 
 ---
 
@@ -266,20 +267,44 @@ Applies to: the wizard, register, organization, account, offer composer, award, 
 
 ## 4. Mobile core tabs and hidden surfaces
 
-Five tabs stay: Home `/home`, Participating `/competitions`, My competitions `/my-competitions`, Notifications `/notifications`, Account `/account`.
+Five tabs stay in both scopes: Home `/home`, Participating `/competitions`, My competitions `/my-competitions`, Notifications `/notifications`, Account `/account`. Scope `core` is the **minimal app** of §4.1: every surface hidden there keeps its code, route, screen and tests, and scope `full` shows it exactly as before.
 
-| Surface | core | full |
+### 4.1 Minimal core app: what is visible
+
+| Area | core (visible) | full adds back |
 |---|---|---|
-| Account hub rows | Profile, Password, Organisation, **Plan and subscription (M58)**, Settings, Help, Delete account, Sign out | + Team (M56), + Invoices |
-| M58 plan status | plan, source, status, days left, seats, `billing.managed_on_web` | same (+ vouchers count when `sponsorship`) |
-| Invite (M40) | Suggestions, E-mail | + Vendors (`vendor_directory`), + sponsored rows (`sponsorship`) |
-| Create (M34–M37) | tier cards, no format choice, no reserve | + format cards (`sealed_format`), + reserve (`advanced_rules`) |
-| Issuer detail (M38) action sheet | Edit, Invite, Attachments, Publish, Cancel, Delete draft | same (extend, BAFO, award stay web-only by CD5) |
-| Participants (M41) | rows, resend, revoke | + sponsorship counters (`sponsorship`) |
-| Deep links | `/billing/invoices/{id}` → `/billing`; `/integrations` → `/home` (already) | `/billing/invoices/{id}` → invoices screen |
+| Signed out | Welcome / onboarding, sign-in, register (3 steps), OTP, forgot / reset password, legal pages (M13) | same |
+| Home (M14) | Greeting and organisation name, alerts (no purchase action), participant tiles (pending invitations, active participations, offers in 30 days, awards won), issuer tiles (active, live now, awaiting award, drafts) **only when the organisation can issue (`can_issue` + `competitions.create`) or has issued before**, quick actions | the 30-day offers-received tile, the plan card, recent activity, the billing-profile alert with its link to M55; issuer tiles also for a creator without a plan |
+| Competitions (M16) | Active / Ended / All segments, the list with Join and Decline | title search, the direction chips |
+| Competition detail (M17 / M21) | overview, schedule, rules summary, documents read-only and downloadable (`attachments`), Q&A (`qa_comments`), join / decline, live room, offer composer, my offers, result | same |
+| My competitions (M33) | Active / Drafts / Ended segments, the list, New competition, the 4-screen wizard (§2.6) | title search |
+| Issuer detail (M38) | header, countdown, checklist, Publish, Invite, leading offer, rows Live monitor, Participants, Q&A, Award (read-only M48), counts, schedule, documents read-only with «تُرفع المستندات وتُدار من لوحة تحكم بافو على الويب.»; action sheet: Publish, Edit, Invite, Cancel, Delete draft, and the award decisions as web-only rows («الترسية وإلغاؤها والإغلاق دون ترسية متاحة في لوحة التحكم على الويب.») | Offers log row (M47), Documents row and buttons (M42 upload), the «Manage» link on documents; Extend (`extend_competition`) and BAFO (`bafo_round`) web-only rows and the longer web-only notice; sponsorship counters (`sponsorship`) |
+| Live monitor (M46) | countdown, online count, leader, metrics, ranking | the «Offers log» link on the ranking, the extend-on-web notice (`extend_competition`) |
+| Invite (M40) / Participants (M41) | Suggestions, E-mail; rows, resend, revoke | + Vendors (`vendor_directory`), + sponsored rows and counters (`sponsorship`) |
+| Notifications (M49) | the list, tap to open (marks read), mark read on an unread row, mark all read | the all / unread filter, swipe and menu delete, delete all |
+| Account hub (M51) | user card → Profile; organisation name **read-only** (role and verified pills, no link); plan card (read-only, opens M58; no seats); «حسابي»: Profile, Password; «التطبيق»: Help, Legal documents (a sheet: terms, privacy, competition rules), Delete account; Sign out; version. No empty section is built. | the tappable organisation card, the «المنشأة» section (Organisation M55, Team M56 with `team_management`, Plan and subscription row, Invoices with `billing_invoices`), Settings M59 instead of the Legal row, seats on the plan card (`team_management`) |
+| Profile (M52) | name, e-mail (read-only), mobile number, language, avatar (shown) | the photo upload |
+| M58 plan status | plan, source, status, ends, days left, upcoming plan, `billing.managed_on_web`, invoices-on-web notice | + seats (`team_management`) |
+| Theme | light only (mobile has no theme setting in either scope; `dark_mode` is web-only) | same |
+| Deep links | `/billing/invoices/{id}` → `/billing`; `/integrations` → `/home` | `/billing/invoices/{id}` → invoices screen |
 | Advanced rules editing | never on mobile (CD4) | never |
 
-Implementation: `AppConfig.flags` on the cached config; a `FeatureGate(feature, child)` widget and `context.flags.enabled(Feature.x)`; rows and segments are built conditionally, never greyed out.
+Hidden routes stay registered and land on `FeatureUnavailableScreen` («غير متاح في هذا الإصدار») in core: `/account/team*`, `/account/invoices` («الفواتير متاحة في لوحة تحكم بافو على الويب.»), `/account/organization` («تُدار بيانات المنشأة من لوحة تحكم بافو على الويب.»), `/account/settings`, `/competitions/{id}/offers`, `/competitions/{id}/attachments` (documents message above), and `/competitions/{id}/qa` if `qa_comments` is ever off. The push explainer (M50) is not offered after a join or publish in core (push is a no-op service today) and is not marked as shown, so a later `full` release still explains it once.
+
+### 4.2 Mechanism
+
+- Server flags first: `AppConfig.flags` on the cached config; `FeatureGate(feature, child, fallback)` and `context.flags.enabled(Feature.x)`. Rows, segments and actions are built conditionally, never greyed out.
+- **Mobile surfaces (the one sanctioned exception to "clients never read the scope")**: screen details no server flag covers are `enum MobileSurface` in `core/config/app_config.dart` — `organizationManagement`, `appSettings`, `pushPrompts`, `listFilters`, `notificationCleanup`, `homeExtras`, `issuerOffersLog`, `documentUpload`, `profilePhoto`. `MobileSurfaces.forScope(features.release_scope)` is their single derivation table (all on in `full`, all off in `core`, an unknown or missing scope reads as `core`). Screens use `context.surfaces.enabled(MobileSurface.x)` / `SurfaceGate(surface, child, fallback)` and never compare the scope string. No config yet (first offline start) reads as the minimal app.
+- Nothing calls the server differently: a hidden surface makes no request (e.g. no `GET /organization` behind the gated route, no offers-log fetch).
+
+### 4.3 Verification (mobile)
+
+| Command | Must hold |
+|---|---|
+| `flutter analyze` | 0 issues |
+| `flutter test` | green; gating tests per hidden item in core **and** visible in full: `test/core/config/feature_flags_test.dart` and `feature_gate_test.dart` (surfaces derivation, `SurfaceGate`), `features/home/home_screen_test.dart`, `features/account/account_screens_test.dart` (hub, legal sheet, organisation / settings routes, profile photo, seats), `features/notifications/notifications_screen_test.dart` and `push_explainer_test.dart`, `features/participant/participant_screens_test.dart` (filters, Q&A and documents flags), `features/issuer/issuer_screens_test.dart` (search, documents, offers log, extend / BAFO, web-only notice, gated routes); `app_test.dart` keeps 5 tabs |
+| `flutter build apk --debug` | builds |
+| `flutter drive --driver=test_driver/integration_test.dart --target=integration_test/minimal_core_screenshots_test.dart -d emulator-5554` | the real app on the Pixel API 34 emulator against the captured API fixtures; screenshots in `apps/mobile/docs/screenshots/minimal/` (core: home as issuer and as participant, My competitions, Account hub top and end, Notifications, Competitions; full: home and hub for comparison) |
 
 ---
 
@@ -380,7 +405,7 @@ Owners append; nobody rewrites a shared file.
 | Area | Commands | Must hold |
 |---|---|---|
 | API | `scripts/test-api.sh scope` (serial and `--parallel`), `vendor/bin/phpstan analyse`, `vendor/bin/pint --test` | all green; every §1.5 row has a test; `GET /app-config` matches §1.4 in both scopes |
-| Admin | included in the API suite | settings select saves both values; admin actions unaffected in `core` |
+| Admin | included in the API suite (`OpsPanelScopeTest`) | settings select saves both values; the §11 sidebar in `core`, everything back in `full`; screenshots in `apps/api/docs/screenshots/ops/` |
 | Web | `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm build`, `pnpm test:e2e smoke` | 5-step wizard with aliases; nav and pages gated; landing sections, FAQ count 10 (core) / 12 (full), head tags, sitemap and robots routes; Lighthouse SEO ≥ 95 recorded |
 | Mobile | `flutter analyze`, `flutter test` | flags parsed; Account hub, invite segments and deep links gated; 5 tabs |
 | Manual | admin → Settings → `platform.release_scope` = full → reload web and mobile | everything hidden in `core` is back, including the wizard's gated controls, nav items, landing sections and endpoints |
@@ -407,3 +432,55 @@ Owners append; nobody rewrites a shared file.
 - Invoices are reachable through the API and the admin, not through a page; the notification deep link lands on W30 (`billing_invoices`).
 - A competition created in `full` with sealed format, a final window or a BAFO round shows controls the core wizard cannot produce; this is by design (existing records always render).
 - Reserved flags (`deletion_approval`, `deleted_competitions`, `offer_report`, `login_as`, `google_signin`) are `false` in both scopes until those features ship; the derivation table is the only place to change when they do.
+
+## 11. Ops panel (`/admin`) in core
+
+The client's direction for the operations panel: **keep it at the minimum in `core`, hide only, never delete.** Every resource, page, action, relation manager, route and test stays; `php artisan platform:release-scope full` (or Settings → `platform.release_scope`) brings the whole panel back exactly as before, with no deploy.
+
+### 11.1 Mechanism
+
+| Item | Value |
+|---|---|
+| Catalogue | `App\Modules\Admin\Enums\OpsSurface`: one case per resource/page and per hidden detail inside a core page. `OpsSurface::inCore()` lists the six core cases; every other case is `full` only. |
+| The one check | `App\Modules\Admin\Support\AdminScope::visible(OpsSurface $surface)` = `$surface->inCore() \|\| FeatureFlags::scope()->isFull()`. Nothing else in the panel reads the scope. |
+| Resources | `AdminResource::$opsSurface` on all 21 resources; `AdminResource::canAccess()` = `AdminScope::visible(...)` **and** the existing panel policy. A hidden resource therefore leaves the sidebar and global search, and every one of its pages (list, create, view, edit) answers **403** on a direct URL. |
+| Pages | `ManageSettings::canAccess()` = `AdminScope::visible(Settings)` and super admin (unchanged rule). Dashboard and the admin's own profile are always reachable. |
+| Relation managers | `AdminRelationManager::$opsSurface` (null = always shown), checked in `canViewForRecord()`. |
+| Actions, columns, entries | `->visible(fn () => AdminScope::visible(OpsSurface::…))` on the item. Read-only rows of a feature an existing record uses (BAFO round, final window, sponsorship, voided offers) still show in `core` on that record. |
+| Navigation groups | Groups are the `AdminNavigationGroup` cases; Filament drops a group with no visible item, so `core` shows no empty group (an operator, who cannot open Settings, sees three groups). |
+| Module Actions | Untouched: `ExtendCompetition`, `VoidOffer`, `GrantSponsoredPass`, … are only not offered in `core`. |
+| Languages | Arabic (RTL) default and English; new keys `admin.dashboard.stats.competitions_this_month`, `admin.settings.core_hint` in both files. |
+
+### 11.2 Sidebar
+
+| Group | `core` | `full` (as before) |
+|---|---|---|
+| (none) | Dashboard | Dashboard |
+| Customers · العملاء | Organizations, Users | + Account deletions |
+| Competitions · المنافسات | Competitions | Competitions |
+| Billing · الفوترة | Subscriptions | + Plans, Coupons, Vouchers, Payments, Invoices, Sponsorships |
+| Integrations · التكامل | – (group hidden) | API clients, Webhook endpoints |
+| Lookups · القوائم المرجعية | – (group hidden) | Regions, Categories, Close reasons, Presets |
+| Content and settings · المحتوى والإعدادات | Settings (super admin) | + Legal documents, Contact inbox |
+| System · النظام | – (group hidden) | Audit log, Admins |
+
+There is no Horizon item in the panel (Horizon stays at `/horizon` behind the `viewHorizon` gate, outside Filament); nothing to hide there.
+
+### 11.3 Inside the core pages
+
+| Page | `core` | Added in `full` (`OpsSurface`) |
+|---|---|---|
+| Dashboard | Counters: organizations, live competitions, competitions this month (published since the 1st of the Riyadh month), active subscriptions; the live competitions table | Payments today, failed e-invoices, sponsorships awaiting a voucher (`DashboardBillingStats`) |
+| Competitions | List with filters; view with summary, rules, timeline, outcome; relation managers Invitations, Participants, Offers, Awards; actions **Cancel** and **Force close** | Extend (`CompetitionExtend`); Void offer and the void columns (`CompetitionVoidOffer`); Revoke invitation (`CompetitionRevokeInvitation`); Grant pass, sponsored columns, sponsorship row (`CompetitionSponsorship`); Extensions and Rejections relation managers (`CompetitionExtensions`, `CompetitionRejections`); BAFO round row (`CompetitionBafoRound`); final window rows (`CompetitionFinalWindow`); award ERP sync column (`CompetitionErpSync`) |
+| Organizations | List, view (profile, status, subscription, members, subscriptions, competitions); Verify / Unverify, Suspend / Reactivate, Resend verification, Grant subscription; Features with the **auction** switch only (saves only that switch) | API and sponsorship switches in the list, filters, view and Features form (`OrganizationAdvancedFeatures`) |
+| Users | List, view, Deactivate / Reactivate (also on the organization's members) | Award / purchase permission columns (`TeamPermissions`) |
+| Subscriptions | List with filters; Grant subscription (plan, seats, period, reason) | – |
+| Settings | Groups «الإصدار» (release scope select) and «التطبيق» (maintenance switch and message, minimum / latest app versions, store links, support contacts), with a note that the rest appear in `full`. Hidden keys are neither rendered nor saved. | Competitions, bidding engine, billing and sponsorship groups (`AdvancedSettings`) |
+
+The organization page has no edit form for its profile fields today (only the actions above); none was added. Categories are not editable from the organization page in either scope.
+
+### 11.4 Verification
+
+- `scripts/test-api.sh <suffix> tests/Feature/Admin` — `OpsPanelScopeTest` (core sidebar, 403 on every hidden page and record page, 200 again in `full`, dashboard, competition/organization/user/subscription/settings details) and the rest of the Admin suite, which runs in `full` (tests/TestCase.php).
+- Screenshots of the sidebar on the running local panel in both scopes: `apps/api/docs/screenshots/ops/` (`core-*.png`, `full-*.png`), taken with Playwright after `php artisan platform:release-scope full`, then the scope set back to `core`.
+

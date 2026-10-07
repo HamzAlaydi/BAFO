@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Modules\Admin\Filament\Resources\Vouchers;
 
 use App\Modules\Admin\Enums\AdminNavigationGroup;
+use App\Modules\Admin\Enums\OpsSurface;
 use App\Modules\Admin\Filament\Resources\Organizations\OrganizationResource;
 use App\Modules\Admin\Filament\Resources\Vouchers\Pages\ListVouchers;
 use App\Modules\Admin\Filament\Support\AdminResource;
@@ -31,6 +32,8 @@ final class VoucherResource extends AdminResource
     protected static string $langKey = 'vouchers';
 
     protected static string|UnitEnum|null $navigationGroup = AdminNavigationGroup::Billing;
+
+    protected static ?OpsSurface $opsSurface = OpsSurface::Vouchers;
 
     protected static ?int $navigationSort = 25;
 

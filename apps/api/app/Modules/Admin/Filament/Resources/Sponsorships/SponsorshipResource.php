@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Modules\Admin\Filament\Resources\Sponsorships;
 
 use App\Modules\Admin\Enums\AdminNavigationGroup;
+use App\Modules\Admin\Enums\OpsSurface;
 use App\Modules\Admin\Filament\Resources\Competitions\CompetitionResource;
 use App\Modules\Admin\Filament\Resources\Sponsorships\Pages\ListSponsorships;
 use App\Modules\Admin\Filament\Support\AdminResource;
@@ -46,6 +47,8 @@ final class SponsorshipResource extends AdminResource
     protected static string $langKey = 'sponsorships';
 
     protected static string|UnitEnum|null $navigationGroup = AdminNavigationGroup::Billing;
+
+    protected static ?OpsSurface $opsSurface = OpsSurface::Sponsorships;
 
     protected static ?int $navigationSort = 60;
 

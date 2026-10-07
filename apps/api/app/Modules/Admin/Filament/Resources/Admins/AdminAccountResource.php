@@ -8,6 +8,7 @@ use App\Modules\Admin\Actions\DeleteAdmin;
 use App\Modules\Admin\Actions\ResetAdminMfa;
 use App\Modules\Admin\Enums\AdminNavigationGroup;
 use App\Modules\Admin\Enums\AdminRole;
+use App\Modules\Admin\Enums\OpsSurface;
 use App\Modules\Admin\Filament\Resources\Admins\Pages\CreateAdminAccount;
 use App\Modules\Admin\Filament\Resources\Admins\Pages\EditAdminAccount;
 use App\Modules\Admin\Filament\Resources\Admins\Pages\ListAdminAccounts;
@@ -49,6 +50,8 @@ final class AdminAccountResource extends AdminResource
     protected static string $langKey = 'admins';
 
     protected static string|UnitEnum|null $navigationGroup = AdminNavigationGroup::System;
+
+    protected static ?OpsSurface $opsSurface = OpsSurface::Admins;
 
     protected static ?int $navigationSort = 20;
 

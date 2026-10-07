@@ -25,17 +25,26 @@ import 'package:go_router/go_router.dart';
 ///
 /// `/account/organization?edit=1` opens the organisation form directly (the
 /// home billing-profile alert). Team (M56–M57) and Invoices are gated by
-/// the `team_management` and `billing_invoices` flags (RELEASE_SCOPE.md §4).
+/// the `team_management` and `billing_invoices` flags; Organisation (M55)
+/// and Settings (M59) by the mobile surfaces of RELEASE_SCOPE.md §4.1.
 GoRoute accountRoute() => GoRoute(
   path: AppRoutes.account,
   builder: (_, _) => const AccountHubScreen(),
   routes: [
     GoRoute(path: 'profile', builder: (_, _) => const EditProfileScreen()),
     GoRoute(path: 'password', builder: (_, _) => const ChangePasswordScreen()),
+    // Core (RELEASE_SCOPE.md §4.1): the organisation is managed on the web;
+    // the hub shows its name read-only.
     GoRoute(
       path: 'organization',
-      builder: (_, state) => OrganizationScreen(
-        startEditing: state.uri.queryParameters['edit'] == '1',
+      builder: (context, state) => SurfaceGate(
+        surface: MobileSurface.organizationManagement,
+        fallback: FeatureUnavailableScreen(
+          message: context.l10n.accountOrganizationOnWeb,
+        ),
+        child: OrganizationScreen(
+          startEditing: state.uri.queryParameters['edit'] == '1',
+        ),
       ),
     ),
     // Release scope (RELEASE_SCOPE.md §4): the routes stay, the screens
@@ -82,7 +91,16 @@ GoRoute accountRoute() => GoRoute(
         child: const InvoicesScreen(),
       ),
     ),
-    GoRoute(path: 'settings', builder: (_, _) => const SettingsScreen()),
+    // Core: no settings screen; the language is on the profile and the
+    // legal documents are in the hub.
+    GoRoute(
+      path: 'settings',
+      builder: (_, _) => const SurfaceGate(
+        surface: MobileSurface.appSettings,
+        fallback: FeatureUnavailableScreen(),
+        child: SettingsScreen(),
+      ),
+    ),
     GoRoute(
       path: 'help',
       builder: (_, _) => RepositoryProvider<ContactRepository>(

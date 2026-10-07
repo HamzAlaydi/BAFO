@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Modules\Admin\Filament\Resources\Regions;
 
 use App\Modules\Admin\Enums\AdminNavigationGroup;
+use App\Modules\Admin\Enums\OpsSurface;
 use App\Modules\Admin\Filament\Resources\Regions\Pages\CreateRegion;
 use App\Modules\Admin\Filament\Resources\Regions\Pages\EditRegion;
 use App\Modules\Admin\Filament\Resources\Regions\Pages\ListRegions;
@@ -37,6 +38,8 @@ final class RegionResource extends AdminResource
     protected static array $writableAbilities = ['create', 'update', 'delete'];
 
     protected static string|UnitEnum|null $navigationGroup = AdminNavigationGroup::Lookups;
+
+    protected static ?OpsSurface $opsSurface = OpsSurface::Regions;
 
     protected static ?int $navigationSort = 10;
 

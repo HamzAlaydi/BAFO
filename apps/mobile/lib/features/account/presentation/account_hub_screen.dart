@@ -10,6 +10,7 @@ import 'package:bafo/core/session/session_cubit.dart';
 import 'package:bafo/core/theme/spacing.dart';
 import 'package:bafo/features/account/presentation/account_paths.dart';
 import 'package:bafo/features/account/presentation/account_widgets.dart';
+import 'package:bafo/features/auth/domain/auth_models.dart';
 import 'package:bafo/features/home/presentation/home_sections.dart';
 import 'package:bafo/widgets/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,8 +18,12 @@ import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 
 /// M51 Account hub: who is signed in, the organisation and its plan, links
-/// to the account screens (by permission, S10, and by release-scope flag,
-/// RELEASE_SCOPE.md §4), and sign-out.
+/// to the account screens (by permission, S10, and by release-scope flag and
+/// mobile surface, RELEASE_SCOPE.md §4), and sign-out.
+///
+/// Core (§4.1): profile, password, the read-only organisation name and plan
+/// card, help, legal documents, delete account and sign-out. Full adds the
+/// organisation screen, team, the plan row, invoices and settings.
 ///
 /// It renders the session's `Me`; pull to refresh re-reads `GET /me`.
 class AccountHubScreen extends StatefulWidget {
@@ -53,11 +58,53 @@ class _AccountHubScreenState extends State<AccountHubScreen> {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final me = context.select<SessionCubit, Me?>((cubit) => cubit.state.me);
-    // Release scope (RELEASE_SCOPE.md §4): Team and Invoices are built only
-    // when their flags are on, never greyed out.
+    // Release scope (RELEASE_SCOPE.md §4): rows are built only when their
+    // flag or mobile surface is on, never greyed out, and a section whose
+    // rows are all hidden is not built at all.
     final flags = context.flags;
+    final surfaces = context.surfaces;
+    final manageOrganization = surfaces.enabled(
+      MobileSurface.organizationManagement,
+    );
+    final settings = surfaces.enabled(MobileSurface.appSettings);
     final version = context.read<ClientInfo>().appVersion;
     final theme = Theme.of(context);
+
+    final organizationRows = me == null
+        ? const <Widget>[]
+        : <Widget>[
+            if (manageOrganization)
+              AccountLinkTile(
+                key: const Key('account.organization'),
+                icon: Icons.apartment_rounded,
+                title: l10n.accountOrganizationTitle,
+                onTap: () => context.go(AccountPaths.organization),
+              ),
+            if (me.can(Permissions.teamManage) &&
+                flags.enabled(Feature.teamManagement))
+              AccountLinkTile(
+                key: const Key('account.team'),
+                icon: Icons.groups_outlined,
+                title: l10n.accountTeamTitle,
+                onTap: () => context.go(AccountPaths.team),
+              ),
+            // Core: the plan card above already opens M58.
+            if (manageOrganization)
+              AccountLinkTile(
+                key: const Key('account.plan'),
+                icon: Icons.workspace_premium_outlined,
+                title: l10n.billingStatusTitle,
+                onTap: () => context.push(AppRoutes.billing),
+              ),
+            if (me.can(Permissions.billingView) &&
+                flags.enabled(Feature.billingInvoices))
+              AccountLinkTile(
+                key: const Key('account.invoices'),
+                icon: Icons.receipt_long_outlined,
+                title: l10n.accountInvoicesTitle,
+                onTap: () => context.go(AccountPaths.invoices),
+              ),
+          ];
 
     return Scaffold(
       appBar: BafoAppBar(title: l10n.navAccount),
@@ -82,12 +129,21 @@ class _AccountHubScreenState extends State<AccountHubScreen> {
             else ...[
               _UserCard(me: me),
               const SizedBox(height: BafoSpacing.sm),
-              _OrganizationCard(me: me),
+              // Core: the organisation name, read-only (no edit screen).
+              _OrganizationCard(
+                me: me,
+                onOpen: manageOrganization
+                    ? () => context.go(AccountPaths.organization)
+                    : null,
+              ),
               const SizedBox(height: BafoSpacing.sm),
               HomeSubscriptionCard(
                 subscription: me.subscription,
                 teamMembers: me.entitlements.seatsUsed,
-                seatsTotal: me.entitlements.seatsTotal,
+                // Seats belong to team management (RELEASE_SCOPE.md §1.3).
+                seatsTotal: flags.enabled(Feature.teamManagement)
+                    ? me.entitlements.seatsTotal
+                    : 0,
                 onOpen: () => context.push(AppRoutes.billing),
               ),
               AccountSection(
@@ -107,55 +163,37 @@ class _AccountHubScreenState extends State<AccountHubScreen> {
                   ),
                 ],
               ),
-              AccountSection(
-                title: l10n.accountSectionOrganization,
-                children: [
-                  AccountLinkTile(
-                    key: const Key('account.organization'),
-                    icon: Icons.apartment_rounded,
-                    title: l10n.accountOrganizationTitle,
-                    onTap: () => context.go(AccountPaths.organization),
-                  ),
-                  if (me.can(Permissions.teamManage) &&
-                      flags.enabled(Feature.teamManagement))
-                    AccountLinkTile(
-                      key: const Key('account.team'),
-                      icon: Icons.groups_outlined,
-                      title: l10n.accountTeamTitle,
-                      onTap: () => context.go(AccountPaths.team),
-                    ),
-                  AccountLinkTile(
-                    key: const Key('account.plan'),
-                    icon: Icons.workspace_premium_outlined,
-                    title: l10n.billingStatusTitle,
-                    onTap: () => context.push(AppRoutes.billing),
-                  ),
-                  if (me.can(Permissions.billingView) &&
-                      flags.enabled(Feature.billingInvoices))
-                    AccountLinkTile(
-                      key: const Key('account.invoices'),
-                      icon: Icons.receipt_long_outlined,
-                      title: l10n.accountInvoicesTitle,
-                      onTap: () => context.go(AccountPaths.invoices),
-                    ),
-                ],
-              ),
+              if (organizationRows.isNotEmpty)
+                AccountSection(
+                  key: const Key('account.section.organization'),
+                  title: l10n.accountSectionOrganization,
+                  children: organizationRows,
+                ),
             ],
             AccountSection(
               title: l10n.accountSectionApp,
               children: [
-                AccountLinkTile(
-                  key: const Key('account.settings'),
-                  icon: Icons.settings_outlined,
-                  title: l10n.accountSettingsTitle,
-                  onTap: () => context.go(AccountPaths.settings),
-                ),
+                if (settings)
+                  AccountLinkTile(
+                    key: const Key('account.settings'),
+                    icon: Icons.settings_outlined,
+                    title: l10n.accountSettingsTitle,
+                    onTap: () => context.go(AccountPaths.settings),
+                  ),
                 AccountLinkTile(
                   key: const Key('account.help'),
                   icon: Icons.support_agent_outlined,
                   title: l10n.accountHelpTitle,
                   onTap: () => context.go(AccountPaths.help),
                 ),
+                // Core: the legal documents live here instead of M59.
+                if (!settings)
+                  AccountLinkTile(
+                    key: const Key('account.legal'),
+                    icon: Icons.description_outlined,
+                    title: l10n.accountSettingsLegal,
+                    onTap: () => unawaited(showLegalDocumentsSheet(context)),
+                  ),
                 if (me != null)
                   AccountLinkTile(
                     key: const Key('account.delete'),
@@ -188,6 +226,36 @@ class _AccountHubScreenState extends State<AccountHubScreen> {
       ),
     );
   }
+}
+
+/// The legal documents (M13) as a sheet: the core release has no settings
+/// screen (M59), so the Account hub opens them from here.
+Future<void> showLegalDocumentsSheet(BuildContext context) {
+  final l10n = context.l10n;
+  return showBafoBottomSheet<void>(
+    context,
+    title: l10n.accountSettingsLegal,
+    builder: (sheet) => Column(
+      key: const Key('account.legal.sheet'),
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        for (final (code, label) in [
+          (LegalCode.terms, l10n.legalLinksTerms),
+          (LegalCode.privacy, l10n.legalLinksPrivacy),
+          (LegalCode.competitionRules, l10n.legalLinksCompetitionRules),
+        ])
+          AccountLinkTile(
+            key: Key('account.legal.${code.wire}'),
+            icon: Icons.description_outlined,
+            title: label,
+            onTap: () {
+              Navigator.of(sheet).pop();
+              unawaited(context.push(AppRoutes.legal(code.wire)));
+            },
+          ),
+      ],
+    ),
+  );
 }
 
 class _UserCard extends StatelessWidget {
@@ -238,9 +306,12 @@ class _UserCard extends StatelessWidget {
 }
 
 class _OrganizationCard extends StatelessWidget {
-  const _OrganizationCard({required this.me});
+  const _OrganizationCard({required this.me, this.onOpen});
 
   final Me me;
+
+  /// Opens M55; null shows the card read-only (core).
+  final VoidCallback? onOpen;
 
   @override
   Widget build(BuildContext context) {
@@ -248,7 +319,8 @@ class _OrganizationCard extends StatelessWidget {
     final theme = Theme.of(context);
     final organization = me.organization;
     return BafoCard(
-      onTap: () => context.go(AccountPaths.organization),
+      key: const Key('account.organizationCard'),
+      onTap: onOpen,
       child: Row(
         children: [
           OrgAvatar(
@@ -283,10 +355,11 @@ class _OrganizationCard extends StatelessWidget {
               ],
             ),
           ),
-          Icon(
-            Icons.chevron_right_rounded,
-            color: theme.colorScheme.onSurfaceVariant,
-          ),
+          if (onOpen != null)
+            Icon(
+              Icons.chevron_right_rounded,
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
         ],
       ),
     );

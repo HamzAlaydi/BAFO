@@ -11,6 +11,7 @@ import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 
 import '../../helpers/fakes.dart';
+import '../../helpers/scope.dart';
 import '../account/support.dart';
 
 /// An in-memory `/notifications` over the Supplier A fixture.
@@ -97,7 +98,12 @@ void main() {
     await unread.close();
   });
 
-  Future<GoRouter> pumpNotifications(WidgetTester tester) async {
+  /// The notifications tab in release scope [scope] (`full` by default:
+  /// the filter and deleting are mobile surfaces, RELEASE_SCOPE.md §4.1).
+  Future<GoRouter> pumpNotifications(
+    WidgetTester tester, {
+    String scope = 'full',
+  }) async {
     final router = await pumpFeature(
       tester,
       initialLocation: '/notifications',
@@ -113,6 +119,7 @@ void main() {
         ),
       ],
       providers: (router) => [
+        releaseScopeProvider(scope),
         RepositoryProvider<NotificationsRepository>.value(value: repository),
         BlocProvider<SessionCubit>.value(value: session),
         BlocProvider<UnreadCountCubit>.value(value: unread),
@@ -217,5 +224,42 @@ void main() {
     );
     expect(semantics.label, startsWith('غير مقروء'));
     handle.dispose();
+  });
+
+  group('release scope (RELEASE_SCOPE.md §4.1)', () {
+    testWidgets('core: the list and mark read only', (tester) async {
+      final handle = tester.ensureSemantics();
+      await pumpNotifications(tester, scope: 'core');
+
+      expect(find.text(fixture.first.title), findsWidgets);
+      expect(
+        find.byKey(const Key('notifications.markAllRead')),
+        findsOneWidget,
+      );
+      // Hidden: the all / unread filter, delete all, and per-row delete.
+      expect(find.byKey(const Key('notifications.filter')), findsNothing);
+      expect(find.byKey(const Key('notifications.menu')), findsNothing);
+      expect(find.byType(Dismissible), findsNothing);
+      // The unread row keeps a menu with mark read only; read rows have none.
+      expect(find.byKey(const Key('notification.menu')), findsOneWidget);
+      await tester.tap(find.byKey(const Key('notification.menu')));
+      await tester.pumpAndSettle();
+      expect(find.text('تعليم كمقروء'), findsOneWidget);
+      expect(find.text('حذف الإشعار'), findsNothing);
+      await tester.tap(find.text('تعليم كمقروء'));
+      await tester.pumpAndSettle();
+      expect(repository.readCalls, [fixture.first.id]);
+      expect(find.byKey(const Key('notification.menu')), findsNothing);
+      handle.dispose();
+    });
+
+    testWidgets('full: the filter and deleting come back', (tester) async {
+      await pumpNotifications(tester);
+
+      expect(find.byKey(const Key('notifications.filter')), findsOneWidget);
+      expect(find.byKey(const Key('notifications.menu')), findsOneWidget);
+      expect(find.byType(Dismissible), findsNWidgets(5));
+      expect(find.byKey(const Key('notification.menu')), findsNWidgets(5));
+    });
   });
 }

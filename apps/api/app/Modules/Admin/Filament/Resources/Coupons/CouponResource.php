@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Modules\Admin\Filament\Resources\Coupons;
 
 use App\Modules\Admin\Enums\AdminNavigationGroup;
+use App\Modules\Admin\Enums\OpsSurface;
 use App\Modules\Admin\Filament\Resources\Coupons\Pages\CreateCoupon;
 use App\Modules\Admin\Filament\Resources\Coupons\Pages\EditCoupon;
 use App\Modules\Admin\Filament\Resources\Coupons\Pages\ListCoupons;
@@ -51,6 +52,8 @@ final class CouponResource extends AdminResource
     protected static array $writableAbilities = ['create', 'update', 'delete'];
 
     protected static string|UnitEnum|null $navigationGroup = AdminNavigationGroup::Billing;
+
+    protected static ?OpsSurface $opsSurface = OpsSurface::Coupons;
 
     protected static ?int $navigationSort = 20;
 

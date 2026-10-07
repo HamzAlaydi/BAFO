@@ -95,6 +95,49 @@ void main() {
     });
   });
 
+  group('SurfaceGate (RELEASE_SCOPE.md §4.1)', () {
+    const gate = SurfaceGate(
+      surface: MobileSurface.issuerOffersLog,
+      fallback: Text('hidden'),
+      child: Text('offers log'),
+    );
+
+    testWidgets('shows the child in full and the fallback in core', (
+      tester,
+    ) async {
+      await pumpLocalized(
+        tester,
+        gate,
+        providers: [releaseScopeProvider('full')],
+      );
+      expect(find.text('offers log'), findsOneWidget);
+
+      await pumpLocalized(
+        tester,
+        gate,
+        providers: [releaseScopeProvider('core')],
+      );
+      expect(find.text('offers log'), findsNothing);
+      expect(find.text('hidden'), findsOneWidget);
+    });
+
+    testWidgets('without an app config the minimal app shows', (tester) async {
+      await pumpLocalized(
+        tester,
+        Builder(
+          builder: (context) => Text(
+            context.surfaces == MobileSurfaces.none &&
+                    !context.showsSurface(MobileSurface.appSettings) &&
+                    !context.surfacesNow.enabled(MobileSurface.pushPrompts)
+                ? 'minimal'
+                : 'full',
+          ),
+        ),
+      );
+      expect(find.text('minimal'), findsOneWidget);
+    });
+  });
+
   group('FeatureUnavailableScreen', () {
     testWidgets('says the feature is not in this release, Arabic first', (
       tester,

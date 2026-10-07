@@ -12,15 +12,19 @@ import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 
 import '../../helpers/fakes.dart';
+import '../../helpers/scope.dart';
 import '../account/support.dart';
 
 /// Answers `GET /home` with a fixture, or fails the first [failures] calls.
 class _FixtureHome implements HomeRepository {
-  _FixtureHome(this.fixture, {this.failures = 0});
+  _FixtureHome(this.fixture, {this.failures = 0, this.alerts});
 
   final String fixture;
   int failures;
   int calls = 0;
+
+  /// Replaces the fixture's `alerts`.
+  final List<Map<String, Object?>>? alerts;
 
   @override
   Future<Home> home() async {
@@ -29,7 +33,10 @@ class _FixtureHome implements HomeRepository {
       failures--;
       throw const ApiException(code: ApiErrorCode.network);
     }
-    return Home.fromJson(fixtureData(fixture));
+    return Home.fromJson({
+      ...fixtureData(fixture),
+      if (alerts != null) 'alerts': alerts,
+    });
   }
 }
 
@@ -49,6 +56,7 @@ void main() {
     required Me me,
     required HomeRepository home,
     Locale locale = const Locale('ar'),
+    String scope = 'full',
   }) async {
     // A tall phone, so the whole dashboard is laid out.
     tester.view
@@ -86,6 +94,7 @@ void main() {
         ),
       ],
       providers: (_) => [
+        releaseScopeProvider(scope),
         RepositoryProvider<HomeRepository>.value(value: home),
         BlocProvider<SessionCubit>.value(value: session),
         BlocProvider<UnreadCountCubit>.value(value: unread),
@@ -215,5 +224,87 @@ void main() {
       TextDirection.ltr,
     );
     expect(find.text('Create a competition'), findsOneWidget);
+  });
+
+  group('release scope (RELEASE_SCOPE.md §4.1)', () {
+    const billingProfileAlert = [
+      {
+        'code': 'billing_profile_incomplete',
+        'severity': 'info',
+        'params': <String, Object?>{},
+      },
+    ];
+
+    testWidgets('core: role tiles and quick actions only', (tester) async {
+      await pumpHome(
+        tester,
+        me: fixtureMe(),
+        home: _FixtureHome('home_issuer', alerts: billingProfileAlert),
+        scope: 'core',
+      );
+
+      expect(find.text('المنافسات التي تطرحونها'), findsOneWidget);
+      expect(find.text('مشاركاتكم'), findsOneWidget);
+      expect(
+        find.byKey(const Key('home.stat.activeCompetitions')),
+        findsOneWidget,
+      );
+      expect(find.byKey(const Key('home.createCompetition')), findsOneWidget);
+      // Hidden, not deleted: the plan card lives in the Account tab.
+      expect(
+        find.byKey(const Key('home.stat.offersReceived30d')),
+        findsNothing,
+      );
+      expect(find.byKey(const Key('home.subscription')), findsNothing);
+      expect(find.byKey(const Key('home.activity')), findsNothing);
+      expect(find.text('آخر النشاطات'), findsNothing);
+      expect(find.text('بيانات الفوترة لمنشأتكم غير مكتملة.'), findsNothing);
+    });
+
+    testWidgets('full: the same home as before the minimal release', (
+      tester,
+    ) async {
+      await pumpHome(
+        tester,
+        me: fixtureMe(),
+        home: _FixtureHome('home_issuer', alerts: billingProfileAlert),
+      );
+
+      expect(
+        find.byKey(const Key('home.stat.offersReceived30d')),
+        findsOneWidget,
+      );
+      expect(find.byKey(const Key('home.subscription')), findsOneWidget);
+      expect(find.byKey(const Key('home.activity')), findsOneWidget);
+      expect(find.text('آخر النشاطات'), findsOneWidget);
+      expect(find.text('بيانات الفوترة لمنشأتكم غير مكتملة.'), findsOneWidget);
+    });
+
+    testWidgets(
+      'core: an organisation that cannot issue sees its participant tiles only',
+      (tester) async {
+        await pumpHome(
+          tester,
+          me: fixtureMe('me_supplier_b'),
+          home: _FixtureHome('home_supplier_b'),
+          scope: 'core',
+        );
+        expect(find.text('مشاركاتكم'), findsOneWidget);
+        expect(find.text('المنافسات التي تطرحونها'), findsNothing);
+        // The quick actions still say why creating needs a plan.
+        expect(find.byKey(const Key('home.createNeedsPlan')), findsOneWidget);
+      },
+    );
+
+    testWidgets('full: the same organisation also sees the issuer tiles', (
+      tester,
+    ) async {
+      await pumpHome(
+        tester,
+        me: fixtureMe('me_supplier_b'),
+        home: _FixtureHome('home_supplier_b'),
+      );
+      expect(find.text('المنافسات التي تطرحونها'), findsOneWidget);
+    });
   });
 }

@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:bafo/core/config/app_config.dart';
+import 'package:bafo/core/config/feature_gate.dart';
 import 'package:bafo/core/l10n/l10n.dart';
 import 'package:bafo/core/models/competition_enums.dart';
 import 'package:bafo/core/money/money.dart';
@@ -367,12 +369,16 @@ class _Loaded extends StatelessWidget {
         ],
         SectionHeader(title: l10n.competitionsDetailSchedule),
         _ScheduleCard(competition: competition, live: live),
-        SectionHeader(
-          title: competition.isInviteeView
-              ? l10n.invitationsDocumentsTitle
-              : l10n.competitionsDetailDocuments,
-        ),
-        _Documents(state: state),
+        // Documents behind their flag (`attachments`, on in both scopes
+        // today): read-only on mobile.
+        if (context.flags.enabled(Feature.attachments)) ...[
+          SectionHeader(
+            title: competition.isInviteeView
+                ? l10n.invitationsDocumentsTitle
+                : l10n.competitionsDetailDocuments,
+          ),
+          _Documents(state: state),
+        ],
         const SizedBox(height: BafoSpacing.xxl),
       ],
     );
@@ -799,6 +805,8 @@ class _ParticipantLinks extends StatelessWidget {
             expand: true,
             onPressed: () => context.push(ParticipantPaths.live(id)),
           );
+    // Q&A behind its flag (`qa_comments`, on in both scopes today).
+    final qa = context.flags.enabled(Feature.qaComments);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -806,15 +814,17 @@ class _ParticipantLinks extends StatelessWidget {
         const SizedBox(height: BafoSpacing.sm),
         Row(
           children: [
-            Expanded(
-              child: BafoButton.outline(
-                key: const Key('open-qa'),
-                label: l10n.competitionsParticipantQa,
-                icon: Icons.forum_outlined,
-                onPressed: () => context.push(ParticipantPaths.qa(id)),
+            if (qa) ...[
+              Expanded(
+                child: BafoButton.outline(
+                  key: const Key('open-qa'),
+                  label: l10n.competitionsParticipantQa,
+                  icon: Icons.forum_outlined,
+                  onPressed: () => context.push(ParticipantPaths.qa(id)),
+                ),
               ),
-            ),
-            const SizedBox(width: BafoSpacing.sm),
+              const SizedBox(width: BafoSpacing.sm),
+            ],
             Expanded(
               child: BafoButton.outline(
                 key: const Key('open-my-offers'),

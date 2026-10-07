@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Modules\Admin\Filament\Resources\Competitions;
 
 use App\Modules\Admin\Enums\AdminNavigationGroup;
+use App\Modules\Admin\Enums\OpsSurface;
 use App\Modules\Admin\Filament\Resources\Competitions\Pages\ListCompetitions;
 use App\Modules\Admin\Filament\Resources\Competitions\Pages\ViewCompetition;
 use App\Modules\Admin\Filament\Resources\Competitions\RelationManagers\AwardsRelationManager;
@@ -16,6 +17,7 @@ use App\Modules\Admin\Filament\Resources\Competitions\RelationManagers\Rejection
 use App\Modules\Admin\Filament\Resources\Organizations\OrganizationResource;
 use App\Modules\Admin\Filament\Support\AdminResource;
 use App\Modules\Admin\Filament\Support\Display;
+use App\Modules\Admin\Support\AdminScope;
 use App\Modules\Bidding\Services\VisibilityProjector;
 use App\Modules\Competitions\Enums\CompetitionStatus;
 use App\Modules\Competitions\Enums\Direction;
@@ -39,6 +41,10 @@ use UnitEnum;
  * §16 Competitions: list with a status filter; view with the timeline, invitations,
  * participants, the offer ledger (issuer projection plus voids), extensions, rejections and the
  * award. Actions: extend, cancel, force close (Competitions) and void offer (Bidding).
+ *
+ * Release scope `core` (RELEASE_SCOPE.md §11): list and view with the timeline, invitations,
+ * participants, offers and awards; Cancel and Force close only. The BAFO round, final window and
+ * sponsorship rows show in `core` only on a competition that uses them.
  */
 final class CompetitionResource extends AdminResource
 {
@@ -47,6 +53,8 @@ final class CompetitionResource extends AdminResource
     protected static string $langKey = 'competitions';
 
     protected static string|UnitEnum|null $navigationGroup = AdminNavigationGroup::Competitions;
+
+    protected static ?OpsSurface $opsSurface = OpsSurface::Competitions;
 
     protected static ?int $navigationSort = 10;
 
@@ -139,8 +147,10 @@ final class CompetitionResource extends AdminResource
                     ->state(static fn (Competition $record): string => $record->auto_extend_enabled
                         ? sprintf('%d / %d / %d', (int) $record->auto_extend_window_seconds, (int) $record->auto_extend_by_seconds, (int) $record->auto_extend_max)
                         : Display::yesNo(false)),
-                TextEntry::make('final_window_minutes')->label(self::field('final_window_minutes'))->placeholder('—'),
+                TextEntry::make('final_window_minutes')->label(self::field('final_window_minutes'))->placeholder('—')
+                    ->visible(static fn (Competition $record): bool => self::showsFinalWindow($record)),
                 TextEntry::make('bafo_round')->label(self::field('bafo_round'))
+                    ->visible(static fn (Competition $record): bool => AdminScope::visible(OpsSurface::CompetitionBafoRound) || $record->bafo_round_enabled)
                     ->state(static fn (Competition $record): string => $record->bafo_round_enabled
                         ? (string) $record->bafo_duration_minutes
                         : Display::yesNo(false)),
@@ -148,7 +158,8 @@ final class CompetitionResource extends AdminResource
             ]),
             Section::make(self::field('section_timeline'))->columns(4)->collapsible()->schema(array_map(
                 static fn (string $column): TextEntry => TextEntry::make($column)->label(self::field($column))
-                    ->dateTime(Display::DATE_TIME)->placeholder('—'),
+                    ->dateTime(Display::DATE_TIME)->placeholder('—')
+                    ->visible(static fn (Competition $record): bool => ! str_starts_with($column, 'final_window_') || self::showsFinalWindow($record)),
                 [
                     'created_at', 'published_at', 'bidding_opens_at', 'opened_at',
                     'final_window_starts_at', 'final_window_started_at', 'invitation_cutoff_at', 'scheduled_close_at',
@@ -169,11 +180,18 @@ final class CompetitionResource extends AdminResource
                     ->state(static fn (Competition $record): ?string => $record->notAwardedReason?->translated('name')),
                 TextEntry::make('not_awarded_note')->label(self::field('not_awarded_note'))->placeholder('—'),
                 TextEntry::make('sponsorship')->label(self::field('sponsorship'))->placeholder('—')
+                    ->visible(static fn (Competition $record): bool => AdminScope::visible(OpsSurface::CompetitionSponsorship) || $record->sponsorship !== null)
                     ->state(static fn (Competition $record): ?string => $record->sponsorship !== null
                         ? Display::enum($record->sponsorship->mode).' · '.Display::enum($record->sponsorship->status).' · '.$record->sponsorship->funded_passes
                         : null),
             ]),
         ]);
+    }
+
+    /** The final pricing window rows: release scope `full`, or a competition that has a window. */
+    private static function showsFinalWindow(Competition $competition): bool
+    {
+        return AdminScope::visible(OpsSurface::CompetitionFinalWindow) || $competition->final_window_minutes !== null;
     }
 
     public static function getRelations(): array

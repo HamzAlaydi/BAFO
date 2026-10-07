@@ -48,6 +48,18 @@ final class PlatformMetrics
     }
 
     /**
+     * Competitions published since the first day of the current Riyadh calendar month (drafts
+     * are not counted; a later cancellation still counts).
+     */
+    public function competitionsThisMonth(): int
+    {
+        return Competition::query()
+            ->whereNotNull('published_at')
+            ->where('published_at', '>=', CarbonImmutable::now('Asia/Riyadh')->startOfMonth()->utc())
+            ->count();
+    }
+
+    /**
      * Succeeded payments paid since midnight in Riyadh, and their total.
      *
      * CONTRACT-GAP: "payments today" is read as succeeded payments whose `paid_at` falls on the

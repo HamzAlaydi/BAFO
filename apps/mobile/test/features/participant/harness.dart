@@ -1,3 +1,4 @@
+import 'package:bafo/core/config/app_config.dart';
 import 'package:bafo/core/realtime/competition_channel_hub.dart';
 import 'package:bafo/core/session/session_cubit.dart';
 import 'package:bafo/core/time/server_clock.dart';
@@ -14,6 +15,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:provider/single_child_widget.dart';
 
 import '../../helpers/fakes.dart';
+import '../../helpers/scope.dart';
 
 class MockCompetitions extends Mock implements CompetitionsRepository {}
 
@@ -58,7 +60,10 @@ class ParticipantHarness {
 
   Future<void> signIn() => session.restore();
 
-  List<SingleChildWidget> providers() => [
+  /// The app services the participant screens read, in release scope
+  /// `full` unless [flags] say otherwise (RELEASE_SCOPE.md §4).
+  List<SingleChildWidget> providers({FeatureFlags? flags}) => [
+    scopeProvider(flags ?? ScopeFlags.full),
     RepositoryProvider<ServerClock>.value(value: clock),
     RepositoryProvider<CompetitionsRepository>.value(value: competitions),
     RepositoryProvider<AttachmentsRepository>.value(value: attachments),

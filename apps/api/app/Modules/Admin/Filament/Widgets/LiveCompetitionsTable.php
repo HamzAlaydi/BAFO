@@ -27,6 +27,8 @@ final class LiveCompetitionsTable extends TableWidget
     {
         return $table
             ->heading(Lang::get('dashboard.live.heading'))
+            ->modelLabel(static fn (): string => CompetitionResource::getModelLabel())
+            ->pluralModelLabel(static fn (): string => CompetitionResource::getPluralModelLabel())
             ->query(static fn (): Builder => Competition::query()
                 ->where('status', CompetitionStatus::Live->value)
                 ->with(['organization', 'liveState'])

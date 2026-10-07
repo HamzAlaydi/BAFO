@@ -1,4 +1,5 @@
 import 'package:bafo/core/config/app_config.dart';
+import 'package:bafo/core/config/feature_gate.dart';
 import 'package:bafo/core/files/file_download_service.dart';
 import 'package:bafo/core/l10n/l10n.dart';
 import 'package:bafo/core/lookups/lookups_repository.dart';
@@ -17,11 +18,13 @@ import 'package:bafo/features/invitations/data/invitations_repository.dart';
 import 'package:bafo/features/invitations/domain/invitation_models.dart';
 import 'package:bafo/features/issuer/data/issuer_report_repository.dart';
 import 'package:bafo/features/issuer/issuer.dart';
+import 'package:bafo/features/issuer/presentation/attachments/manage_attachments_screen.dart';
 import 'package:bafo/features/issuer/presentation/award/award_screen.dart';
 import 'package:bafo/features/issuer/presentation/create/create_competition_cubit.dart';
 import 'package:bafo/features/issuer/presentation/create/draft_form_fields.dart';
 import 'package:bafo/features/issuer/presentation/list/my_competitions_screen.dart';
 import 'package:bafo/features/issuer/presentation/live/issuer_live_monitor_screen.dart';
+import 'package:bafo/features/issuer/presentation/offers_log/offers_log_screen.dart';
 import 'package:bafo/features/live/data/live_repository.dart';
 import 'package:bafo/features/live/domain/live_models.dart';
 import 'package:bafo/l10n/generated/app_localizations_ar.dart';
@@ -899,6 +902,229 @@ void main() {
       );
       await tester.pumpAndSettle();
       expect(find.text(ar.issuerInviteTabVendors), findsOneWidget);
+    });
+  });
+
+  group('minimal core (RELEASE_SCOPE.md §4.1)', () {
+    /// An action of the M38 action sheet (a row, not a section title).
+    Finder sheetItem(String label) => find.descendant(
+      of: find.byType(BottomSheet),
+      matching: find.byWidgetPredicate(
+        (widget) =>
+            widget is ListTile &&
+            widget.title is Text &&
+            (widget.title! as Text).data == label,
+      ),
+    );
+
+    testWidgets('M33: core keeps the status segments; full adds search', (
+      tester,
+    ) async {
+      await signIn('me_issuer');
+      stubList();
+      await pump(tester, location: '/my-competitions', flags: ScopeFlags.core);
+      await tester.pumpAndSettle();
+      expect(find.text(ar.issuerListSegmentActive), findsOneWidget);
+      expect(find.text(ar.issuerListSegmentDrafts), findsOneWidget);
+      expect(find.byKey(const Key('issuer.list.search')), findsNothing);
+
+      await pump(tester, location: '/my-competitions', flags: ScopeFlags.full);
+      await tester.pumpAndSettle();
+      expect(find.byKey(const Key('issuer.list.search')), findsOneWidget);
+    });
+
+    testWidgets('M38 draft: core invites and publishes, documents are on the '
+        'web; full manages documents again', (tester) async {
+      tall(tester);
+      await signIn('me_issuer');
+      final draft = issuerCompetition('competition_issuer_draft');
+      stubDetail(draft);
+      await pump(
+        tester,
+        location: '/competitions/${draft.id}',
+        flags: ScopeFlags.core,
+      );
+      await tester.pumpAndSettle();
+      expect(
+        find.widgetWithText(BafoButton, ar.issuerActionPublish),
+        findsOneWidget,
+      );
+      expect(
+        find.widgetWithText(BafoButton, ar.issuerActionInvite),
+        findsOneWidget,
+      );
+      expect(
+        find.widgetWithText(BafoButton, ar.issuerActionDocuments),
+        findsNothing,
+      );
+      expect(find.byKey(const Key('issuer.nav.documents')), findsNothing);
+      expect(find.text(ar.issuerDocumentsManage), findsNothing);
+      expect(find.byKey(const Key('issuer.documentsOnWeb')), findsOneWidget);
+      // The documents themselves stay readable.
+      expect(find.text(ar.competitionsDetailDocuments), findsOneWidget);
+      await tester.tap(find.byTooltip(ar.issuerActionsMenu));
+      await tester.pumpAndSettle();
+      expect(find.text(ar.issuerActionEdit), findsOneWidget);
+      expect(sheetItem(ar.issuerActionDocuments), findsNothing);
+      await tester.tapAt(const Offset(10, 10));
+      await tester.pumpAndSettle();
+
+      await pump(
+        tester,
+        location: '/competitions/${draft.id}',
+        flags: ScopeFlags.full,
+      );
+      await tester.pumpAndSettle();
+      expect(
+        find.widgetWithText(BafoButton, ar.issuerActionDocuments),
+        findsOneWidget,
+      );
+      expect(find.byKey(const Key('issuer.nav.documents')), findsOneWidget);
+      expect(find.text(ar.issuerDocumentsManage), findsOneWidget);
+      expect(find.byKey(const Key('issuer.documentsOnWeb')), findsNothing);
+    });
+
+    testWidgets('M38 live: core keeps live, participants and Q&A without the '
+        'offers log or extend; full brings them back', (tester) async {
+      tall(tester);
+      await signIn('me_issuer');
+      final competition = issuerCompetition(
+        'competition_issuer_live_final_window',
+      );
+      stubDetail(competition);
+      await pump(
+        tester,
+        location: '/competitions/${competition.id}',
+        flags: ScopeFlags.core,
+      );
+      await tester.pump(const Duration(milliseconds: 200));
+      await tester.pump(const Duration(milliseconds: 200));
+      expect(find.text(ar.issuerNavLive), findsOneWidget);
+      expect(find.text(ar.issuerNavParticipants), findsOneWidget);
+      expect(find.byKey(const Key('issuer.nav.qa')), findsOneWidget);
+      expect(find.byKey(const Key('issuer.nav.offers')), findsNothing);
+      expect(find.byKey(const Key('issuer.nav.documents')), findsNothing);
+      expect(find.text(ar.issuerDetailLeadingOffer), findsOneWidget);
+      await tester.tap(find.byTooltip(ar.issuerActionsMenu));
+      await tester.pump(const Duration(milliseconds: 400));
+      expect(find.text(ar.issuerActionExtend), findsNothing);
+      expect(find.text(ar.issuerActionStartBafo), findsNothing);
+      expect(sheetItem(ar.issuerActionDocuments), findsNothing);
+      await tester.pumpWidget(const SizedBox.shrink());
+
+      await pump(
+        tester,
+        location: '/competitions/${competition.id}',
+        flags: ScopeFlags.full,
+      );
+      await tester.pump(const Duration(milliseconds: 200));
+      await tester.pump(const Duration(milliseconds: 200));
+      expect(find.byKey(const Key('issuer.nav.offers')), findsOneWidget);
+      expect(find.byKey(const Key('issuer.nav.documents')), findsOneWidget);
+      await tester.tap(find.byTooltip(ar.issuerActionsMenu));
+      await tester.pump(const Duration(milliseconds: 400));
+      expect(sheetItem(ar.issuerActionDocuments), findsOneWidget);
+      if (competition.permissions.canExtend) {
+        expect(find.text(ar.issuerActionExtend), findsOneWidget);
+      }
+      await tester.pumpWidget(const SizedBox.shrink());
+    });
+
+    testWidgets('M38 closed: core names the award decisions only', (
+      tester,
+    ) async {
+      await signIn('me_issuer');
+      final closed = issuerCompetition('competition_issuer_closed');
+      stubDetail(closed);
+      await pump(
+        tester,
+        location: '/competitions/${closed.id}',
+        flags: ScopeFlags.core,
+      );
+      await tester.pumpAndSettle();
+      expect(find.text(ar.issuerWebOnlyAwardActions), findsOneWidget);
+      expect(find.text(ar.issuerWebOnlyActions), findsNothing);
+      // Award stays read-only on mobile (M48).
+      expect(find.text(ar.issuerNavAward), findsOneWidget);
+    });
+
+    testWidgets('M46: core shows the ranking without the offers log link', (
+      tester,
+    ) async {
+      tall(tester);
+      await signIn('me_issuer');
+      final competition = issuerCompetition(
+        'competition_issuer_live_final_window',
+      );
+      final json = copyOf(fixtureData('live_issuer_final_window'));
+      when(() => competitions.show(competition.id))
+          .thenAnswer((_) async => competition);
+      when(() => live.issuerSnapshot(competition.id))
+          .thenAnswer((_) async => (IssuerLiveSnapshot.fromJson(json), json));
+      await pump(
+        tester,
+        location: '/competitions/${competition.id}/live',
+        flags: ScopeFlags.core,
+      );
+      await tester.pump(const Duration(milliseconds: 100));
+      expect(find.text(ar.issuerLiveRankingTitle), findsOneWidget);
+      expect(find.byType(RankingTile), findsWidgets);
+      expect(find.text(ar.issuerNavOffers), findsNothing);
+      expect(find.text(ar.issuerLiveExtendOnWeb), findsNothing);
+      await tester.pumpWidget(const SizedBox.shrink());
+
+      await pump(
+        tester,
+        location: '/competitions/${competition.id}/live',
+        flags: ScopeFlags.full,
+      );
+      await tester.pump(const Duration(milliseconds: 100));
+      expect(find.text(ar.issuerNavOffers), findsOneWidget);
+      await tester.pumpWidget(const SizedBox.shrink());
+    });
+
+    testWidgets('the offers log and documents routes stay, gated in core', (
+      tester,
+    ) async {
+      await signIn('me_issuer');
+      final competition = issuerCompetition(
+        'competition_issuer_live_final_window',
+      );
+      stubDetail(competition);
+      await pump(
+        tester,
+        location: '/competitions/${competition.id}/offers',
+        flags: ScopeFlags.core,
+      );
+      await tester.pumpAndSettle();
+      expect(find.byType(FeatureUnavailableScreen), findsOneWidget);
+      expect(find.byType(OffersLogScreen), findsNothing);
+      verifyNever(
+        () => live.offersLog(
+          any(),
+          afterSeq: any(named: 'afterSeq'),
+          limit: any(named: 'limit'),
+        ),
+      );
+
+      await pump(
+        tester,
+        location: '/competitions/${competition.id}/attachments',
+        flags: ScopeFlags.core,
+      );
+      await tester.pumpAndSettle();
+      expect(find.byType(FeatureUnavailableScreen), findsOneWidget);
+      expect(find.text(ar.issuerDocumentsOnWeb), findsOneWidget);
+      expect(find.byType(ManageAttachmentsScreen), findsNothing);
+
+      await pump(
+        tester,
+        location: '/competitions/${competition.id}/attachments',
+        flags: ScopeFlags.full,
+      );
+      await tester.pumpAndSettle();
+      expect(find.byType(FeatureUnavailableScreen), findsNothing);
+      expect(find.byType(ManageAttachmentsScreen), findsOneWidget);
     });
   });
 

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Modules\Admin\Filament\Resources\LegalDocuments;
 
 use App\Modules\Admin\Enums\AdminNavigationGroup;
+use App\Modules\Admin\Enums\OpsSurface;
 use App\Modules\Admin\Filament\Resources\LegalDocuments\Pages\CreateLegalDocument;
 use App\Modules\Admin\Filament\Resources\LegalDocuments\Pages\EditLegalDocument;
 use App\Modules\Admin\Filament\Resources\LegalDocuments\Pages\ListLegalDocuments;
@@ -54,6 +55,8 @@ final class LegalDocumentResource extends AdminResource
     protected static array $writableAbilities = ['create', 'update'];
 
     protected static string|UnitEnum|null $navigationGroup = AdminNavigationGroup::Content;
+
+    protected static ?OpsSurface $opsSurface = OpsSurface::LegalDocuments;
 
     protected static ?int $navigationSort = 10;
 

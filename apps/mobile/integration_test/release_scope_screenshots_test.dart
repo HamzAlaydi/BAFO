@@ -122,11 +122,11 @@ void main() {
     return deps;
   }
 
-  /// The hub's Organization section (Team, plan, invoices) sits below the
-  /// first screen: bring it into view before the shot.
+  /// The hub's lower sections (Team, plan, invoices in full; help, legal in
+  /// core) sit below the first screen: bring them into view before the shot.
   Future<void> revealHubSections(WidgetTester tester) async {
     await tester.scrollUntilVisible(
-      find.byKey(const Key('account.settings')),
+      find.byKey(const Key('account.signOut')),
       200,
       scrollable: find.descendant(
         of: find.byKey(const Key('account.list')),

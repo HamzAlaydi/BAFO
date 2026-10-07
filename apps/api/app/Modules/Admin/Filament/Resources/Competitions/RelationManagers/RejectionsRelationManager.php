@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Modules\Admin\Filament\Resources\Competitions\RelationManagers;
 
+use App\Modules\Admin\Enums\OpsSurface;
 use App\Modules\Admin\Filament\Support\AdminRelationManager;
 use App\Modules\Admin\Filament\Support\AdminResource;
 use App\Modules\Admin\Filament\Support\Display;
@@ -17,13 +18,15 @@ use Illuminate\Database\Eloquent\Builder;
 
 /**
  * Rejected offer attempts, kept for disputes (§5.6 `offer_rejections`). Amounts follow the issuer
- * projection.
+ * projection. Release scope `full` only (RELEASE_SCOPE.md §11).
  */
 final class RejectionsRelationManager extends AdminRelationManager
 {
     protected static string $relationship = 'offerRejections';
 
     protected static string $langKey = 'rejections';
+
+    protected static ?OpsSurface $opsSurface = OpsSurface::CompetitionRejections;
 
     public function table(Table $table): Table
     {

@@ -1,3 +1,6 @@
+import 'package:bafo/core/config/app_config.dart';
+import 'package:bafo/core/config/feature_gate.dart';
+import 'package:bafo/core/l10n/l10n.dart';
 import 'package:bafo/features/issuer/issuer_paths.dart';
 import 'package:bafo/features/issuer/presentation/attachments/manage_attachments_screen.dart';
 import 'package:bafo/features/issuer/presentation/award/award_screen.dart';
@@ -59,22 +62,43 @@ List<GoRoute> issuerCompetitionRoutes(GlobalKey<NavigatorState> rootKey) => [
     ),
 ];
 
+/// Release scope (RELEASE_SCOPE.md §4.1): the offers log (M47) and document
+/// management (M42) are mobile surfaces. In core their routes stay and land
+/// on the friendly «غير متاح في هذا الإصدار» screen.
 final List<(String, Widget Function(String id))> _children = [
-  ('offers', (id) => OffersLogScreen(competitionId: id)),
+  (
+    'offers',
+    (id) => SurfaceGate(
+      surface: MobileSurface.issuerOffersLog,
+      fallback: const FeatureUnavailableScreen(),
+      child: OffersLogScreen(competitionId: id),
+    ),
+  ),
   ('participants', (id) => ParticipantsScreen(competitionId: id)),
   ('invite', (id) => InviteParticipantsScreen(competitionId: id)),
-  ('attachments', (id) => ManageAttachmentsScreen(competitionId: id)),
+  (
+    'attachments',
+    (id) => SurfaceGate(
+      surface: MobileSurface.documentUpload,
+      fallback: Builder(
+        builder: (context) => FeatureUnavailableScreen(
+          message: context.l10n.issuerDocumentsOnWeb,
+        ),
+      ),
+      child: ManageAttachmentsScreen(competitionId: id),
+    ),
+  ),
   ('edit', (id) => EditCompetitionScreen(competitionId: id)),
   ('award', (id) => AwardScreen(competitionId: id)),
 ];
 
 /// M38 for the `viewer_role` dispatch of the shared `/competitions/:id`
 /// (the participant feature's `CompetitionViewBuilder`).
-/// A successful publish offers the push explainer (M50) once.
+/// A successful publish offers the push explainer (M50) once (scope `full`).
 Widget issuerDetailView(BuildContext context, String competitionId) =>
     IssuerCompetitionScreen(
       competitionId: competitionId,
-      afterPublish: showPushExplainerIfNeeded,
+      afterPublish: showPushExplainerInScope,
     );
 
 /// M46 for the `viewer_role` dispatch of the shared

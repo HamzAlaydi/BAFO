@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Modules\Admin\Filament\Resources\Plans;
 
 use App\Modules\Admin\Enums\AdminNavigationGroup;
+use App\Modules\Admin\Enums\OpsSurface;
 use App\Modules\Admin\Filament\Resources\Plans\Pages\CreatePlan;
 use App\Modules\Admin\Filament\Resources\Plans\Pages\EditPlan;
 use App\Modules\Admin\Filament\Resources\Plans\Pages\ListPlans;
@@ -41,6 +42,8 @@ final class PlanResource extends AdminResource
     protected static array $writableAbilities = ['create', 'update', 'delete'];
 
     protected static string|UnitEnum|null $navigationGroup = AdminNavigationGroup::Billing;
+
+    protected static ?OpsSurface $opsSurface = OpsSurface::Plans;
 
     protected static ?int $navigationSort = 10;
 

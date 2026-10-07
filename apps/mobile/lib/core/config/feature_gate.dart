@@ -36,6 +36,31 @@ extension FeatureFlagsContext on BuildContext {
   }
 
   bool hasFeature(Feature feature) => flags.enabled(feature);
+
+  /// The mobile-only surfaces of the release scope (RELEASE_SCOPE.md §4.1);
+  /// rebuilds the caller when they change (build only). Without a config or
+  /// the cubit: [MobileSurfaces.none], the minimal `core` app.
+  MobileSurfaces get surfaces {
+    try {
+      return select<AppConfigCubit, MobileSurfaces>(
+        (cubit) => cubit.state.config?.surfaces ?? MobileSurfaces.none,
+      );
+    } on ProviderNotFoundException {
+      return MobileSurfaces.none;
+    }
+  }
+
+  /// The surfaces without subscribing (callbacks, `create:`).
+  MobileSurfaces get surfacesNow {
+    try {
+      return read<AppConfigCubit>().state.config?.surfaces ??
+          MobileSurfaces.none;
+    } on ProviderNotFoundException {
+      return MobileSurfaces.none;
+    }
+  }
+
+  bool showsSurface(MobileSurface surface) => surfaces.enabled(surface);
 }
 
 /// Shows [child] only while [feature] is on; otherwise [fallback] (nothing by
@@ -55,6 +80,27 @@ class FeatureGate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => context.flags.enabled(feature)
+      ? child
+      : (fallback ?? const SizedBox.shrink());
+}
+
+/// Shows [child] only while the mobile [surface] is on (scope `full`);
+/// otherwise [fallback] (nothing by default). The [FeatureGate] of the
+/// mobile-only surfaces of RELEASE_SCOPE.md §4.1.
+class SurfaceGate extends StatelessWidget {
+  const SurfaceGate({
+    required this.surface,
+    required this.child,
+    this.fallback,
+    super.key,
+  });
+
+  final MobileSurface surface;
+  final Widget child;
+  final Widget? fallback;
+
+  @override
+  Widget build(BuildContext context) => context.surfaces.enabled(surface)
       ? child
       : (fallback ?? const SizedBox.shrink());
 }

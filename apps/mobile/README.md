@@ -65,6 +65,8 @@ BAFO_LIVE_API=http://localhost:8000/api/app/v1 BAFO_DEMO_EMAIL=… BAFO_DEMO_PAS
 - `20`–`28`: Issuer Co in Arabic: home, My competitions, the detail and its action sheet, the live monitor, the offers log, participants and the creation wizard.
 - `30`–`34`: the same app in English.
 
+The `emulator_*.png` set shows the app in release scope `full`. `docs/screenshots/minimal/` shows the minimal `core` app of `docs/build/RELEASE_SCOPE.md` §4.1 (home, My competitions, Account hub, Notifications, Competitions; `full_*` for comparison), from `integration_test/minimal_core_screenshots_test.dart` on the Pixel API 34 emulator against the captured API fixtures (see `integration_test/README.md`).
+
 ## Layout
 
 ```

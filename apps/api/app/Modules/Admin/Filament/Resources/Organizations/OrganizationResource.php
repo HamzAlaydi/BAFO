@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Modules\Admin\Filament\Resources\Organizations;
 
 use App\Modules\Admin\Enums\AdminNavigationGroup;
+use App\Modules\Admin\Enums\OpsSurface;
 use App\Modules\Admin\Filament\Resources\Organizations\Pages\ListOrganizations;
 use App\Modules\Admin\Filament\Resources\Organizations\Pages\ViewOrganization;
 use App\Modules\Admin\Filament\Resources\Organizations\RelationManagers\CompetitionsRelationManager;
@@ -12,6 +13,7 @@ use App\Modules\Admin\Filament\Resources\Organizations\RelationManagers\MembersR
 use App\Modules\Admin\Filament\Resources\Organizations\RelationManagers\SubscriptionsRelationManager;
 use App\Modules\Admin\Filament\Support\AdminResource;
 use App\Modules\Admin\Filament\Support\Display;
+use App\Modules\Admin\Support\AdminScope;
 use App\Modules\Billing\Contracts\AccessPolicy;
 use App\Modules\Billing\Models\Subscription;
 use App\Modules\Catalog\Models\Category;
@@ -37,6 +39,9 @@ use UnitEnum;
  * §16 Organizations: search and view (profile, members, subscription, competitions). The view
  * page carries the admin actions (verify, suspend, feature flags, resend the owner's OTP, grant
  * a subscription), each through the Identity or Billing Action.
+ *
+ * Release scope `core` (RELEASE_SCOPE.md §11) keeps the auction switch and hides the API and
+ * sponsorship switches (OpsSurface::OrganizationAdvancedFeatures) everywhere on the resource.
  */
 final class OrganizationResource extends AdminResource
 {
@@ -45,6 +50,8 @@ final class OrganizationResource extends AdminResource
     protected static string $langKey = 'organizations';
 
     protected static string|UnitEnum|null $navigationGroup = AdminNavigationGroup::Customers;
+
+    protected static ?OpsSurface $opsSurface = OpsSurface::Organizations;
 
     protected static ?int $navigationSort = 10;
 
@@ -80,9 +87,11 @@ final class OrganizationResource extends AdminResource
                     ->color(static fn (mixed $state): string => Display::color($state)),
                 IconColumn::make('verified')->label(self::field('verified'))->boolean()
                     ->state(static fn (Organization $record): bool => $record->verified_at !== null),
-                IconColumn::make('api_enabled')->label(self::field('api_enabled'))->boolean()->toggleable(),
+                IconColumn::make('api_enabled')->label(self::field('api_enabled'))->boolean()->toggleable()
+                    ->visible(static fn (): bool => self::showsAdvancedFeatures()),
                 IconColumn::make('auction_enabled')->label(self::field('auction_enabled'))->boolean()->toggleable(),
-                IconColumn::make('sponsorship_enabled')->label(self::field('sponsorship_enabled'))->boolean()->toggleable(),
+                IconColumn::make('sponsorship_enabled')->label(self::field('sponsorship_enabled'))->boolean()->toggleable()
+                    ->visible(static fn (): bool => self::showsAdvancedFeatures()),
                 TextColumn::make('memberships_count')->label(self::field('members_count'))->toggleable(),
                 TextColumn::make('created_at')->label(self::field('created_at'))->dateTime(Display::DATE_TIME)->sortable(),
             ])
@@ -90,9 +99,11 @@ final class OrganizationResource extends AdminResource
                 SelectFilter::make('status')->label(self::field('status'))
                     ->options(Display::options(OrganizationStatus::class)),
                 TernaryFilter::make('verified_at')->label(self::field('verified'))->nullable(),
-                TernaryFilter::make('api_enabled')->label(self::field('api_enabled')),
+                TernaryFilter::make('api_enabled')->label(self::field('api_enabled'))
+                    ->visible(static fn (): bool => self::showsAdvancedFeatures()),
                 TernaryFilter::make('auction_enabled')->label(self::field('auction_enabled')),
-                TernaryFilter::make('sponsorship_enabled')->label(self::field('sponsorship_enabled')),
+                TernaryFilter::make('sponsorship_enabled')->label(self::field('sponsorship_enabled'))
+                    ->visible(static fn (): bool => self::showsAdvancedFeatures()),
             ])
             ->recordActions([ViewAction::make()])
             ->defaultSort('created_at', 'desc');
@@ -132,9 +143,11 @@ final class OrganizationResource extends AdminResource
                 TextEntry::make('verified_at')->label(self::field('verified_at'))->dateTime(Display::DATE_TIME)->placeholder('—'),
                 TextEntry::make('suspended_at')->label(self::field('suspended_at'))->dateTime(Display::DATE_TIME)->placeholder('—'),
                 TextEntry::make('suspension_reason')->label(self::field('suspension_reason'))->placeholder('—')->columnSpanFull(),
-                IconEntry::make('api_enabled')->label(self::field('api_enabled'))->boolean(),
+                IconEntry::make('api_enabled')->label(self::field('api_enabled'))->boolean()
+                    ->visible(static fn (): bool => self::showsAdvancedFeatures()),
                 IconEntry::make('auction_enabled')->label(self::field('auction_enabled'))->boolean(),
-                IconEntry::make('sponsorship_enabled')->label(self::field('sponsorship_enabled'))->boolean(),
+                IconEntry::make('sponsorship_enabled')->label(self::field('sponsorship_enabled'))->boolean()
+                    ->visible(static fn (): bool => self::showsAdvancedFeatures()),
                 TextEntry::make('trial_used_at')->label(self::field('trial_used_at'))->dateTime(Display::DATE_TIME)->placeholder('—'),
             ]),
             Section::make(self::field('section_subscription'))->columns(3)->schema([
@@ -167,6 +180,12 @@ final class OrganizationResource extends AdminResource
             'index' => ListOrganizations::route('/'),
             'view' => ViewOrganization::route('/{record}'),
         ];
+    }
+
+    /** The API and sponsorship switches (release scope `full`). */
+    public static function showsAdvancedFeatures(): bool
+    {
+        return AdminScope::visible(OpsSurface::OrganizationAdvancedFeatures);
     }
 
     /**

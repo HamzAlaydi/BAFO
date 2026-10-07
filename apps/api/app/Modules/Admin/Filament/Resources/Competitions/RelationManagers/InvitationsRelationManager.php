@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace App\Modules\Admin\Filament\Resources\Competitions\RelationManagers;
 
+use App\Modules\Admin\Enums\OpsSurface;
 use App\Modules\Admin\Filament\Support\AdminRelationManager;
 use App\Modules\Admin\Filament\Support\AdminResource;
 use App\Modules\Admin\Filament\Support\Display;
 use App\Modules\Admin\Filament\Support\Lang;
 use App\Modules\Admin\Filament\Support\ModuleAction;
 use App\Modules\Admin\Support\AdminActor;
+use App\Modules\Admin\Support\AdminScope;
 use App\Modules\Billing\Actions\GrantSponsoredPass;
 use App\Modules\Billing\Enums\PassStatus;
 use App\Modules\Billing\Enums\SponsorshipStatus;
@@ -27,7 +29,9 @@ use Illuminate\Database\Eloquent\Builder;
 
 /**
  * The competition's invitations. Revoke → Competitions `RevokeInvitation` (reason `admin`);
- * Grant pass → Billing `GrantSponsoredPass` (§16 Sponsorships, for one invitation).
+ * Grant pass → Billing `GrantSponsoredPass` (§16 Sponsorships, for one invitation). Release scope
+ * `core` shows the list only: Revoke, Grant pass and the sponsored columns are `full`
+ * (OpsSurface::CompetitionRevokeInvitation, CompetitionSponsorship; RELEASE_SCOPE.md §11).
  */
 final class InvitationsRelationManager extends AdminRelationManager
 {
@@ -51,8 +55,10 @@ final class InvitationsRelationManager extends AdminRelationManager
                 TextColumn::make('status')->label(Lang::get('fields.status'))->badge()
                     ->formatStateUsing(static fn (mixed $state): ?string => Display::enum($state))
                     ->color(static fn (mixed $state): string => Display::color($state)),
-                IconColumn::make('sponsored_requested')->label(Lang::get('fields.sponsored_requested'))->boolean(),
-                IconColumn::make('has_live_pass')->label(Lang::get('fields.sponsored_pass'))->boolean(),
+                IconColumn::make('sponsored_requested')->label(Lang::get('fields.sponsored_requested'))->boolean()
+                    ->visible(static fn (): bool => AdminScope::visible(OpsSurface::CompetitionSponsorship)),
+                IconColumn::make('has_live_pass')->label(Lang::get('fields.sponsored_pass'))->boolean()
+                    ->visible(static fn (): bool => AdminScope::visible(OpsSurface::CompetitionSponsorship)),
                 TextColumn::make('sent_at')->label(Lang::get('fields.sent_at'))->dateTime(Display::DATE_TIME)->placeholder('—'),
                 TextColumn::make('joined_at')->label(Lang::get('fields.joined_at'))->dateTime(Display::DATE_TIME)->placeholder('—'),
                 TextColumn::make('revoke_reason')->label(Lang::get('fields.revoke_reason'))->placeholder('—')
@@ -67,7 +73,8 @@ final class InvitationsRelationManager extends AdminRelationManager
                     ->label(Lang::get('resources.competitions.actions.revoke_invitation'))
                     ->icon(Heroicon::OutlinedNoSymbol)
                     ->color('danger')
-                    ->visible(static fn (Invitation $record): bool => in_array($record->status, [InvitationStatus::Sent, InvitationStatus::Viewed], true))
+                    ->visible(static fn (Invitation $record): bool => AdminScope::visible(OpsSurface::CompetitionRevokeInvitation)
+                        && in_array($record->status, [InvitationStatus::Sent, InvitationStatus::Viewed], true))
                     ->requiresConfirmation()
                     ->action(static fn (Invitation $record) => ModuleAction::run(
                         static fn () => app(RevokeInvitation::class)->handle($record, AdminActor::current()),
@@ -92,6 +99,10 @@ final class InvitationsRelationManager extends AdminRelationManager
      */
     private function canGrantPass(Invitation $invitation): bool
     {
+        if (! AdminScope::visible(OpsSurface::CompetitionSponsorship)) {
+            return false;
+        }
+
         $sponsorship = $this->sponsorship();
 
         return $sponsorship instanceof CompetitionSponsorship

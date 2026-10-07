@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Modules\Admin\Filament\Resources\ContactMessages;
 
 use App\Modules\Admin\Enums\AdminNavigationGroup;
+use App\Modules\Admin\Enums\OpsSurface;
 use App\Modules\Admin\Filament\Resources\ContactMessages\Pages\ListContactMessages;
 use App\Modules\Admin\Filament\Resources\ContactMessages\Pages\ViewContactMessage;
 use App\Modules\Admin\Filament\Support\AdminResource;
@@ -39,6 +40,8 @@ final class ContactMessageResource extends AdminResource
     protected static string $langKey = 'contact_messages';
 
     protected static string|UnitEnum|null $navigationGroup = AdminNavigationGroup::Content;
+
+    protected static ?OpsSurface $opsSurface = OpsSurface::ContactMessages;
 
     protected static ?int $navigationSort = 20;
 

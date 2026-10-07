@@ -6289,6 +6289,24 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'في الخطوة {step}'**
   String commonErrorSummaryOtherStep(int step);
+
+  /// Message of the feature-unavailable screen behind /account/organization in the core release (RELEASE_SCOPE.md §4.1).
+  ///
+  /// In ar, this message translates to:
+  /// **'تُدار بيانات المنشأة من لوحة تحكم بافو على الويب.'**
+  String get accountOrganizationOnWeb;
+
+  /// M38 documents section and the feature-unavailable screen behind /competitions/:id/attachments in the core release (RELEASE_SCOPE.md §4.1).
+  ///
+  /// In ar, this message translates to:
+  /// **'تُرفع المستندات وتُدار من لوحة تحكم بافو على الويب.'**
+  String get issuerDocumentsOnWeb;
+
+  /// M38: the web-only notice when extend and the BAFO round are not in this release (RELEASE_SCOPE.md §4).
+  ///
+  /// In ar, this message translates to:
+  /// **'الترسية وإلغاؤها والإغلاق دون ترسية متاحة في لوحة التحكم على الويب.'**
+  String get issuerWebOnlyAwardActions;
 }
 
 class _AppLocalizationsDelegate

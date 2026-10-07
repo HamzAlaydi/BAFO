@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Modules\Admin\Filament\Resources\AccountDeletions;
 
 use App\Modules\Admin\Enums\AdminNavigationGroup;
+use App\Modules\Admin\Enums\OpsSurface;
 use App\Modules\Admin\Filament\Resources\AccountDeletions\Pages\ListAccountDeletions;
 use App\Modules\Admin\Filament\Support\AdminResource;
 use App\Modules\Admin\Filament\Support\Display;
@@ -29,6 +30,8 @@ final class AccountDeletionResource extends AdminResource
     protected static string $langKey = 'account_deletions';
 
     protected static string|UnitEnum|null $navigationGroup = AdminNavigationGroup::Customers;
+
+    protected static ?OpsSurface $opsSurface = OpsSurface::AccountDeletions;
 
     protected static ?int $navigationSort = 30;
 

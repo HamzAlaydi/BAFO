@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace App\Modules\Admin\Filament\Resources\Competitions\RelationManagers;
 
+use App\Modules\Admin\Enums\OpsSurface;
 use App\Modules\Admin\Filament\Support\AdminRelationManager;
 use App\Modules\Admin\Filament\Support\AdminResource;
 use App\Modules\Admin\Filament\Support\Display;
 use App\Modules\Admin\Filament\Support\Lang;
+use App\Modules\Admin\Support\AdminScope;
 use App\Modules\Bidding\Models\Award;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
@@ -15,7 +17,8 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
- * The award, and any revoked awards before it (§6.6: a re-award is a new row).
+ * The award, and any revoked awards before it (§6.6: a re-award is a new row). The ERP sync column
+ * is OpsSurface::CompetitionErpSync (`full`, RELEASE_SCOPE.md §11).
  */
 final class AwardsRelationManager extends AdminRelationManager
 {
@@ -45,6 +48,7 @@ final class AwardsRelationManager extends AdminRelationManager
                 TextColumn::make('revoked_at')->label(Lang::get('fields.revoked_at'))->dateTime(Display::DATE_TIME)->placeholder('—'),
                 TextColumn::make('revoke_reason')->label(Lang::get('fields.revoke_reason'))->placeholder('—')->wrap(),
                 TextColumn::make('erp_sync_status')->label(Lang::get('fields.erp_sync_status'))->badge()
+                    ->visible(static fn (): bool => AdminScope::visible(OpsSurface::CompetitionErpSync))
                     ->formatStateUsing(static fn (mixed $state): ?string => Display::enum($state)),
             ])
             ->defaultSort('awarded_at', 'desc');

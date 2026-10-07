@@ -206,6 +206,8 @@ describe('PATCH /competitions/{id} in core on a draft created in full', function
             'final_window_minutes' => null,
             'bafo_round_enabled' => true,
             'bafo_duration_minutes' => 60,
+            // The factory's random ceiling can fall below the reserve (R6 then answers 422).
+            'start_price_minor' => 50_000_000,
             'reserve_price_minor' => 21_000_000,
             'amount_granularity_minor' => 1,
             'result_publication' => 'none',

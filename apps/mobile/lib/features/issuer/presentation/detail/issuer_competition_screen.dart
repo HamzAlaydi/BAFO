@@ -26,7 +26,9 @@ import 'package:material_ui/material_ui.dart';
 /// rules, counts, read-only sponsorship counters, documents, and the
 /// actions the competition's `permissions` allow (edit, invite, documents,
 /// publish, cancel, delete draft). Extend, BAFO, award, revoke and close
-/// without award are web-only (CD5).
+/// without award are web-only (CD5). In the minimal `core` app
+/// (RELEASE_SCOPE.md §4.1) the offers log and document management are web
+/// only too: the documents stay readable here.
 ///
 /// A caller who is not the issuer gets [ForbiddenState]: the participant
 /// routes dispatch `/competitions/:id` by `viewer_role` before this screen.
@@ -157,6 +159,10 @@ class _IssuerCompetitionViewState extends State<IssuerCompetitionView> {
   Future<void> _showActions(Competition competition) async {
     final l10n = context.l10n;
     final permissions = competition.permissions;
+    // Release scope (RELEASE_SCOPE.md §4): extend and BAFO need their flags,
+    // document upload is a mobile surface (web only in core).
+    final flags = context.flagsNow;
+    final documents = context.surfacesNow.enabled(MobileSurface.documentUpload);
     final choice = await showBafoBottomSheet<_Action>(
       context,
       title: l10n.issuerActionsMenu,
@@ -208,15 +214,16 @@ class _IssuerCompetitionViewState extends State<IssuerCompetitionView> {
                 Icons.group_add_outlined,
                 l10n.issuerActionInvite,
               ),
-            if (competition.acceptsAttachments)
+            if (competition.acceptsAttachments && documents)
               item(
                 _Action.documents,
                 Icons.attach_file_rounded,
                 l10n.issuerActionDocuments,
               ),
-            if (permissions.canExtend)
+            if (permissions.canExtend &&
+                flags.enabled(Feature.extendCompetition))
               webOnly(Icons.more_time_rounded, l10n.issuerActionExtend),
-            if (permissions.canStartBafo)
+            if (permissions.canStartBafo && flags.enabled(Feature.bafoRound))
               webOnly(
                 Icons.workspace_premium_outlined,
                 l10n.issuerActionStartBafo,
@@ -371,6 +378,16 @@ class _Loaded extends StatelessWidget {
     final counts = competition.counts;
     final award = competition.award;
     final sponsorship = state.sponsorship;
+    // Release scope (RELEASE_SCOPE.md §4): Q&A and documents by flag; the
+    // offers log and document upload are mobile surfaces (off in core).
+    final flags = context.flags;
+    final surfaces = context.surfaces;
+    final offersLog = surfaces.enabled(MobileSurface.issuerOffersLog);
+    final documentUpload =
+        competition.acceptsAttachments &&
+        surfaces.enabled(MobileSurface.documentUpload);
+    final qa = flags.enabled(Feature.qaComments);
+    final documents = flags.enabled(Feature.attachments);
 
     return ListView(
       padding: BafoSpacing.pagePadding,
@@ -484,9 +501,9 @@ class _Loaded extends StatelessWidget {
                         : () => onPush(IssuerPaths.invite(id)),
                   ),
                 ),
-              if (permissions.canInvite && competition.acceptsAttachments)
+              if (permissions.canInvite && documentUpload)
                 const SizedBox(width: BafoSpacing.sm),
-              if (competition.acceptsAttachments)
+              if (documentUpload)
                 Expanded(
                   child: BafoButton.outline(
                     label: l10n.issuerActionDocuments,
@@ -515,8 +532,9 @@ class _Loaded extends StatelessWidget {
                   label: l10n.issuerNavLive,
                   onTap: () => onPush(IssuerPaths.live(id)),
                 ),
-              if (competition.hasLiveSections)
+              if (competition.hasLiveSections && offersLog)
                 IssuerNavTile(
+                  key: const Key('issuer.nav.offers'),
                   icon: Icons.receipt_long_outlined,
                   label: l10n.issuerNavOffers,
                   trailingText: counts == null ? null : '${counts.offers}',
@@ -528,8 +546,9 @@ class _Loaded extends StatelessWidget {
                 trailingText: counts == null ? null : '${counts.invitations}',
                 onTap: () => onPush(IssuerPaths.participants(id)),
               ),
-              if (competition.hasLiveSections)
+              if (competition.hasLiveSections && qa)
                 IssuerNavTile(
+                  key: const Key('issuer.nav.qa'),
                   icon: Icons.forum_outlined,
                   label: l10n.issuerNavQa,
                   trailingText: counts == null ? null : '${counts.comments}',
@@ -541,18 +560,28 @@ class _Loaded extends StatelessWidget {
                   label: l10n.issuerNavAward,
                   onTap: () => onPush(IssuerPaths.award(id)),
                 ),
-              IssuerNavTile(
-                icon: Icons.folder_outlined,
-                label: l10n.issuerNavDocuments,
-                trailingText: '${state.attachments.length}',
-                onTap: () => onPush(IssuerPaths.attachments(id)),
-              ),
+              if (documents && surfaces.enabled(MobileSurface.documentUpload))
+                IssuerNavTile(
+                  key: const Key('issuer.nav.documents'),
+                  icon: Icons.folder_outlined,
+                  label: l10n.issuerNavDocuments,
+                  trailingText: '${state.attachments.length}',
+                  onTap: () => onPush(IssuerPaths.attachments(id)),
+                ),
             ],
           ),
         ),
         if (competition.hasWebOnlyActions) ...[
           const SizedBox(height: BafoSpacing.md),
-          WebOnlyNotice(message: l10n.issuerWebOnlyActions),
+          // Core never offers extend or BAFO: the notice names the award
+          // decisions only.
+          WebOnlyNotice(
+            message:
+                flags.enabled(Feature.extendCompetition) ||
+                    flags.enabled(Feature.bafoRound)
+                ? l10n.issuerWebOnlyActions
+                : l10n.issuerWebOnlyAwardActions,
+          ),
         ],
         if (counts != null) ...[
           SectionHeader(title: l10n.issuerDetailCounts),
@@ -628,40 +657,51 @@ class _Loaded extends StatelessWidget {
         BafoCard(
           child: _Timeline(competition: competition, state: state),
         ),
-        SectionHeader(
-          title: l10n.competitionsDetailDocuments,
-          actionLabel: competition.acceptsAttachments
-              ? l10n.issuerDocumentsManage
-              : null,
-          onAction: () => onPush(IssuerPaths.attachments(id)),
-        ),
-        if (state.attachmentsError != null)
-          ErrorState(
-            error: state.attachmentsError,
-            onRetry: context.read<IssuerCompetitionCubit>().refresh,
-          )
-        else if (state.attachments.isEmpty)
-          Text(
-            l10n.competitionsDetailNoDocuments,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
-          )
-        else
-          BafoCard(
-            padding: const EdgeInsetsDirectional.symmetric(
-              horizontal: BafoSpacing.sm,
-            ),
-            child: Column(
-              children: [
-                for (final (index, attachment)
-                    in state.attachments.indexed) ...[
-                  if (index > 0) const Divider(),
-                  AttachmentTile(attachment: attachment),
-                ],
-              ],
-            ),
+        if (documents) ...[
+          SectionHeader(
+            title: l10n.competitionsDetailDocuments,
+            actionLabel: documentUpload ? l10n.issuerDocumentsManage : null,
+            onAction: () => onPush(IssuerPaths.attachments(id)),
           ),
+          // Core: documents are read-only here and managed on the web.
+          if (competition.acceptsAttachments && !documentUpload) ...[
+            Text(
+              l10n.issuerDocumentsOnWeb,
+              key: const Key('issuer.documentsOnWeb'),
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
+            ),
+            const SizedBox(height: BafoSpacing.sm),
+          ],
+          if (state.attachmentsError != null)
+            ErrorState(
+              error: state.attachmentsError,
+              onRetry: context.read<IssuerCompetitionCubit>().refresh,
+            )
+          else if (state.attachments.isEmpty)
+            Text(
+              l10n.competitionsDetailNoDocuments,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
+            )
+          else
+            BafoCard(
+              padding: const EdgeInsetsDirectional.symmetric(
+                horizontal: BafoSpacing.sm,
+              ),
+              child: Column(
+                children: [
+                  for (final (index, attachment)
+                      in state.attachments.indexed) ...[
+                    if (index > 0) const Divider(),
+                    AttachmentTile(attachment: attachment),
+                  ],
+                ],
+              ),
+            ),
+        ],
         const SizedBox(height: BafoSpacing.xxl),
       ],
     );

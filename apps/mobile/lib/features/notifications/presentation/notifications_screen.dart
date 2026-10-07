@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:bafo/core/config/app_config.dart';
 import 'package:bafo/core/config/feature_gate.dart';
 import 'package:bafo/core/l10n/l10n.dart';
 import 'package:bafo/core/realtime/unread_count_cubit.dart';
@@ -75,6 +76,11 @@ class _NotificationsView extends StatelessWidget {
     final loaded = state is NotificationsLoaded ? state : null;
     final hasItems = loaded != null && loaded.items.isNotEmpty;
     final busy = loaded?.busy ?? false;
+    // Core (RELEASE_SCOPE.md §4.1): the list and mark read only; the
+    // all / unread filter and deleting are mobile surfaces.
+    final surfaces = context.surfaces;
+    final cleanup = surfaces.enabled(MobileSurface.notificationCleanup);
+    final filters = surfaces.enabled(MobileSurface.listFilters);
 
     return Scaffold(
       appBar: BafoAppBar(
@@ -90,19 +96,20 @@ class _NotificationsView extends StatelessWidget {
                   )
                 : null,
           ),
-          PopupMenuButton<_HeaderAction>(
-            key: const Key('notifications.menu'),
-            tooltip: l10n.notificationsMoreActions,
-            enabled: hasItems && !busy,
-            onSelected: (_) => _deleteAll(context),
-            itemBuilder: (_) => [
-              PopupMenuItem(
-                key: const Key('notifications.deleteAll'),
-                value: _HeaderAction.deleteAll,
-                child: Text(l10n.notificationsDeleteAll),
-              ),
-            ],
-          ),
+          if (cleanup)
+            PopupMenuButton<_HeaderAction>(
+              key: const Key('notifications.menu'),
+              tooltip: l10n.notificationsMoreActions,
+              enabled: hasItems && !busy,
+              onSelected: (_) => _deleteAll(context),
+              itemBuilder: (_) => [
+                PopupMenuItem(
+                  key: const Key('notifications.deleteAll'),
+                  value: _HeaderAction.deleteAll,
+                  child: Text(l10n.notificationsDeleteAll),
+                ),
+              ],
+            ),
         ],
         bottom: busy
             ? const PreferredSize(
@@ -121,34 +128,35 @@ class _NotificationsView extends StatelessWidget {
             _onOutcome(context, (state as NotificationsLoaded).outcome!),
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(
-                BafoSpacing.page,
-                BafoSpacing.sm,
-                BafoSpacing.page,
-                BafoSpacing.sm,
-              ),
-              child: SegmentedFilter<NotificationsFilter>(
-                key: const Key('notifications.filter'),
-                selected: state.filter,
-                segments: [
-                  FilterSegment(
-                    value: NotificationsFilter.all,
-                    label: l10n.notificationsFilterAll,
+            if (filters)
+              Padding(
+                padding: const EdgeInsetsDirectional.fromSTEB(
+                  BafoSpacing.page,
+                  BafoSpacing.sm,
+                  BafoSpacing.page,
+                  BafoSpacing.sm,
+                ),
+                child: SegmentedFilter<NotificationsFilter>(
+                  key: const Key('notifications.filter'),
+                  selected: state.filter,
+                  segments: [
+                    FilterSegment(
+                      value: NotificationsFilter.all,
+                      label: l10n.notificationsFilterAll,
+                    ),
+                    FilterSegment(
+                      value: NotificationsFilter.unread,
+                      label: l10n.notificationsFilterUnread,
+                      count: loaded == null || loaded.unreadCount == 0
+                          ? null
+                          : loaded.unreadCount,
+                    ),
+                  ],
+                  onChanged: (filter) => context.read<NotificationsBloc>().add(
+                    NotificationsFilterChanged(filter),
                   ),
-                  FilterSegment(
-                    value: NotificationsFilter.unread,
-                    label: l10n.notificationsFilterUnread,
-                    count: loaded == null || loaded.unreadCount == 0
-                        ? null
-                        : loaded.unreadCount,
-                  ),
-                ],
-                onChanged: (filter) => context.read<NotificationsBloc>().add(
-                  NotificationsFilterChanged(filter),
                 ),
               ),
-            ),
             Expanded(
               child: switch (state) {
                 NotificationsLoading() => const LoadingSkeletonList(),
@@ -158,7 +166,10 @@ class _NotificationsView extends StatelessWidget {
                     const NotificationsStarted(),
                   ),
                 ),
-                NotificationsLoaded() => _NotificationsList(state: state),
+                NotificationsLoaded() => _NotificationsList(
+                  state: state,
+                  canDelete: cleanup,
+                ),
               },
             ),
           ],
@@ -169,9 +180,10 @@ class _NotificationsView extends StatelessWidget {
 }
 
 class _NotificationsList extends StatelessWidget {
-  const _NotificationsList({required this.state});
+  const _NotificationsList({required this.state, required this.canDelete});
 
   final NotificationsLoaded state;
+  final bool canDelete;
 
   Future<void> _refresh(BuildContext context) {
     final done = Completer<void>();
@@ -259,6 +271,7 @@ class _NotificationsList extends StatelessWidget {
             now: now,
             onOpen: () => _open(context, notification),
             onAction: (action) => _act(context, notification, action),
+            canDelete: canDelete,
           );
         },
       ),

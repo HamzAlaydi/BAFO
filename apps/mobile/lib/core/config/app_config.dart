@@ -144,6 +144,85 @@ final class FeatureFlags extends Equatable {
   List<Object?> get props => [asMap];
 }
 
+/// A mobile-only detail that the minimal `core` app hides
+/// (RELEASE_SCOPE.md §4.1). No server flag covers these screen details, so
+/// [MobileSurfaces] derives them from `features.release_scope`, here and
+/// nowhere else; screens read `context.surfaces` (or a `SurfaceGate`) and
+/// never the scope. Nothing behind a surface is deleted: its route and
+/// screen stay, and scope `full` shows it exactly as before.
+enum MobileSurface {
+  /// M55 organisation screen: the hub row, the tappable organisation card
+  /// and the home billing-profile alert link. Core shows the organisation
+  /// name read-only; the details are managed on the web.
+  organizationManagement,
+
+  /// M59 settings (push card, legal list, licences): the hub row and the
+  /// route. Core keeps the language on the profile and puts the legal
+  /// documents in the hub.
+  appSettings,
+
+  /// M50, the push explainer after the first join or publish.
+  pushPrompts,
+
+  /// Search and direction filters on M16 and M33, the all / unread filter on
+  /// M49. Core keeps the status segments only.
+  listFilters,
+
+  /// Delete and delete-all on M49. Core keeps the list and mark read.
+  notificationCleanup,
+
+  /// Home extras: the plan card (it is in the Account tab), recent activity,
+  /// the 30-day offer tile, the billing-profile alert, and the issuer tiles
+  /// of an organisation that cannot issue and has issued nothing.
+  homeExtras,
+
+  /// M47 offers log and its entry points (M38 row, M46 ranking link). Core
+  /// keeps the leading offer and the live ranking.
+  issuerOffersLog,
+
+  /// M42 document upload and removal and its entry points. Documents stay
+  /// readable and downloadable everywhere.
+  documentUpload,
+
+  /// The photo upload on M52 (the avatar still shows).
+  profilePhoto,
+}
+
+/// Which [MobileSurface]s show: all of them in scope `full`, none in `core`
+/// or before the first `GET /app-config` (RELEASE_SCOPE.md §4.1).
+final class MobileSurfaces extends Equatable {
+  const MobileSurfaces._(this._full);
+
+  /// The surfaces of `features.release_scope` = [releaseScope].
+  factory MobileSurfaces.forScope(String releaseScope) =>
+      releaseScope == 'full' ? all : none;
+
+  /// Scope `core` (and no config yet): the minimal app.
+  static const MobileSurfaces none = MobileSurfaces._(false);
+
+  /// Scope `full`: every surface, as before the minimal release.
+  static const MobileSurfaces all = MobileSurfaces._(true);
+
+  final bool _full;
+
+  /// The derivation table: one arm per surface, like the server's
+  /// `FeatureFlags::enabled()`.
+  bool enabled(MobileSurface surface) => switch (surface) {
+    MobileSurface.organizationManagement ||
+    MobileSurface.appSettings ||
+    MobileSurface.pushPrompts ||
+    MobileSurface.listFilters ||
+    MobileSurface.notificationCleanup ||
+    MobileSurface.homeExtras ||
+    MobileSurface.issuerOffersLog ||
+    MobileSurface.documentUpload ||
+    MobileSurface.profilePhoto => _full,
+  };
+
+  @override
+  List<Object?> get props => [_full];
+}
+
 /// `GET /app-config` (API.md §2.13).
 final class AppConfig extends Equatable {
   const AppConfig({
@@ -212,12 +291,15 @@ final class AppConfig extends Equatable {
   /// it equals `flags.sponsorship` on a server that sends the flags.
   final bool sponsorshipEnabled;
 
-  /// `features.release_scope` (`core` or `full`), for display only. Screens
-  /// branch on [flags], never on this value.
+  /// `features.release_scope` (`core` or `full`). Screens branch on [flags]
+  /// and [surfaces], never on this value.
   final String releaseScope;
 
   /// `features.flags` (RELEASE_SCOPE.md §1.4).
   final FeatureFlags flags;
+
+  /// The mobile-only surfaces of [releaseScope] (RELEASE_SCOPE.md §4.1).
+  MobileSurfaces get surfaces => MobileSurfaces.forScope(releaseScope);
   final String currency;
   final int vatRateBp;
   final List<String> supportedLocales;

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Modules\Admin\Filament\Resources\AuditLogs;
 
 use App\Modules\Admin\Enums\AdminNavigationGroup;
+use App\Modules\Admin\Enums\OpsSurface;
 use App\Modules\Admin\Filament\Resources\AuditLogs\Pages\ListAuditLogs;
 use App\Modules\Admin\Filament\Resources\AuditLogs\Pages\ViewAuditLog;
 use App\Modules\Admin\Filament\Support\AdminResource;
@@ -43,6 +44,8 @@ final class AuditLogResource extends AdminResource
     protected static string $langKey = 'audit_logs';
 
     protected static string|UnitEnum|null $navigationGroup = AdminNavigationGroup::System;
+
+    protected static ?OpsSurface $opsSurface = OpsSurface::AuditLog;
 
     protected static ?int $navigationSort = 10;
 

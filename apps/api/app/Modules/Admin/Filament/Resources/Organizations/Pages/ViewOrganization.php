@@ -27,7 +27,8 @@ use Filament\Support\Icons\Heroicon;
 
 /**
  * An organization with the §16 admin actions, each through the Identity (or Billing) Action with
- * `Actor::forAdmin()`.
+ * `Actor::forAdmin()`. In release scope `core` the features form has the auction switch only and
+ * saves only that switch (RELEASE_SCOPE.md §11).
  */
 final class ViewOrganization extends ViewRecord
 {
@@ -89,17 +90,22 @@ final class ViewOrganization extends ViewRecord
                         'sponsorship_enabled' => $this->organization()->sponsorship_enabled,
                     ])
                     ->schema([
-                        Toggle::make('api_enabled')->label(Lang::get('fields.api_enabled')),
+                        Toggle::make('api_enabled')->label(Lang::get('fields.api_enabled'))
+                            ->visible(static fn (): bool => OrganizationResource::showsAdvancedFeatures()),
                         Toggle::make('auction_enabled')->label(Lang::get('fields.auction_enabled')),
-                        Toggle::make('sponsorship_enabled')->label(Lang::get('fields.sponsorship_enabled')),
+                        Toggle::make('sponsorship_enabled')->label(Lang::get('fields.sponsorship_enabled'))
+                            ->visible(static fn (): bool => OrganizationResource::showsAdvancedFeatures()),
                     ])
                     ->action(function (array $data): void {
+                        $features = ['auction_enabled' => (bool) $data['auction_enabled']];
+
+                        if (OrganizationResource::showsAdvancedFeatures()) {
+                            $features['api_enabled'] = (bool) ($data['api_enabled'] ?? false);
+                            $features['sponsorship_enabled'] = (bool) ($data['sponsorship_enabled'] ?? false);
+                        }
+
                         ModuleAction::run(
-                            fn () => app(UpdateOrganizationFeatures::class)->handle($this->organization(), [
-                                'api_enabled' => (bool) $data['api_enabled'],
-                                'auction_enabled' => (bool) $data['auction_enabled'],
-                                'sponsorship_enabled' => (bool) $data['sponsorship_enabled'],
-                            ], AdminActor::current()),
+                            fn () => app(UpdateOrganizationFeatures::class)->handle($this->organization(), $features, AdminActor::current()),
                             Lang::get('notifications.saved'),
                         );
                         $this->refreshRecord();

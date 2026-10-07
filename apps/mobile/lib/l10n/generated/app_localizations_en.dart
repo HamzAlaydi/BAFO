@@ -4007,4 +4007,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String commonErrorSummaryOtherStep(int step) {
     return 'In step $step';
   }
+
+  @override
+  String get accountOrganizationOnWeb =>
+      'Organisation details are managed from the BAFO web dashboard.';
+
+  @override
+  String get issuerDocumentsOnWeb =>
+      'Documents are uploaded and managed from the BAFO web dashboard.';
+
+  @override
+  String get issuerWebOnlyAwardActions =>
+      'Awarding, revoking an award and closing without award are available in the web dashboard.';
 }

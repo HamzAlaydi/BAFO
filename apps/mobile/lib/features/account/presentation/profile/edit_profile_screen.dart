@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:bafo/core/config/app_config.dart';
+import 'package:bafo/core/config/feature_gate.dart';
 import 'package:bafo/core/l10n/l10n.dart';
 import 'package:bafo/core/models/me.dart';
 import 'package:bafo/core/session/session_cubit.dart';
@@ -13,7 +15,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_ui/material_ui.dart';
 
 /// M52 Profile: photo, name, mobile number and the app language. The
-/// e-mail signs the user in and cannot be changed.
+/// e-mail signs the user in and cannot be changed. The photo upload is a
+/// mobile surface (RELEASE_SCOPE.md §4.1): core shows the avatar only.
 class EditProfileScreen extends StatelessWidget {
   const EditProfileScreen({this.pickImage = pickImageFromDevice, super.key});
 
@@ -133,6 +136,7 @@ class _ProfileFormState extends State<_ProfileForm> {
     final user =
         context.select<SessionCubit, User?>((cubit) => cubit.state.me?.user) ??
         widget.user;
+    final photoUpload = context.surfaces.enabled(MobileSurface.profilePhoto);
 
     return BlocConsumer<ProfileCubit, ProfileState>(
       listenWhen: (previous, current) =>
@@ -176,24 +180,28 @@ class _ProfileFormState extends State<_ProfileForm> {
                       ],
                     ),
                   ),
-                  const SizedBox(height: BafoSpacing.sm),
-                  Center(
-                    child: BafoButton.text(
-                      key: const Key('profile.photo'),
-                      label: l10n.accountProfileAvatarChange,
-                      icon: Icons.photo_camera_outlined,
-                      onPressed: state.isBusy
-                          ? null
-                          : () => unawaited(_changePhoto(user)),
+                  // Core (RELEASE_SCOPE.md §4.1): no photo upload on
+                  // mobile; the avatar still shows.
+                  if (photoUpload) ...[
+                    const SizedBox(height: BafoSpacing.sm),
+                    Center(
+                      child: BafoButton.text(
+                        key: const Key('profile.photo'),
+                        label: l10n.accountProfileAvatarChange,
+                        icon: Icons.photo_camera_outlined,
+                        onPressed: state.isBusy
+                            ? null
+                            : () => unawaited(_changePhoto(user)),
+                      ),
                     ),
-                  ),
-                  Text(
-                    l10n.accountProfileAvatarHint,
-                    textAlign: TextAlign.center,
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: theme.colorScheme.onSurfaceVariant,
+                    Text(
+                      l10n.accountProfileAvatarHint,
+                      textAlign: TextAlign.center,
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: theme.colorScheme.onSurfaceVariant,
+                      ),
                     ),
-                  ),
+                  ],
                   const SizedBox(height: BafoSpacing.xl),
                   BafoTextField(
                     key: const Key('profile.name'),

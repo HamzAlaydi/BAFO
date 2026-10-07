@@ -17,8 +17,10 @@ use InvalidArgumentException;
  *   app(FeatureFlags::class)->all()                       ['team_management' => false, ...] in catalogue order
  *
  * Only the HTTP edge consults it: the `feature:<flag>` route middleware (EnsureFeatureEnabled),
- * FormRequests, Resources and lookup queries. Actions, jobs, listeners, notifications and the
- * admin panel never do, so existing records keep rendering and the admin stays complete.
+ * FormRequests, Resources and lookup queries. Actions, jobs, listeners and notifications never
+ * do, so existing records keep rendering. The ops panel reads only scope(), through
+ * App\Modules\Admin\Support\AdminScope, to hide its own pages (RELEASE_SCOPE.md §11); the
+ * module Actions it calls stay ungated.
  */
 final readonly class FeatureFlags
 {

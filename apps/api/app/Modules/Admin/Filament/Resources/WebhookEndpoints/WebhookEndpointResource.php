@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Modules\Admin\Filament\Resources\WebhookEndpoints;
 
 use App\Modules\Admin\Enums\AdminNavigationGroup;
+use App\Modules\Admin\Enums\OpsSurface;
 use App\Modules\Admin\Filament\Resources\Organizations\OrganizationResource;
 use App\Modules\Admin\Filament\Resources\WebhookEndpoints\Pages\ListWebhookEndpoints;
 use App\Modules\Admin\Filament\Resources\WebhookEndpoints\Pages\ViewWebhookEndpoint;
@@ -34,6 +35,8 @@ final class WebhookEndpointResource extends AdminResource
     protected static string $langKey = 'webhook_endpoints';
 
     protected static string|UnitEnum|null $navigationGroup = AdminNavigationGroup::Integrations;
+
+    protected static ?OpsSurface $opsSurface = OpsSurface::WebhookEndpoints;
 
     protected static ?int $navigationSort = 20;
 

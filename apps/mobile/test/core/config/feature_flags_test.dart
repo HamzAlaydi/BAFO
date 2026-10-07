@@ -86,4 +86,31 @@ void main() {
     expect(FeatureFlags.fromJson(const {}), FeatureFlags.none);
     expect(FeatureFlags({Feature.darkMode: true}), isNot(FeatureFlags.none));
   });
+
+  group('mobile surfaces (RELEASE_SCOPE.md §4.1)', () {
+    test('every surface is off in core and on in full', () {
+      final core = AppConfig.fromJson(
+        ScopeFlags.appConfigJson(ScopeFlags.core, scope: 'core'),
+      );
+      final full = AppConfig.fromJson(
+        ScopeFlags.appConfigJson(ScopeFlags.full, scope: 'full'),
+      );
+      expect(core.surfaces, MobileSurfaces.none);
+      expect(full.surfaces, MobileSurfaces.all);
+      for (final surface in MobileSurface.values) {
+        expect(core.surfaces.enabled(surface), isFalse, reason: surface.name);
+        expect(full.surfaces.enabled(surface), isTrue, reason: surface.name);
+      }
+    });
+
+    test('an unknown or missing scope reads as core (the minimal app)', () {
+      expect(MobileSurfaces.forScope('beta'), MobileSurfaces.none);
+      final legacy = AppConfig.fromJson({
+        ...fixtureData('app_config'),
+        'features': {'sponsorship': false},
+      });
+      expect(legacy.releaseScope, 'core');
+      expect(legacy.surfaces, MobileSurfaces.none);
+    });
+  });
 }

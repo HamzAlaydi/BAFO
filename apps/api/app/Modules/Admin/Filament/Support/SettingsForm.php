@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Modules\Admin\Filament\Support;
 
+use App\Modules\Admin\Enums\OpsSurface;
+use App\Modules\Admin\Support\AdminScope;
 use App\Modules\Platform\Actions\UpdateAppSetting;
 use App\Support\Auth\Actor;
 use App\Support\Features\FeatureFlags;
@@ -25,11 +27,19 @@ use Illuminate\Support\Facades\Lang as Translator;
  * a group of fields for objects, a tag list for lists). A key whose values are a backed enum
  * (ENUM_KEYS, e.g. `platform.release_scope`, RELEASE_SCOPE.md §1.1) is a required select of the
  * enum's labelled values. Saving calls Platform's `UpdateAppSetting` for each changed key only.
+ *
+ * Release scope `core` (RELEASE_SCOPE.md §11) shows the essential groups only (CORE_GROUPS:
+ * the release scope, maintenance, the app version gate, store links and support contacts); the
+ * other groups (OpsSurface::AdvancedSettings) appear in `full`. A hidden key is neither rendered
+ * nor saved, so its stored value is never touched.
  */
 final class SettingsForm
 {
     /** Section order; any other prefix follows. */
     private const array GROUPS = ['platform', 'app', 'competitions', 'bidding', 'billing', 'sponsorship'];
+
+    /** Groups shown in release scope `core`; the rest are OpsSurface::AdvancedSettings. */
+    public const array CORE_GROUPS = ['platform', 'app'];
 
     /**
      * Settings stored as the value of a backed enum (their default is the plain string value).
@@ -77,7 +87,9 @@ final class SettingsForm
         $groups = [];
 
         foreach ($this->defaults() as $key => $default) {
-            $groups[strstr($key, '.', true) ?: $key][] = $this->component($key, $default);
+            if ($this->shown($key)) {
+                $groups[self::group($key)][] = $this->component($key, $default);
+            }
         }
 
         uksort($groups, static function (string $a, string $b): int {
@@ -88,8 +100,11 @@ final class SettingsForm
 
         $sections = [];
 
+        $advanced = AdminScope::visible(OpsSurface::AdvancedSettings);
+
         foreach ($groups as $group => $components) {
-            $sections[] = Section::make(self::text('settings.groups.'.$group, $group))->columns(2)->collapsible()->schema($components);
+            $sections[] = Section::make(self::text('settings.groups.'.$group, $group))->columns(2)->collapsible()->schema($components)
+                ->description($group === 'platform' && ! $advanced ? self::text('settings.core_hint', '') : null);
         }
 
         return $sections;
@@ -107,7 +122,7 @@ final class SettingsForm
         foreach ($this->defaults() as $key => $default) {
             $field = self::field($key);
 
-            if (! array_key_exists($field, $state)) {
+            if (! $this->shown($key) || ! array_key_exists($field, $state)) {
                 continue;
             }
 
@@ -122,6 +137,20 @@ final class SettingsForm
         }
 
         return $changed;
+    }
+
+    /**
+     * Whether the key is on the form in the current release scope.
+     */
+    public function shown(string $key): bool
+    {
+        return in_array(self::group($key), self::CORE_GROUPS, true) || AdminScope::visible(OpsSurface::AdvancedSettings);
+    }
+
+    /** The section of a key: its first segment (`app.support` → `app`). */
+    public static function group(string $key): string
+    {
+        return strstr($key, '.', true) ?: $key;
     }
 
     public static function field(string $key): string

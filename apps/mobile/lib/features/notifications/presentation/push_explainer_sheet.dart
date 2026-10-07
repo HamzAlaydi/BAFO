@@ -1,4 +1,6 @@
 import 'package:bafo/core/api/api_client.dart';
+import 'package:bafo/core/config/app_config.dart';
+import 'package:bafo/core/config/feature_gate.dart';
 import 'package:bafo/core/l10n/l10n.dart';
 import 'package:bafo/core/push/push_service.dart';
 import 'package:bafo/core/storage/preferences_store.dart';
@@ -49,6 +51,13 @@ Future<void> showPushExplainerIfNeeded(BuildContext context) async {
   } finally {
     await cubit.close();
   }
+}
+
+/// [showPushExplainerIfNeeded] behind the `pushPrompts` mobile surface
+/// (RELEASE_SCOPE.md §4.1): the minimal `core` app never prompts.
+Future<void> showPushExplainerInScope(BuildContext context) async {
+  if (!context.surfacesNow.enabled(MobileSurface.pushPrompts)) return;
+  await showPushExplainerIfNeeded(context);
 }
 
 /// The user-facing result of a push request, or null while it runs.

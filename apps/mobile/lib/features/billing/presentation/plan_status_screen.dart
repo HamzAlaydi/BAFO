@@ -1,3 +1,5 @@
+import 'package:bafo/core/config/app_config.dart';
+import 'package:bafo/core/config/feature_gate.dart';
 import 'package:bafo/core/l10n/l10n.dart';
 import 'package:bafo/core/models/me.dart';
 import 'package:bafo/core/session/session_cubit.dart';
@@ -110,10 +112,15 @@ class _PlanCard extends StatelessWidget {
                   l10n.billingStatusEnds,
                   BafoDateFormat.longDate(endsAt, language),
                 ),
-              KeyValue(
-                l10n.billingStatusSeats,
-                l10n.billingStatusSeatsValue(status.seatsUsed, status.seatsTotal),
-              ),
+              // Seats belong to team management (RELEASE_SCOPE.md §1.3).
+              if (context.flags.enabled(Feature.teamManagement))
+                KeyValue(
+                  l10n.billingStatusSeats,
+                  l10n.billingStatusSeatsValue(
+                    status.seatsUsed,
+                    status.seatsTotal,
+                  ),
+                ),
               if (upcoming != null)
                 KeyValue(l10n.billingStatusUpcoming, upcoming.name),
             ],

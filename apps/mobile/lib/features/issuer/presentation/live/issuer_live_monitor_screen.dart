@@ -1,3 +1,5 @@
+import 'package:bafo/core/config/app_config.dart';
+import 'package:bafo/core/config/feature_gate.dart';
 import 'package:bafo/core/l10n/l10n.dart';
 import 'package:bafo/core/models/competition_enums.dart';
 import 'package:bafo/core/money/money.dart';
@@ -212,9 +214,13 @@ class _Monitor extends StatelessWidget {
               ],
             ),
           ],
+          // Core (RELEASE_SCOPE.md §4.1): the ranking, without the offers
+          // log (M47) behind it.
           SectionHeader(
             title: l10n.issuerLiveRankingTitle,
-            actionLabel: l10n.issuerNavOffers,
+            actionLabel: context.surfaces.enabled(MobileSurface.issuerOffersLog)
+                ? l10n.issuerNavOffers
+                : null,
             onAction: () => context.push(IssuerPaths.offers(competition.id)),
           ),
           if (snapshot.ranking.isEmpty)
@@ -231,7 +237,8 @@ class _Monitor extends StatelessWidget {
                 ),
               ),
         ],
-        if (competition.permissions.canExtend) ...[
+        if (competition.permissions.canExtend &&
+            context.flags.enabled(Feature.extendCompetition)) ...[
           const SizedBox(height: BafoSpacing.md),
           WebOnlyNotice(message: l10n.issuerLiveExtendOnWeb),
         ],

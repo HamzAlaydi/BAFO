@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace App\Modules\Admin\Filament\Resources\Competitions\Pages;
 
+use App\Modules\Admin\Enums\OpsSurface;
 use App\Modules\Admin\Filament\Resources\Competitions\CompetitionResource;
 use App\Modules\Admin\Filament\Support\Fields;
 use App\Modules\Admin\Filament\Support\Lang;
 use App\Modules\Admin\Filament\Support\ModuleAction;
 use App\Modules\Admin\Support\AdminActor;
+use App\Modules\Admin\Support\AdminScope;
 use App\Modules\Catalog\Enums\CloseReasonKind;
 use App\Modules\Catalog\Models\CloseReason;
 use App\Modules\Competitions\Actions\CancelCompetition;
@@ -26,7 +28,8 @@ use Filament\Support\Icons\Heroicon;
 /**
  * A competition with the §16 admin actions: Extend → `ExtendCompetition` (kind `admin`),
  * Cancel → `CancelCompetition`, Force close → `ForceCloseCompetition`, all with
- * `Actor::forAdmin()`. Voiding an offer is on the offer ledger below.
+ * `Actor::forAdmin()`. Voiding an offer is on the offer ledger below. Release scope `core` keeps
+ * Cancel and Force close; Extend is OpsSurface::CompetitionExtend (`full`, RELEASE_SCOPE.md §11).
  */
 final class ViewCompetition extends ViewRecord
 {
@@ -38,7 +41,8 @@ final class ViewCompetition extends ViewRecord
             Action::make('extend')
                 ->label(Lang::get('resources.competitions.actions.extend'))
                 ->icon(Heroicon::OutlinedClock)
-                ->visible(fn (): bool => $this->competition()->status === CompetitionStatus::Live)
+                ->visible(fn (): bool => AdminScope::visible(OpsSurface::CompetitionExtend)
+                    && $this->competition()->status === CompetitionStatus::Live)
                 ->fillForm(fn (): array => [
                     'new_close_at' => $this->competition()->effective_close_at?->addMinutes(30)->toDateTimeString(),
                 ])
