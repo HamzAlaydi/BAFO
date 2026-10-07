@@ -37,6 +37,8 @@ case "${ROLE:-api}" in
     if [ "$FIRST_BOOT" = "0" ]; then
       php artisan db:seed --class=DemoSeeder --force || true
     fi
+    # Repair a partially seeded demo (missing subscriptions / demo competitions); refuses production.
+    php artisan demo:ensure || true
     # Free hosting has no separate worker: run the queue and scheduler alongside the API
     # unless a dedicated worker service exists (WITH_WORKER=0).
     if [ "${WITH_WORKER:-1}" = "1" ]; then

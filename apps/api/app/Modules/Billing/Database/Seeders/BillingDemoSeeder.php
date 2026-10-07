@@ -112,7 +112,7 @@ final class BillingDemoSeeder extends Seeder
      * Fallback when the organization cannot check out (no owner or an incomplete billing
      * profile): the same paid monthly period, without a payment.
      */
-    private function grantPaidPeriod(Organization $organization, Plan $plan): void
+    public function grantPaidPeriod(Organization $organization, Plan $plan): void
     {
         $now = CarbonImmutable::now();
         $unit = (int) $plan->monthly_price_minor;
