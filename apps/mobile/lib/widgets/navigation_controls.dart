@@ -62,6 +62,7 @@ class StepperHeader extends StatelessWidget {
     required this.current,
     required this.total,
     required this.title,
+    this.announce = false,
     super.key,
   });
 
@@ -70,6 +71,10 @@ class StepperHeader extends StatelessWidget {
   final int total;
   final String title;
 
+  /// FQ9: announce the step to screen readers when it changes (a polite
+  /// live region), as the web focuses the step heading.
+  final bool announce;
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -77,6 +82,7 @@ class StepperHeader extends StatelessWidget {
     return Semantics(
       container: true,
       header: true,
+      liveRegion: announce,
       label: '${l10n.commonStepOf(current, total)}: $title',
       excludeSemantics: true,
       child: Column(
@@ -167,7 +173,9 @@ class _CooldownButtonState extends State<CooldownButton> {
   void _sync() {
     _ticker?.cancel();
     final until = widget.availableAt;
-    final left = until == null ? Duration.zero : until.difference(DateTime.now());
+    final left = until == null
+        ? Duration.zero
+        : until.difference(DateTime.now());
     _secondsLeft = left.isNegative ? 0 : (left.inMilliseconds / 1000).ceil();
     if (_secondsLeft > 0) {
       _ticker = Timer.periodic(const Duration(seconds: 1), (timer) {

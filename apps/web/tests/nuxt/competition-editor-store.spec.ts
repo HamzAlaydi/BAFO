@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
+import { makeAppConfig } from '../fixtures/api'
 import { CATEGORY, makeIssuerCompetition, PRESETS, REGION } from '../fixtures/issuer'
 
 const competitions = vi.hoisted(() => ({ createCompetition: vi.fn(), updateCompetition: vi.fn() }))
@@ -25,6 +26,8 @@ beforeEach(() => {
   competitions.updateCompetition.mockReset()
   catalog.fetchLookups.mockReset()
   setActivePinia(createPinia())
+  // Sealed presets and BAFO rounds are hidden in the first release: the store tests run against the full product.
+  useAppConfigStore().config = makeAppConfig()
 })
 
 describe('competition editor store', () => {

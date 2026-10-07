@@ -11,6 +11,7 @@ use App\Modules\Admin\Filament\Resources\Presets\Pages\ListCompetitionPresets;
 use App\Modules\Admin\Filament\Support\AdminResource;
 use App\Modules\Admin\Filament\Support\Display;
 use App\Modules\Admin\Filament\Support\Fields;
+use App\Modules\Catalog\Enums\PresetTier;
 use App\Modules\Catalog\Models\CompetitionPreset;
 use App\Modules\Competitions\Enums\Direction;
 use App\Modules\Competitions\Enums\Format;
@@ -36,7 +37,9 @@ use UnitEnum;
 /**
  * §16 Lookups: competition presets (§5.2). `rules` holds the RulesInput keys of API.md §2.6
  * without prices (the issuer supplies them); Competitions validates a competition's rules when it
- * is saved or published. CRUD; the code is immutable after create.
+ * is saved or published. `tier` marks the three preset cards of RELEASE_SCOPE.md §2.2 (empty for an
+ * untiered preset, which the app lookups list only while `advanced_rules` is on). CRUD; the code
+ * is immutable after create.
  */
 final class CompetitionPresetResource extends AdminResource
 {
@@ -67,6 +70,8 @@ final class CompetitionPresetResource extends AdminResource
                 Fields::translated('description', self::field('description'), multiline: true, maxLength: 1000)->columnSpanFull(),
                 Select::make('direction')->label(self::field('direction'))->required()->options(Display::options(Direction::class)),
                 Select::make('format')->label(self::field('format'))->required()->live()->options(Display::options(Format::class)),
+                Select::make('tier')->label(self::field('tier'))->options(Display::options(PresetTier::class))
+                    ->placeholder(self::field('tier_none'))->helperText(self::field('tier_help')),
                 Toggle::make('is_active')->label(self::field('is_active'))->default(true),
             ]),
             Section::make(self::field('rules'))->columns(3)->schema([
@@ -115,6 +120,8 @@ final class CompetitionPresetResource extends AdminResource
                     ->formatStateUsing(static fn (mixed $state): ?string => Display::enum($state)),
                 TextColumn::make('format')->label(self::field('format'))
                     ->formatStateUsing(static fn (mixed $state): ?string => Display::enum($state)),
+                TextColumn::make('tier')->label(self::field('tier'))
+                    ->formatStateUsing(static fn (mixed $state): ?string => Display::enum($state))->placeholder('—'),
                 IconColumn::make('is_active')->label(self::field('is_active'))->boolean(),
                 TextColumn::make('sort_order')->label(self::field('sort_order'))->sortable(),
             ])

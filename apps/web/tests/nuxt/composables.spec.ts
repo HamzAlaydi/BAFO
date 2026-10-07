@@ -1,4 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
+import { makeAppConfig } from '../fixtures/api'
 
 describe('useMoney', () => {
   it('formats with the active locale', () => {
@@ -41,6 +42,8 @@ describe('useToast', () => {
 
 describe('useTheme', () => {
   it('maps the system preference to no data-theme attribute', () => {
+    // The preference applies only while `dark_mode` is on (full scope); core forces light.
+    useAppConfigStore().config = makeAppConfig()
     const theme = useTheme()
     theme.setPreference('dark')
     expect(theme.dataTheme.value).toBe('dark')

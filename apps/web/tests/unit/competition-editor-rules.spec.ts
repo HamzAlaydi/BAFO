@@ -3,18 +3,23 @@ import { formatBps } from '~/utils/money'
 import type { Preset } from '~/types/api/catalog'
 import {
   defaultEditorRules,
+  defaultPresetFor,
   editorRulesCustomised,
   editorRulesEqual,
   editorRulesFromPreset,
   editorRulesInput,
   editorRulesIssues,
   editorRulesPreview,
+  editorRulesWithinScope,
   minStepMode,
   normalizeEditorRules,
   percentTextToBps,
   presetsFor,
   showPricesForced,
+  tieredPresetsFor,
+  untieredPresetsFor,
 } from '~/stores/competition-editor-rules'
+import { CORE_FEATURE_FLAGS, FULL_FEATURE_FLAGS } from '~/utils/features'
 
 /** The three seeded presets of ARCHITECTURE §5.2. */
 const standardLiveTender: Preset = {
@@ -223,6 +228,12 @@ describe('rules preview', () => {
     expect(keys).toContain('rules.preview.auto_extend')
     expect(lines.find(line => line.key === 'rules.preview.start_price.tender')?.amounts).toEqual({ amount: 25000000 })
     expect(lines.find(line => line.key === 'rules.preview.min_step_percent.tender')?.params).toEqual({ percent: '0.5' })
+    // Counted values carry their unit so the aside writes «3 دقائق» and «10 مرات» with the plural forms.
+    expect(lines.find(line => line.key === 'rules.preview.auto_extend')?.counts).toEqual({
+      window: { unit: 'minutes', count: 3 },
+      by: { unit: 'minutes', count: 3 },
+      max: { unit: 'times', count: 10 },
+    })
   })
 
   it('describes a sealed competition without live-only lines', () => {
@@ -231,5 +242,34 @@ describe('rules preview', () => {
     expect(keys).toContain('rules.preview.visibility_sealed')
     expect(keys).toContain('rules.preview.bafo')
     expect(keys.some(key => key.startsWith('rules.preview.must_beat'))).toBe(false)
+  })
+})
+
+describe('preset tiers and the release scope (RELEASE_SCOPE §2.2, §1.5)', () => {
+  const tier = (code: string, tier: 'simple' | 'standard' | 'protected' | null, direction: 'tender' | 'auction' = 'tender') =>
+    ({ code, tier, direction, format: 'live' as const })
+
+  it('orders the tier cards simple → standard → protected and keeps the untiered presets apart', () => {
+    const presets = [tier('p', 'protected'), tier('legacy', null), tier('s', 'simple'), tier('std', 'standard'), tier('a', 'standard', 'auction')]
+    expect(tieredPresetsFor(presets, 'tender', 'live').map(p => p.code)).toEqual(['s', 'std', 'p'])
+    expect(untieredPresetsFor(presets, 'tender', 'live').map(p => p.code)).toEqual(['legacy'])
+    expect(defaultPresetFor(presets, 'tender', 'live')?.code).toBe('std')
+    expect(defaultPresetFor([tier('only', 'simple')], 'tender', 'live')?.code).toBe('only')
+    // Older catalogues without tiers: the first preset of the combination.
+    expect(defaultPresetFor([tier('legacy', null), tier('other', null)], 'tender', 'live')?.code).toBe('legacy')
+    expect(defaultPresetFor([], 'tender', 'live')).toBeNull()
+  })
+
+  it('drops the final window and the BAFO round from new rules when their flags are off', () => {
+    const rules = { ...defaultEditorRules('live'), final_window_minutes: 60, bafo_round: { enabled: true, duration_minutes: 90 } }
+    const core = editorRulesWithinScope(rules, CORE_FEATURE_FLAGS)
+    expect(core.final_window_minutes).toBeNull()
+    expect(core.bafo_round).toEqual({ enabled: false, duration_minutes: null })
+    expect(core.min_participants).toBe(rules.min_participants)
+    const full = editorRulesWithinScope(rules, FULL_FEATURE_FLAGS)
+    expect(full.final_window_minutes).toBe(60)
+    expect(full.bafo_round).toEqual({ enabled: true, duration_minutes: 90 })
+    // The input is never mutated.
+    expect(rules.final_window_minutes).toBe(60)
   })
 })

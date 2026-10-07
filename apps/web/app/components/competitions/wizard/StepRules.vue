@@ -1,32 +1,61 @@
 <script setup lang="ts">
 import { ChevronDown, Lock } from '@lucide/vue'
 import type { MustBeat, RankVisibility, ResultPublication } from '~/types/api/competitions'
-import { EDITOR_RULE_BOUNDS, minStepMode, percentTextToBps, showPricesForced, type MinStepMode } from '~/stores/competition-editor-rules'
+import { EDITOR_RULE_BOUNDS, issueMessage, minStepMode, percentTextToBps, showPricesForced, type MinStepMode } from '~/stores/competition-editor-rules'
+import { WIZARD_FIELD_IDS } from '~/stores/competition-editor-steps'
 
 /**
- * Wizard step 3 «القواعد» (SCREENS W15 `rules`): prices (ceiling or opening price, the hidden target
- * or reserve price, granularity) and the advanced rules behind a disclosure: must beat, minimum step,
- * standing visibility and prices, result publication, final pricing window, auto-extend with the
- * latest possible close, BAFO round and minimum participants.
+ * Wizard step 2 «القواعد» (SCREENS W15 `rules`; RELEASE_SCOPE.md §2.1, §2.4): the preset tier cards
+ * on top, the prices card (start price always; the hidden target or reserve price and the granularity
+ * only with `advanced_rules`), then the disclosure «إعدادات متقدمة», collapsed by default and
+ * remembered per draft in `sessionStorage`: must beat, minimum step, standing visibility and prices,
+ * auto-extend with the latest possible close, and the flag-gated blocks (result publication and
+ * minimum participants with `advanced_rules`, the final pricing window with `final_pricing_window`,
+ * the BAFO round with `bafo_round`).
  *
  * Validation is live (client mirror of R1–R13, feedback only); `rules.*` server errors bind to the
- * same controls. Sealed competitions disable every live-only control.
+ * same controls. Sealed competitions (existing records) disable every live-only control.
  */
 const { t } = useI18n()
 const editor = useCompetitionEditorStore()
+const features = useFeatures()
 const { td } = useDirectionCopy(() => editor.form.direction)
 const B = EDITOR_RULE_BOUNDS
+const IDS = WIZARD_FIELD_IDS
 
 const rules = computed(() => editor.form.rules)
 const sealed = computed(() => editor.form.format === 'sealed')
-const advancedOpen = ref(true)
+const advanced = computed(() => features.enabled('advanced_rules'))
 const advancedId = useId()
 
+// The disclosure state is remembered per draft for the tab's lifetime (FQ: no surprise on return).
+const disclosureKey = computed(() => `bafo:rules-advanced:${editor.competitionId ?? 'new'}`)
+const advancedOpen = ref(false)
+onMounted(() => {
+  try {
+    advancedOpen.value = window.sessionStorage.getItem(disclosureKey.value) === '1'
+  }
+  catch {
+    advancedOpen.value = false
+  }
+})
+function toggleAdvanced(): void {
+  advancedOpen.value = !advancedOpen.value
+  try {
+    window.sessionStorage.setItem(disclosureKey.value, advancedOpen.value ? '1' : '0')
+  }
+  catch {
+    // Storage blocked: the disclosure simply starts collapsed next time.
+  }
+}
+
 function issueFor(field: string, when: 'save' | 'publish' = 'save'): string | null {
+  // Text that cannot be read as an amount: the field's own message, not a check on its last valid value.
+  if (when === 'save' && editor.unreadable.includes(field)) return t('common.money.invalid')
   const server = editor.serverFieldErrors[field]
   if (server) return server
   const issue = editor.rulesIssues.find(item => item.field === field && item.when === when)
-  return issue ? t(issue.key, issue.params ?? {}) : null
+  return issue ? issueMessage(issue, t) : null
 }
 
 // ---------- Prices ----------
@@ -69,6 +98,7 @@ watch(() => [rules.value.min_step_minor, rules.value.min_step_bps] as const, ([m
     stepMode.value = 'percent'
     if (percentTextToBps(percentText.value) !== bps) percentText.value = formatBps(bps)
   }
+  else stepMode.value = 'none'
 })
 
 const stepModeModel = computed<MinStepMode | null>({
@@ -142,6 +172,8 @@ const finalWindowMinutes = computed<number | null>({
   get: () => rules.value.final_window_minutes,
   set: value => editor.patchRules({ final_window_minutes: value ?? B.finalWindowMinutes.min }),
 })
+/** The switch is shown with the flag, or for an existing record that already has a window. */
+const showFinalWindow = computed(() => features.enabled('final_pricing_window') || rules.value.final_window_minutes !== null)
 
 const autoExtendOn = computed<boolean>({
   get: () => rules.value.auto_extend.enabled,
@@ -177,35 +209,51 @@ const bafoMinutes = computed<number | null>({
   get: () => rules.value.bafo_round.duration_minutes,
   set: value => editor.patchRules({ bafo_round: { enabled: true, duration_minutes: value } }),
 })
+/** Shown with the flag, or for an existing record that already has a round configured. */
+const showBafo = computed(() => features.enabled('bafo_round') || rules.value.bafo_round.enabled)
 
 const minParticipants = computed<number | null>({
   get: () => rules.value.min_participants,
   set: value => editor.patchRules({ min_participants: value ?? 0 }),
 })
 
-const startHint = computed(() => issueFor('rules.start_price_minor', 'publish') ?? td('rules.start_price.hint'))
+const startHint = computed(() => issueFor('rules.start_price_minor', 'publish') ?? `${td('rules.start_price.hint')} ${t('rules.price_example')}`)
+
+/** Which advanced controls carry an error, so a collapsed disclosure can say so. */
+const advancedErrorCount = computed(() => editor.blockingIssues('rules', Date.now()).filter(issue => !issue.field.endsWith('_price_minor')).length)
 </script>
 
 <template>
   <div class="flex flex-col gap-6">
+    <CompetitionsWizardPresetTierCards />
+
     <UiCard :title="t('rules.prices_title')">
       <div class="flex flex-col gap-5">
-        <div class="grid gap-5 md:grid-cols-2">
+        <div
+          class="grid gap-5"
+          :class="advanced && 'md:grid-cols-2'"
+        >
           <UiMoneyInput
+            :id="IDS['rules.start_price_minor']"
             v-model="startPrice"
             :label="td('rules.start_price.label')"
             :hint="startHint"
             :error="issueFor('rules.start_price_minor')"
             :required="editor.form.direction === 'auction'"
+            @unreadable="value => editor.setUnreadable('rules.start_price_minor', value)"
           />
           <UiMoneyInput
+            v-if="advanced || reservePrice !== null"
+            :id="IDS['rules.reserve_price_minor']"
             v-model="reservePrice"
             :label="td('rules.reserve_price.label')"
             :hint="t('rules.reserve_price.hint')"
             :error="issueFor('rules.reserve_price_minor')"
+            @unreadable="value => editor.setUnreadable('rules.reserve_price_minor', value)"
           />
         </div>
         <UiSegmented
+          v-if="advanced || rules.amount_granularity_minor !== 100"
           v-model="granularity"
           :options="granularityOptions"
           :label="t('rules.granularity.label')"
@@ -221,20 +269,30 @@ const startHint = computed(() => issueFor('rules.start_price_minor', 'publish') 
     <UiCard padding="none">
       <button
         type="button"
-        class="flex w-full items-center justify-between gap-3 px-5 py-4 text-start focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring sm:px-6"
+        class="flex min-h-14 w-full items-center justify-between gap-3 px-5 py-4 text-start focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring sm:px-6"
         :aria-expanded="advancedOpen"
         :aria-controls="advancedId"
-        @click="advancedOpen = !advancedOpen"
+        @click="toggleAdvanced"
       >
-        <span class="flex flex-wrap items-center gap-2">
-          <span class="text-base font-bold text-fg">{{ t('rules.advanced.title') }}</span>
-          <UiBadge
-            v-if="editor.customised"
-            tone="info"
-            size="sm"
-          >
-            {{ t('competitions.setup.type.presets.customised') }}
-          </UiBadge>
+        <span class="flex min-w-0 flex-col gap-0.5">
+          <span class="flex flex-wrap items-center gap-2">
+            <span class="text-base font-bold text-fg">{{ t('rules.advanced.title') }}</span>
+            <UiBadge
+              v-if="editor.customised"
+              tone="info"
+              size="sm"
+            >
+              {{ t('competitions.setup.type.presets.customised') }}
+            </UiBadge>
+            <UiBadge
+              v-if="!advancedOpen && advancedErrorCount > 0"
+              tone="danger"
+              size="sm"
+            >
+              {{ t('rules.advanced.errors_inside', { count: advancedErrorCount }, advancedErrorCount) }}
+            </UiBadge>
+          </span>
+          <span class="text-sm text-fg-muted">{{ t('rules.advanced.hint') }}</span>
         </span>
         <ChevronDown
           :size="20"
@@ -277,12 +335,16 @@ const startHint = computed(() => issueFor('rules.start_price_minor', 'publish') 
           />
           <UiMoneyInput
             v-if="stepMode === 'amount' && !sealed"
+            :id="IDS['rules.min_step_minor']"
             v-model="stepAmount"
             :label="t('rules.min_step.amount_label')"
+            :hint="t('rules.price_example')"
             :error="issueFor('rules.min_step_minor')"
+            @unreadable="value => editor.setUnreadable('rules.min_step_minor', value)"
           />
           <UiInput
             v-if="stepMode === 'percent' && !sealed"
+            :id="IDS['rules.min_step_bps']"
             :model-value="percentText"
             :label="t('rules.min_step.percent_label')"
             :hint="t('rules.min_step.percent_hint', { min: '0.01', max: '50' })"
@@ -313,30 +375,6 @@ const startHint = computed(() => issueFor('rules.start_price_minor', 'publish') 
           :disabled="sealed || pricesForced"
         />
 
-        <UiRadioGroup
-          v-model="resultPublication"
-          :options="resultOptions"
-          :label="t('rules.result.label')"
-          :error="issueFor('rules.result_publication')"
-        />
-
-        <div class="flex flex-col gap-3">
-          <UiSwitch
-            v-model="finalWindowOn"
-            :label="t('rules.final_window.label')"
-            :description="sealed ? t('rules.sealed_unavailable') : t('rules.final_window.description')"
-            :disabled="sealed"
-          />
-          <CompetitionsWizardNumberField
-            v-if="finalWindowOn && !sealed"
-            v-model="finalWindowMinutes"
-            :label="t('rules.final_window.minutes_label')"
-            :hint="t('rules.bounds_minutes', { min: B.finalWindowMinutes.min, max: B.finalWindowMinutes.max })"
-            :error="issueFor('rules.final_window_minutes')"
-            :suffix="t('rules.minutes_suffix')"
-          />
-        </div>
-
         <div class="flex flex-col gap-3">
           <UiSwitch
             v-model="autoExtendOn"
@@ -347,6 +385,7 @@ const startHint = computed(() => issueFor('rules.start_price_minor', 'publish') 
           <template v-if="autoExtendOn && !sealed">
             <div class="grid gap-4 sm:grid-cols-3">
               <CompetitionsWizardNumberField
+                :id="IDS['rules.auto_extend.window_seconds']"
                 v-model="autoWindow"
                 :label="t('rules.auto_extend.window_label')"
                 :hint="t('rules.bounds_minutes', { min: 1, max: 30 })"
@@ -354,6 +393,7 @@ const startHint = computed(() => issueFor('rules.start_price_minor', 'publish') 
                 :suffix="t('rules.minutes_suffix')"
               />
               <CompetitionsWizardNumberField
+                :id="IDS['rules.auto_extend.by_seconds']"
                 v-model="autoBy"
                 :label="t('rules.auto_extend.by_label')"
                 :hint="t('rules.bounds_minutes', { min: 1, max: 30 })"
@@ -361,6 +401,7 @@ const startHint = computed(() => issueFor('rules.start_price_minor', 'publish') 
                 :suffix="t('rules.minutes_suffix')"
               />
               <CompetitionsWizardNumberField
+                :id="IDS['rules.auto_extend.max_extensions']"
                 v-model="autoMax"
                 :label="t('rules.auto_extend.max_label')"
                 :hint="t('rules.bounds_count', { min: B.autoExtendMax.min, max: B.autoExtendMax.max })"
@@ -383,7 +424,40 @@ const startHint = computed(() => issueFor('rules.start_price_minor', 'publish') 
           </template>
         </div>
 
-        <div class="flex flex-col gap-3">
+        <UiRadioGroup
+          v-if="advanced"
+          v-model="resultPublication"
+          :options="resultOptions"
+          :label="t('rules.result.label')"
+          :hint="t('rules.result.hint')"
+          :error="issueFor('rules.result_publication')"
+        />
+
+        <div
+          v-if="showFinalWindow"
+          class="flex flex-col gap-3"
+        >
+          <UiSwitch
+            v-model="finalWindowOn"
+            :label="t('rules.final_window.label')"
+            :description="sealed ? t('rules.sealed_unavailable') : t('rules.final_window.description')"
+            :disabled="sealed"
+          />
+          <CompetitionsWizardNumberField
+            v-if="finalWindowOn && !sealed"
+            :id="IDS['rules.final_window_minutes']"
+            v-model="finalWindowMinutes"
+            :label="t('rules.final_window.minutes_label')"
+            :hint="t('rules.bounds_minutes', { min: B.finalWindowMinutes.min, max: B.finalWindowMinutes.max })"
+            :error="issueFor('rules.final_window_minutes')"
+            :suffix="t('rules.minutes_suffix')"
+          />
+        </div>
+
+        <div
+          v-if="showBafo"
+          class="flex flex-col gap-3"
+        >
           <UiSwitch
             v-model="bafoOn"
             :label="t('rules.bafo.label')"
@@ -391,6 +465,7 @@ const startHint = computed(() => issueFor('rules.start_price_minor', 'publish') 
           />
           <CompetitionsWizardNumberField
             v-if="bafoOn"
+            :id="IDS['rules.bafo_round.duration_minutes']"
             v-model="bafoMinutes"
             :label="t('rules.bafo.duration_label')"
             :hint="t('rules.bounds_minutes', { min: B.bafoDurationMinutes.min, max: B.bafoDurationMinutes.max })"
@@ -399,8 +474,12 @@ const startHint = computed(() => issueFor('rules.start_price_minor', 'publish') 
           />
         </div>
 
-        <div class="max-w-xs">
+        <div
+          v-if="advanced"
+          class="max-w-xs"
+        >
           <CompetitionsWizardNumberField
+            :id="IDS['rules.min_participants']"
             v-model="minParticipants"
             :label="t('rules.min_participants.label')"
             :hint="t('rules.min_participants.hint', { min: B.minParticipants.min, max: B.minParticipants.max })"

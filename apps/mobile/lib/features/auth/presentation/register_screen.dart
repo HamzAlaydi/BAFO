@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bafo/core/l10n/l10n.dart';
 import 'package:bafo/core/lookups/lookups_repository.dart';
 import 'package:bafo/core/models/me.dart';
@@ -75,6 +77,9 @@ class _RegisterViewState extends State<_RegisterView> {
   bool _acceptPrivacy = false;
   bool _consentTried = false;
 
+  /// FQ8: the client errors of the last failed "Next" or submit, as links.
+  List<FormErrorItem> _clientErrors = const [];
+
   List<TextEditingController> get _controllers => [
     _name,
     _email,
@@ -109,10 +114,154 @@ class _RegisterViewState extends State<_RegisterView> {
 
   void _next(int step) {
     FocusScope.of(context).unfocus();
-    if (!(_forms[step].currentState?.validate() ?? false)) return;
+    if (!_validateStep(step)) return;
     _cubit.next();
     _scrollToTop();
   }
+
+  /// Validates the step's form and keeps the failed fields for the error
+  /// summary (FQ8). Returns whether the step is valid.
+  bool _validateStep(int step) {
+    final form = _forms[step].currentState;
+    if (form == null) return false;
+    final invalid = form.validateGranularly();
+    setState(() {
+      _clientErrors = [
+        for (final field in invalid)
+          FormErrorItem(
+            label: _fieldLabel(field.context),
+            message: field.errorText ?? context.l10n.validationRequired,
+            onTap: () => _reveal(field.context),
+          ),
+      ];
+    });
+    if (invalid.isNotEmpty) {
+      _scrollToTop();
+    }
+    return invalid.isEmpty;
+  }
+
+  /// The visible label of the field that owns [fieldContext].
+  static String _fieldLabel(BuildContext fieldContext) =>
+      fieldContext.findAncestorWidgetOfExactType<BafoTextField>()?.label ??
+      fieldContext
+          .findAncestorWidgetOfExactType<BafoDropdown<String>>()
+          ?.label ??
+      '';
+
+  void _reveal(BuildContext fieldContext) {
+    if (!fieldContext.mounted) return;
+    unawaited(
+      Scrollable.ensureVisible(
+        fieldContext,
+        alignment: 0.1,
+        duration: const Duration(milliseconds: 200),
+      ),
+    );
+  }
+
+  /// The element keyed [key] under [root], for the server-error links.
+  static BuildContext? _contextOfKey(BuildContext root, Key key) {
+    BuildContext? found;
+    void visit(Element element) {
+      if (found != null) return;
+      if (element.widget.key == key) {
+        found = element;
+        return;
+      }
+      element.visitChildren(visit);
+    }
+
+    (root as Element).visitChildren(visit);
+    return found;
+  }
+
+  /// The error summary of [step]: the client errors of the last attempt and
+  /// the server's field errors, each a link to its field or its step.
+  List<FormErrorItem> _summary(RegisterState state, int step) {
+    final l10n = context.l10n;
+    final items = [..._clientErrors];
+    for (final entry in state.fieldErrors.entries) {
+      if (entry.value.isEmpty) continue;
+      final path = entry.key;
+      final fieldStep = RegisterCubit.stepOf(path);
+      final key = _fieldKeys[path];
+      items.add(
+        FormErrorItem(
+          label: _serverFieldLabel(l10n, path),
+          message: entry.value.first,
+          note: fieldStep == step
+              ? null
+              : l10n.commonErrorSummaryOtherStep(fieldStep + 1),
+          onTap: fieldStep != step
+              ? () => _cubit.goTo(fieldStep)
+              : key == null
+              ? null
+              : () {
+                  final target = _contextOfKey(context, key);
+                  if (target != null) {
+                    _reveal(target);
+                  }
+                },
+        ),
+      );
+    }
+    return items;
+  }
+
+  /// Server paths → the keyed field that shows them.
+  static const Map<String, Key> _fieldKeys = {
+    'name': Key('register.name'),
+    'email': Key('register.email'),
+    'phone': Key('register.phone'),
+    'password': Key('register.password'),
+    'password_confirmation': Key('register.confirmation'),
+    'organization.name': Key('register.company'),
+    'organization.cr_number': Key('register.cr'),
+    'organization.region_id': Key('register.region'),
+    'organization.city': Key('register.city'),
+    'organization.vat_number': Key('register.vat'),
+    'organization.category_ids': Key('register.categories'),
+    'accept_terms': Key('register.terms'),
+    'accept_privacy': Key('register.privacy'),
+  };
+
+  static String _serverFieldLabel(
+    AppLocalizations l10n,
+    String path,
+  ) => switch (path) {
+    'name' => l10n.authFieldsNameLabel,
+    'email' => l10n.authFieldsEmailLabel,
+    'phone' => l10n.authFieldsPhoneLabel,
+    'password' => l10n.authFieldsPasswordLabel,
+    'password_confirmation' => l10n.authFieldsPasswordConfirmLabel,
+    'organization.name' => l10n.organizationFieldsNameLabel,
+    'organization.cr_number' => l10n.organizationFieldsCrLabel,
+    'organization.region_id' => l10n.organizationFieldsRegionLabel,
+    'organization.city' => l10n.organizationFieldsCityLabel,
+    'organization.vat_registered' => l10n.organizationFieldsVatRegisteredLabel,
+    'organization.vat_number' => l10n.organizationFieldsVatLabel,
+    'organization.legal_name_ar' => l10n.organizationFieldsLegalNameArLabel,
+    'organization.legal_name_en' => l10n.organizationFieldsLegalNameEnLabel,
+    'organization.website' => l10n.organizationFieldsWebsiteLabel,
+    'organization.national_address.building_number' =>
+      l10n.organizationAddressBuildingNumber,
+    'organization.national_address.street' => l10n.organizationAddressStreet,
+    'organization.national_address.district' =>
+      l10n.organizationAddressDistrict,
+    'organization.national_address.postal_code' =>
+      l10n.organizationAddressPostalCode,
+    'organization.national_address.additional_number' =>
+      l10n.organizationAddressAdditionalNumber,
+    'organization.national_address.short_address' =>
+      l10n.organizationAddressShortAddress,
+    'organization.category_ids' => l10n.organizationFieldsCategoriesLabel,
+    'organization.visible_in_suggestions' =>
+      l10n.organizationFieldsVisibleInSuggestions,
+    'accept_terms' => l10n.authRegisterAcceptTerms,
+    'accept_privacy' => l10n.authRegisterAcceptPrivacy,
+    _ => path,
+  };
 
   void _scrollToTop() {
     if (_scroll.hasClients) _scroll.jumpTo(0);
@@ -121,7 +270,7 @@ class _RegisterViewState extends State<_RegisterView> {
   void _submit() {
     FocusScope.of(context).unfocus();
     setState(() => _consentTried = true);
-    final valid = _forms[2].currentState?.validate() ?? false;
+    final valid = _validateStep(2);
     if (!valid || !_acceptTerms || !_acceptPrivacy) return;
     String? blank(TextEditingController c) =>
         c.text.trim().isEmpty ? null : normalizeDigits(c.text.trim());
@@ -173,7 +322,9 @@ class _RegisterViewState extends State<_RegisterView> {
       return;
     }
     final error = state.error;
-    if (error != null) BafoToast.error(context, errorMessage(context.l10n, error));
+    if (error != null) {
+      BafoToast.error(context, errorMessage(context.l10n, error));
+    }
     if (state.fieldErrors.isNotEmpty) {
       BafoToast.error(context, context.l10n.authRegisterFixErrors);
       _scrollToTop();
@@ -219,7 +370,16 @@ class _RegisterViewState extends State<_RegisterView> {
                             current: step + 1,
                             total: RegisterState.stepCount,
                             title: titles[step],
+                            announce: true,
                           ),
+                          if (_summary(state, step) case final items
+                              when items.isNotEmpty) ...[
+                            const SizedBox(height: BafoSpacing.md),
+                            FormErrorSummary(
+                              key: const Key('register.errors'),
+                              items: items,
+                            ),
+                          ],
                           const SizedBox(height: BafoSpacing.xl),
                           IndexedStack(
                             index: step,
@@ -534,7 +694,10 @@ class _RegisterViewState extends State<_RegisterView> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(l10n.organizationAddressTitle, style: theme.textTheme.titleSmall),
+          Text(
+            l10n.organizationAddressTitle,
+            style: theme.textTheme.titleSmall,
+          ),
           const SizedBox(height: BafoSpacing.xxs),
           Text(
             l10n.organizationAddressHelper,
@@ -553,7 +716,8 @@ class _RegisterViewState extends State<_RegisterView> {
                   maxLength: 4,
                   optional: true,
                   errorText: addressError('building_number'),
-                  validator: (value) => Validators.optionalDigits(value, 4, l10n),
+                  validator: (value) =>
+                      Validators.optionalDigits(value, 4, l10n),
                 ),
               ),
               const SizedBox(width: BafoSpacing.md),
@@ -564,7 +728,8 @@ class _RegisterViewState extends State<_RegisterView> {
                   maxLength: 4,
                   optional: true,
                   errorText: addressError('additional_number'),
-                  validator: (value) => Validators.optionalDigits(value, 4, l10n),
+                  validator: (value) =>
+                      Validators.optionalDigits(value, 4, l10n),
                 ),
               ),
             ],
@@ -596,7 +761,8 @@ class _RegisterViewState extends State<_RegisterView> {
                   maxLength: 5,
                   optional: true,
                   errorText: addressError('postal_code'),
-                  validator: (value) => Validators.optionalDigits(value, 5, l10n),
+                  validator: (value) =>
+                      Validators.optionalDigits(value, 5, l10n),
                 ),
               ),
               const SizedBox(width: BafoSpacing.md),
@@ -651,7 +817,10 @@ class _RegisterViewState extends State<_RegisterView> {
                         title: l10n.organizationFieldsCategoriesLabel,
                         options: [
                           for (final category in categories)
-                            SelectOption(value: category.id, label: category.name),
+                            SelectOption(
+                              value: category.id,
+                              label: category.name,
+                            ),
                         ],
                         selected: _categoryIds,
                         max: 20,

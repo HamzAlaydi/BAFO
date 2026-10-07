@@ -18,13 +18,18 @@ const props = withDefaults(defineProps<{
   /** Force a direction, e.g. 'ltr' for e-mail, phone and IDs inside Arabic forms. */
   dir?: 'ltr' | 'rtl' | 'auto'
   maxlength?: number
+  /** Show «{count} / {max}» under the field (bounded titles and names, FQ12). Needs `maxlength`. */
+  showCounter?: boolean
 }>(), {
   type: 'text',
 })
 
 const model = defineModel<string>({ default: '' })
+const { t } = useI18n()
 const autoId = useId()
 const inputId = computed(() => props.id ?? `input-${autoId}`)
+const counterId = computed(() => `${inputId.value}-counter`)
+const counting = computed(() => props.showCounter && props.maxlength !== undefined)
 </script>
 
 <template>
@@ -59,11 +64,18 @@ const inputId = computed(() => props.id ?? `input-${autoId}`)
         :dir="dir"
         :maxlength="maxlength"
         :aria-invalid="invalid || undefined"
-        :aria-describedby="describedby"
+        :aria-describedby="describedBy(describedby, counting ? counterId : undefined)"
         class="h-full min-w-0 flex-1 bg-transparent text-fg outline-none placeholder:text-fg-muted focus-visible:outline-none disabled:cursor-not-allowed"
         :class="dir === 'ltr' && 'text-start'"
       >
       <slot name="trailing" />
     </div>
+    <p
+      v-if="counting"
+      :id="counterId"
+      class="text-end text-xs text-fg-muted tabular-nums"
+    >
+      {{ t('common.character_count', { count: model.length, max: maxlength }) }}
+    </p>
   </UiField>
 </template>

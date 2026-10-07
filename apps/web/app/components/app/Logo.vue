@@ -29,6 +29,10 @@ const wordmark = computed(() => ({
   light: `/brand/wordmark-${locale.value}-charcoal.png`,
   dark: `/brand/wordmark-${locale.value}-white.png`,
 }))
+
+// Intrinsic pixel size of the artwork: gives the browser the aspect ratio before the file arrives,
+// so the header does not shift when the wordmark loads (the CSS height still sets the rendered size).
+const wordmarkSize = computed(() => (locale.value === 'ar' ? { width: 381, height: 295 } : { width: 650, height: 195 }))
 </script>
 
 <template>
@@ -43,6 +47,8 @@ const wordmark = computed(() => ({
         v-if="inverse"
         :src="wordmark.dark"
         alt=""
+        :width="wordmarkSize.width"
+        :height="wordmarkSize.height"
         :class="wordmarkHeight"
         class="w-auto"
       >
@@ -50,12 +56,16 @@ const wordmark = computed(() => ({
         <img
           :src="wordmark.light"
           alt=""
+          :width="wordmarkSize.width"
+          :height="wordmarkSize.height"
           :class="wordmarkHeight"
           class="w-auto dark:hidden"
         >
         <img
           :src="wordmark.dark"
           alt=""
+          :width="wordmarkSize.width"
+          :height="wordmarkSize.height"
           :class="wordmarkHeight"
           class="hidden w-auto dark:block"
         >

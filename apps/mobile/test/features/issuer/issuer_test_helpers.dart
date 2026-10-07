@@ -73,6 +73,105 @@ Competition issuerCompetition(
 
 Lookups fixtureLookups() => Lookups.fromJson(fixtureData('lookups'));
 
+/// The captured lookups plus the six tier presets of RELEASE_SCOPE.md §2.2
+/// (the Catalog seeder's values), for the tier cards.
+Lookups tieredLookups() =>
+    Lookups.fromJson(withTierPresets(copyOf(fixtureData('lookups'))));
+
+/// Adds the six tier presets of RELEASE_SCOPE.md §2.2 to a `GET /lookups`
+/// body (mutated and returned).
+Map<String, dynamic> withTierPresets(Map<String, dynamic> json) {
+  Map<String, dynamic> rules({
+    required String rank,
+    required int minParticipants,
+    int? stepBps,
+    Map<String, dynamic>? autoExtend,
+  }) => {
+    'min_step_minor': null,
+    'min_step_bps': stepBps,
+    'amount_granularity_minor': 100,
+    'must_beat': 'own',
+    'rank_visibility': rank,
+    'show_prices': false,
+    'auto_extend':
+        autoExtend ??
+        {
+          'enabled': false,
+          'window_seconds': null,
+          'by_seconds': null,
+          'max_extensions': null,
+        },
+    'final_window_minutes': null,
+    'bafo_round': {'enabled': false, 'duration_minutes': null},
+    'min_participants': minParticipants,
+    'result_publication': 'outcome_only',
+  };
+  final tiers = <Map<String, dynamic>>[];
+  for (final direction in ['tender', 'auction']) {
+    tiers.addAll([
+      {
+        'id': 'preset-$direction-simple',
+        'code': '${direction}_live_simple',
+        'tier': 'simple',
+        'name': 'بسيطة',
+        'description':
+            'يحسّن كل متنافس عرضه بحرّية ويعرف فقط إن كان متصدراً. '
+            'تُغلق المنافسة في موعدها دون تمديد.',
+        'direction': direction,
+        'format': 'live',
+        'rules': rules(rank: 'leading_flag', minParticipants: 1),
+      },
+      {
+        'id': 'preset-$direction-standard',
+        'code': '${direction}_live_standard',
+        'tier': 'standard',
+        'name': 'قياسية',
+        'description':
+            'حد أدنى للتحسين 0.5%. إذا تغيّر العرض المتصدر في آخر 3 دقائق '
+            'يُمدَّد الإغلاق 3 دقائق (حتى 10 مرات).',
+        'direction': direction,
+        'format': 'live',
+        'rules': rules(
+          stepBps: 50,
+          rank: 'leading_flag',
+          minParticipants: 2,
+          autoExtend: {
+            'enabled': true,
+            'window_seconds': 180,
+            'by_seconds': 180,
+            'max_extensions': 10,
+          },
+        ),
+      },
+      {
+        'id': 'preset-$direction-protected',
+        'code': '${direction}_live_protected',
+        'tier': 'protected',
+        'name': 'حماية قصوى',
+        'description':
+            'لا يرى المتنافسون ترتيبهم ولا أسعار غيرهم. حد أدنى للتحسين 1%، '
+            'وتمديد 5 دقائق عند أي تغيير في العرض المتصدر خلال آخر 5 دقائق '
+            '(حتى 20 مرة).',
+        'direction': direction,
+        'format': 'live',
+        'rules': rules(
+          stepBps: 100,
+          rank: 'none',
+          minParticipants: 2,
+          autoExtend: {
+            'enabled': true,
+            'window_seconds': 300,
+            'by_seconds': 300,
+            'max_extensions': 20,
+          },
+        ),
+      },
+    ]);
+  }
+  json['presets'] = [...tiers, ...(json['presets'] as List)];
+  return json;
+}
+
 List<Attachment> fixtureAttachments() =>
     fixtureList('attachments_issuer_live_initial')
         .map(Attachment.fromJson)

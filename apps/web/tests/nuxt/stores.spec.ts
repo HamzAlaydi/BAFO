@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
-import { makeHome, makeMe, makeNotification, makeTokenPayload } from '../fixtures/api'
+import { makeFlags, makeHome, makeMe, makeNotification, makeTokenPayload } from '../fixtures/api'
 import type { AppConfig } from '~/types/api/platform'
 
 const platform = vi.hoisted(() => ({ fetchAppConfig: vi.fn() }))
@@ -27,7 +27,7 @@ function appConfig(overrides: Partial<AppConfig> = {}): AppConfig {
     support: { email: 'help@bafo.test', phone: '+966500000000', whatsapp: '' },
     realtime: { key: 'reverb-key', host: 'localhost', port: 8085, scheme: 'http' },
     legal: { terms: { version: '2026-10-01' } },
-    features: { sponsorship: true },
+    features: { release_scope: 'full', sponsorship: true, flags: makeFlags('full') },
     currency: 'SAR',
     vat_rate_bp: 1500,
     supported_locales: ['ar', 'en'],

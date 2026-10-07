@@ -30,7 +30,8 @@ Route::prefix('competitions/{competition}')->name('competitions.')->group(static
     Route::get('offers/log', [OfferController::class, 'log'])->name('offers.log');
     Route::get('my-offers', [OfferController::class, 'mine'])->name('my-offers');
 
-    Route::post('bafo-round', [BafoRoundController::class, 'store'])->name('bafo-round.store');
+    // Release scope (RELEASE_SCOPE.md §1.5): starting a round is gated; a running round plays to the end.
+    Route::post('bafo-round', [BafoRoundController::class, 'store'])->middleware('feature:bafo_round')->name('bafo-round.store');
 
     Route::post('award', [AwardController::class, 'store'])->name('award.store');
     Route::get('award', [AwardController::class, 'show'])->name('award.show');

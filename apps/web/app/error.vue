@@ -14,6 +14,8 @@ const notFound = computed(() => props.error.statusCode === 404)
 useHead(() => ({
   title: notFound.value ? t('errors.page.not_found_title') : t('errors.page.server_title'),
   htmlAttrs: { 'lang': head.value.htmlAttrs.lang, 'dir': head.value.htmlAttrs.dir, 'data-theme': dataTheme.value },
+  // Error pages are never indexed (RELEASE_SCOPE §6.3); the 404 status itself comes from Nuxt.
+  meta: [{ key: 'robots', name: 'robots', content: 'noindex, nofollow' }],
 }))
 
 function retry(): void {

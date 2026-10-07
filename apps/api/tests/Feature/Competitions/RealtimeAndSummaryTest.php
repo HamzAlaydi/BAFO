@@ -109,6 +109,21 @@ describe('rules summary (§7.16)', function (): void {
             ->and(implode(' ', RulesSummary::lines($auction, 'ar', issuer: true)))->toContain('الحد الأدنى المقبول (')
             ->and(RulesSummary::lines($sealed, 'en'))->toContain('Participants see no rank and no prices.', 'The issuer may invite a shortlist to submit one best and final offer after closing.');
     });
+
+    it('counts minutes and extensions with the Arabic plural forms of the tier presets', function (int $window, int $max, string $ar, string $en): void {
+        $competition = Competition::factory()->make([
+            'auto_extend_enabled' => true, 'auto_extend_window_seconds' => $window, 'auto_extend_by_seconds' => $window,
+            'auto_extend_max' => $max, 'hard_stop_at' => null,
+        ]);
+
+        expect(RulesSummary::lines($competition, 'ar'))->toContain($ar)
+            ->and(RulesSummary::lines($competition, 'en'))->toContain($en);
+    })->with([
+        'standard tier' => [180, 10, 'العروض التي تغيّر العرض المتصدر في آخر 3 دقائق تمدد الإغلاق 3 دقائق، بحد أقصى 10 مرات.', 'Offers that change the leading offer in the last 3 minutes extend closing by 3 minutes, up to 10 times.'],
+        'protected tier' => [300, 20, 'العروض التي تغيّر العرض المتصدر في آخر 5 دقائق تمدد الإغلاق 5 دقائق، بحد أقصى 20 مرة.', 'Offers that change the leading offer in the last 5 minutes extend closing by 5 minutes, up to 20 times.'],
+        'two and one' => [120, 1, 'العروض التي تغيّر العرض المتصدر في آخر دقيقتين تمدد الإغلاق دقيقتين، بحد أقصى مرة واحدة.', 'Offers that change the leading offer in the last 2 minutes extend closing by 2 minutes, up to 1 time.'],
+        'eleven' => [660, 11, 'العروض التي تغيّر العرض المتصدر في آخر 11 دقيقة تمدد الإغلاق 11 دقيقة، بحد أقصى 11 مرة.', 'Offers that change the leading offer in the last 11 minutes extend closing by 11 minutes, up to 11 times.'],
+    ]);
 });
 
 it('renders the invitation mail in both languages with the sponsored line and no amounts', function (): void {

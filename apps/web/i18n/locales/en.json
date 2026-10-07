@@ -102,7 +102,10 @@
       "now": "Just now",
       "minutes": "{count} minutes ago | 1 minute ago | {count} minutes ago",
       "hours": "{count} hours ago | 1 hour ago | {count} hours ago",
-      "days": "{count} days ago | 1 day ago | {count} days ago"
+      "days": "{count} days ago | 1 day ago | {count} days ago",
+      "in_minutes": "in less than a minute | in 1 minute | in {count} minutes",
+      "in_hours": "in less than an hour | in 1 hour | in {count} hours",
+      "in_days": "today | in 1 day | in {count} days"
     },
     "stepper": {
       "label": "Progress",
@@ -174,6 +177,11 @@
     "footer": {
       "copyright": "© {year} BAFO. All rights reserved.",
       "legal_links": "Legal documents"
+    },
+    "autosave": {
+      "saving": "Saving automatically…",
+      "saved_at": "Saved at {time}",
+      "failed": "Automatic save failed. Save manually."
     }
   },
   "nav": {
@@ -355,7 +363,9 @@
     "api_access_disabled": "The API is not enabled for your organisation. Contact BAFO to enable it.",
     "external_ref_conflict": "This external reference is already used by another record.",
     "vendor_email_taken": "A vendor with this e-mail already exists.",
-    "webhook_url_invalid": "The URL must use https and point to a public address."
+    "webhook_url_invalid": "The URL must use https and point to a public address.",
+    "feature_disabled": "This feature is not available in this release.",
+    "feature_disabled_field": "This option is not available in this release."
   },
   "auth": {
     "session_expired": "Your session has expired. Please sign in again.",
@@ -397,7 +407,8 @@
       "invitation_hint": "Register with the e-mail address that received the invitation.",
       "invitation_hint_masked": "Register with the e-mail address that received the invitation: {email}",
       "invitation_email_mismatch": "You must register with the invited e-mail {email}.",
-      "invitation_dropped": "The invitation link is invalid or has expired, so your account will be created without it. Submit the form again."
+      "invitation_dropped": "The invitation link is invalid or has expired, so your account will be created without it. Submit the form again.",
+      "error_summary": "Check the following fields:"
     },
     "verify": {
       "title": "Verify your e-mail",
@@ -861,7 +872,7 @@
     },
     "setup": {
       "new_title": "New competition",
-      "new_subtitle": "The competition is saved as a draft after step 2. Nobody sees it until you publish.",
+      "new_subtitle": "The competition is saved as a draft after step 1. Nobody sees it until you publish.",
       "create_draft": "Save draft and continue",
       "created": "Draft saved.",
       "saved": "Changes saved.",
@@ -869,31 +880,31 @@
       "fix_fields": "Check the highlighted fields, then save.",
       "steps": {
         "type": "Type",
-        "basics": "Basics",
+        "basics": "Type and basics",
         "rules": "Rules",
         "schedule": "Schedule",
         "documents": "Documents",
-        "participants": "Participants",
+        "participants": "Participants and documents",
         "fees": "Participation fees",
         "review": "Review and publish"
       },
       "titles": {
         "type": "Competition type and format",
-        "basics": "Basic details",
+        "basics": "Type and basics",
         "rules": "Prices and rules",
         "schedule": "Schedule",
         "documents": "Competition documents",
-        "participants": "Invite participants",
+        "participants": "Participants and documents",
         "fees": "Participation fees",
         "review": "Review and publish"
       },
       "descriptions": {
         "type": "Choose who wins, how offers are submitted and a rules preset.",
-        "basics": "Describe the competition: title, description, category and region.",
-        "rules": "Set the prices and offer rules. The summary on the side updates as you go.",
-        "schedule": "Set when offers open and close, in Riyadh time.",
+        "basics": "Choose the competition type, then describe it: title, description, category and region.",
+        "rules": "Pick a one-sentence preset and set the prices. Advanced settings are optional.",
+        "schedule": "Set when offers open and close, in Riyadh time. Pick a ready duration or set your own.",
         "documents": "Attach specifications and terms, and choose what is visible before and after joining.",
-        "participants": "Pick from suggestions, paste e-mail addresses or choose from your vendor directory.",
+        "participants": "Invite participants by e-mail or from suggestions, and attach documents if you have any.",
         "fees": "You can cover the participation fees of your invitees for this competition.",
         "review": "Check every step before publishing. Invitations are sent when you publish."
       },
@@ -937,13 +948,14 @@
           "title": "Change the competition type",
           "body": "The rules return to the chosen preset. Your prices are kept.",
           "confirm": "Change and reset rules"
-        }
+        },
+        "format_kept": "The way offers are submitted is kept for this competition and cannot change in this release."
       },
       "basics": {
         "title_label": "Competition title",
-        "title_hint": "A clear title for what you are buying or selling.",
+        "title_hint": "A clear title for what you are buying or selling. Example: Supply of 50 laptops.",
         "description_label": "Description",
-        "description_hint": "Quantities, specifications, delivery and special terms. Required before publishing.",
+        "description_hint": "Quantities, specifications, delivery and special terms. Required before publishing. Example: 50 units with 16 GB memory, delivered within 30 days in Riyadh.",
         "category_label": "Category",
         "category_auction_hint": "Some categories are not available for auctions.",
         "other_text_label": "Specify the category",
@@ -957,7 +969,10 @@
           "region_required": "Choose a region.",
           "description_too_long": "The description is longer than {max} characters.",
           "description_required": "A description is required before publishing."
-        }
+        },
+        "category_hint": "The category helps suggest suitable participants.",
+        "region_hint": "The region of delivery or execution.",
+        "other_text_hint": "Describe the category in your words. Example: translation services."
       },
       "schedule": {
         "opens_label": "When offers open",
@@ -977,16 +992,33 @@
           "final_window": "Final pricing window starts",
           "invitation_cutoff": "Joining closes",
           "close": "Close",
-          "latest_close": "Latest possible close"
+          "latest_close": "Latest possible close",
+          "invitation_cutoff_note": "Invitees cannot join after this time."
         },
         "issues": {
           "close_required": "Set the closing time before publishing.",
           "opens_in_past": "The opening time has passed. Choose a later time or “When published”.",
           "close_after_open": "Closing must be after the opening time.",
-          "min_duration": "The competition must run for at least {minutes} minutes.",
-          "max_duration": "The competition cannot run longer than {days} days.",
-          "final_window_too_long": "The final pricing window ({minutes} minutes) is longer than the competition."
-        }
+          "min_duration": "The duration is less than a minute; the minimum is {min} minutes. | The duration is only 1 minute; the minimum is {min} minutes. | The duration is only {minutes} minutes; the minimum is {min} minutes.",
+          "max_duration": "The duration is {days} days; the maximum is {max} days. | The duration is 1 day; the maximum is {max} days. | The duration is {days} days; the maximum is {max} days.",
+          "final_window_too_long": "The final pricing window ({minutes} minutes) is longer than the competition.",
+          "close_in_past": "The closing time has passed. Choose a later time."
+        },
+        "quick": {
+          "legend": "Competition duration",
+          "hour": "1 hour",
+          "hours_3": "3 hours",
+          "day": "1 day",
+          "days_3": "3 days",
+          "week": "1 week",
+          "custom": "Custom",
+          "computed_from_publish": "The duration counts from the moment you publish (rounded to 5 minutes).",
+          "computed_from_opens": "The duration counts from the set opening time."
+        },
+        "opens_at_field_hint": "Riyadh time. Example: next Sunday 9:00 AM.",
+        "relative_close": "Closes {relative}: {deadline}",
+        "join_deadline_title": "Joining deadline",
+        "join_deadline_hint": "Joining closes {minutes} minutes before the closing time. An invitee who has not joined by then cannot submit an offer, so send invitations early. The time is shown in the timeline."
       },
       "documents": {
         "intro": "“Before joining” documents are shown with the invitation. “After joining” documents are only for participants who joined."
@@ -1030,6 +1062,14 @@
         "already_published": "The competition’s status changed. We refreshed it.",
         "go_to": "Go to “{step}”",
         "complete_profile": "Complete billing details"
+      },
+      "error_summary": {
+        "title": "Could not save. Check the following fields:"
+      },
+      "participants": {
+        "documents_title": "Optional documents",
+        "documents_hint": "Specifications and terms sent with the invitation or shown after joining.",
+        "fees_title": "Participation fees"
       }
     }
   },
@@ -1213,7 +1253,7 @@
         "add": "Add",
         "added": "Added",
         "emails_label": "E-mail addresses",
-        "emails_hint": "Paste a list separated by commas, spaces or new lines.",
+        "emails_hint": "Paste a list separated by commas, spaces or new lines. Example: a{'@'}co.sa, b{'@'}co.sa",
         "invalid_email": "(invalid address)",
         "invalid_count": "{count} invalid address | {count} invalid addresses",
         "add_emails": "Add {count} address | Add {count} addresses",
@@ -1225,8 +1265,10 @@
         "staged_title": "Ready to add",
         "name_label": "Recipient name (optional)",
         "cover_fees": "Cover fees",
-        "remove_row": "Remove {label}"
-      }
+        "remove_row": "Remove {label}",
+        "add_emails_reason": "Enter at least one valid e-mail address."
+      },
+      "add_reason": "Add at least one invitee with a valid e-mail address."
     }
   },
   "sponsorship": {
@@ -1596,14 +1638,16 @@
     "meta": {
       "title": "The B2B competition platform: tenders and auctions",
       "og_title": "BAFO: Best and Final Offer",
-      "description": "Run tenders and auctions, invite qualified companies, receive live or sealed offers, then award, with published rules and offers timed by the server.",
-      "og_image_alt": "BAFO logo",
-      "keywords": "e-tendering Saudi, online tender platform, reverse auction, online auction, procurement, BAFO"
+      "description": "Run tenders and auctions, invite qualified companies, receive live offers, then award, with published rules and offers timed by the server.",
+      "description_sealed": "Run tenders and auctions, invite qualified companies, receive live or sealed offers, then award, with published rules and offers timed by the server.",
+      "og_image_alt": "BAFO: the B2B tender and auction platform",
+      "keywords": "e-tendering Saudi, online tender platform, reverse auction, online auction, procurement, BAFO",
+      "site_name": "BAFO"
     },
     "hero": {
       "eyebrow": "A Saudi platform for business competitions",
       "title": "Run your competition, get the best and final offer",
-      "subtitle": "BAFO lets organisations run tenders and auctions, invite qualified companies, receive and compare offers, then award, with published rules for every competition and offers timed by the server.",
+      "subtitle": "A Saudi platform where companies run tenders and auctions between businesses, invite participants, receive and compare offers, and award, under published rules and server-controlled timing.",
       "primary_cta": "Create your organisation account",
       "secondary_cta": "Sign in",
       "points": {
@@ -1618,7 +1662,19 @@
       "issuer": "Issuer: Procurement department",
       "time_left": "Time left",
       "participants": "No participants | {count} participant | {count} participants",
-      "leading": "Your offer is the leading offer"
+      "leading": "Your offer is the leading offer",
+      "closes_in": "Closes in",
+      "server_clock": "Server clock",
+      "standings": "Standings",
+      "alias": "Participant {number}",
+      "you": "Your offer",
+      "rank": "Rank {rank}",
+      "auto_extend": "Auto-extend on",
+      "times": {
+        "first": "2 minutes ago",
+        "second": "9 minutes ago",
+        "third": "21 minutes ago"
+      }
     },
     "how": {
       "title": "How BAFO works",
@@ -1663,6 +1719,36 @@
           "title": "Get the result",
           "body": "You are notified when the competition closes and when it is awarded."
         }
+      },
+      "steps": {
+        "issuer": {
+          "create": {
+            "title": "Create the competition",
+            "body": "Choose a tender or an auction, one of three ready presets, and the closing time. BAFO explains each preset's effect in one sentence."
+          },
+          "invite": {
+            "title": "Invite participants",
+            "body": "Enter the e-mail addresses of the companies you want and attach the terms and documents. Every competition is by invitation."
+          },
+          "award": {
+            "title": "Award",
+            "body": "After closing you see the final standings. Choose the winning offer, record a justification when needed, and download the result PDF."
+          }
+        },
+        "participant": {
+          "invited": {
+            "title": "Receive the invitation",
+            "body": "The invitation arrives by e-mail with a summary of the competition and the join deadline. Join with your company account."
+          },
+          "offer": {
+            "title": "Submit your offer",
+            "body": "Review the documents and ask your questions, then submit your offer and improve it until closing under the published rules."
+          },
+          "result": {
+            "title": "Learn the result",
+            "body": "You are notified at closing and at award, with your rank when the rules show it."
+          }
+        }
       }
     },
     "modes": {
@@ -1672,18 +1758,22 @@
       "tender": {
         "title": "Tender",
         "body": "For buying goods, services and supply contracts: suppliers compete on price, and the lowest offer leads.",
-        "examples": "equipment supply, maintenance contracts, transport services."
+        "examples": "equipment supply, maintenance contracts, transport services.",
+        "lead": "You are buying, and the lowest offer wins."
       },
       "auction": {
         "title": "Auction",
         "body": "For selling assets, surplus and stock: bidders compete on price, and the highest offer leads.",
-        "examples": "used equipment, surplus stock, vehicles."
+        "examples": "used equipment, surplus stock, vehicles.",
+        "lead": "You are selling, and the highest offer wins."
       },
       "formats": {
         "live": "Each participant sees where their offer stands during the competition, as far as the issuer allows, and can improve it until closing.",
         "sealed": "Nobody sees the offers before closing, and each participant can revise their offer until the closing time."
       },
-      "bafo_round": "After closing, the issuer can open a best-and-final-offer round for a shortlist of participants, each of whom submits one final offer."
+      "bafo_round": "After closing, the issuer can open a best-and-final-offer round for a shortlist of participants, each of whom submits one final offer.",
+      "live_line": "Every competition is live and has a fixed closing time: each participant sees what the rules allow and can improve their offer until closing.",
+      "sealed_line": "A competition can also run sealed, so nobody sees the offers before closing."
     },
     "sponsored": {
       "title": "Covered fees for your invitees",
@@ -1754,51 +1844,69 @@
     },
     "plans": {
       "title": "Plans that fit your team",
-      "subtitle": "You need an active plan to issue competitions. To take part, you need a plan or fees covered by the issuer.",
+      "subtitle": "Issuers need an active plan, with a free trial for new companies. Taking part in competitions requires a company account.",
       "cta": "Get started",
       "custom": "A custom plan is available for more seats.",
-      "trial": "A free trial is available for new organisations."
+      "trial": "A free trial is available for new organisations.",
+      "interval_label": "Subscription period"
     },
     "faq": {
       "title": "Frequently asked questions",
       "items": {
         "what": {
           "question": "What is BAFO?",
-          "answer": "BAFO is a Saudi platform for business competitions. An organisation runs its competition, a tender to buy or an auction to sell, invites qualified companies to submit offers, then awards it to the best offer."
+          "answer": "A Saudi platform where companies run tenders and auctions between businesses, invite participants, receive and compare offers, and award, under published rules and server-controlled timing."
         },
         "tender_auction": {
           "question": "What is the difference between a tender and an auction?",
-          "answer": "In a tender, suppliers compete to supply goods or services, and the lowest offer leads. In an auction, bidders compete to buy what the organisation is selling, and the highest offer leads."
+          "answer": "In a tender you are buying and the lowest offer wins. In an auction you are selling and the highest offer wins. You choose the direction when you create the competition."
         },
         "sealed": {
           "question": "What is a sealed competition?",
           "answer": "A competition in which nobody sees the offers before closing, the issuer included. Each participant can revise their offer until the closing time, and then all offers are opened."
         },
         "identities": {
-          "question": "Can participants see each other's identities or prices?",
-          "answer": "No participant sees another's identity. The issuer decides what participants see during the competition, such as their rank or the leading offer."
+          "question": "Can participants see each other?",
+          "answer": "No. Each participant appears to the others by an alias number only, and prices are shown only when the competition rules allow it."
         },
         "clock": {
-          "question": "How are last-minute offers timed?",
-          "answer": "Offers are timed on receipt by the BAFO server. When the issuer turns on automatic extension, closing is extended when an offer arrives in the last minutes, up to a published limit."
+          "question": "How is the closing time calculated?",
+          "answer": "Timing follows the BAFO server clock, not the participant's device. Each offer is timed when it is received, and countdowns are shown in Riyadh time."
         },
         "sponsored": {
-          "question": "What is sponsored participation?",
-          "answer": "The issuer covers the participation fees of the companies it invites with sponsored participation passes, so an invited company can join that competition without a plan."
+          "question": "Can I cover my suppliers' participation fees?",
+          "answer": "Yes. An issuer can cover participation fees for all or some invitees in a specific competition, and participants cannot see whose fees are covered."
         },
         "plans": {
-          "question": "Do I need a plan?",
-          "answer": "You need an active plan to issue competitions, and a plan to take part unless the competition's fees are covered. Prices exclude VAT, and new organisations can start with a free trial."
+          "question": "How much does it cost?",
+          "answer": "Issuers need an active plan, with a free trial for new companies. Taking part in competitions requires a company account. Prices exclude VAT."
         },
         "erp": {
-          "question": "Can BAFO connect to our ERP?",
-          "answer": "Yes, through a public API with scoped access, signed webhooks, vendor import and result exports as CSV and Excel files. The API has to be enabled for your organisation."
+          "question": "Does BAFO integrate with ERP systems?",
+          "answer": "Yes, through a public API and webhooks to create competitions and sync awards with your system."
         },
         "mobile": {
-          "question": "Is BAFO available on mobile?",
-          "answer": "Yes. The BAFO mobile apps let you follow, join and issue competitions. Plans and payments are handled in the web dashboard."
+          "question": "Is there a mobile app?",
+          "answer": "Yes, for iOS and Android: follow competitions, submit offers and manage invitations. Subscriptions and advanced settings are managed from the web dashboard."
+        },
+        "who_can_join": {
+          "question": "Who can take part in my competition?",
+          "answer": "Only the companies you invite, by e-mail or from suggestions. There are no public competitions; every competition is by invitation."
+        },
+        "anti_sniping": {
+          "question": "What happens if an offer arrives at the last second?",
+          "answer": "If auto-extend is on, closing extends by a set number of minutes whenever the leading offer changes in the final minutes, up to a limit you set."
+        },
+        "rules": {
+          "question": "Do I need to understand every rule?",
+          "answer": "No. Pick one of three presets (simple, standard, maximum protection) and BAFO explains its effect in one sentence. You can adjust the details later if you wish."
+        },
+        "award": {
+          "question": "How does the award work?",
+          "answer": "After closing you see the final standings, choose the winning offer, record a justification if it is not the best, and download the result report as a PDF."
         }
-      }
+      },
+      "subtitle": "Short answers to the questions we hear most."
     },
     "contact": {
       "title": "Contact us",
@@ -1816,7 +1924,65 @@
       "sent_body": "The BAFO team will get back to you shortly."
     },
     "cta": {
-      "body": "Create your organisation account and start your first competition."
+      "body": "Create your organisation account and start your first competition.",
+      "title": "Start your first competition today",
+      "contact": "Questions? Contact us"
+    },
+    "nav": {
+      "label": "Page sections",
+      "how": "How it works",
+      "modes": "Tender or auction",
+      "fairness": "Fairness",
+      "plans": "Plans",
+      "faq": "FAQ"
+    },
+    "fairness": {
+      "title": "Fairness guaranteed by rules, not promises",
+      "subtitle": "Every competition's rules are published before it starts, and the server applies them to everyone equally.",
+      "items": {
+        "clock": {
+          "title": "Server clock",
+          "body": "Every offer is timed when the BAFO server receives it, not by the participant's device, and countdowns are shown in Riyadh time."
+        },
+        "anti_sniping": {
+          "title": "Anti-sniping",
+          "body": "With auto-extend on, closing extends by a set number of minutes whenever the leading offer changes in the final minutes, up to a limit you choose."
+        },
+        "sealed": {
+          "title": "Sealed offers",
+          "body": "In sealed competitions nobody sees the offers before closing, the issuer included."
+        },
+        "audit": {
+          "title": "Audit log",
+          "body": "Every action in a competition is recorded with its time and actor, and each participant appears to the others by an alias number only."
+        }
+      }
+    },
+    "audience": {
+      "title": "Who BAFO is for",
+      "subtitle": "For the buyer, the seller and the invited supplier.",
+      "items": {
+        "procurement": {
+          "term": "Tender",
+          "title": "Procurement teams buying goods and services",
+          "body": "Run a tender, invite qualified suppliers, compare offers in one place, then award the best."
+        },
+        "sellers": {
+          "term": "Auction",
+          "title": "Companies selling surplus and assets",
+          "body": "Run an auction for equipment, surplus stock and vehicles, and let buyers compete on the highest offer."
+        },
+        "suppliers": {
+          "term": "Participant",
+          "title": "Suppliers invited to compete",
+          "body": "Receive the invitation, review the documents, submit and improve your offer until closing, and learn the result as soon as it is awarded."
+        }
+      }
+    },
+    "footer": {
+      "support": "Support and contact",
+      "language": "Language",
+      "copyright": "© BAFO. All rights reserved."
     }
   },
   "live": {
@@ -1925,7 +2091,8 @@
       "unavailable": {
         "generic": "The competition is not accepting offers right now.",
         "opens_at": "Offers open at {time}"
-      }
+      },
+      "amount_example": "Example: 125,000.00"
     },
     "metric": {
       "improvement": {
@@ -2316,6 +2483,7 @@
   "billing": {
     "title": "Subscription and billing",
     "subtitle": "Your organisation's plan, team seats, vouchers and invoices.",
+    "subtitle_core": "Your organisation's plan, team seats and subscription history.",
     "common": {
       "percent": "{value}%",
       "per_month": "per month",
@@ -3164,7 +3332,9 @@
       "halalas": "With halalas"
     },
     "advanced": {
-      "title": "Advanced rules"
+      "title": "Advanced settings",
+      "hint": "Optional. Auto-extend, the minimum improvement and what participants see.",
+      "errors_inside": "{count} errors inside | 1 error inside | {count} errors inside"
     },
     "sealed_note": "In a sealed competition each participant submits one sealed offer, revisable until closing. No standing or prices are shown.",
     "sealed_unavailable": "Not available in sealed competitions",
@@ -3213,7 +3383,8 @@
       "outcome_only": "Outcome only",
       "outcome_only_description": "Each participant learns whether they were awarded.",
       "outcome_and_amount": "Outcome and amount",
-      "outcome_and_amount_description": "The awarded amount is shown too, so prices are shown."
+      "outcome_and_amount_description": "The awarded amount is shown too, so prices are shown.",
+      "hint": "What participants are told after the award."
     },
     "final_window": {
       "label": "Final pricing window",
@@ -3297,9 +3468,13 @@
       "visibility_none": "Participants only see their own offer.",
       "visibility_none_prices": "Participants see their own offer and the leading amount.",
       "visibility_sealed": "No offers or standing are shown before closing.",
-      "final_window": "The final pricing window starts {minutes} minutes before closing; before it, participants only see their own offer.",
-      "auto_extend": "A change of leading offer in the last {window} minutes extends closing by {by} minutes, up to {max} times.",
-      "bafo": "After closing you may invite a shortlist to submit one final offer within {minutes} minutes.",
+      "final_window": "The final pricing window starts {minutes} before closing; before it, participants only see their own offer.",
+      "auto_extend": "A change of leading offer in the last {window} extends closing by {by}, up to {max}.",
+      "units": {
+        "minutes": "{count} minute | {count} minutes",
+        "times": "{count} time | {count} times"
+      },
+      "bafo": "After closing you may invite a shortlist to submit one final offer within {minutes}.",
       "min_participants": "Minimum invitees at publishing: {count}.",
       "result_none": "The result is not shown to participants.",
       "result_outcome_only": "Each participant learns their outcome, without the awarded amount.",
@@ -3307,6 +3482,21 @@
       "granularity_riyals": "Amounts in whole riyals.",
       "granularity_halalas": "Amounts with halalas.",
       "server_time": "Offers are timed on receipt by the BAFO server. Prices exclude VAT."
-    }
+    },
+    "tiers": {
+      "legend": "Rules preset",
+      "hint": "Pick one preset and BAFO applies its rules. You can adjust the details under “Advanced settings”.",
+      "names": {
+        "simple": "Simple",
+        "standard": "Standard",
+        "protected": "Maximum protection"
+      },
+      "other_presets": "Other templates",
+      "other_presets_hint": "Additional reference templates for advanced users.",
+      "reset_to": "Reset to {tier}",
+      "customised_note": "Some rules differ from the preset.",
+      "none": "There are no presets for this type. The default rules apply and you can adjust them."
+    },
+    "price_example": "Example: 125,000.00"
   }
 }

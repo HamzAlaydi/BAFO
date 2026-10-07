@@ -23,14 +23,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('vendors', [VendorController::class, 'index'])->name('vendors.index');
-Route::post('vendors', [VendorController::class, 'store'])->name('vendors.store');
-Route::get('vendors/{vendor}', [VendorController::class, 'show'])->name('vendors.show');
-Route::patch('vendors/{vendor}', [VendorController::class, 'update'])->name('vendors.update');
-Route::delete('vendors/{vendor}', [VendorController::class, 'destroy'])->name('vendors.destroy');
+// Release scope (RELEASE_SCOPE.md §1.5): the directory, the API clients/webhooks and the CSV
+// jobs each sit behind their `feature:` gate; a hidden group answers 404 `feature_disabled`.
+Route::middleware('feature:vendor_directory')->group(static function (): void {
+    Route::get('vendors', [VendorController::class, 'index'])->name('vendors.index');
+    Route::post('vendors', [VendorController::class, 'store'])->name('vendors.store');
+    Route::get('vendors/{vendor}', [VendorController::class, 'show'])->name('vendors.show');
+    Route::patch('vendors/{vendor}', [VendorController::class, 'update'])->name('vendors.update');
+    Route::delete('vendors/{vendor}', [VendorController::class, 'destroy'])->name('vendors.destroy');
+});
 
 Route::prefix('integrations')->name('integrations.')->group(static function (): void {
-    Route::middleware('integrations.access:api')->group(static function (): void {
+    Route::middleware(['feature:integrations_api', 'integrations.access:api'])->group(static function (): void {
         Route::get('api-clients', [ApiClientController::class, 'index'])->name('api-clients.index');
         Route::post('api-clients', [ApiClientController::class, 'store'])->name('api-clients.store');
         Route::get('api-clients/{client}', [ApiClientController::class, 'show'])->name('api-clients.show');
@@ -52,7 +56,7 @@ Route::prefix('integrations')->name('integrations.')->group(static function (): 
         Route::post('webhook-deliveries/{delivery}/redeliver', [WebhookEndpointController::class, 'redeliver'])->name('webhook-deliveries.redeliver');
     });
 
-    Route::middleware('integrations.access')->group(static function (): void {
+    Route::middleware(['feature:csv_import_export', 'integrations.access'])->group(static function (): void {
         Route::get('imports/templates/{type}', [ImportController::class, 'template'])->name('imports.template');
         Route::post('imports', [ImportController::class, 'store'])->name('imports.store');
         Route::get('imports/{job}', [ImportController::class, 'show'])->name('imports.show');

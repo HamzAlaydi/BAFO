@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { mockNuxtImport, mountSuspended } from '@nuxt/test-utils/runtime'
 import type { Ref } from 'vue'
-import { makeTokenPayload } from '../fixtures/api'
+import { makeAppConfig, makeTokenPayload } from '../fixtures/api'
 import {
   COMPETITION_ID,
   makeInvitation,
@@ -131,6 +131,8 @@ beforeEach(() => {
   integrations.listVendors.mockResolvedValue({ items: [], pagination: { type: 'page', current_page: 1, per_page: 20, has_more: false } })
   competitions.fetchSuggestions.mockResolvedValue([])
   useAuthStore().setSession(makeTokenPayload())
+  // Covered fees, vendors and extensions are hidden in the first release: these tests run against the full product.
+  useAppConfigStore().config = makeAppConfig()
 })
 
 // ---------------------------------------------------------------------------------------------

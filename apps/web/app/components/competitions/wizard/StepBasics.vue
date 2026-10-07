@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { DESCRIPTION_MAX, OTHER_TEXT_MAX, TITLE_MAX } from '~/stores/competition-editor'
+import { WIZARD_FIELD_IDS } from '~/stores/competition-editor-steps'
 
 /**
- * Wizard step 2 «البيانات الأساسية» (SCREENS W12 step 2, W15 `basics`): title, description, category
- * (auction-disallowed categories are disabled for auctions; "Other" asks for its text) and region.
- * Client hints show after a blur or a submit attempt; server errors bind by path.
+ * The basics of a competition (SCREENS W12 step 2, W15 `basics`; the lower half of step 1 in the
+ * 5-step wizard): title, description, category (auction-disallowed categories are disabled for
+ * auctions; "Other" asks for its text) and region. Client hints show after a blur or a submit attempt
+ * (FQ2); server errors bind by path. Fields carry stable ids (`wizard-<field>`) so the error summary
+ * of the page can focus them (FQ8).
  */
 const props = defineProps<{
   /** Show every hint (after a submit attempt). */
@@ -15,6 +18,7 @@ const { t } = useI18n()
 const editor = useCompetitionEditorStore()
 const lookups = useLookupsStore()
 const touched = ref(new Set<string>())
+const BASICS_FIELD_IDS = WIZARD_FIELD_IDS
 
 onMounted(() => {
   void lookups.ensureLoaded().catch(() => {})
@@ -57,16 +61,19 @@ const regionId = computed<string | null>({ get: () => editor.form.region_id, set
     </UiAlert>
 
     <UiInput
+      :id="BASICS_FIELD_IDS.title"
       v-model="title"
       :label="t('competitions.setup.basics.title_label')"
       :hint="t('competitions.setup.basics.title_hint')"
       :error="errorFor('title')"
       :maxlength="TITLE_MAX"
+      show-counter
       required
       @blur="touch('title')"
     />
 
     <UiTextarea
+      :id="BASICS_FIELD_IDS.description"
       v-model="description"
       :label="t('competitions.setup.basics.description_label')"
       :hint="t('competitions.setup.basics.description_hint')"
@@ -78,19 +85,22 @@ const regionId = computed<string | null>({ get: () => editor.form.region_id, set
 
     <div class="grid gap-6 md:grid-cols-2">
       <UiSelect
+        :id="BASICS_FIELD_IDS.category_id"
         v-model="categoryId"
         :options="categoryOptions"
         :label="t('competitions.setup.basics.category_label')"
-        :hint="editor.form.direction === 'auction' ? t('competitions.setup.basics.category_auction_hint') : undefined"
+        :hint="editor.form.direction === 'auction' ? t('competitions.setup.basics.category_auction_hint') : t('competitions.setup.basics.category_hint')"
         :placeholder="t('common.select_placeholder')"
         :error="errorFor('category_id')"
         required
         @blur="touch('category_id')"
       />
       <UiSelect
+        :id="BASICS_FIELD_IDS.region_id"
         v-model="regionId"
         :options="regionOptions"
         :label="t('competitions.setup.basics.region_label')"
+        :hint="t('competitions.setup.basics.region_hint')"
         :placeholder="t('common.select_placeholder')"
         :error="errorFor('region_id')"
         required
@@ -100,8 +110,10 @@ const regionId = computed<string | null>({ get: () => editor.form.region_id, set
 
     <UiInput
       v-if="editor.category?.is_other"
+      :id="BASICS_FIELD_IDS.category_other_text"
       v-model="otherText"
       :label="t('competitions.setup.basics.other_text_label')"
+      :hint="t('competitions.setup.basics.other_text_hint')"
       :error="errorFor('category_other_text')"
       :maxlength="OTHER_TEXT_MAX"
       required

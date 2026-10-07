@@ -45,9 +45,17 @@ void main() {
 
     test('step 1 needs a direction, a format and a matching preset', () {
       const form = CompetitionDraftForm();
+      // The preset is asked only once the direction and format exist: its
+      // cards are not shown before (RELEASE_SCOPE.md §2.6).
       expect(form.validate(CreateStep.type, lookups: lookups, now: now), {
         DraftField.direction: DraftProblem.required,
         DraftField.format: DraftProblem.required,
+      });
+      const chosen = CompetitionDraftForm(
+        direction: Direction.tender,
+        format: CompetitionFormat.live,
+      );
+      expect(chosen.validate(CreateStep.type, lookups: lookups, now: now), {
         DraftField.preset: DraftProblem.required,
       });
       // A preset of the other direction does not count.
@@ -74,6 +82,46 @@ void main() {
         otherCategory.validate(CreateStep.basics, lookups: lookups, now: now),
         {DraftField.categoryOtherText: DraftProblem.required},
       );
+    });
+
+    test('prices: text that cannot be used blocks the step (FQ2, FQ8)', () {
+      final tender = complete().copyWith(startPriceMinor: () => null);
+      CompetitionDraftForm typed(String text) => withAmountText(
+        tender,
+        DraftField.startPrice,
+        text,
+        granularityMinor: 100,
+      );
+      for (final (text, problem) in [
+        ('1.234', DraftProblem.amountInvalid),
+        ('1.2.3', DraftProblem.amountInvalid),
+        ('0', DraftProblem.amountNotPositive),
+        ('1500.50', DraftProblem.amountWholeRiyals),
+      ]) {
+        expect(
+          typed(text).validate(CreateStep.schedule, lookups: lookups, now: now),
+          {DraftField.startPrice: problem},
+          reason: text,
+        );
+        expect(
+          typed(text).validate(CreateStep.review, lookups: lookups, now: now),
+          containsPair(DraftField.startPrice, problem),
+          reason: text,
+        );
+      }
+      // Usable or empty text clears the mark; the autosave never stores it.
+      final marked = typed('1.234');
+      for (final text in ['1500', '']) {
+        final cleared = withAmountText(
+          marked,
+          DraftField.startPrice,
+          text,
+          granularityMinor: 100,
+        );
+        expect(cleared.unreadableAmounts, isEmpty, reason: text);
+      }
+      expect(marked.toJson().containsKey('unreadable_amounts'), isFalse);
+      expect(marked, isNot(tender));
     });
 
     test('prices: the auction start price is required, R6 by direction', () {

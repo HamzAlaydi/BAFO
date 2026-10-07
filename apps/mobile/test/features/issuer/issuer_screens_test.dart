@@ -1,3 +1,4 @@
+import 'package:bafo/core/config/app_config.dart';
 import 'package:bafo/core/files/file_download_service.dart';
 import 'package:bafo/core/l10n/l10n.dart';
 import 'package:bafo/core/lookups/lookups_repository.dart';
@@ -17,6 +18,8 @@ import 'package:bafo/features/invitations/domain/invitation_models.dart';
 import 'package:bafo/features/issuer/data/issuer_report_repository.dart';
 import 'package:bafo/features/issuer/issuer.dart';
 import 'package:bafo/features/issuer/presentation/award/award_screen.dart';
+import 'package:bafo/features/issuer/presentation/create/create_competition_cubit.dart';
+import 'package:bafo/features/issuer/presentation/create/draft_form_fields.dart';
 import 'package:bafo/features/issuer/presentation/list/my_competitions_screen.dart';
 import 'package:bafo/features/issuer/presentation/live/issuer_live_monitor_screen.dart';
 import 'package:bafo/features/live/data/live_repository.dart';
@@ -31,6 +34,7 @@ import 'package:material_ui/material_ui.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:provider/provider.dart';
 
+import '../../helpers/scope.dart';
 import 'issuer_test_helpers.dart';
 
 void main() {
@@ -97,6 +101,10 @@ void main() {
     WidgetTester tester, {
     required String location,
     Locale locale = const Locale('ar'),
+    // The format cards, the vendor segment and the reserve are hidden
+    // features (RELEASE_SCOPE.md §4): the screens run in scope `full` unless
+    // a test says otherwise.
+    FeatureFlags? flags,
   }) async {
     final rootKey = GlobalKey<NavigatorState>();
     Widget stub(String name) => Scaffold(body: Text('stub:$name'));
@@ -126,6 +134,7 @@ void main() {
     await tester.pumpWidget(
       MultiProvider(
         providers: [
+          scopeProvider(flags ?? ScopeFlags.full),
           RepositoryProvider<ServerClock>.value(value: ServerClock()),
           BlocProvider<NetworkStatusCubit>(
             create: (_) => NetworkStatusCubit(probe: () async {}),
@@ -664,6 +673,232 @@ void main() {
       await tester.tap(find.widgetWithText(BafoButton, ar.commonActionsCancel));
       await tester.pumpAndSettle();
       verifyNever(() => invitations.remove(any(), any()));
+    });
+  });
+
+  group('release scope (RELEASE_SCOPE.md §2.6, §4)', () {
+    final tiered = tieredLookups();
+
+    /// The basics through the cubit (the dropdowns are covered by M35).
+    void fillBasics(WidgetTester tester) {
+      final cubit = tester
+          .element(find.byType(DraftFormFields))
+          .read<CreateCompetitionCubit>();
+      cubit.update(
+        (f) => f.copyWith(
+          title: 'توريد أجهزة',
+          categoryId: () => tiered.categories.first.id,
+          regionId: () => tiered.regions.first.id,
+        ),
+      );
+    }
+
+    testWidgets(
+      'core: no format choice, tier cards, no reserve; a quick pick sets the close',
+      (tester) async {
+        tall(tester);
+        await signIn('me_issuer');
+        when(() => lookups.lookups()).thenAnswer((_) async => tiered);
+        await pump(
+          tester,
+          location: '/my-competitions/new',
+          flags: ScopeFlags.core,
+        );
+        await tester.pumpAndSettle();
+
+        expect(find.byKey(const ValueKey('format-live')), findsNothing);
+        expect(find.text(ar.issuerCreateFormatTitle), findsNothing);
+        await tester.tap(find.byKey(const ValueKey('direction-tender')));
+        await tester.pumpAndSettle();
+        expect(find.text(ar.issuerPresetTierTitle), findsOneWidget);
+        for (final tier in ['simple', 'standard', 'protected']) {
+          expect(
+            find.byKey(ValueKey('preset-tender_live_$tier')),
+            findsOneWidget,
+            reason: tier,
+          );
+        }
+        expect(find.text(ar.issuerPresetTierRecommended), findsOneWidget);
+        // The legacy template is an advanced option: not in core.
+        expect(
+          find.byKey(const ValueKey('preset-standard_live_tender')),
+          findsNothing,
+        );
+        expect(find.text(ar.issuerPresetTierOther), findsNothing);
+        expect(find.text(ar.issuerCreateAdvancedOnWeb), findsOneWidget);
+
+        await tester.tap(find.byKey(const Key('create.next')));
+        await tester.pumpAndSettle();
+        expect(find.text(ar.issuerCreateStepBasics), findsOneWidget);
+        expect(find.text(ar.issuerFieldTitleHelper), findsOneWidget);
+        fillBasics(tester);
+        await tester.pump();
+        await tester.tap(find.byKey(const Key('create.next')));
+        await tester.pumpAndSettle();
+
+        expect(find.text(ar.issuerCreateStepSchedule), findsOneWidget);
+        expect(find.text(ar.issuerFieldStartPrice('tender')), findsOneWidget);
+        expect(find.text(ar.issuerFieldReservePrice('tender')), findsNothing);
+        expect(find.text(ar.issuerScheduleQuickFromPublish), findsOneWidget);
+        await tester.tap(find.byKey(const ValueKey('quick-days3')));
+        await tester.pumpAndSettle();
+        expect(find.byKey(const Key('schedule.relativeClose')), findsOneWidget);
+        expect(find.textContaining(ar.issuerScheduleInDays(3)), findsOneWidget);
+        final cubit = tester
+            .element(find.byType(DraftFormFields))
+            .read<CreateCompetitionCubit>();
+        final close =
+            (cubit.state as CreateCompetitionEditing).form.scheduledCloseAt!;
+        expect(
+          close.difference(DateTime.now().toUtc()).inMinutes,
+          inInclusiveRange(72 * 60 - 1, 72 * 60 + 5),
+        );
+
+        await tester.tap(find.byKey(const Key('create.next')));
+        await tester.pumpAndSettle();
+        expect(find.text(ar.issuerCreateStepReview), findsOneWidget);
+        expect(find.text('قياسية'), findsOneWidget);
+        expect(find.text(ar.issuerFieldReservePrice('tender')), findsNothing);
+        expect(find.byType(FormatChip), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      'an amount that cannot be read blocks Next instead of saving no price '
+      '(FQ2, FQ8)',
+      (tester) async {
+        tall(tester);
+        await signIn('me_issuer');
+        when(() => lookups.lookups()).thenAnswer((_) async => tiered);
+        await pump(
+          tester,
+          location: '/my-competitions/new',
+          flags: ScopeFlags.core,
+        );
+        await tester.pumpAndSettle();
+        await tester.tap(find.byKey(const ValueKey('direction-tender')));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byKey(const Key('create.next')));
+        await tester.pumpAndSettle();
+        fillBasics(tester);
+        await tester.pump();
+        await tester.tap(find.byKey(const Key('create.next')));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byKey(const ValueKey('quick-days3')));
+        await tester.pumpAndSettle();
+
+        // The tier presets take whole riyals: «1500.50» cannot be read.
+        final price = find.descendant(
+          of: find.byType(MoneyInputField),
+          matching: find.byType(TextFormField),
+        );
+        await tester.enterText(price.first, '1500.50');
+        await tester.pump();
+        final cubit = tester
+            .element(find.byType(DraftFormFields))
+            .read<CreateCompetitionCubit>();
+        await tester.tap(find.byKey(const Key('create.next')));
+        await tester.pumpAndSettle();
+        expect(find.text(ar.issuerCreateStepReview), findsNothing);
+        expect(find.text(ar.issuerCreateStepSchedule), findsOneWidget);
+        expect(
+          (cubit.state as CreateCompetitionEditing).form.startPriceMinor,
+          isNull,
+        );
+
+        // Fixed: Next goes on with the typed amount.
+        await tester.enterText(price.first, '1500');
+        await tester.pump();
+        await tester.tap(find.byKey(const Key('create.next')));
+        await tester.pumpAndSettle();
+        expect(find.text(ar.issuerCreateStepReview), findsOneWidget);
+        expect(
+          (cubit.state as CreateCompetitionEditing).form.startPriceMinor,
+          150000,
+        );
+      },
+    );
+
+    testWidgets('full: the format cards, the reserve and the other templates', (
+      tester,
+    ) async {
+      tall(tester);
+      await signIn('me_issuer');
+      when(() => lookups.lookups()).thenAnswer((_) async => tiered);
+      await pump(
+        tester,
+        location: '/my-competitions/new',
+        flags: ScopeFlags.full,
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.byKey(const ValueKey('format-sealed')), findsOneWidget);
+      await tester.tap(find.byKey(const ValueKey('direction-tender')));
+      await tester.pump();
+      await tester.tap(find.byKey(const ValueKey('format-live')));
+      await tester.pumpAndSettle();
+      expect(
+        find.byKey(const ValueKey('preset-tender_live_standard')),
+        findsOneWidget,
+      );
+      expect(find.text(ar.issuerPresetTierOther), findsOneWidget);
+      expect(
+        find.byKey(const ValueKey('preset-standard_live_tender')),
+        findsOneWidget,
+      );
+
+      await tester.tap(find.byKey(const Key('create.next')));
+      await tester.pumpAndSettle();
+      fillBasics(tester);
+      await tester.pump();
+      await tester.tap(find.byKey(const Key('create.next')));
+      await tester.pumpAndSettle();
+      expect(find.text(ar.issuerFieldReservePrice('tender')), findsOneWidget);
+    });
+
+    testWidgets('Next with problems lists them at the top as links (FQ8)', (
+      tester,
+    ) async {
+      await signIn('me_issuer');
+      await pump(
+        tester,
+        location: '/my-competitions/new',
+        flags: ScopeFlags.core,
+      );
+      await tester.pumpAndSettle();
+      expect(find.byKey(const Key('create.errors')), findsNothing);
+      await tester.tap(find.byKey(const Key('create.next')));
+      await tester.pumpAndSettle();
+      expect(find.byKey(const Key('create.errors')), findsOneWidget);
+      expect(find.text(ar.commonErrorSummaryTitle(1)), findsOneWidget);
+      expect(find.textContaining(ar.issuerCreateDirectionTitle), findsWidgets);
+    });
+
+    testWidgets('invite: the Vendors segment needs the vendor_directory flag', (
+      tester,
+    ) async {
+      tall(tester);
+      await signIn('me_issuer');
+      final draft = issuerCompetition('competition_issuer_draft');
+      when(() => competitions.show(draft.id)).thenAnswer((_) async => draft);
+      when(() => competitions.suggestions(draft.id, query: any(named: 'query')))
+          .thenAnswer((_) async => const []);
+      await pump(
+        tester,
+        location: '/competitions/${draft.id}/invite',
+        flags: ScopeFlags.core,
+      );
+      await tester.pumpAndSettle();
+      expect(find.text(ar.issuerInviteTabEmail), findsOneWidget);
+      expect(find.text(ar.issuerInviteTabVendors), findsNothing);
+
+      await pump(
+        tester,
+        location: '/competitions/${draft.id}/invite',
+        flags: ScopeFlags.full,
+      );
+      await tester.pumpAndSettle();
+      expect(find.text(ar.issuerInviteTabVendors), findsOneWidget);
     });
   });
 

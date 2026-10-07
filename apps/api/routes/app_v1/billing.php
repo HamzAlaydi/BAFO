@@ -27,9 +27,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Release scope (RELEASE_SCOPE.md §1.5): the custom quote, coupon validation and the sponsorship
+// checkout are `feature:`-gated; plans, vouchers, invoices and the sponsorship reads stay (existing records).
 Route::withoutMiddleware('auth:sanctum')->group(static function (): void {
     Route::get('plans', [PlanController::class, 'index'])->name('plans.index');
-    Route::get('plans/custom-quote', [PlanController::class, 'customQuote'])->name('plans.custom-quote');
+    Route::get('plans/custom-quote', [PlanController::class, 'customQuote'])->middleware('feature:custom_plan_quote')->name('plans.custom-quote');
 
     Route::post('billing/gateway-webhooks/{gateway}', GatewayWebhookController::class)
         ->where('gateway', '[a-z0-9_]+')
@@ -41,6 +43,7 @@ Route::prefix('billing')->name('billing.')->group(static function (): void {
     Route::post('trial', [SubscriptionController::class, 'trial'])->name('trial');
 
     Route::post('coupons/validate', [CouponController::class, 'validateCode'])
+        ->middleware('feature:coupons')
         ->can('validate', Coupon::class)
         ->name('coupons.validate');
 
@@ -70,6 +73,6 @@ Route::prefix('competitions/{competition}/sponsorship')->name('competitions.spon
         ->middleware('can:'.SponsorshipPolicy::VIEW.',competition')
         ->name('quote');
     Route::post('checkout', [SponsorshipController::class, 'checkout'])
-        ->middleware(['can:'.SponsorshipPolicy::CHECKOUT.',competition', 'idempotent:optional'])
+        ->middleware(['feature:sponsorship', 'can:'.SponsorshipPolicy::CHECKOUT.',competition', 'idempotent:optional'])
         ->name('checkout');
 });

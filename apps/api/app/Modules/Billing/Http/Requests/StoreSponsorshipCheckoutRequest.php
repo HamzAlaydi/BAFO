@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace App\Modules\Billing\Http\Requests;
 
 use App\Modules\Billing\Enums\SponsorshipIntent;
+use App\Support\Features\Feature;
+use App\Support\Features\FeatureFlags;
+use App\Support\Features\FeatureRefusals;
 use App\Support\Http\Middleware\IdempotentRequest;
 use Illuminate\Validation\Rule;
 
@@ -12,9 +15,19 @@ use Illuminate\Validation\Rule;
  * `POST /competitions/{competition}/sponsorship/checkout` (API.md §1.7). For `intent: invite`
  * the rows follow the `POST …/invitations` rules; the per-row business checks (duplicates, own
  * organization, vendors) run in the Action and answer with `details.item_codes`.
+ *
+ * Release scope (RELEASE_SCOPE.md §1.5): the route is `feature:sponsorship`; a `coupon_code`
+ * while `coupons` is hidden is 404 `feature_disabled` as on the subscription checkout.
  */
 final class StoreSponsorshipCheckoutRequest extends BillingFormRequest
 {
+    protected function prepareForValidation(): void
+    {
+        if (! app(FeatureFlags::class)->enabled(Feature::Coupons) && self::filledString($this->input('coupon_code'))) {
+            throw FeatureRefusals::disabled(Feature::Coupons);
+        }
+    }
+
     public function rules(): array
     {
         return [

@@ -22,7 +22,7 @@ return [
         'updated_at',
     ],
     'competition_presets' => [
-        'id', 'public_id', 'code', 'name', 'description', 'direction', 'format', 'rules', 'sort_order',
+        'id', 'public_id', 'code', 'name', 'description', 'direction', 'format', 'tier', 'rules', 'sort_order',
         'is_active', 'created_at', 'updated_at',
     ],
     'organizations' => [

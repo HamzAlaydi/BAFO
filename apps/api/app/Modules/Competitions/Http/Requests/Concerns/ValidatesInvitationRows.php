@@ -8,6 +8,9 @@ use App\Modules\Identity\Enums\OrganizationStatus;
 use App\Modules\Identity\Models\Organization;
 use App\Modules\Integrations\Models\ExternalRef;
 use App\Modules\Integrations\Models\Vendor;
+use App\Support\Features\Feature;
+use App\Support\Features\FeatureFlags;
+use App\Support\Features\FeatureRefusals;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Validator;
 
@@ -58,6 +61,38 @@ trait ValidatesInvitationRows
             if (count($given) > 1) {
                 $message = __('competitions.validation.invitation_one_target');
                 $validator->errors()->add("invitations.{$index}", is_string($message) ? $message : 'invitation_one_target');
+            }
+        }
+    }
+
+    /**
+     * RELEASE_SCOPE.md §1.5 field-level refusals (422 `errors.feature_disabled_field` on the row
+     * path): a vendor reference (`vendor_id`, `vendor_external`) while `vendor_directory` is off,
+     * and `sponsored = true` while `sponsorship` is off.
+     */
+    protected function refuseHiddenInvitationFields(Validator $validator): void
+    {
+        $features = app(FeatureFlags::class);
+        $vendors = $features->enabled(Feature::VendorDirectory);
+        $sponsorship = $features->enabled(Feature::Sponsorship);
+
+        if ($vendors && $sponsorship) {
+            return;
+        }
+
+        foreach ((array) $this->input('invitations', []) as $index => $row) {
+            if (! is_array($row)) {
+                continue;
+            }
+
+            foreach ($vendors ? [] : ['vendor_id', 'vendor_external'] as $key) {
+                if (isset($row[$key]) && $row[$key] !== '' && $row[$key] !== []) {
+                    FeatureRefusals::refuseField($validator, "invitations.{$index}.{$key}");
+                }
+            }
+
+            if (! $sponsorship && in_array($row['sponsored'] ?? null, [true, 1, '1'], true)) {
+                FeatureRefusals::refuseField($validator, "invitations.{$index}.sponsored");
             }
         }
     }

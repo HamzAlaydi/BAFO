@@ -1,5 +1,5 @@
 import { fetchAppConfig } from '~/services/platform'
-import type { AppConfig, LegalDocumentCode } from '~/types/api/platform'
+import type { AppConfig, FeatureFlag, FeatureFlags, LegalDocumentCode, ReleaseScope } from '~/types/api/platform'
 
 type LoadStatus = 'idle' | 'loading' | 'ready' | 'error'
 
@@ -10,6 +10,9 @@ type LoadStatus = 'idle' | 'loading' | 'ready' | 'error'
  *
  * Maintenance is entered from the config or from any `503 maintenance` response, and left when a
  * later load says it is over (SCREENS S8: retry every 60 s).
+ *
+ * Release-scope flags (RELEASE_SCOPE.md §1): `flags` is the normalised `features.flags` map (core
+ * defaults until the config has loaded), `featureEnabled(flag)` the one lookup path for every feature.
  */
 export const useAppConfigStore = defineStore('appConfig', () => {
   const config = ref<AppConfig | null>(null)
@@ -24,11 +27,18 @@ export const useAppConfigStore = defineStore('appConfig', () => {
     return fromConfig || maintenanceFromError.value || ''
   })
   const support = computed(() => config.value?.support ?? { email: '', phone: '', whatsapp: '' })
-  const sponsorshipEnabled = computed(() => config.value?.features.sponsorship === true)
+  const flags = computed<FeatureFlags>(() => resolveFeatureFlags(config.value?.features))
+  const releaseScope = computed<ReleaseScope>(() => (config.value?.features.release_scope === 'full' ? 'full' : 'core'))
+  /** `features.sponsorship` equals `flags.sponsorship` (RELEASE_SCOPE.md §1.4). */
+  const sponsorshipEnabled = computed(() => flags.value.sponsorship)
   const vatRateBp = computed(() => config.value?.vat_rate_bp ?? 1500)
 
   function legalVersion(code: LegalDocumentCode): string | null {
     return config.value?.legal[code]?.version ?? null
+  }
+
+  function featureEnabled(flag: FeatureFlag): boolean {
+    return flags.value[flag] === true
   }
 
   /** Loads once (concurrent callers share the request); `force` reloads. Never throws. */
@@ -73,9 +83,12 @@ export const useAppConfigStore = defineStore('appConfig', () => {
     inMaintenance,
     maintenanceMessage,
     support,
+    flags,
+    releaseScope,
     sponsorshipEnabled,
     vatRateBp,
     legalVersion,
+    featureEnabled,
     load,
     enterMaintenance,
     checkMaintenance,

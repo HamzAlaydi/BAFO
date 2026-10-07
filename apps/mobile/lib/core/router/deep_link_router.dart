@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:bafo/core/config/app_config.dart';
 import 'package:bafo/core/push/push_service.dart';
 import 'package:bafo/core/session/session_cubit.dart';
 import 'package:flutter/foundation.dart';
@@ -16,11 +17,16 @@ class DeepLinkRouter {
     required this._router,
     required this._session,
     required this._markRead,
+    this.flags,
   });
 
   final GoRouter _router;
   final SessionCubit _session;
   final Future<void> Function(String notificationId) _markRead;
+
+  /// The current release-scope flags (RELEASE_SCOPE.md §4); null reads as
+  /// none, which is the `core` mapping.
+  final FeatureFlags Function()? flags;
 
   /// Query flag on `/billing` that highlights "invoices are on the web".
   static const String invoicesNotice = 'invoices';
@@ -35,11 +41,16 @@ class DeepLinkRouter {
   /// | `/competitions/{id}/live`    | `/competitions/{id}/live`     |
   /// | `/competitions/{id}/qa`      | `/competitions/{id}/qa`       |
   /// | `/billing`                   | `/billing`                    |
-  /// | `/billing/invoices/{id}`     | `/billing?notice=invoices`    |
+  /// | `/billing/invoices/{id}`     | `/billing?notice=invoices`, or |
+  /// |                              | `/account/invoices` with the   |
+  /// |                              | `billing_invoices` flag        |
   /// | `/integrations`              | `/home` (web only)            |
   /// | `/notifications`             | `/notifications`              |
   /// | anything else                | `/notifications`              |
-  static String map(String? route) {
+  ///
+  /// [flags] are the release-scope flags (RELEASE_SCOPE.md §4); without a
+  /// config every gated target falls back to its core location.
+  static String map(String? route, {FeatureFlags flags = FeatureFlags.none}) {
     final uri = route == null ? null : Uri.tryParse(route.trim());
     if (uri == null || uri.hasScheme || uri.hasAuthority) {
       return '/notifications';
@@ -54,7 +65,9 @@ class DeepLinkRouter {
       case ['billing']:
         return '/billing';
       case ['billing', 'invoices', final id] when _id.hasMatch(id):
-        return '/billing?notice=$invoicesNotice';
+        return flags.enabled(Feature.billingInvoices)
+            ? '/account/invoices'
+            : '/billing?notice=$invoicesNotice';
       case ['integrations', ...]:
         return '/home';
       case ['notifications']:
@@ -69,7 +82,7 @@ class DeepLinkRouter {
   /// location goes through the auth redirect and is restored after sign-in
   /// (`from`).
   Future<void> open(String? route, {String? notificationId}) async {
-    final location = map(route);
+    final location = map(route, flags: flags?.call() ?? FeatureFlags.none);
     final id = notificationId;
     if (_session.state.isAuthenticated) {
       if (id != null && id.isNotEmpty) {

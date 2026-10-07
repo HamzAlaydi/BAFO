@@ -35,9 +35,17 @@ const { data, status, refresh } = await useAsyncData<LegalResult>(
 
 const title = computed(() => (data.value?.kind === 'ok' ? data.value.document.title : t(`legal.codes.${code.value}`)))
 
+const description = computed(() => t('legal.meta_description', { title: title.value }))
+
+// Canonical and hreflang come from `app.vue`; a code without a published version is not indexed.
 useSeoMeta({
   title: () => title.value,
-  description: () => t('legal.meta_description', { title: title.value }),
+  description: () => description.value,
+  ogTitle: () => title.value,
+  ogDescription: () => description.value,
+  ogType: 'article',
+  articleModifiedTime: () => (data.value?.kind === 'ok' ? data.value.document.published_at : undefined),
+  robots: () => (data.value?.kind === 'ok' ? 'index, follow' : 'noindex, nofollow'),
 })
 </script>
 

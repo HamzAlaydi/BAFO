@@ -11,12 +11,17 @@ use App\Modules\Competitions\Enums\InvitationStatus;
 use App\Modules\Competitions\Models\Competition;
 use App\Modules\Identity\Enums\Permission;
 use App\Modules\Identity\Models\User;
+use App\Support\Features\Feature;
+use App\Support\Features\FeatureFlags;
 use Illuminate\Support\Facades\Date;
 
 /**
  * The `permissions` object of the Competition resource (API.md §2.6), from ARCHITECTURE §8.3 and
  * the state machines. Clients render from it and never recompute entitlement. Issuer flags are
  * false for participants and invitees, and the participant-side flags are false for the issuer.
+ * The release scope (RELEASE_SCOPE.md §1.5) turns `can_extend`, `can_start_bafo` and
+ * `can_manage_sponsorship` off while `extend_competition`, `bafo_round` or `sponsorship` is
+ * hidden; this is a response projection only (the admin panel and the Actions never read it).
  */
 final class CompetitionPermissions
 {
@@ -70,6 +75,7 @@ final class CompetitionPermissions
         if ($viewer->isIssuer()) {
             $manage = $user !== null && self::canManage($user, $competition);
             $award = $user !== null && self::canAward($user);
+            $features = app(FeatureFlags::class);
 
             return [
                 ...$flags,
@@ -77,14 +83,15 @@ final class CompetitionPermissions
                 'can_delete' => $manage && $status === S::Draft,
                 'can_publish' => $manage && $status === S::Draft,
                 'can_invite' => $manage && self::invitationsOpen($competition),
-                'can_extend' => $manage && $status === S::Live,
+                'can_extend' => $manage && $status === S::Live && $features->enabled(Feature::ExtendCompetition),
                 'can_cancel' => $manage && in_array($status, [S::Scheduled, S::Live, S::BafoRound], true),
                 'can_start_bafo' => $award && $status === S::Closed && $competition->bafo_round_enabled
+                    && $features->enabled(Feature::BafoRound)
                     && ! BafoRound::query()->where('competition_id', $competition->id)->exists(),
                 'can_award' => $award && $status === S::Closed,
                 'can_revoke_award' => $award && $status === S::Awarded,
                 'can_close_without_award' => $award && $status === S::Closed,
-                'can_manage_sponsorship' => $manage && self::invitationsOpen($competition),
+                'can_manage_sponsorship' => $manage && self::invitationsOpen($competition) && $features->enabled(Feature::Sponsorship),
                 'can_comment' => $commentsOpen,
             ];
         }

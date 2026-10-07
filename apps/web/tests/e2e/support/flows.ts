@@ -9,6 +9,9 @@ import { riyadhLocal, shotPath, type Actor } from './stack'
 
 type Direction = 'tender' | 'auction'
 type Format = 'live' | 'sealed'
+type PresetTier = 'simple' | 'standard' | 'protected'
+
+const PRESET_TIERS: readonly PresetTier[] = ['simple', 'standard', 'protected']
 
 export interface CompetitionPlan {
   direction: Direction
@@ -17,6 +20,11 @@ export interface CompetitionPlan {
   description: string
   /** Category option label (its visible name in the locale of the issuer). */
   category: string
+  /**
+   * Live only: the preset tier card to choose on the rules step (RELEASE_SCOPE §2.2) before the
+   * advanced settings are adjusted. A new draft starts on `standard`.
+   */
+  tier?: PresetTier
   /** Riyals, as typed (e.g. '1000'). */
   startPrice?: string
   reservePrice?: string
@@ -60,26 +68,32 @@ async function continueStep(page: Page, locale: Locale, nextPath: RegExp): Promi
   await expect(page).toHaveURL(nextPath, { timeout: 15_000 })
 }
 
+/** Opens the «إعدادات متقدمة» disclosure of the rules step when it is collapsed (RELEASE_SCOPE §2.1). */
+async function openAdvancedRules(page: Page): Promise<void> {
+  const toggle = page.getByRole('main').locator('button[aria-expanded="false"][aria-controls]').first()
+  if (await toggle.count()) await toggle.click()
+}
+
 /**
- * Creates a competition through the whole setup wizard (W12 + W15), then publishes it: **Publish**,
- * or **Pay and publish** through the hosted fake checkout when covered fees need passes. Returns
- * the competition id.
+ * Creates a competition through the whole 5-step setup wizard (W12 + W15, RELEASE_SCOPE §2), then
+ * publishes it: **Publish**, or **Pay and publish** through the hosted fake checkout when covered fees
+ * need passes. The format cards, the final window, the BAFO switch, the minimum participants and the
+ * fees panel exist only in release scope `full`; the flow skips a control the scope hides. Returns the
+ * competition id.
  */
 export async function createCompetition(actor: Actor, plan: CompetitionPlan, shotPrefix: string): Promise<string> {
   const { page, locale } = actor
   const d = plan.direction
 
-  // ---- Step 1: type ----
+  // ---- Step 1: type and basics → POST /competitions ----
   await page.goto(`/${locale}/dashboard/competitions/new`)
   await expect(page.getByRole('heading', { level: 1, name: tr(locale, 'competitions.setup.new_title') })).toBeVisible()
   const directionGroup = page.getByRole('group', { name: tr(locale, 'competitions.setup.type.direction_legend') })
   const formatGroup = page.getByRole('group', { name: tr(locale, 'competitions.setup.type.format_legend') })
   await radioStartingWith(directionGroup, tr(locale, `competitions.direction.${d}`)).check()
-  await radioStartingWith(formatGroup, tr(locale, `competitions.format.${plan.format}`)).check()
+  if (await formatGroup.count()) await radioStartingWith(formatGroup, tr(locale, `competitions.format.${plan.format}`)).check()
+  else expect(plan.format, 'a sealed competition needs the sealed_format flag (release scope full)').toBe('live')
   await expect(radioStartingWith(directionGroup, tr(locale, `competitions.direction.${d}`))).toBeChecked()
-  await page.getByRole('button', { name: tr(locale, 'common.actions.continue'), exact: true }).click()
-
-  // ---- Step 2: basics → POST /competitions ----
   await textbox(page, tr(locale, 'competitions.setup.basics.title_label')).fill(plan.title)
   await textbox(page, tr(locale, 'competitions.setup.basics.description_label')).fill(plan.description)
   await page.getByRole('combobox', { name: labelRx(tr(locale, 'competitions.setup.basics.category_label')) }).selectOption({ label: plan.category })
@@ -90,9 +104,27 @@ export async function createCompetition(actor: Actor, plan: CompetitionPlan, sho
   const id = /competitions\/([^/]+)\/setup/.exec(page.url())?.[1]
   if (!id) throw new Error(`No competition id in ${page.url()}`)
 
-  // ---- Step 3: rules ----
+  // ---- Step 2: rules (tier cards, prices, then the advanced disclosure) ----
+  if (plan.format === 'live') {
+    // The three tier cards «بسيطة / قياسية / حماية قصوى» in order; a new draft starts on «قياسية».
+    const tiers = page.getByRole('group', { name: tr(locale, 'rules.tiers.legend') })
+    await expect(tiers).toBeVisible()
+    await expect(tiers.getByRole('radio')).toHaveCount(PRESET_TIERS.length)
+    for (const [index, tier] of PRESET_TIERS.entries()) {
+      await expect(tiers.getByRole('radio').nth(index)).toHaveAccessibleName(new RegExp(`^${rx(tr(locale, `rules.tiers.names.${tier}`)).source}`))
+    }
+    await expect(radioStartingWith(tiers, tr(locale, 'rules.tiers.names.standard'))).toBeChecked()
+    if (plan.tier) {
+      const card = radioStartingWith(tiers, tr(locale, `rules.tiers.names.${plan.tier}`))
+      await card.check()
+      await expect(card).toBeChecked()
+    }
+  }
   if (plan.startPrice) await textbox(page, td(locale, 'rules.start_price.label', d)).fill(plan.startPrice)
-  if (plan.reservePrice) await textbox(page, td(locale, 'rules.reserve_price.label', d)).fill(plan.reservePrice)
+  if (plan.reservePrice && await textbox(page, td(locale, 'rules.reserve_price.label', d)).count()) {
+    await textbox(page, td(locale, 'rules.reserve_price.label', d)).fill(plan.reservePrice)
+  }
+  await openAdvancedRules(page)
   if (plan.format === 'live') {
     if (plan.mustBeat) {
       const group = page.getByRole('group', { name: tr(locale, 'rules.must_beat.label') })
@@ -113,11 +145,13 @@ export async function createCompetition(actor: Actor, plan: CompetitionPlan, sho
   }
   if (plan.result) {
     const group = page.getByRole('group', { name: tr(locale, 'rules.result.label') })
-    await radioStartingWith(group, tr(locale, `rules.result.${plan.result}`)).check()
+    if (await group.count()) await radioStartingWith(group, tr(locale, `rules.result.${plan.result}`)).check()
   }
   if (plan.format === 'live') {
     if (plan.showPrices !== undefined) await setSwitch(page, tr(locale, 'rules.show_prices.label'), plan.showPrices)
-    await setSwitch(page, tr(locale, 'rules.final_window.label'), false)
+    if (await page.getByRole('switch', { name: tr(locale, 'rules.final_window.label'), exact: true }).count()) {
+      await setSwitch(page, tr(locale, 'rules.final_window.label'), false)
+    }
     if (plan.autoExtend) {
       await setSwitch(page, tr(locale, 'rules.auto_extend.label'), true)
       await textbox(page, tr(locale, 'rules.auto_extend.window_label')).fill(String(plan.autoExtend.windowMinutes))
@@ -128,22 +162,25 @@ export async function createCompetition(actor: Actor, plan: CompetitionPlan, sho
       await setSwitch(page, tr(locale, 'rules.auto_extend.label'), false)
     }
   }
-  await setSwitch(page, tr(locale, 'rules.bafo.label'), false)
-  await textbox(page, tr(locale, 'rules.min_participants.label')).fill(String(plan.minParticipants))
+  if (await page.getByRole('switch', { name: tr(locale, 'rules.bafo.label'), exact: true }).count()) {
+    await setSwitch(page, tr(locale, 'rules.bafo.label'), false)
+  }
+  if (await textbox(page, tr(locale, 'rules.min_participants.label')).count()) {
+    await textbox(page, tr(locale, 'rules.min_participants.label')).fill(String(plan.minParticipants))
+  }
   await page.screenshot({ path: shotPath(`${shotPrefix}-01-wizard-rules`), fullPage: true })
   await continueStep(page, locale, /\/setup\/schedule$/)
 
-  // ---- Step 4: schedule ----
+  // ---- Step 3: schedule (a custom duration: the close picker shows while no quick pick matches) ----
   const opensGroup = page.getByRole('group', { name: tr(locale, 'competitions.setup.schedule.opens_label') })
   await radioStartingWith(opensGroup, tr(locale, 'competitions.setup.schedule.opens_at')).check()
   await textbox(page, tr(locale, 'competitions.setup.schedule.opens_at')).fill(riyadhLocal(plan.opensAt))
+  const customPick = page.getByRole('group', { name: tr(locale, 'competitions.setup.schedule.quick.legend') }).getByRole('radio', { name: tr(locale, 'competitions.setup.schedule.quick.custom') })
+  await customPick.locator('xpath=ancestor::label[1]').click()
   await textbox(page, tr(locale, 'competitions.setup.schedule.close_label')).fill(riyadhLocal(plan.closeAt))
-  await continueStep(page, locale, /\/setup\/documents$/)
-
-  // ---- Step 5: documents (none) ----
   await continueStep(page, locale, /\/setup\/participants$/)
 
-  // ---- Step 6: participants (by e-mail) ----
+  // ---- Step 4: participants (by e-mail), documents and fees on one page ----
   await page.getByRole('tab', { name: tr(locale, 'invitations.issuer.picker.tabs.email') }).click()
   const emails = textbox(page, tr(locale, 'invitations.issuer.picker.emails_label'))
   await emails.fill(`${plan.invite.join(' ')} `)
@@ -151,11 +188,10 @@ export async function createCompetition(actor: Actor, plan: CompetitionPlan, sho
   await page.getByRole('button', { name: tr(locale, 'invitations.issuer.add_n', {}, plan.invite.length) }).click()
   for (const email of plan.invite) await expect(page.getByRole('main').getByText(email).first()).toBeVisible()
   await page.screenshot({ path: shotPath(`${shotPrefix}-02-wizard-participants`), fullPage: true })
-  await continueStep(page, locale, /\/setup\/(fees|review)$/)
 
-  // ---- Step 7: participation fees ----
-  if (page.url().endsWith('/fees')) {
-    const legend = page.getByRole('group', { name: tr(locale, 'sponsorship.fees.mode_legend') })
+  // ---- Step 4 (continued): participation fees, when the sponsorship flag and the organisation feature are on ----
+  const legend = page.getByRole('group', { name: tr(locale, 'sponsorship.fees.mode_legend') })
+  if (await legend.count()) {
     if (plan.sponsor.length > 0) {
       // Server-controlled cards: the choice shows once `PUT …/sponsorship` answers.
       const selected = radioStartingWith(legend, tr(locale, 'sponsorship.mode.selected.title'))
@@ -170,10 +206,13 @@ export async function createCompetition(actor: Actor, plan: CompetitionPlan, sho
       }
     }
     await page.screenshot({ path: shotPath(`${shotPrefix}-03-wizard-fees`), fullPage: true })
-    await continueStep(page, locale, /\/setup\/review$/)
   }
+  else {
+    expect(plan.sponsor, 'covering fees needs the sponsorship flag (release scope full)').toEqual([])
+  }
+  await continueStep(page, locale, /\/setup\/review$/)
 
-  // ---- Step 8: review and publish ----
+  // ---- Step 5: review and publish ----
   const payButton = page.getByRole('button', { name: tr(locale, 'competitions.setup.review.pay_and_publish') })
   const publishButton = page.getByRole('button', { name: tr(locale, 'competitions.setup.review.publish'), exact: true })
   await expect(payButton.or(publishButton)).toBeVisible({ timeout: 15_000 })

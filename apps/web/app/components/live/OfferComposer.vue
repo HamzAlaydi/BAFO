@@ -90,7 +90,7 @@ const granularityHint = computed(() => (props.snapshot.amount_granularity_minor 
   ? t('live.composer.granularity_whole')
   : t('live.composer.granularity_halalas')))
 
-const fieldHint = computed(() => `${granularityHint.value} · ${t('common.prices_exclude_vat')}`)
+const fieldHint = computed(() => `${granularityHint.value} · ${t('common.prices_exclude_vat')} · ${t('live.composer.amount_example')}`)
 
 function granularityMessage(granularityMinor: number | null): string {
   if (granularityMinor === 100) return t('offers.error.granularity_whole')

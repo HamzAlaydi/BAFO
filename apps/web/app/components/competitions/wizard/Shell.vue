@@ -1,11 +1,15 @@
 <script setup lang="ts">
-import { ArrowLeft, ArrowRight, Save } from '@lucide/vue'
+import { ArrowLeft, ArrowRight, Check, LoaderCircle, Save } from '@lucide/vue'
 import type { StepItem } from '~/types/ui'
 
+export type WizardAutosaveState = 'idle' | 'saving' | 'saved' | 'failed'
+
 /**
- * The creation wizard chrome (SCREENS W12/W15): the 8-step `UiStepper` (earlier steps are links), the
- * step heading, the content, an optional side column (rules summary), and a sticky footer with Back,
- * Save and Continue. Buttons show busy states and block double submits (S7).
+ * The creation wizard chrome (SCREENS W12/W15; RELEASE_SCOPE.md §2.1): the 5-step `UiStepper` (earlier
+ * steps are links), the step heading (focused on every step change, FQ9), the content, an optional
+ * side column (rules summary), and a sticky footer with Back, Save and Continue, the autosave status
+ * («حفظ تلقائي…» / «تم الحفظ 10:42», FQ6) and the reason whenever Continue is disabled (FQ7). Buttons
+ * show busy states and block double submits (S7).
  */
 const props = withDefaults(defineProps<{
   steps: StepItem[]
@@ -18,8 +22,13 @@ const props = withDefaults(defineProps<{
   saveDisabled?: boolean
   continueLabel?: string
   continueDisabled?: boolean
+  /** Why Continue is disabled, shown next to it (never a silent disabled button). */
+  continueReason?: string
   hideContinue?: boolean
   dirty?: boolean
+  autosave?: WizardAutosaveState
+  /** UTC ISO of the last successful autosave, for «تم الحفظ {time}». */
+  savedAt?: string | null
 }>(), {
   description: undefined,
   busy: false,
@@ -28,14 +37,27 @@ const props = withDefaults(defineProps<{
   saveDisabled: false,
   continueLabel: undefined,
   continueDisabled: false,
+  continueReason: undefined,
   hideContinue: false,
   dirty: false,
+  autosave: 'idle',
+  savedAt: null,
 })
 
 const emit = defineEmits<{ back: [], save: [], continue: [], select: [index: number] }>()
 const { t } = useI18n()
+const date = useDate()
 const titleId = `wizard-step-${useId()}`
 const stepperScroll = useTemplateRef<HTMLElement>('stepperScroll')
+const heading = useTemplateRef<HTMLElement>('heading')
+
+const autosaveText = computed(() => {
+  if (props.autosave === 'saving') return t('common.autosave.saving')
+  if (props.autosave === 'failed') return t('common.autosave.failed')
+  if (props.autosave === 'saved' && props.savedAt) return t('common.autosave.saved_at', { time: date.formatTime(props.savedAt) })
+  if (props.dirty) return t('common.unsaved_changes')
+  return null
+})
 
 /**
  * Keeps the current step visible in the scrolling stepper row. Only the row scrolls (`scrollBy`);
@@ -52,7 +74,11 @@ function revealCurrent(): void {
 }
 
 onMounted(revealCurrent)
-watch(() => props.current, () => void nextTick(revealCurrent))
+// A step change moves focus to the new heading (FQ9), so keyboard and screen-reader users land on it.
+watch(() => props.current, () => void nextTick(() => {
+  revealCurrent()
+  heading.value?.focus({ preventScroll: false })
+}))
 const slots = defineSlots<{ default: () => unknown, aside?: () => unknown }>()
 </script>
 
@@ -60,14 +86,14 @@ const slots = defineSlots<{ default: () => unknown, aside?: () => unknown }>()
   <div class="flex flex-col gap-6">
     <UiCard padding="sm">
       <!--
-        Below `lg` the stepper shows "Step n of 8" with a progress bar. Between `lg` and `xl` (the
-        sidebar takes its share) the eight steps still need more room than the card: the row scrolls.
+        Below `lg` the stepper shows "Step n of 5" with a progress bar. Five steps fit the card from
+        `lg` up; the row still scrolls as a safety net for long step labels.
       -->
       <div
         ref="stepperScroll"
         class="-m-1 overflow-x-auto p-1 [scrollbar-width:thin]"
       >
-        <div class="lg:min-w-[48rem] xl:min-w-0">
+        <div class="lg:min-w-[40rem] xl:min-w-0">
           <UiStepper
             :steps="steps"
             :current="current"
@@ -90,7 +116,9 @@ const slots = defineSlots<{ default: () => unknown, aside?: () => unknown }>()
         <header>
           <h2
             :id="titleId"
-            class="text-xl font-bold text-fg"
+            ref="heading"
+            class="rounded-md text-xl font-bold text-fg outline-none focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
+            tabindex="-1"
           >
             {{ title }}
           </h2>
@@ -128,11 +156,32 @@ const slots = defineSlots<{ default: () => unknown, aside?: () => unknown }>()
           {{ t('common.actions.back') }}
         </UiButton>
         <span
-          v-if="dirty"
-          class="text-sm text-fg-muted"
+          v-if="autosaveText"
+          class="inline-flex items-center gap-1.5 text-sm"
+          :class="autosave === 'failed' ? 'text-danger' : 'text-fg-muted'"
           role="status"
-        >{{ t('common.unsaved_changes') }}</span>
-        <div class="ms-auto flex flex-wrap items-center gap-2">
+          aria-live="polite"
+        >
+          <LoaderCircle
+            v-if="autosave === 'saving'"
+            :size="14"
+            class="animate-spin"
+            aria-hidden="true"
+          />
+          <Check
+            v-else-if="autosave === 'saved'"
+            :size="14"
+            class="text-brand"
+            aria-hidden="true"
+          />
+          {{ autosaveText }}
+        </span>
+        <div class="ms-auto flex flex-wrap items-center justify-end gap-2">
+          <span
+            v-if="!hideContinue && continueDisabled && continueReason"
+            class="text-sm text-fg-muted"
+            role="status"
+          >{{ continueReason }}</span>
           <UiButton
             v-if="showSave"
             variant="secondary"

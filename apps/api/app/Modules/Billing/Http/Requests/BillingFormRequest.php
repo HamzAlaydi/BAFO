@@ -41,6 +41,14 @@ abstract class BillingFormRequest extends FormRequest
      */
     abstract public function rules(): array;
 
+    /**
+     * A raw input that carries a value (a non-blank string), before validation.
+     */
+    protected static function filledString(mixed $value): bool
+    {
+        return is_scalar($value) && trim((string) $value) !== '';
+    }
+
     protected function stringOrNull(string $key): ?string
     {
         $value = $this->validated($key);

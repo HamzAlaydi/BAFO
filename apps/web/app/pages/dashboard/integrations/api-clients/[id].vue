@@ -16,7 +16,7 @@ import type { ApiClient, ApiClientInput, ApiKey } from '~/types/api/integrations
  * client secret (shown once); revoke the client. A usage snippet with placeholders only. Every change
  * waits for the server.
  */
-definePageMeta({ layout: 'dashboard', middleware: 'auth' })
+definePageMeta({ layout: 'dashboard', middleware: ['auth', 'feature'], feature: 'integrations_api' })
 
 const { t } = useI18n()
 const auth = useAuthStore()

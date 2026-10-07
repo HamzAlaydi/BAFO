@@ -25,12 +25,17 @@ abstract final class PreferenceKeys {
   /// The push permission explainer (M50) was shown once.
   static const String pushExplainerShown = 'bafo.push.explainer_shown';
 
+  /// The unsaved creation form (M34–M37) until `POST /competitions` succeeds
+  /// (RELEASE_SCOPE.md FQ6). Titles and prices of a draft, never credentials.
+  static const String issuerCreateDraft = 'bafo.issuer.create_draft';
+
   static const Set<String> all = {
     locale,
     appConfig,
     onboardingSeen,
     pushDeviceId,
     pushExplainerShown,
+    issuerCreateDraft,
   };
 }
 

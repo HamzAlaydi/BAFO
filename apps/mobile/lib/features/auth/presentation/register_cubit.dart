@@ -119,6 +119,14 @@ class RegisterCubit extends Cubit<RegisterState> {
     if (state.step > 0) emit(state.copyWith(step: state.step - 1));
   }
 
+  /// The error summary (FQ8): open the step that holds a field.
+  void goTo(int step) {
+    if (step < 0 || step >= RegisterState.stepCount || step == state.step) {
+      return;
+    }
+    emit(state.copyWith(step: step, error: () => null));
+  }
+
   /// Forgets the server error of [path] once the user edits that field.
   void fieldEdited(String path) {
     if (!state.fieldErrors.containsKey(path)) return;
@@ -141,14 +149,17 @@ class RegisterCubit extends Cubit<RegisterState> {
       final fieldErrors = {
         ...error.fieldErrors,
         // Registering with an invitation for another address (422).
-        if (error.code == 'invitation_email_mismatch' && error.message.isNotEmpty)
+        if (error.code == 'invitation_email_mismatch' &&
+            error.message.isNotEmpty)
           'email': [error.message],
       };
       emit(
         state.copyWith(
           status: RegisterStatus.editing,
           fieldErrors: fieldErrors,
-          step: fieldErrors.isEmpty ? state.step : stepOfFields(fieldErrors.keys),
+          step: fieldErrors.isEmpty
+              ? state.step
+              : stepOfFields(fieldErrors.keys),
           error: () => fieldErrors.isEmpty ? error : null,
           retryAt: () => error.statusCode == 429
               ? _now().add(

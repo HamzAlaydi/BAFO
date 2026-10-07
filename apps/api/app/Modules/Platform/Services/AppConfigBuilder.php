@@ -6,17 +6,20 @@ namespace App\Modules\Platform\Services;
 
 use App\Modules\Platform\Enums\LegalDocumentCode;
 use App\Modules\Platform\Models\LegalDocument;
+use App\Support\Features\Feature;
+use App\Support\Features\FeatureFlags;
 use App\Support\Http\Iso;
 use App\Support\Settings\Settings;
 use Illuminate\Support\Facades\Date;
 
 /**
  * Assembles the AppConfig resource of API.md §2.13: the runtime settings (§15.3), the
- * realtime connection, the current legal versions and the platform constants.
+ * realtime connection, the current legal versions, the release-scope feature flags
+ * (RELEASE_SCOPE.md §1.4) and the platform constants.
  */
 final readonly class AppConfigBuilder
 {
-    public function __construct(private Settings $settings) {}
+    public function __construct(private Settings $settings, private FeatureFlags $features) {}
 
     /**
      * @return array<string, mixed>
@@ -24,6 +27,7 @@ final readonly class AppConfigBuilder
     public function build(string $locale): array
     {
         $maintenanceMessage = $this->settings->get('app.maintenance.message', []);
+        $flags = $this->features->all();
 
         return [
             'min_version' => [
@@ -50,8 +54,12 @@ final readonly class AppConfigBuilder
             ],
             'legal' => $this->legalVersions($locale),
             'features' => [
-                // Billing's global switch (§15.3, default true); the per-organization flag is separate.
-                'sponsorship' => $this->settings->get('sponsorship.enabled', true) === true,
+                // RELEASE_SCOPE.md §1.4: the scope is for display only; clients branch on `flags.<name>`.
+                'release_scope' => $this->features->scope()->value,
+                // Kept for compatibility: always equals flags.sponsorship (scope and Billing's global
+                // switch `sponsorship.enabled`, §15.3); the per-organization flag is separate.
+                'sponsorship' => $flags[Feature::Sponsorship->value],
+                'flags' => $flags,
             ],
             'currency' => 'SAR',
             'vat_rate_bp' => (int) config('bafo.billing.vat_rate_bp', 1500),

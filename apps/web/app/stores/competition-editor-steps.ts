@@ -1,25 +1,75 @@
 /**
- * The 8-step creation wizard (SCREENS CD3, W12, W15) and the draft resume rule (§2.5 F2), as pure
- * functions. The rules only pick where the wizard opens and which hints to show: publish checks
- * stay on the server.
+ * The 5-step creation wizard (RELEASE_SCOPE.md §2.1, SCREENS CD3, W12, W15) and the draft resume rule
+ * (§2.5), as pure functions. The rules only pick where the wizard opens and which hints to show: publish
+ * checks stay on the server.
+ *
+ * The wizard has the same five steps in both release scopes; the flags only add controls inside them.
+ * The old 8-step keys (`type`, `documents`, `fees`) are kept as aliases so saved links keep working.
  */
 import type { IssuerCompetition } from '~/types/api/competitions'
 import type { SponsorshipMode } from '~/types/api/billing'
 
-export type WizardStepKey = 'type' | 'basics' | 'rules' | 'schedule' | 'documents' | 'participants' | 'fees' | 'review'
+export type WizardStepKey = 'basics' | 'rules' | 'schedule' | 'participants' | 'review'
 
-export const WIZARD_STEP_KEYS: readonly WizardStepKey[] = ['type', 'basics', 'rules', 'schedule', 'documents', 'participants', 'fees', 'review']
+export const WIZARD_STEP_KEYS: readonly WizardStepKey[] = ['basics', 'rules', 'schedule', 'participants', 'review']
 
-/** Steps 1–2 run client-side before the draft exists (CD3). */
-export const WIZARD_CLIENT_STEPS: readonly WizardStepKey[] = ['type', 'basics']
+/** Step keys of the previous 8-step layout, mapped to the step that now holds their content. */
+export type LegacyWizardStepKey = 'type' | 'documents' | 'fees'
 
-/** Step 7 is hidden when participation fees cannot be covered (S10). */
-export function wizardStepKeys(feesEnabled: boolean): WizardStepKey[] {
-  return WIZARD_STEP_KEYS.filter(step => feesEnabled || step !== 'fees')
+export const LEGACY_STEP_ALIASES: Readonly<Record<LegacyWizardStepKey, WizardStepKey>> = {
+  type: 'basics',
+  documents: 'participants',
+  fees: 'participants',
+}
+
+/**
+ * Element ids of the wizard's form controls by editor field path (`rules.*` normalised), so the error
+ * summary of a step can link to and focus the offending control (FQ8).
+ */
+export const WIZARD_FIELD_IDS: Readonly<Record<string, string>> = {
+  'title': 'wizard-title',
+  'description': 'wizard-description',
+  'category_id': 'wizard-category',
+  'region_id': 'wizard-region',
+  'category_other_text': 'wizard-category-other',
+  'rules.start_price_minor': 'wizard-start-price',
+  'rules.reserve_price_minor': 'wizard-reserve-price',
+  'rules.min_step_minor': 'wizard-min-step-amount',
+  'rules.min_step_bps': 'wizard-min-step-percent',
+  'rules.auto_extend.window_seconds': 'wizard-auto-window',
+  'rules.auto_extend.by_seconds': 'wizard-auto-by',
+  'rules.auto_extend.max_extensions': 'wizard-auto-max',
+  'rules.final_window_minutes': 'wizard-final-window',
+  'rules.bafo_round.duration_minutes': 'wizard-bafo-minutes',
+  'rules.min_participants': 'wizard-min-participants',
+  'bidding_opens_at': 'wizard-opens-at',
+  'scheduled_close_at': 'wizard-close-at',
+}
+
+/** Step 1 runs client-side before the draft exists (CD3): finishing it creates the draft. */
+export const WIZARD_CLIENT_STEPS: readonly WizardStepKey[] = ['basics']
+
+/** The five steps, in order. Nothing is hidden per scope: gated controls live inside the steps. */
+export function wizardStepKeys(): WizardStepKey[] {
+  return [...WIZARD_STEP_KEYS]
 }
 
 export function isWizardStepKey(value: unknown): value is WizardStepKey {
   return typeof value === 'string' && (WIZARD_STEP_KEYS as readonly string[]).includes(value)
+}
+
+export function isLegacyStepKey(value: unknown): value is LegacyWizardStepKey {
+  return typeof value === 'string' && value in LEGACY_STEP_ALIASES
+}
+
+/**
+ * Resolves a `{step}` route parameter: a current key as is, a legacy key through its alias (the page
+ * replaces the URL), anything else `null`.
+ */
+export function resolveWizardStep(value: unknown): { step: WizardStepKey, alias: boolean } | null {
+  if (isWizardStepKey(value)) return { step: value, alias: false }
+  if (isLegacyStepKey(value)) return { step: LEGACY_STEP_ALIASES[value], alias: true }
+  return null
 }
 
 /** What the resume rule and the checklists need to know about a draft. */
@@ -63,16 +113,16 @@ export function draftProgressOf(
 }
 
 /**
- * SCREENS §2.5 F2: the first of basics missing (title, category, region) → 2; auction without a
- * start price → 3; no close time → 4; invitations below the minimum → 6; covered fees still to buy
- * → 7; otherwise the review.
+ * RELEASE_SCOPE.md §2.5: the first of basics missing (title, category, region) → basics; auction
+ * without a start price → rules; no close time → schedule; invitations below the minimum, or covered
+ * fees still to buy → participants; otherwise the review.
  */
 export function firstIncompleteStep(progress: DraftProgress): WizardStepKey {
   if (!progress.hasTitle || !progress.hasCategory || !progress.hasRegion) return 'basics'
   if (progress.auctionWithoutStartPrice) return 'rules'
   if (!progress.hasClose) return 'schedule'
   if (progress.invitations < progress.minParticipants) return 'participants'
-  if (progress.feesEnabled && progress.sponsorshipMode !== 'none' && (progress.quotePassesToBuy ?? 0) > 0) return 'fees'
+  if (progress.feesEnabled && progress.sponsorshipMode !== 'none' && (progress.quotePassesToBuy ?? 0) > 0) return 'participants'
   return 'review'
 }
 
@@ -85,7 +135,7 @@ export interface ChecklistItem {
 }
 
 /**
- * The pre-publish checklist of the review step and the draft overview (SCREENS W14, W15 step 8):
+ * The pre-publish checklist of the review step and the draft overview (SCREENS W14, W15 step 5):
  * hints only; the server decides at publish.
  */
 export function draftChecklist(progress: DraftProgress, direction: 'tender' | 'auction'): ChecklistItem[] {
@@ -101,13 +151,12 @@ export function draftChecklist(progress: DraftProgress, direction: 'tender' | 'a
 }
 
 /**
- * The wizard step that owns a publish field error (SCREENS W15 "Publish errors"):
- * `description` / `category_other_text` → 2, `start_price_minor` / `rules.*` → 3,
- * `bidding_opens_at` / `scheduled_close_at` → 4, `invitations` → 6.
+ * The wizard step that owns a publish field error (SCREENS W15 "Publish errors", RELEASE_SCOPE.md §2.4):
+ * the basics and the type → basics, prices and `rules.*` → rules, the two dates → schedule,
+ * `invitations*` → participants.
  */
 export function publishFieldStep(path: string): WizardStepKey | null {
-  if (['title', 'description', 'category_id', 'category_other_text', 'region_id'].includes(path)) return 'basics'
-  if (path === 'direction' || path === 'format' || path === 'preset_code') return 'type'
+  if (['title', 'description', 'category_id', 'category_other_text', 'region_id', 'direction', 'format', 'preset_code'].includes(path)) return 'basics'
   if (path === 'start_price_minor' || path === 'reserve_price_minor' || path.startsWith('rules')) return 'rules'
   if (path === 'bidding_opens_at' || path === 'scheduled_close_at') return 'schedule'
   if (path.startsWith('invitations')) return 'participants'

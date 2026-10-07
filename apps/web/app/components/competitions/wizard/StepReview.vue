@@ -7,15 +7,15 @@ import type { IssuerCompetition } from '~/types/api/competitions'
 import { draftChecklist, draftProgressOf, publishFieldStep, type WizardStepKey } from '~/stores/competition-editor-steps'
 
 /**
- * Wizard step 8 «المراجعة والنشر» (SCREENS W15 `review`, §2.5 F3): a summary per step with Edit
- * links, the server's rules summary, the schedule preview, invitations against the minimum, the fees
- * summary and the pre-publish checklist (hints). **Publish**, or **Pay and publish** when the quote
- * has passes to buy:
+ * Wizard step 5 «المراجعة والنشر» (SCREENS W15 `review`, §2.5 F3; RELEASE_SCOPE.md §2.1): five summary
+ * cards with Edit links (type and basics; rules = the server's `rules_summary`; schedule = the
+ * preview; participants and documents = counts against the minimum; fees when the flag is on), the
+ * pre-publish checklist (hints) and **Publish**, or **Pay and publish** when the quote has passes to buy:
  *
  * - `POST …/publish` → `scheduled`/`live` → overview with «نُشرت المنافسة وأُرسلت الدعوات»;
  * - `validation_failed` → each field linked to its step; `min_participants_not_met` → how many more,
- *   linked to step 6; `issuer_plan_required` → plans; `live_event_capacity_reached` → step 4;
- *   `sponsorship_payment_required` → the server quote and **Pay and publish**;
+ *   linked to the participants step; `issuer_plan_required` → plans; `live_event_capacity_reached` →
+ *   the schedule; `sponsorship_payment_required` → the server quote and **Pay and publish**;
  *   `invalid_state_transition` → refetch;
  * - Pay and publish: `POST …/sponsorship/checkout {intent: publish}` with one `Idempotency-Key` per
  *   intent → the server's payment amounts → the hosted page; `sponsorship_already_funded` → publish.
@@ -64,7 +64,11 @@ const needsPayment = computed(() => (quote.value?.passes_to_buy ?? 0) > 0)
 const canPurchase = computed(() => auth.can('billing.purchase'))
 const progress = computed(() => draftProgressOf(props.competition, { feesEnabled: props.feesEnabled, quotePassesToBuy: quote.value?.passes_to_buy ?? null }))
 const checklist = computed(() => draftChecklist(progress.value, props.competition.direction))
-const presetName = computed(() => lookups.presets.find(preset => preset.code === props.competition.preset_code)?.name ?? t('competitions.setup.review.no_preset'))
+const preset = computed(() => lookups.presets.find(item => item.code === props.competition.preset_code) ?? null)
+const presetName = computed(() => {
+  if (!preset.value) return t('competitions.setup.review.no_preset')
+  return preset.value.tier ? t(`rules.tiers.names.${preset.value.tier}`) : preset.value.name
+})
 
 function stepPath(step: WizardStepKey): string {
   return `${base.value}/setup/${step}`
@@ -158,20 +162,16 @@ function cancelPayment(): void {
   checkoutKey = null
 }
 
-const summaryRows = computed(() => {
+const basicsRows = computed(() => {
   const c = props.competition
-  return {
-    type: [
-      { label: t('competitions.setup.review.preset'), value: presetName.value },
-      { label: t('rules.bafo.label'), value: c.rules.bafo_round.enabled ? t('common.yes') : t('common.no') },
-    ],
-    basics: [
-      { label: t('competitions.setup.basics.title_label'), value: c.title },
-      { label: t('competitions.setup.basics.category_label'), value: c.category_other_text ? `${c.category.name} · ${c.category_other_text}` : c.category.name },
-      { label: t('competitions.setup.basics.region_label'), value: c.region.name },
-    ],
-  }
+  return [
+    { label: t('competitions.setup.basics.title_label'), value: c.title },
+    { label: t('competitions.setup.basics.category_label'), value: c.category_other_text ? `${c.category.name} · ${c.category_other_text}` : c.category.name },
+    { label: t('competitions.setup.basics.region_label'), value: c.region.name },
+  ]
 })
+
+const missingInvitations = computed(() => Math.max(0, progress.value.minParticipants - progress.value.invitations))
 
 watch(() => editor.couponCode, () => void loadQuote())
 </script>
@@ -180,10 +180,10 @@ watch(() => editor.couponCode, () => void loadQuote())
   <div class="flex flex-col gap-6">
     <template v-if="!payment">
       <div class="grid gap-6 lg:grid-cols-2">
-        <UiCard :title="t('competitions.setup.steps.type')">
+        <UiCard :title="t('competitions.setup.steps.basics')">
           <template #actions>
             <UiButton
-              :to="stepPath('type')"
+              :to="stepPath('basics')"
               variant="ghost"
               size="sm"
               :icon="Pencil"
@@ -198,49 +198,22 @@ watch(() => editor.couponCode, () => void loadQuote())
             </div>
             <dl class="flex flex-col gap-1 text-sm">
               <div
-                v-for="row in summaryRows.type"
+                v-for="row in basicsRows"
                 :key="row.label"
                 class="flex justify-between gap-3"
               >
-                <dt class="text-fg-muted">
+                <dt class="shrink-0 text-fg-muted">
                   {{ row.label }}
                 </dt>
-                <dd class="text-end text-fg">
+                <dd class="min-w-0 text-end break-words text-fg">
                   {{ row.value }}
                 </dd>
               </div>
             </dl>
+            <p class="line-clamp-3 text-sm whitespace-pre-line text-fg-muted">
+              {{ competition.description || t('competitions.issuer.overview.no_description') }}
+            </p>
           </div>
-        </UiCard>
-
-        <UiCard :title="t('competitions.setup.steps.basics')">
-          <template #actions>
-            <UiButton
-              :to="stepPath('basics')"
-              variant="ghost"
-              size="sm"
-              :icon="Pencil"
-            >
-              {{ t('competitions.setup.review.edit') }}
-            </UiButton>
-          </template>
-          <dl class="flex flex-col gap-1 text-sm">
-            <div
-              v-for="row in summaryRows.basics"
-              :key="row.label"
-              class="flex justify-between gap-3"
-            >
-              <dt class="shrink-0 text-fg-muted">
-                {{ row.label }}
-              </dt>
-              <dd class="min-w-0 text-end break-words text-fg">
-                {{ row.value }}
-              </dd>
-            </div>
-          </dl>
-          <p class="mt-3 line-clamp-3 text-sm whitespace-pre-line text-fg-muted">
-            {{ competition.description || t('competitions.issuer.overview.no_description') }}
-          </p>
         </UiCard>
 
         <UiCard :title="t('competitions.setup.steps.rules')">
@@ -254,6 +227,10 @@ watch(() => editor.couponCode, () => void loadQuote())
               {{ t('competitions.setup.review.edit') }}
             </UiButton>
           </template>
+          <p class="mb-3 text-sm text-fg-muted">
+            {{ t('competitions.setup.review.preset') }}
+            <span class="font-semibold text-fg">{{ presetName }}</span>
+          </p>
           <CompetitionsRulesSummary :lines="competition.rules_summary" />
         </UiCard>
 
@@ -290,39 +267,25 @@ watch(() => editor.couponCode, () => void loadQuote())
           <p class="text-sm text-fg">
             {{ t('invitations.issuer.counter', { count: progress.invitations, min: progress.minParticipants }) }}
           </p>
+          <p
+            v-if="missingInvitations > 0"
+            class="mt-1 text-sm text-warning-soft-fg"
+          >
+            {{ t('invitations.issuer.min_missing', { count: missingInvitations }, missingInvitations) }}
+          </p>
           <p class="mt-1 text-sm text-fg-muted">
             {{ t('competitions.setup.review.documents', { count: competition.counts.attachments }, competition.counts.attachments) }}
-            <NuxtLinkLocale
-              :to="stepPath('documents')"
-              class="link ms-1"
-            >
-              {{ t('competitions.setup.review.edit') }}
-            </NuxtLinkLocale>
           </p>
-        </UiCard>
-
-        <UiCard
-          v-if="feesEnabled"
-          :title="t('competitions.setup.steps.fees')"
-        >
-          <template #actions>
-            <UiButton
-              :to="stepPath('fees')"
-              variant="ghost"
-              size="sm"
-              :icon="Pencil"
-            >
-              {{ t('competitions.setup.review.edit') }}
-            </UiButton>
+          <template v-if="feesEnabled">
+            <p class="mt-3 text-sm text-fg">
+              {{ t('competitions.setup.participants.fees_title') }}: {{ t(`sponsorship.mode.${mode}.title`) }}
+            </p>
+            <CompetitionsIssuerQuoteSummary
+              v-if="quote && mode !== 'none'"
+              :quote="quote"
+              class="mt-3"
+            />
           </template>
-          <p class="text-sm text-fg">
-            {{ t(`sponsorship.mode.${mode}.title`) }}
-          </p>
-          <CompetitionsIssuerQuoteSummary
-            v-if="quote && mode !== 'none'"
-            :quote="quote"
-            class="mt-3"
-          />
         </UiCard>
       </div>
 

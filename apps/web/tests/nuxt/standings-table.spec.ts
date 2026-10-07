@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { mountSuspended } from '@nuxt/test-utils/runtime'
 import { defineComponent, h, ref } from 'vue'
+import { makeAppConfig } from '../fixtures/api'
 import { makeStandingRow } from '../fixtures/issuer'
 import StandingsTable from '~/components/competitions/issuer/StandingsTable.vue'
 
@@ -51,5 +52,27 @@ describe('StandingsTable award radios', () => {
     expect(selected.value).toBe('p2')
     for (const radio of radiosOf(wrapper, 'p2')) expect(radio.element.checked).toBe(true)
     for (const radio of radiosOf(wrapper, 'p1')) expect(radio.element.checked).toBe(false)
+  })
+})
+
+describe('StandingsTable coverage column (RELEASE_SCOPE §1.3 sponsorship)', () => {
+  const header = () => useNuxtApp().$i18n.t('invitations.issuer.table.coverage')
+
+  it('hides the fee coverage column in core unless a covered pass exists', async () => {
+    useAppConfigStore().config = makeAppConfig({}, 'core')
+    const plain = await mountSuspended(StandingsTable, { props: { rows: [makeStandingRow(1)], direction: 'tender' } })
+    expect(plain.find('thead').text()).not.toContain(header())
+    plain.unmount()
+
+    const covered = makeStandingRow(2)
+    covered.participant.coverage = 'sponsored'
+    const existing = await mountSuspended(StandingsTable, { props: { rows: [makeStandingRow(1), covered], direction: 'tender' } })
+    expect(existing.find('thead').text()).toContain(header())
+    existing.unmount()
+
+    useAppConfigStore().config = makeAppConfig({}, 'full')
+    const full = await mountSuspended(StandingsTable, { props: { rows: [makeStandingRow(1)], direction: 'tender' } })
+    expect(full.find('thead').text()).toContain(header())
+    full.unmount()
   })
 })

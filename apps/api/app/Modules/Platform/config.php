@@ -42,6 +42,11 @@ return [
         'app.maintenance.enabled' => false,
         'app.maintenance.message' => ['ar' => '', 'en' => ''],
         'app.support' => ['email' => '', 'phone' => '', 'whatsapp' => ''],
+        // Release scope (docs/build/RELEASE_SCOPE.md §1.1): `core` hides the advanced features
+        // behind App\Support\Features\FeatureFlags; `full` brings everything back. Default `core`
+        // in every environment; tests/TestCase.php runs the suite as `full`.
+        // Flip it from the admin settings page or `php artisan platform:release-scope full`.
+        'platform.release_scope' => 'core',
     ],
 
 ];

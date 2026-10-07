@@ -5,6 +5,8 @@
 import type { AuthTokenPayload, Me, Membership, Organization, User } from '../../app/types/api/identity'
 import type { Home } from '../../app/types/api/competitions'
 import type { Notification } from '../../app/types/api/notifications'
+import type { AppConfig, FeatureFlags, ReleaseScope } from '../../app/types/api/platform'
+import { featureFlagsForScope } from '../../app/utils/features'
 
 export function makeUser(overrides: Partial<User> = {}): User {
   return {
@@ -109,4 +111,32 @@ export function makeHome(overrides: Partial<Home> = {}): Home {
     activities: [],
     ...overrides,
   }
+}
+
+/**
+ * `GET /app-config` (API.md §2.13, RELEASE_SCOPE.md §1.4). Tests run against the **full** product by
+ * default, like the API suite; pass `scope: 'core'` (or override `flags`) to exercise the hidden state.
+ */
+export function makeAppConfig(overrides: Partial<AppConfig> = {}, scope: ReleaseScope = 'full'): AppConfig {
+  const flags = featureFlagsForScope(scope)
+  return {
+    min_version: { ios: '1.0.0', android: '1.0.0' },
+    latest_version: { ios: '1.0.0', android: '1.0.0' },
+    store_links: { ios: 'https://apps.example/bafo', android: 'https://play.example/bafo' },
+    maintenance: { enabled: false, message: '' },
+    support: { email: 'support@bafo.example', phone: '+966500000000', whatsapp: '+966500000000' },
+    realtime: { key: 'key', host: 'localhost', port: 8085, scheme: 'http' },
+    legal: { terms: { version: '2026-10-01' }, privacy: { version: '2026-10-01' } },
+    features: { release_scope: scope, sponsorship: flags.sponsorship, flags },
+    currency: 'SAR',
+    vat_rate_bp: 1500,
+    supported_locales: ['ar', 'en'],
+    server_time: '2026-11-01T09:00:00.000Z',
+    ...overrides,
+  }
+}
+
+/** The flags of a scope with some of them overridden (`makeFlags('full', { sponsorship: false })`). */
+export function makeFlags(scope: ReleaseScope, overrides: Partial<FeatureFlags> = {}): FeatureFlags {
+  return { ...featureFlagsForScope(scope), ...overrides }
 }

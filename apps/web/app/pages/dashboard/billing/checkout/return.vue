@@ -15,6 +15,7 @@ definePageMeta({ layout: 'dashboard', middleware: 'auth' })
 
 const { t } = useI18n()
 const auth = useAuthStore()
+const features = useFeatures()
 const home = useHomeStore()
 const route = useRoute()
 const date = useDate()
@@ -270,7 +271,7 @@ const showAmounts = computed(() => payment.value !== null && outcome.value !== '
             />
           </p>
           <UiButton
-            v-if="payment.invoice_id && auth.can('billing.view')"
+            v-if="payment.invoice_id && auth.can('billing.view') && features.enabled('billing_invoices')"
             variant="secondary"
             size="sm"
             :to="`/dashboard/billing/invoices/${payment.invoice_id}`"

@@ -37,4 +37,7 @@ return [
     'invalid_state_transition' => 'This action is not allowed in the current state.',
     'file_type_not_allowed' => 'This file type is not allowed. Allowed types: :extensions.',
     'file_too_large' => 'The file is too large. The maximum size is :max MB.',
+    // Release scope (RELEASE_SCOPE.md §1.5): the route gate and the field-level refusal.
+    'feature_disabled' => 'This feature is not available in this release.',
+    'feature_disabled_field' => 'This option is not available in this release.',
 ];

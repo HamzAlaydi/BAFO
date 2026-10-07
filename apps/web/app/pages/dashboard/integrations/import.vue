@@ -4,7 +4,7 @@
  * needed; SCREENS §2.4). `ImportWizard`: template → upload and validate → review → import the valid
  * rows. Leaving the page with a file in progress asks for confirmation.
  */
-definePageMeta({ layout: 'dashboard', middleware: 'auth' })
+definePageMeta({ layout: 'dashboard', middleware: ['auth', 'feature'], feature: 'csv_import_export' })
 
 const { t } = useI18n()
 const auth = useAuthStore()

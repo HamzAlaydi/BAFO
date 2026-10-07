@@ -1,3 +1,5 @@
+import 'package:bafo/core/config/app_config.dart';
+import 'package:bafo/core/config/feature_gate.dart';
 import 'package:bafo/core/l10n/l10n.dart';
 import 'package:bafo/core/models/competition_enums.dart';
 import 'package:bafo/core/realtime/competition_channel_hub.dart';
@@ -164,7 +166,10 @@ class _Loaded extends StatelessWidget {
             ],
           ),
         ),
-        if (sponsorship != null) ...[
+        // The sponsorship counters need the `sponsorship` flag
+        // (RELEASE_SCOPE.md §4); the record itself still renders.
+        if (sponsorship != null &&
+            context.flags.enabled(Feature.sponsorship)) ...[
           const SizedBox(height: BafoSpacing.md),
           SponsorshipCard(sponsorship: sponsorship),
         ],

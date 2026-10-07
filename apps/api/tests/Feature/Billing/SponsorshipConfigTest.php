@@ -111,16 +111,26 @@ describe('PUT /competitions/{competition}/sponsorship', function () {
             ->assertJsonPath('data.unit_price_minor', 20_000);
     });
 
-    it('refuses when the organization flag or the global setting is off', function (bool $flag, bool $setting) {
+    it('refuses when the organization flag is off', function () {
         [$owner, $competition] = Billing::sponsoringIssuer();
-        $owner->membership->organization->forceFill(['sponsorship_enabled' => $flag])->save();
-        app(Settings::class)->set('sponsorship.enabled', $setting, null);
+        $owner->membership->organization->forceFill(['sponsorship_enabled' => false])->save();
         Billing::actingAs($owner);
 
         $this->putJson("/api/app/v1/competitions/{$competition->public_id}/sponsorship", ['mode' => 'all'])
             ->assertForbidden()
             ->assertJsonPath('code', 'sponsorship_not_enabled');
-    })->with([[false, true], [true, false]]);
+    });
+
+    it('hides the feature when the global setting is off (RELEASE_SCOPE.md §1.3: flags.sponsorship)', function () {
+        [$owner, $competition] = Billing::sponsoringIssuer();
+        app(Settings::class)->set('sponsorship.enabled', false, null);
+        Billing::actingAs($owner);
+
+        $this->putJson("/api/app/v1/competitions/{$competition->public_id}/sponsorship", ['mode' => 'all'])
+            ->assertNotFound()
+            ->assertJsonPath('code', 'feature_disabled')
+            ->assertJsonPath('details.feature', 'sponsorship');
+    });
 
     it('refuses outside draft, scheduled and live before the cutoff', function (Closure $state) {
         [$owner, $competition] = Billing::sponsoringIssuer();

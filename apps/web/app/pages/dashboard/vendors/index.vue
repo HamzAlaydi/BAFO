@@ -10,7 +10,7 @@ import type { MenuEntry, SelectOption, TableColumn } from '~/types/ui'
  * directory: search, status, category and region filters; create and edit in `VendorDrawer`;
  * archive (confirm) and restore. Links to import (W41) and export (W42) with `integrations.manage`.
  */
-definePageMeta({ layout: 'dashboard', middleware: 'auth' })
+definePageMeta({ layout: 'dashboard', middleware: ['auth', 'feature'], feature: 'vendor_directory' })
 
 const { t } = useI18n()
 const auth = useAuthStore()

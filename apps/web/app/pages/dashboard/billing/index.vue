@@ -14,6 +14,7 @@ definePageMeta({ layout: 'dashboard', middleware: 'auth' })
 
 const { t } = useI18n()
 const auth = useAuthStore()
+const features = useFeatures()
 const home = useHomeStore()
 const toast = useToast()
 const { message } = useErrorMessage()
@@ -22,6 +23,9 @@ const date = useDate()
 useSeoMeta({ title: () => t('billing.title') })
 
 const allowed = computed(() => auth.can('billing.view'))
+// Vouchers come from unused covered passes and are redeemed in the coupon field: both belong to the
+// sponsorship feature, hidden in release scope core (RELEASE_SCOPE.md §1.3).
+const showVouchers = computed(() => features.enabled('sponsorship'))
 const canPurchase = computed(() => auth.can('billing.purchase'))
 
 const overview = ref<SubscriptionOverview | null>(null)
@@ -39,7 +43,7 @@ async function load(): Promise<void> {
   loading.value = true
   loadError.value = null
   vouchersError.value = null
-  const [subscriptionResult, vouchersResult] = await Promise.allSettled([fetchSubscription(), listVouchers()])
+  const [subscriptionResult, vouchersResult] = await Promise.allSettled([fetchSubscription(), showVouchers.value ? listVouchers() : Promise.resolve([])])
   if (current !== seq) return
   if (subscriptionResult.status === 'fulfilled') overview.value = subscriptionResult.value
   else loadError.value = subscriptionResult.reason
@@ -93,13 +97,14 @@ const row = (value: unknown) => value as Subscription
   <div class="flex flex-col gap-6">
     <UiPageHeader
       :title="t('billing.title')"
-      :description="t('billing.subtitle')"
+      :description="t(showVouchers ? 'billing.subtitle' : 'billing.subtitle_core')"
     >
       <template
         v-if="allowed"
         #actions
       >
         <UiButton
+          v-if="features.enabled('billing_invoices')"
           variant="secondary"
           :icon="FileText"
           to="/dashboard/billing/invoices"
@@ -247,7 +252,7 @@ const row = (value: unknown) => value as Subscription
             <UiCard :title="t('billing.overview.seats_title')">
               <TeamSeatsMeter :seats="{ used: overview.seats_used, total: overview.seats_total }" />
               <UiButton
-                v-if="auth.can('team.manage')"
+                v-if="auth.can('team.manage') && features.enabled('team_management')"
                 class="mt-4"
                 variant="link"
                 size="sm"
@@ -258,6 +263,7 @@ const row = (value: unknown) => value as Subscription
             </UiCard>
 
             <UiCard
+              v-if="features.enabled('billing_invoices')"
               as="section"
               :title="t('billing.overview.invoices.title')"
             >
@@ -282,7 +288,7 @@ const row = (value: unknown) => value as Subscription
             </UiCard>
 
             <UiCard
-              v-if="auth.features?.sponsorship_enabled"
+              v-if="showVouchers && auth.features?.sponsorship_enabled"
               as="section"
               :title="t('billing.overview.sponsorship.title')"
             >
@@ -302,6 +308,7 @@ const row = (value: unknown) => value as Subscription
 
         <!-- Vouchers -->
         <UiCard
+          v-if="showVouchers"
           as="section"
           :title="t('billing.vouchers.title')"
           :description="t('billing.vouchers.hint')"

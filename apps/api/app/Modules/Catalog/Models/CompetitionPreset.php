@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Modules\Catalog\Models;
 
 use App\Modules\Catalog\Database\Factories\CompetitionPresetFactory;
+use App\Modules\Catalog\Enums\PresetTier;
 use App\Modules\Catalog\Models\Concerns\HasTranslatedAttributes;
 use App\Modules\Competitions\Enums\Direction;
 use App\Modules\Competitions\Enums\Format;
@@ -15,7 +16,8 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * A rules preset (ARCHITECTURE §5.2 `competition_presets`). `rules` holds the RulesInput keys of
- * API.md §2.6 without prices; the issuer supplies the prices.
+ * API.md §2.6 without prices; the issuer supplies the prices. `tier` marks the three preset cards
+ * of RELEASE_SCOPE.md §2.2 (null on the untiered reference presets).
  *
  * @property int $id
  * @property string $public_id
@@ -24,6 +26,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property array{ar: string, en: string} $description
  * @property Direction $direction
  * @property Format $format
+ * @property PresetTier|null $tier
  * @property array<string, mixed> $rules
  * @property int $sort_order
  * @property bool $is_active
@@ -44,6 +47,7 @@ class CompetitionPreset extends Model
         'description',
         'direction',
         'format',
+        'tier',
         'rules',
         'sort_order',
         'is_active',
@@ -64,6 +68,7 @@ class CompetitionPreset extends Model
             'description' => 'array',
             'direction' => Direction::class,
             'format' => Format::class,
+            'tier' => PresetTier::class,
             'rules' => 'array',
             'sort_order' => 'integer',
             'is_active' => 'boolean',

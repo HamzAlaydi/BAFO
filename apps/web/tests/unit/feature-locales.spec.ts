@@ -51,6 +51,14 @@ const DYNAMIC_KEYS = [
   ...['api', 'webhooks', 'files'].flatMap(item => each(`landing.erp.items.${item}`, ['title', 'body'])),
   ...['clock', 'privacy', 'sealed', 'ledger', 'award', 'invoices'].flatMap(item => each(`landing.trust.items.${item}`, ['title', 'body'])),
   ...['what', 'tender_auction', 'sealed', 'identities', 'clock', 'sponsored', 'plans', 'erp', 'mobile'].flatMap(item => each(`landing.faq.items.${item}`, ['question', 'answer'])),
+  // RELEASE_SCOPE §6 landing: 3-step how-it-works, fairness tiles, audiences, the 12 FAQ items and the demo card.
+  ...['create', 'invite', 'award'].flatMap(step => each(`landing.how.steps.issuer.${step}`, ['title', 'body'])),
+  ...['invited', 'offer', 'result'].flatMap(step => each(`landing.how.steps.participant.${step}`, ['title', 'body'])),
+  ...['tender', 'auction'].flatMap(direction => each(`landing.modes.${direction}`, ['lead'])),
+  ...['clock', 'anti_sniping', 'sealed', 'audit'].flatMap(item => each(`landing.fairness.items.${item}`, ['title', 'body'])),
+  ...['procurement', 'sellers', 'suppliers'].flatMap(item => each(`landing.audience.items.${item}`, ['term', 'title', 'body'])),
+  ...['who_can_join', 'anti_sniping', 'rules', 'award'].flatMap(item => each(`landing.faq.items.${item}`, ['question', 'answer'])),
+  ...each('landing.preview.times', ['first', 'second', 'third']),
 ]
 
 describe('runtime-built i18n keys (billing, integrations, vendors, landing)', () => {

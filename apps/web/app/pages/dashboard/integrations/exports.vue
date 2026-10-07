@@ -11,7 +11,7 @@ import type { SessionExport } from '~/utils/integrations-display'
  * There is no list endpoint, so the page lists the jobs started in this browser session
  * (`sessionStorage`, per-viewer convenience).
  */
-definePageMeta({ layout: 'dashboard', middleware: 'auth' })
+definePageMeta({ layout: 'dashboard', middleware: ['auth', 'feature'], feature: 'csv_import_export' })
 
 const props = withDefaults(defineProps<{ pollIntervalMs?: number }>(), { pollIntervalMs: 2000 })
 

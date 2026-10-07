@@ -8,7 +8,7 @@ import type { KeyValueItem } from '~/types/ui'
  * dates, lines, subtotal, discount, VAT, total, ZATCA UUID, e-invoice status, the payment it settles
  * and the PDF. 404 never reveals whether the invoice exists.
  */
-definePageMeta({ layout: 'dashboard', middleware: 'auth' })
+definePageMeta({ layout: 'dashboard', middleware: ['auth', 'feature'], feature: 'billing_invoices', featureFallback: '/dashboard/billing' })
 
 const { t } = useI18n()
 const auth = useAuthStore()

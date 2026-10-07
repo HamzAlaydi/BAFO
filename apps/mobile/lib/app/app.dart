@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bafo/app/dependencies.dart';
 import 'package:bafo/core/api/api_client.dart';
 import 'package:bafo/core/api/app_gate.dart';
+import 'package:bafo/core/config/app_config.dart';
 import 'package:bafo/core/config/app_config_cubit.dart';
 import 'package:bafo/core/files/file_download_service.dart';
 import 'package:bafo/core/l10n/l10n.dart';
@@ -63,6 +64,7 @@ class _BafoAppState extends State<BafoApp> {
     router: _router,
     session: _deps.session,
     markRead: (id) => _deps.repositories.notifications.markRead(id),
+    flags: () => _deps.appConfig.state.config?.flags ?? FeatureFlags.none,
   );
   late final AppLifecycleListener _lifecycle;
   StreamSubscription<PushMessage>? _pushOpened;

@@ -9,7 +9,7 @@ import type { TableColumn } from '~/types/ui'
  * SCREENS §2.4). List (URL, events, status with the disabled reason, failing since, last success and
  * failure) and create (URL, events or `*`, description). The signing secret is shown once.
  */
-definePageMeta({ layout: 'dashboard', middleware: 'auth' })
+definePageMeta({ layout: 'dashboard', middleware: ['auth', 'feature'], feature: 'integrations_api' })
 
 const { t } = useI18n()
 const auth = useAuthStore()

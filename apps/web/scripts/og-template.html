@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="{{lang}}" dir="{{dir}}">
+<head>
+<meta charset="utf-8">
+<title>BAFO Open Graph image</title>
+<style>
+  /* Brand tokens (assets/brand/04_ui_color_tokens/bafo_colors.json): charcoal page, green-500 mark, green-bright on dark. */
+  @font-face {
+    font-family: "IBM Plex Sans Arabic";
+    font-weight: 700;
+    src: url("../node_modules/@fontsource/ibm-plex-sans-arabic/files/ibm-plex-sans-arabic-arabic-700-normal.woff2") format("woff2");
+    unicode-range: U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0898-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC;
+  }
+  @font-face {
+    font-family: "IBM Plex Sans Arabic";
+    font-weight: 500;
+    src: url("../node_modules/@fontsource/ibm-plex-sans-arabic/files/ibm-plex-sans-arabic-arabic-500-normal.woff2") format("woff2");
+    unicode-range: U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0898-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC;
+  }
+  @font-face {
+    font-family: "Inter Variable";
+    font-weight: 100 900;
+    src: url("../node_modules/@fontsource-variable/inter/files/inter-latin-wght-normal.woff2") format("woff2");
+  }
+  /* `html` clips too: a body-level overflow would propagate to the viewport and the mark bleeds out of frame. */
+  html { margin: 0; padding: 0; width: 1200px; height: 630px; overflow: hidden; }
+  body { margin: 0; padding: 0; }
+  body {
+    width: 1200px; height: 630px; overflow: hidden; position: relative;
+    background: #1c1f26; color: #ffffff;
+    font-family: "Inter Variable", "IBM Plex Sans Arabic", sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  html[lang="ar"] body { font-family: "IBM Plex Sans Arabic", "Inter Variable", sans-serif; }
+  .mark-bg {
+    position: absolute; top: -140px; inset-inline-end: -120px; width: 820px; height: 820px;
+    opacity: 0.1;
+  }
+  .content {
+    position: absolute; inset: 0; padding: 72px 88px; box-sizing: border-box;
+    display: flex; flex-direction: column; justify-content: space-between;
+  }
+  .lockup { display: flex; align-items: center; gap: 28px; }
+  .lockup svg { width: 104px; height: 104px; flex: none; }
+  .lockup img { height: 72px; width: auto; display: block; }
+  html[lang="ar"] .lockup img { height: 96px; }
+  .title {
+    font-weight: 700; font-size: 60px; line-height: 1.18; letter-spacing: -0.01em;
+    max-width: 880px; text-wrap: balance; margin: 0;
+  }
+  html[lang="ar"] .title { letter-spacing: 0; line-height: 1.35; }
+  .tagline { font-weight: 500; font-size: 30px; color: #9aa0a6; margin: 18px 0 0; }
+  .tagline strong { color: #16c27e; font-weight: 700; }
+  .rule { position: absolute; bottom: 0; inset-inline: 0; height: 12px; background: #0e9f6e; }
+  .url { position: absolute; bottom: 44px; inset-inline-end: 88px; font-size: 26px; color: #9aa0a6; font-family: "Inter Variable", sans-serif; direction: ltr; }
+</style>
+</head>
+<body>
+  <svg class="mark-bg" viewBox="0 0 200 200" fill="none" stroke="#0e9f6e" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <polyline points="55,160 100,100 145,160" stroke-width="10"/>
+    <polyline points="45,45 100,135 155,45" stroke-width="14"/>
+  </svg>
+  <div class="content">
+    <div class="lockup">
+      <svg viewBox="0 0 200 200" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <polyline points="55,160 100,100 145,160" stroke="#B3261E" stroke-width="22"/>
+        <polyline points="45,45 100,135 155,45" stroke="#0E9F6E" stroke-width="32"/>
+      </svg>
+      <img src="../public/brand/wordmark-{{locale}}-white.png" alt="">
+    </div>
+    <div>
+      <h1 class="title">{{title}}</h1>
+      <p class="tagline">{{tagline}}</p>
+    </div>
+  </div>
+  <div class="url">{{host}}</div>
+  <div class="rule"></div>
+</body>
+</html>

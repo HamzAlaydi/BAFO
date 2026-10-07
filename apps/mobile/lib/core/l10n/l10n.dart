@@ -53,6 +53,7 @@ String? errorText(AppLocalizations l10n, String code) => switch (code) {
   'invalid_state_transition' => l10n.errorsInvalidStateTransition,
   'file_type_not_allowed' => l10n.errorsFileTypeNotAllowed,
   'file_too_large' => l10n.errorsFileTooLarge,
+  'feature_disabled' => l10n.errorsFeatureDisabled,
   // Identity
   'invalid_credentials' => l10n.errorsInvalidCredentials,
   'email_not_verified' => l10n.errorsEmailNotVerified,

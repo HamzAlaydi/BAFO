@@ -5,6 +5,49 @@ export type LegalDocumentCode = 'terms' | 'privacy' | 'refund' | 'competition_ru
 
 export const LEGAL_DOCUMENT_CODES: readonly LegalDocumentCode[] = ['terms', 'privacy', 'refund', 'competition_rules', 'api_terms']
 
+/** `platform.release_scope` (RELEASE_SCOPE.md §1.1): shown for information only; clients branch on `flags`. */
+export type ReleaseScope = 'core' | 'full'
+
+/**
+ * The 22 feature flags of RELEASE_SCOPE.md §1.3, in catalogue order. Clients read `features.flags.<name>`
+ * and never the scope itself.
+ */
+export const FEATURE_FLAGS = [
+  'team_management',
+  'vendor_directory',
+  'integrations_api',
+  'csv_import_export',
+  'sponsorship',
+  'bafo_round',
+  'sealed_format',
+  'advanced_rules',
+  'final_pricing_window',
+  'deletion_approval',
+  'deleted_competitions',
+  'offer_report',
+  'login_as',
+  'google_signin',
+  'dark_mode',
+  'billing_invoices',
+  'custom_plan_quote',
+  'coupons',
+  'qa_comments',
+  'attachments',
+  'extend_competition',
+  'cancel_competition',
+] as const
+
+export type FeatureFlag = (typeof FEATURE_FLAGS)[number]
+
+export type FeatureFlags = Record<FeatureFlag, boolean>
+
+/** `AppConfig.features` (API.md §2.13, RELEASE_SCOPE.md §1.4). `sponsorship` always equals `flags.sponsorship`. */
+export interface AppFeatures {
+  release_scope: ReleaseScope
+  sponsorship: boolean
+  flags: FeatureFlags
+}
+
 export interface RealtimeConfig {
   key: string
   host: string
@@ -22,7 +65,7 @@ export interface AppConfig {
   support: { email: string, phone: string, whatsapp: string }
   realtime: RealtimeConfig
   legal: Partial<Record<LegalDocumentCode, { version: string }>>
-  features: { sponsorship: boolean }
+  features: AppFeatures
   currency: 'SAR'
   vat_rate_bp: number
   supported_locales: AppLocale[]

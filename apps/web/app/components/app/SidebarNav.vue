@@ -3,20 +3,22 @@ import { Plus } from '@lucide/vue'
 import { CREATE_COMPETITION_ACTION, DASHBOARD_NAV } from '~/config/navigation'
 
 /**
- * Dashboard side navigation (SCREENS §2.3): entries the user cannot use are hidden (CD8). The primary
- * "Create competition" action sits above (S10): hidden without `competitions.create`, disabled with a
- * plan explanation without `can_issue`. The current entry follows the URL, or `useNavHighlight()` where
- * one URL serves several entries (the competition detail).
+ * Dashboard side navigation (SCREENS §2.3): entries the user cannot use are hidden (CD8), and so are
+ * entries whose release-scope feature is off (RELEASE_SCOPE.md §5). The primary "Create competition"
+ * action sits above (S10): hidden without `competitions.create`, disabled with a plan explanation
+ * without `can_issue`. The current entry follows the URL, or `useNavHighlight()` where one URL serves
+ * several entries (the competition detail).
  */
 const emit = defineEmits<{ navigate: [] }>()
 const { t } = useI18n()
 const route = useRoute()
 const localePath = useLocalePath()
 const auth = useAuthStore()
+const features = useFeatures()
 const createHintId = useId()
 
 const groups = computed(() => DASHBOARD_NAV
-  .map(group => ({ ...group, items: group.items.filter(item => !item.permission || auth.can(item.permission)) }))
+  .map(group => ({ ...group, items: group.items.filter(item => (!item.permission || auth.can(item.permission)) && features.anyEnabled(item.feature)) }))
   .filter(group => group.items.length > 0))
 
 const canCreate = computed(() => auth.can(CREATE_COMPETITION_ACTION.permission))

@@ -5,7 +5,7 @@ import { awardHints, lastOfferSeq, mergeOfferEntries, offerSeqGap } from '~/stor
 import { splitEmailList } from '~/utils/validation'
 import { addStaged, stageEmail, stagedRowErrors, stagedToInput, stageOrganization, stageVendor, upsertInvitation } from '~/stores/competition-editor-invitations'
 import { editorScheduleIssues, editorSchedulePreview } from '~/stores/competition-editor-schedule'
-import { draftChecklist, firstIncompleteStep, publishFieldStep, wizardStepKeys, type DraftProgress } from '~/stores/competition-editor-steps'
+import { draftChecklist, firstIncompleteStep, LEGACY_STEP_ALIASES, publishFieldStep, resolveWizardStep, WIZARD_CLIENT_STEPS, wizardStepKeys, type DraftProgress } from '~/stores/competition-editor-steps'
 
 const MIN = 60_000
 const NOW = Date.parse('2026-11-01T09:00:00.000Z')
@@ -38,13 +38,22 @@ describe('schedule preview (SCREENS §6 G3)', () => {
     const inverted = editorScheduleIssues({ biddingOpensAt: iso(NOW + 60 * MIN), scheduledCloseAt: iso(NOW + 30 * MIN), rules, nowMs: NOW })
     expect(inverted).toEqual([expect.objectContaining({ key: 'competitions.setup.schedule.issues.close_after_open', when: 'save' })])
     const short = editorScheduleIssues({ biddingOpensAt: null, scheduledCloseAt: iso(NOW + 5 * MIN), rules, nowMs: NOW })
-    expect(short.map(i => i.key)).toContain('competitions.setup.schedule.issues.min_duration')
+    expect(short).toContainEqual(expect.objectContaining({ key: 'competitions.setup.schedule.issues.min_duration', when: 'publish', params: { minutes: 5, min: 10 }, count: 5 }))
     const window = editorScheduleIssues({ biddingOpensAt: null, scheduledCloseAt: iso(NOW + 45 * MIN), rules, nowMs: NOW })
     expect(window.map(i => i.key)).toContain('competitions.setup.schedule.issues.final_window_too_long')
     const past = editorScheduleIssues({ biddingOpensAt: iso(NOW - 5 * MIN), scheduledCloseAt: iso(NOW + 5 * 24 * 60 * MIN), rules, nowMs: NOW })
     expect(past.map(i => i.key)).toContain('competitions.setup.schedule.issues.opens_in_past')
     const long = editorScheduleIssues({ biddingOpensAt: null, scheduledCloseAt: iso(NOW + 91 * 24 * 60 * MIN), rules, nowMs: NOW })
-    expect(long.map(i => i.key)).toContain('competitions.setup.schedule.issues.max_duration')
+    expect(long).toContainEqual(expect.objectContaining({ key: 'competitions.setup.schedule.issues.max_duration', params: { days: 91, max: 90 }, count: 91 }))
+  })
+
+  it('rejects a closing time that has already passed, clearly and before saving (RELEASE_SCOPE §2.3)', () => {
+    const past = editorScheduleIssues({ biddingOpensAt: null, scheduledCloseAt: iso(NOW - 5 * MIN), rules, nowMs: NOW })
+    expect(past).toEqual([expect.objectContaining({ field: 'scheduled_close_at', key: 'competitions.setup.schedule.issues.close_in_past', when: 'save' })])
+    // A past opening time with a past close: the close is the blocking problem, the opening a publish hint.
+    const both = editorScheduleIssues({ biddingOpensAt: iso(NOW - 60 * MIN), scheduledCloseAt: iso(NOW - MIN), rules, nowMs: NOW })
+    expect(both.map(i => i.key)).toEqual(['competitions.setup.schedule.issues.opens_in_past', 'competitions.setup.schedule.issues.close_in_past'])
+    expect(both.find(i => i.key.endsWith('close_in_past'))?.when).toBe('save')
   })
 })
 
@@ -65,17 +74,26 @@ describe('wizard steps and the F2 resume rule', () => {
     attachments: 0,
   }
 
-  it('hides the fees step when sponsorship is not enabled', () => {
-    expect(wizardStepKeys(true)).toHaveLength(8)
-    expect(wizardStepKeys(false)).not.toContain('fees')
+  it('has the same five steps in both release scopes (RELEASE_SCOPE §2.1)', () => {
+    expect(wizardStepKeys()).toEqual(['basics', 'rules', 'schedule', 'participants', 'review'])
+    expect(WIZARD_CLIENT_STEPS).toEqual(['basics'])
   })
 
-  it('opens the first incomplete step', () => {
+  it('maps the legacy 8-step keys to the step that holds their content', () => {
+    expect(LEGACY_STEP_ALIASES).toEqual({ type: 'basics', documents: 'participants', fees: 'participants' })
+    expect(resolveWizardStep('type')).toEqual({ step: 'basics', alias: true })
+    expect(resolveWizardStep('fees')).toEqual({ step: 'participants', alias: true })
+    expect(resolveWizardStep('rules')).toEqual({ step: 'rules', alias: false })
+    expect(resolveWizardStep('nope')).toBeNull()
+    expect(resolveWizardStep(undefined)).toBeNull()
+  })
+
+  it('opens the first incomplete step (§2.5: covered fees still to buy open the participants step)', () => {
     expect(firstIncompleteStep({ ...complete, hasRegion: false })).toBe('basics')
     expect(firstIncompleteStep({ ...complete, auctionWithoutStartPrice: true })).toBe('rules')
     expect(firstIncompleteStep({ ...complete, hasClose: false })).toBe('schedule')
     expect(firstIncompleteStep({ ...complete, invitations: 1 })).toBe('participants')
-    expect(firstIncompleteStep({ ...complete, sponsorshipMode: 'all', quotePassesToBuy: 3 })).toBe('fees')
+    expect(firstIncompleteStep({ ...complete, sponsorshipMode: 'all', quotePassesToBuy: 3 })).toBe('participants')
     expect(firstIncompleteStep({ ...complete, sponsorshipMode: 'all', quotePassesToBuy: 3, feesEnabled: false })).toBe('review')
     expect(firstIncompleteStep(complete)).toBe('review')
   })
@@ -89,6 +107,8 @@ describe('wizard steps and the F2 resume rule', () => {
   it('links publish field errors to their step', () => {
     expect(publishFieldStep('description')).toBe('basics')
     expect(publishFieldStep('category_other_text')).toBe('basics')
+    expect(publishFieldStep('direction')).toBe('basics')
+    expect(publishFieldStep('preset_code')).toBe('basics')
     expect(publishFieldStep('start_price_minor')).toBe('rules')
     expect(publishFieldStep('rules.final_window_minutes')).toBe('rules')
     expect(publishFieldStep('scheduled_close_at')).toBe('schedule')

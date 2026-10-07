@@ -30,6 +30,11 @@ export interface CloseReason {
 /** Presets carry rules without start or reserve prices. */
 export type PresetRules = Omit<RulesInput, 'start_price_minor' | 'reserve_price_minor'>
 
+/** Preset tiers of RELEASE_SCOPE.md §2.2; `null` for the untiered reference presets. */
+export type PresetTier = 'simple' | 'standard' | 'protected'
+
+export const PRESET_TIERS: readonly PresetTier[] = ['simple', 'standard', 'protected']
+
 export interface Preset {
   id: Ulid
   code: string
@@ -37,6 +42,8 @@ export interface Preset {
   description: string
   direction: Direction
   format: Format
+  /** Optional until every server sends it (older servers omit the field). */
+  tier?: PresetTier | null
   rules: PresetRules
 }
 

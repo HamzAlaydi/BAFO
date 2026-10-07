@@ -9,7 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
- * Preset (API.md §2.4): `{"id", "code", "name", "description", "direction", "format", "rules"}`.
+ * Preset (API.md §2.4): `{"id", "code", "name", "description", "direction", "format", "tier", "rules"}`.
+ * `tier` is `simple`, `standard`, `protected` or null (RELEASE_SCOPE.md §2.2).
  * `rules` is the RulesInput object of API.md §2.6 without the start and reserve prices: the
  * issuer supplies prices.
  *
@@ -29,6 +30,7 @@ final class PresetResource extends JsonResource
             'description' => $this->translated('description'),
             'direction' => $this->direction->value,
             'format' => $this->format->value,
+            'tier' => $this->tier?->value,
             'rules' => self::rules($this->rules),
         ];
     }

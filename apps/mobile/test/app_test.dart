@@ -14,6 +14,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 
 import 'helpers/fakes.dart';
+import 'helpers/scope.dart';
 
 void main() {
   late AppDependencies deps;
@@ -22,18 +23,20 @@ void main() {
   late StubAdapter http;
 
   const onboarded = {PreferenceKeys.onboardingSeen: '1'};
-  final competitionId = fixtureData(
-    'competition_supplier_a_live_final_window',
-  )['id'] as String;
+  final competitionId =
+      fixtureData('competition_supplier_a_live_final_window')['id'] as String;
 
   Future<void> pumpApp(
     WidgetTester tester, {
     Map<String, String>? preferences = onboarded,
     String? token,
+    // The captured app-config has no flags (scope `core`); this serves the
+    // §1.4 answer of scope `full` instead.
+    bool fullScope = false,
   }) async {
     tokens = InMemoryTokenStore(token);
     realtime = FakeRealtimeClient();
-    http = fixtureAdapter({
+    final fixtures = fixtureAdapter({
       'GET /app-config': 'app_config',
       'GET /time': 'time',
       'GET /me': 'me_issuer',
@@ -44,6 +47,23 @@ void main() {
       'GET /competitions/$competitionId/attachments':
           'attachments_supplier_a_live_initial',
     });
+    http = !fullScope
+        ? fixtures
+        : StubAdapter((options) {
+            if (options.uri.path.endsWith('/app-config')) {
+              return (
+                200,
+                {
+                  'data': ScopeFlags.appConfigJson(
+                    ScopeFlags.full,
+                    scope: 'full',
+                  ),
+                  'meta': <String, Object>{},
+                },
+              );
+            }
+            return fixtures.handler(options);
+          });
     deps = AppDependencies.wire(
       env: testEnv(),
       tokens: tokens,
@@ -93,10 +113,10 @@ void main() {
   testWidgets('a saved English preference renders left-to-right', (
     tester,
   ) async {
-    await pumpApp(tester, preferences: {
-      ...onboarded,
-      PreferenceKeys.locale: 'en',
-    });
+    await pumpApp(
+      tester,
+      preferences: {...onboarded, PreferenceKeys.locale: 'en'},
+    );
 
     expect(directionOf(tester, LoginScreen), TextDirection.ltr);
     expect(find.text('Sign in'), findsWidgets);
@@ -157,6 +177,42 @@ void main() {
     expect(realtime.subscribed, contains('user.$userId'));
   });
 
+  testWidgets('the shell keeps five tabs in both release scopes', (
+    tester,
+  ) async {
+    // A tall phone, so the lazily built hub shows every row.
+    tester.view
+      ..physicalSize = const Size(1080, 4000)
+      ..devicePixelRatio = 2.5;
+    addTearDown(tester.view.reset);
+    for (final fullScope in [false, true]) {
+      await pumpApp(tester, token: 'stored', fullScope: fullScope);
+      expect(find.byType(AppShell), findsOneWidget, reason: '$fullScope');
+      for (final label in [
+        'الرئيسية',
+        'مشاركاتي',
+        'منافساتي',
+        'الإشعارات',
+        'الحساب',
+      ]) {
+        expect(find.text(label), findsWidgets, reason: '$label $fullScope');
+      }
+      expect(
+        deps.appConfig.state.config?.releaseScope,
+        fullScope ? 'full' : 'core',
+      );
+      // The Account hub follows the flags: Team only in `full` (M51).
+      await tester.tap(find.text('الحساب'));
+      await tester.pumpAndSettle();
+      expect(
+        find.byKey(const Key('account.team')),
+        fullScope ? findsOneWidget : findsNothing,
+        reason: 'team $fullScope',
+      );
+      await tester.pumpWidget(const SizedBox.shrink());
+    }
+  });
+
   testWidgets('a stored token restores the session with GET /me', (
     tester,
   ) async {
@@ -184,21 +240,22 @@ void main() {
     expect(find.byType(AppShell), findsOneWidget);
   });
 
-  testWidgets('a suspended organisation gets the account gate and can sign out', (
-    tester,
-  ) async {
-    await pumpApp(tester, token: 'stored');
+  testWidgets(
+    'a suspended organisation gets the account gate and can sign out',
+    (tester) async {
+      await pumpApp(tester, token: 'stored');
 
-    deps.gate.accountBlocked('organization_suspended', '');
-    await tester.pumpAndSettle();
-    expect(find.byType(AccountBlockedScreen), findsOneWidget);
-    expect(find.textContaining('أُوقف حساب منشأتكم'), findsOneWidget);
+      deps.gate.accountBlocked('organization_suspended', '');
+      await tester.pumpAndSettle();
+      expect(find.byType(AccountBlockedScreen), findsOneWidget);
+      expect(find.textContaining('أُوقف حساب منشأتكم'), findsOneWidget);
 
-    await tester.tap(find.text('تسجيل الخروج'));
-    await tester.pumpAndSettle();
-    expect(find.byType(LoginScreen), findsOneWidget);
-    expect(deps.gate.state, const AppGateOpen());
-  });
+      await tester.tap(find.text('تسجيل الخروج'));
+      await tester.pumpAndSettle();
+      expect(find.byType(LoginScreen), findsOneWidget);
+      expect(deps.gate.state, const AppGateOpen());
+    },
+  );
 
   testWidgets('/competitions/:id opens above the shell from any tab', (
     tester,
@@ -206,9 +263,8 @@ void main() {
     await pumpApp(tester, token: 'stored');
 
     unawaited(
-      GoRouter.of(
-        tester.element(find.byType(AppShell)),
-      ).push('/competitions/$competitionId'),
+      GoRouter.of(tester.element(find.byType(AppShell)))
+          .push('/competitions/$competitionId'),
     );
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 500));

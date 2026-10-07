@@ -127,9 +127,21 @@ void main() {
         tester,
         const Column(
           children: [
-            StandingBanner(direction: Direction.tender, hasOffer: true, isLeading: true),
-            StandingBanner(direction: Direction.tender, hasOffer: true, isLeading: false),
-            StandingBanner(direction: Direction.auction, hasOffer: true, isLeading: false),
+            StandingBanner(
+              direction: Direction.tender,
+              hasOffer: true,
+              isLeading: true,
+            ),
+            StandingBanner(
+              direction: Direction.tender,
+              hasOffer: true,
+              isLeading: false,
+            ),
+            StandingBanner(
+              direction: Direction.auction,
+              hasOffer: true,
+              isLeading: false,
+            ),
             StandingBanner(
               direction: Direction.tender,
               hasOffer: true,
@@ -142,8 +154,14 @@ void main() {
         ),
       );
       expect(find.text('عرضك هو العرض المتصدر'), findsOneWidget);
-      expect(find.text('عرضك ليس العرض المتصدر. خفّض عرضك لتنافس.'), findsOneWidget);
-      expect(find.text('عرضك ليس العرض المتصدر. ارفع عرضك لتنافس.'), findsOneWidget);
+      expect(
+        find.text('عرضك ليس العرض المتصدر. خفّض عرضك لتنافس.'),
+        findsOneWidget,
+      );
+      expect(
+        find.text('عرضك ليس العرض المتصدر. ارفع عرضك لتنافس.'),
+        findsOneWidget,
+      );
       expect(find.text('ترتيبك 2 من 5'), findsOneWidget);
       expect(
         find.text('استُلم عرضك. لا تُظهر هذه المنافسة الترتيب.'),
@@ -172,17 +190,22 @@ void main() {
       Matcher liveRegionWith(String label) =>
           isSemantics(label: label, isLiveRegion: true);
       SemanticsNode node() => tester.getSemantics(
-        find.descendant(
-          of: find.byType(StandingBanner),
-          matching: find.byType(Semantics),
-        ).first,
+        find
+            .descendant(
+              of: find.byType(StandingBanner),
+              matching: find.byType(Semantics),
+            )
+            .first,
       );
       expect(node(), liveRegionWith('عرضك هو العرض المتصدر'));
 
       update(() => leading = false);
       await tester.pump();
       // Visual updates at once; the announced label waits (≤ 1 per 10 s).
-      expect(find.text('عرضك ليس العرض المتصدر. خفّض عرضك لتنافس.'), findsOneWidget);
+      expect(
+        find.text('عرضك ليس العرض المتصدر. خفّض عرضك لتنافس.'),
+        findsOneWidget,
+      );
       expect(node(), liveRegionWith('عرضك هو العرض المتصدر'));
       await tester.pump(const Duration(seconds: 11));
       expect(
@@ -217,20 +240,58 @@ void main() {
       return (key, amounts);
     }
 
-    testWidgets('Arabic: label after the amount, Arabic-Indic digits accepted', (
-      tester,
-    ) async {
-      final (key, amounts) = await pump(tester);
-      expect(find.text('ر.س'), findsOneWidget);
-      expect(find.text('الأسعار لا تشمل ضريبة القيمة المضافة'), findsOneWidget);
-      await tester.enterText(find.byType(EditableText), '١٢٥٠٫٥');
-      expect(amounts.last, 125050);
-      expect(key.currentState!.validate(), isTrue);
-      await tester.enterText(find.byType(EditableText), '300000');
-      expect(key.currentState!.validate(), isFalse);
-      await tester.pump();
-      expect(find.text('فوق السقف'), findsOneWidget);
-    });
+    testWidgets(
+      'Arabic: label after the amount, Arabic-Indic digits accepted',
+      (tester) async {
+        final (key, amounts) = await pump(tester);
+        expect(find.text('ر.س'), findsOneWidget);
+        expect(
+          find.text('الأسعار لا تشمل ضريبة القيمة المضافة'),
+          findsOneWidget,
+        );
+        await tester.enterText(find.byType(EditableText), '١٢٥٠٫٥');
+        expect(amounts.last, 125050);
+        expect(key.currentState!.validate(), isTrue);
+        await tester.enterText(find.byType(EditableText), '300000');
+        expect(key.currentState!.validate(), isFalse);
+        await tester.pump();
+        expect(find.text('فوق السقف'), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      'separators while not focused, plain digits while editing (FQ3)',
+      (tester) async {
+        final (key, amounts) = await pump(tester, granularity: 100);
+        await tester.enterText(find.byType(EditableText), '125000');
+        expect(amounts.last, 12500000);
+        expect(find.text('مثال: 125,000.00'), findsOneWidget);
+
+        FocusManager.instance.primaryFocus?.unfocus();
+        await tester.pump();
+        final field = tester.widget<EditableText>(find.byType(EditableText));
+        expect(field.controller.text, '125,000');
+        expect(key.currentState!.validate(), isTrue);
+
+        await tester.tap(find.byType(EditableText));
+        await tester.pump();
+        expect(field.controller.text, '125000');
+
+        // Halalas allowed: two decimals in the grouped text.
+        final (_, decimals) = await pump(tester);
+        await tester.enterText(find.byType(EditableText), '1250.5');
+        expect(decimals.last, 125050);
+        FocusManager.instance.primaryFocus?.unfocus();
+        await tester.pump();
+        expect(
+          tester
+              .widget<EditableText>(find.byType(EditableText))
+              .controller
+              .text,
+          '1,250.50',
+        );
+      },
+    );
 
     testWidgets('English: SAR before the amount; whole riyals only', (
       tester,
@@ -263,7 +324,9 @@ void main() {
         tester,
         OtpField(controller: controller, onCompleted: (v) => completed = v),
       );
-      final field = tester.widget<TextField>(find.byKey(const Key('otp.input')));
+      final field = tester.widget<TextField>(
+        find.byKey(const Key('otp.input')),
+      );
       expect(field.autofillHints, contains(AutofillHints.oneTimeCode));
       await tester.enterText(find.byKey(const Key('otp.input')), '١٢٣٤٥٦٧');
       await tester.pump();
@@ -370,7 +433,9 @@ void main() {
     testWidgets('rules summary shows the server lines', (tester) async {
       await pumpLocalized(
         tester,
-        const RulesSummaryCard(lines: ['مناقصة: العرض الأقل سعراً يتصدر.', 'سطر ثانٍ']),
+        const RulesSummaryCard(
+          lines: ['مناقصة: العرض الأقل سعراً يتصدر.', 'سطر ثانٍ'],
+        ),
       );
       expect(find.text('قواعد المنافسة'), findsOneWidget);
       expect(find.text('سطر ثانٍ'), findsOneWidget);

@@ -19,5 +19,10 @@ return [
             'award_justification' => 'Award justification',
             'void_offer' => 'Offer void',
         ],
+        'preset_tier' => [
+            'simple' => 'Simple',
+            'standard' => 'Standard',
+            'protected' => 'Maximum protection',
+        ],
     ],
 ];

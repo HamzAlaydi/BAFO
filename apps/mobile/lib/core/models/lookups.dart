@@ -94,8 +94,27 @@ final class CloseReason extends Equatable {
   List<Object?> get props => [id, code, kind, name, requiresNote];
 }
 
+/// The level of a tiered preset (RELEASE_SCOPE.md §2.2): the three cards of
+/// the rules step, from the fewest to the most protective rules.
+enum PresetTier implements WireEnum {
+  simple('simple'),
+  standard('standard'),
+  protected('protected'),
+  unknown('unknown');
+
+  const PresetTier(this.wire);
+
+  @override
+  final String wire;
+
+  /// Null when the preset has no tier (the legacy templates).
+  static PresetTier? parse(Object? raw) =>
+      parseWireOrNull(values, raw, unknown);
+}
+
 /// A rules preset (no prices). Mobile creates drafts from presets only
-/// (SCREENS.md CD4).
+/// (SCREENS.md CD4). Tiered presets ([tier] set) are the cards of the
+/// creation step; untiered ones are the «قوالب أخرى» of the web rules step.
 final class Preset extends Equatable {
   const Preset({
     required this.id,
@@ -105,6 +124,7 @@ final class Preset extends Equatable {
     required this.format,
     required this.rules,
     this.description,
+    this.tier,
   });
 
   factory Preset.fromJson(Json json) => Preset(
@@ -115,6 +135,7 @@ final class Preset extends Equatable {
     direction: Direction.parse(json['direction']),
     format: CompetitionFormat.parse(json['format']),
     rules: Rules.fromJson(json.obj('rules')),
+    tier: PresetTier.parse(json['tier']),
   );
 
   final String id;
@@ -125,6 +146,12 @@ final class Preset extends Equatable {
   final CompetitionFormat format;
   final Rules rules;
 
+  /// `tier` (RELEASE_SCOPE.md §2.2); null for untiered presets.
+  final PresetTier? tier;
+
+  /// Whether this preset is one of the three tier cards.
+  bool get isTiered => tier != null && tier != PresetTier.unknown;
+
   @override
   List<Object?> get props => [
     id,
@@ -134,6 +161,7 @@ final class Preset extends Equatable {
     direction,
     format,
     rules,
+    tier,
   ];
 }
 

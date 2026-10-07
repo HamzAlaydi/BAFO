@@ -11,6 +11,7 @@ import type { CloseReasonRequest, IssuerCompetition } from '~/types/api/competit
  */
 const ctx = useCompetitionContext()
 const { t } = useI18n()
+const features = useFeatures()
 const toast = useToast()
 const { message } = useErrorMessage()
 const localePath = useLocalePath()
@@ -114,7 +115,7 @@ async function confirmDelete(): Promise<void> {
       {{ t('competitions.issuer.actions.invite') }}
     </UiButton>
     <UiButton
-      v-if="permissions.can_extend && status === 'live'"
+      v-if="permissions.can_extend && status === 'live' && features.enabled('extend_competition')"
       variant="secondary"
       :icon="CalendarPlus"
       @click="extendOpen = true"

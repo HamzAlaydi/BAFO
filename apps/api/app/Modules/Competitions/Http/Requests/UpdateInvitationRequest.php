@@ -4,10 +4,17 @@ declare(strict_types=1);
 
 namespace App\Modules\Competitions\Http\Requests;
 
+use App\Modules\Competitions\Models\Invitation;
+use App\Support\Features\Feature;
+use App\Support\Features\FeatureFlags;
+use App\Support\Features\FeatureRefusals;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Validator;
 
 /**
  * `PATCH /competitions/{competition}/invitations/{invitation}` (API.md §1.4): `name`, `sponsored`.
+ * While the release scope hides `sponsorship` (RELEASE_SCOPE.md §1.5), `sponsored = true` is a
+ * 422 `errors.feature_disabled_field` unless the invitation is already sponsored.
  */
 final class UpdateInvitationRequest extends FormRequest
 {
@@ -24,6 +31,24 @@ final class UpdateInvitationRequest extends FormRequest
         return [
             'name' => ['sometimes', 'nullable', 'string', 'max:150'],
             'sponsored' => ['sometimes', 'boolean'],
+        ];
+    }
+
+    /**
+     * @return list<callable(Validator): void>
+     */
+    public function after(): array
+    {
+        return [
+            function (Validator $validator): void {
+                $invitation = $this->route('invitation');
+
+                if (! app(FeatureFlags::class)->enabled(Feature::Sponsorship)
+                    && in_array($this->input('sponsored'), [true, 1, '1'], true)
+                    && ! ($invitation instanceof Invitation && $invitation->sponsored_requested)) {
+                    FeatureRefusals::refuseField($validator, 'sponsored');
+                }
+            },
         ];
     }
 

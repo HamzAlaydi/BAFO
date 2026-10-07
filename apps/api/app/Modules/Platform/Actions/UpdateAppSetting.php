@@ -6,13 +6,16 @@ namespace App\Modules\Platform\Actions;
 
 use App\Support\Audit\AuditLogger;
 use App\Support\Auth\Actor;
+use App\Support\Features\FeatureFlags;
+use App\Support\Features\ReleaseScope;
 use App\Support\Settings\Settings;
 use Illuminate\Support\Facades\DB;
 use InvalidArgumentException;
 
 /**
  * Admin settings page: changes one runtime setting of the §15.3 catalogue (a key some module
- * registered a default for).
+ * registered a default for). `platform.release_scope` accepts its enum values only
+ * (RELEASE_SCOPE.md §1.1).
  */
 final readonly class UpdateAppSetting
 {
@@ -22,6 +25,10 @@ final readonly class UpdateAppSetting
     {
         if (! array_key_exists($key, $this->settings->registeredDefaults())) {
             throw new InvalidArgumentException("Unknown setting [{$key}].");
+        }
+
+        if ($key === FeatureFlags::SETTING_KEY && (! is_string($value) || ReleaseScope::tryFrom($value) === null)) {
+            throw new InvalidArgumentException("Setting [{$key}] accepts one of: ".implode(', ', ReleaseScope::values()).'.');
         }
 
         DB::transaction(function () use ($key, $value, $actor): void {

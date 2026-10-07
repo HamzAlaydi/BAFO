@@ -13,6 +13,7 @@ definePageMeta({ layout: 'dashboard', middleware: 'auth' })
 
 const { t } = useI18n()
 const auth = useAuthStore()
+const features = useFeatures()
 const home = useHomeStore()
 const toast = useToast()
 const route = useRoute()
@@ -220,7 +221,7 @@ function ctaLabel(plan: Plan): string {
           </BillingPlanCard>
         </li>
         <li
-          v-if="customPlan"
+          v-if="customPlan && features.enabled('custom_plan_quote')"
           class="md:col-span-2 xl:col-span-1"
         >
           <BillingCustomPlanCard

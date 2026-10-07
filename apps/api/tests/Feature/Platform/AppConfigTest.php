@@ -20,7 +20,8 @@ it('returns the AppConfig resource without a token', function () {
                 'support' => ['email', 'phone', 'whatsapp'],
                 'realtime' => ['key', 'host', 'port', 'scheme'],
                 'legal' => ['terms', 'privacy', 'competition_rules'],
-                'features' => ['sponsorship'],
+                // RELEASE_SCOPE.md §1.4; the values per scope are in ReleaseScopeTest.
+                'features' => ['release_scope', 'sponsorship', 'flags'],
                 'currency',
                 'vat_rate_bp',
                 'supported_locales',

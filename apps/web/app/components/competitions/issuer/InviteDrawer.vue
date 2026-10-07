@@ -27,6 +27,7 @@ const open = defineModel<boolean>('open', { default: false })
 const { t } = useI18n()
 const toast = useToast()
 const auth = useAuthStore()
+const features = useFeatures()
 const locale = useAppLocale()
 const { message } = useErrorMessage()
 
@@ -147,7 +148,7 @@ async function payAndSend(): Promise<void> {
           v-model="staged"
           :competition-id="competition.id"
           :existing="existing"
-          :sponsored-selectable="selectedMode"
+          :sponsored-selectable="selectedMode && features.enabled('sponsorship')"
           :category-id="competition.category?.id ?? null"
           :region-id="competition.region?.id ?? null"
         />

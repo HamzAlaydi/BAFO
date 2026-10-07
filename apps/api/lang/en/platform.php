@@ -52,6 +52,11 @@ return [
             'import_errors' => 'Import errors',
             'export' => 'Export',
         ],
+        // Setting platform.release_scope (RELEASE_SCOPE.md §1.1).
+        'release_scope' => [
+            'core' => 'Core (tenders and auctions)',
+            'full' => 'Full (every feature)',
+        ],
     ],
 
     'legal' => [

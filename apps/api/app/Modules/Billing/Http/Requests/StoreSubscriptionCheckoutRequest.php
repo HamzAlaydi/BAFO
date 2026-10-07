@@ -6,6 +6,10 @@ namespace App\Modules\Billing\Http\Requests;
 
 use App\Modules\Billing\Data\SubscriptionCheckoutInput;
 use App\Modules\Billing\Enums\BillingInterval;
+use App\Modules\Billing\Models\Plan;
+use App\Support\Features\Feature;
+use App\Support\Features\FeatureFlags;
+use App\Support\Features\FeatureRefusals;
 use App\Support\Http\Middleware\IdempotentRequest;
 use Illuminate\Validation\Rule;
 
@@ -14,9 +18,28 @@ use Illuminate\Validation\Rule;
  * `plan_not_available`), custom seats must be within the bounds (422 `seats_out_of_range`)
  * and the return URL allow-listed (422 `return_url_not_allowed`): those are business checks in
  * the Action.
+ *
+ * Release scope (RELEASE_SCOPE.md §1.5): a `coupon_code` while `coupons` is hidden, or the custom
+ * plan while `custom_plan_quote` is hidden, is 404 `feature_disabled` before any validation.
  */
 final class StoreSubscriptionCheckoutRequest extends BillingFormRequest
 {
+    protected function prepareForValidation(): void
+    {
+        $features = app(FeatureFlags::class);
+
+        if (! $features->enabled(Feature::Coupons) && self::filledString($this->input('coupon_code'))) {
+            throw FeatureRefusals::disabled(Feature::Coupons);
+        }
+
+        $planId = $this->input('plan_id');
+
+        if (! $features->enabled(Feature::CustomPlanQuote) && is_string($planId)
+            && Plan::query()->wherePublicId(strtolower($planId))->value('is_custom') === true) {
+            throw FeatureRefusals::disabled(Feature::CustomPlanQuote);
+        }
+    }
+
     public function rules(): array
     {
         return [

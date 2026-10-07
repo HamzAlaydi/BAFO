@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:bafo/core/config/feature_gate.dart';
 import 'package:bafo/core/l10n/l10n.dart';
 import 'package:bafo/core/realtime/unread_count_cubit.dart';
 import 'package:bafo/core/router/app_router.dart';
@@ -183,7 +184,10 @@ class _NotificationsList extends StatelessWidget {
   /// everything else is pushed by `DeepLinkRouter`.
   void _open(BuildContext context, AppNotification notification) {
     context.read<NotificationsBloc>().add(NotificationOpened(notification));
-    final target = DeepLinkRouter.map(notification.route);
+    final target = DeepLinkRouter.map(
+      notification.route,
+      flags: context.flagsNow,
+    );
     if (target == AppRoutes.notifications) return;
     if (target == AppRoutes.home) {
       context.go(target);

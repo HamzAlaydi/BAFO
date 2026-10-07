@@ -67,8 +67,9 @@ Route::middleware("can:perm,'organization.update'")->group(static function (): v
     Route::delete('organization/profile-document', [OrganizationController::class, 'destroyProfileDocument'])->name('organization.profile-document.destroy');
 });
 
-// Team (branch users): `team.manage`, own organization only (MembershipPolicy).
-Route::prefix('team/members')->name('team.members.')->group(static function (): void {
+// Team (branch users): `team.manage`, own organization only (MembershipPolicy). Hidden while the
+// release scope leaves `team_management` off (RELEASE_SCOPE.md §1.5); accepting an invitation stays.
+Route::prefix('team/members')->middleware('feature:team_management')->name('team.members.')->group(static function (): void {
     Route::get('/', [TeamMemberController::class, 'index'])->middleware('can:viewAny,'.Membership::class)->name('index');
     Route::post('/', [TeamMemberController::class, 'store'])->middleware('can:create,'.Membership::class)->name('store');
     Route::patch('{membership}', [TeamMemberController::class, 'update'])->middleware('can:update,membership')->name('update');

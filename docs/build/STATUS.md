@@ -320,3 +320,28 @@ These gaps were not scaffold fixes. All of them were closed by their owners late
 - **Identity:** the `User` model and the `users` table.
 - **Web:** `useAppConfigStore` as the Echo source, and SCREENS R-W1 to R-W6.
 - **Mobile:** SCREENS R-M1 to R-M3 (done in phase 1).
+
+---
+
+## 6. Release-scope landing and SEO (2026-10-06)
+
+W01 rebuilt per `RELEASE_SCOPE.md` §6 (nine sections; sealed lines, sponsored participation, ERP, two FAQ items, the API-terms link and the theme menu follow `features.flags`; nothing deleted). SEO: per-locale meta, canonical and hreflang (`ar`, `en`, `x-default` → `/ar`) from `runtimeConfig.public.siteUrl` (`NUXT_PUBLIC_SITE_URL`, default `https://bafo-web-demo.vercel.app`), static 1200×630 OG images (`pnpm og:image`), Organization / WebSite / SoftwareApplication / FAQPage JSON-LD, Nitro `/sitemap.xml` and `/robots.txt`, `noindex` on the error page and unpublished legal codes.
+
+Lighthouse 12.8 (Chrome headless), `--only-categories=seo,accessibility,best-practices` plus performance on the production build:
+
+| Page | Run | Performance | Accessibility | Best practices | SEO |
+|---|---|---|---|---|---|
+| `/ar` | dev server, mobile emulation | – | 100 | 100 | 100 |
+| `/en` | dev server, mobile emulation | – | 100 | 100 | 100 |
+| `/ar` | production build (`node .output/server/index.mjs` on :3100), mobile | 63 | 100 | 96 | 100 |
+| `/ar` | production build, desktop preset | 99 | 100 | 96 | 100 |
+| `/en` | production build, mobile | 78 | 100 | 96 | 100 |
+| `/en` | production build, desktop preset | 99 | 100 | 96 | 100 |
+
+Notes: best practices 96 on :3100 is the API's CORS allow-list rejecting the temporary origin (`GET /time`), not a page defect. CLS is 0 in both locales after preloading the Arabic and Inter woff2 subsets from the landing page (it was 0.19 in Arabic from the font swap). Mobile performance on the local node preview is bounded by uncompressed HTML and the i18n messages JSON (Lighthouse `uses-text-compression`); static assets are now pre-compressed (`nitro.compressPublicAssets`), and Vercel compresses at the edge. Screenshots: `apps/web/docs/screenshots/landing/` (AR/EN, 1440 and 360 px, no sideways scroll).
+
+---
+
+## 7. Release verification, round 2 (2026-10-07)
+
+Fixed during the check (FQ2, FQ8): an amount field whose text cannot be used («1.234», «1500.50» on a whole-riyal preset, «0») no longer lets the wizard move on with the field's last valid value (web) or with no price (mobile). Web: `UiMoneyInput` emits `unreadable`, the editor store lists the field as a blocking `rules` issue, and Continue shows it in the error summary with a link to the field. Mobile: `CompetitionDraftForm.unreadableAmounts` (not autosaved) feeds `validate(schedule)`, so Next stays on the step with the field's message. Tests: `tests/nuxt/release-scope.spec.ts` (2 cases), `issuer_domain_test.dart` and `issuer_screens_test.dart` (1 case each). `scripts/wizard-screenshots.mjs` now expects the 404 state in place for a hidden page (RELEASE_SCOPE §5), not a redirect.

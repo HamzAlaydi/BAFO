@@ -17,6 +17,7 @@ export 'package:bafo/widgets/content_blocks.dart';
 export 'package:bafo/widgets/countdown_text.dart';
 export 'package:bafo/widgets/empty_state.dart';
 export 'package:bafo/widgets/error_state.dart';
+export 'package:bafo/widgets/error_summary.dart';
 export 'package:bafo/widgets/form_fields.dart';
 export 'package:bafo/widgets/language_switch.dart';
 export 'package:bafo/widgets/loading_skeleton.dart';

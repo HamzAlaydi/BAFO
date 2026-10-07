@@ -66,6 +66,84 @@ final class SupportContacts extends Equatable {
   List<Object?> get props => [email, phone, whatsapp];
 }
 
+/// A release-scope feature flag (RELEASE_SCOPE.md §1.3). The server derives
+/// each value from `platform.release_scope`; the app only reads
+/// `features.flags.<name>` and never branches on the scope itself.
+enum Feature implements WireEnum {
+  teamManagement('team_management'),
+  vendorDirectory('vendor_directory'),
+  integrationsApi('integrations_api'),
+  csvImportExport('csv_import_export'),
+  sponsorship('sponsorship'),
+  bafoRound('bafo_round'),
+  sealedFormat('sealed_format'),
+  advancedRules('advanced_rules'),
+  finalPricingWindow('final_pricing_window'),
+  deletionApproval('deletion_approval'),
+  deletedCompetitions('deleted_competitions'),
+  offerReport('offer_report'),
+  loginAs('login_as'),
+  googleSignin('google_signin'),
+  darkMode('dark_mode'),
+  billingInvoices('billing_invoices'),
+  customPlanQuote('custom_plan_quote'),
+  coupons('coupons'),
+  qaComments('qa_comments'),
+  attachments('attachments'),
+  extendCompetition('extend_competition'),
+  cancelCompetition('cancel_competition');
+
+  const Feature(this.wire);
+
+  @override
+  final String wire;
+
+  static Feature? parse(Object? raw) {
+    if (raw is! String) return null;
+    for (final value in values) {
+      if (value.wire == raw) return value;
+    }
+    return null;
+  }
+}
+
+/// `features.flags` of `GET /app-config` (RELEASE_SCOPE.md §1.4): one boolean
+/// per [Feature]. Missing keys read as false; keys a newer server adds are
+/// ignored. [none] (no config yet) hides every gated surface.
+final class FeatureFlags extends Equatable {
+  const FeatureFlags._(this._values);
+
+  /// Every [Feature] from [values]; absent ones are false.
+  factory FeatureFlags(Map<Feature, bool> values) => FeatureFlags._(
+    Map.unmodifiable({
+      for (final feature in Feature.values) feature: values[feature] ?? false,
+    }),
+  );
+
+  /// Reads the `flags` object (null or absent → every flag off).
+  factory FeatureFlags.fromJson(Json? json) => FeatureFlags({
+    if (json != null)
+      for (final entry in json.entries)
+        if (Feature.parse(entry.key) case final feature?)
+          if (entry.value is bool) feature: entry.value as bool,
+  });
+
+  /// No flag on: the state before the first `GET /app-config`.
+  static const FeatureFlags none = FeatureFlags._({});
+
+  final Map<Feature, bool> _values;
+
+  bool enabled(Feature feature) => _values[feature] ?? false;
+
+  /// Every [Feature] with its value, in catalogue order.
+  Map<Feature, bool> get asMap => {
+    for (final feature in Feature.values) feature: enabled(feature),
+  };
+
+  @override
+  List<Object?> get props => [asMap];
+}
+
 /// `GET /app-config` (API.md §2.13).
 final class AppConfig extends Equatable {
   const AppConfig({
@@ -78,6 +156,8 @@ final class AppConfig extends Equatable {
     this.support = const SupportContacts(),
     this.legalVersions = const {},
     this.sponsorshipEnabled = false,
+    this.releaseScope = 'core',
+    this.flags = FeatureFlags.none,
     this.currency = 'SAR',
     this.vatRateBp = 1500,
     this.supportedLocales = const ['ar', 'en'],
@@ -87,6 +167,7 @@ final class AppConfig extends Equatable {
   factory AppConfig.fromJson(Json json) {
     final maintenance = json.objOrNull('maintenance') ?? const {};
     final legal = json.objOrNull('legal') ?? const {};
+    final features = json.objOrNull('features') ?? const {};
     return AppConfig(
       minVersion: PlatformValue.fromJson(json.obj('min_version')),
       latestVersion: PlatformValue.fromJson(json.obj('latest_version')),
@@ -102,9 +183,9 @@ final class AppConfig extends Equatable {
           if (entry.value is Json && (entry.value as Json)['version'] is String)
             entry.key: (entry.value as Json)['version'] as String,
       },
-      sponsorshipEnabled: (json.objOrNull('features') ?? const {}).flag(
-        'sponsorship',
-      ),
+      sponsorshipEnabled: features.flag('sponsorship'),
+      releaseScope: features.strOrNull('release_scope') ?? 'core',
+      flags: FeatureFlags.fromJson(features.objOrNull('flags')),
       currency: json.strOrNull('currency') ?? 'SAR',
       vatRateBp: json.intOrNull('vat_rate_bp') ?? 1500,
       supportedLocales: json.strings('supported_locales'),
@@ -127,8 +208,16 @@ final class AppConfig extends Equatable {
   /// Current published version per legal code (`terms`, `privacy`, ...).
   final Map<String, String> legalVersions;
 
-  /// `features.sponsorship` (the global R4 switch).
+  /// `features.sponsorship` (the global R4 switch). Kept for compatibility;
+  /// it equals `flags.sponsorship` on a server that sends the flags.
   final bool sponsorshipEnabled;
+
+  /// `features.release_scope` (`core` or `full`), for display only. Screens
+  /// branch on [flags], never on this value.
+  final String releaseScope;
+
+  /// `features.flags` (RELEASE_SCOPE.md §1.4).
+  final FeatureFlags flags;
   final String currency;
   final int vatRateBp;
   final List<String> supportedLocales;
@@ -152,6 +241,8 @@ final class AppConfig extends Equatable {
     realtime,
     legalVersions,
     sponsorshipEnabled,
+    releaseScope,
+    flags,
     currency,
     vatRateBp,
     supportedLocales,

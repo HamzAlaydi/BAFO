@@ -19,5 +19,10 @@ return [
             'award_justification' => 'مبرر الترسية',
             'void_offer' => 'إلغاء عرض',
         ],
+        'preset_tier' => [
+            'simple' => 'بسيطة',
+            'standard' => 'قياسية',
+            'protected' => 'حماية قصوى',
+        ],
     ],
 ];

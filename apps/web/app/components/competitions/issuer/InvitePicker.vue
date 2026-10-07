@@ -17,10 +17,12 @@ import {
 } from '~/stores/competition-editor-invitations'
 
 /**
- * Invite picker (SCREENS W15 step 6 and the W17 invite drawer): Suggestions (`GET …/suggestions`,
- * match chips), E-mail (pasted list as chips) and Vendors (`GET /vendors`; blocked vendors disabled).
- * Picks are staged below with an optional name and, in `selected` fee mode, a "cover fees" switch.
- * The parent sends the staged rows (all-or-nothing) and puts the per-row server errors back on them.
+ * Invite picker (SCREENS W15 step 4 and the W17 invite drawer): Suggestions (`GET …/suggestions`,
+ * match chips), E-mail (pasted list as chips) and Vendors (`GET /vendors`; blocked vendors disabled;
+ * the tab exists only with the `vendor_directory` flag, RELEASE_SCOPE.md §2.4). Picks are staged
+ * below with an optional name and, in `selected` fee mode with the `sponsorship` flag, a "cover fees"
+ * switch. The parent sends the staged rows (all-or-nothing) and puts the per-row server errors back
+ * on them.
  */
 const props = withDefaults(defineProps<{
   competitionId: string
@@ -42,15 +44,24 @@ const staged = defineModel<StagedInvitation[]>({ default: () => [] })
 const { t } = useI18n()
 const locale = useAppLocale()
 const lookups = useLookupsStore()
+const features = useFeatures()
 const joinList = (items: string[]) => items.join(locale.value === 'ar' ? '، ' : ', ')
 const tab = ref('suggestions')
 const notice = ref<string | null>(null)
 
+const showVendors = computed(() => features.enabled('vendor_directory'))
+const showSponsored = computed(() => props.sponsoredSelectable && features.enabled('sponsorship'))
+
 const tabs = computed<TabItem[]>(() => [
   { key: 'suggestions', label: t('invitations.issuer.picker.tabs.suggestions'), icon: Building2 },
   { key: 'email', label: t('invitations.issuer.picker.tabs.email'), icon: Mail },
-  { key: 'vendors', label: t('invitations.issuer.picker.tabs.vendors'), icon: Contact },
+  ...(showVendors.value ? [{ key: 'vendors', label: t('invitations.issuer.picker.tabs.vendors'), icon: Contact }] : []),
 ])
+
+// The flag can turn off while the vendors tab is open (a config reload): fall back to suggestions.
+watch(showVendors, (visible) => {
+  if (!visible && tab.value === 'vendors') tab.value = 'suggestions'
+})
 
 const invitedKeys = computed(() => {
   const keys = new Set<string>()
@@ -305,7 +316,12 @@ const KIND_ICONS = { email: Mail, organization: Building2, vendor: Contact } as 
             :label="t('invitations.issuer.picker.emails_label')"
             :hint="t('invitations.issuer.picker.emails_hint')"
           />
-          <div class="flex justify-end">
+          <div class="flex flex-wrap items-center justify-end gap-3">
+            <span
+              v-if="validEmails.length === 0 || room <= 0"
+              class="text-sm text-fg-muted"
+              role="status"
+            >{{ room <= 0 ? t('invitations.issuer.picker.max_rows', { max: MAX_INVITATIONS_PER_REQUEST }) : t('invitations.issuer.picker.add_emails_reason') }}</span>
             <UiButton
               variant="secondary"
               :icon="Plus"
@@ -429,7 +445,7 @@ const KIND_ICONS = { email: Mail, organization: Building2, vendor: Contact } as 
               @update:model-value="value => patchRow(row.key, { name: value })"
             />
             <UiSwitch
-              v-if="sponsoredSelectable"
+              v-if="showSponsored"
               :model-value="row.sponsored"
               :label="t('invitations.issuer.picker.cover_fees')"
               @update:model-value="value => patchRow(row.key, { sponsored: value })"

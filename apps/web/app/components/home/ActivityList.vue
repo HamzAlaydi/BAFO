@@ -9,6 +9,7 @@ import type { HomeActivity } from '~/types/api/competitions'
 defineProps<{ activities: HomeActivity[] }>()
 
 const { t, te } = useI18n()
+const features = useFeatures()
 
 const KNOWN = new Set([
   'competition.created',
@@ -29,7 +30,7 @@ function text(activity: HomeActivity): string {
 
 function link(activity: HomeActivity): string | null {
   if (activity.subject?.type === 'competition') return `/dashboard/competitions/${activity.subject.id}`
-  if (activity.action === 'member.added') return '/dashboard/team'
+  if (activity.action === 'member.added') return features.enabled('team_management') ? '/dashboard/team' : null
   if (activity.action === 'subscription.activated') return '/dashboard/billing'
   return null
 }

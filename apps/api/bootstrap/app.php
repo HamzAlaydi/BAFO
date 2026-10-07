@@ -6,6 +6,7 @@ use App\Support\Exceptions\ApiException;
 use App\Support\Exceptions\ApiExceptionRenderer;
 use App\Support\Http\Middleware\AssignRequestId;
 use App\Support\Http\Middleware\BlockDuringMaintenance;
+use App\Support\Http\Middleware\EnsureFeatureEnabled;
 use App\Support\Http\Middleware\EnsureSupportedAppVersion;
 use App\Support\Http\Middleware\ForceJsonResponse;
 use App\Support\Http\Middleware\IdempotentRequest;
@@ -18,6 +19,7 @@ use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Middleware\SubstituteBindings;
+use Illuminate\Routing\Middleware\ThrottleRequests;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -51,11 +53,14 @@ return Application::configure(basePath: dirname(__DIR__))
             SubstituteBindings::class,
         ]);
 
-        // Public ERP API (R1).
+        // Public ERP API (R1). The whole surface, token endpoint included, exists only while the
+        // release scope enables `integrations_api` (RELEASE_SCOPE.md §1.5); the gate sits before
+        // the client authentication Integrations appends, so a hidden API answers 404 to everyone.
         $middleware->group('public_v1', [
             ForceJsonResponse::class,
             AssignRequestId::class,
             SetLocaleFromHeader::class,
+            'feature:integrations_api',
         ]);
 
         // Hosted behind a TLS-terminating proxy (Railway): trust X-Forwarded-* so URLs are https.
@@ -66,9 +71,16 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->append(SecurityHeaders::class);
 
         // Idempotency-Key handling (§4.8): `idempotent` (required) or `idempotent:optional`.
+        // Release-scope gates (RELEASE_SCOPE.md §1.5): `feature:<flag>` answers 404 `feature_disabled`.
         $middleware->alias([
             'idempotent' => IdempotentRequest::class,
+            'feature' => EnsureFeatureEnabled::class,
         ]);
+
+        // A hidden feature answers 404 whatever the parameters or permissions: the gate ranks after
+        // authentication and before throttling, route-model binding and `can:` (Authorize). Ranking
+        // it before the throttle keeps Integrations' `api.client` → `throttle:public-api` order.
+        $middleware->prependToPriorityList(ThrottleRequests::class, EnsureFeatureEnabled::class);
     })
     ->withExceptions(static function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(

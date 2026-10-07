@@ -159,6 +159,8 @@ Route files and owners:
 | `notifications.php` | Notifications |
 | `integrations.php` | Integrations |
 
+**Release scope** (`RELEASE_SCOPE.md` §1): the admin setting `platform.release_scope` (`core` by default, or `full`) derives the boolean `features.flags` of `GET /app-config` (§2.13). A route of a hidden feature carries `feature:<flag>` and answers **404 `feature_disabled`** with `details.feature = "<flag>"` before binding and authorization. A hidden value on an otherwise visible endpoint is a **422 `validation_failed`** with the shared message `errors.feature_disabled_field` («هذا الخيار غير متاح في هذا الإصدار.» / "This option is not available in this release.") on the field path. The per-flag rows are `RELEASE_SCOPE.md` §1.5; the endpoints below note them where they apply.
+
 ### 1.1 Platform
 
 | Method and path | Auth | Name | Summary |
@@ -196,7 +198,7 @@ Error: 404 `not_found` when no published version exists.
 
 | Method and path | Auth | Name | Returns |
 |---|---|---|---|
-| `GET /lookups` | guest | `app.v1.lookups.index` | `{"regions": [Region], "categories": [Category], "close_reasons": [CloseReason], "presets": [Preset]}`. Active rows only, ordered by `sort_order`. Sends `ETag`; `If-None-Match` → 304. |
+| `GET /lookups` | guest | `app.v1.lookups.index` | `{"regions": [Region], "categories": [Category], "close_reasons": [CloseReason], "presets": [Preset]}`. Active rows only, ordered by `sort_order`. Presets follow the release scope: a sealed preset needs `sealed_format`, a BAFO-round preset `bafo_round`, a final-window preset `final_pricing_window`, an untiered preset (`tier = null`) `advanced_rules` (so `core` lists the six tier presets only). Sends `ETag` over the body (a scope change changes it); `If-None-Match` → 304. |
 | `GET /lookups/{type}` | guest | `app.v1.lookups.show` | `type` ∈ `regions`, `categories`, `close-reasons`, `presets` → the array. `close-reasons` accepts `?kind=cancel\|not_awarded\|award_justification\|void_offer`. |
 
 ### 1.3 Identity
@@ -359,13 +361,14 @@ Errors: `invitation_email_mismatch` (422). An unknown or expired `invitation_tok
 | `region_id` | required, active region |
 | `direction` | required, in:tender,auction (auction → org `auction_enabled` else 403 `auction_not_enabled`; category `auction_allowed` else 422 on `category_id`) |
 | `format` | required, in:live,sealed |
-| `preset_code` | nullable, an active preset whose direction and format equal the request; its `rules` fill every rules key not sent |
+| `preset_code` | nullable (**required** while `advanced_rules` is off), an active preset whose direction and format equal the request; its `rules` fill every rules key not sent. A preset `GET /lookups` does not offer in the scope → 422 with `errors.feature_disabled_field` on `preset_code` |
 | `rules` | object, `RulesInput` (§2.6). Keys absent and not supplied by a preset take the column defaults. Validated with ARCHITECTURE §7.2 "save" rules. |
 | `bidding_opens_at` | nullable, date (RFC 3339) |
 | `scheduled_close_at` | nullable, date, after:bidding_opens_at |
 
 - Response 201 `Competition` (issuer projection, status `draft`).
 - Errors: `issuer_plan_required` (403), `auction_not_enabled` (403).
+- **Release-scope field refusals** (422 `validation_failed`, `errors.feature_disabled_field` on the path): `format = sealed` (`sealed_format`); `rules.bafo_round.enabled = true` (`bafo_round`); `rules.final_window_minutes != null` (`final_pricing_window`); `rules.reserve_price_minor != null`, `rules.amount_granularity_minor = 1`, and `rules.result_publication` / `rules.min_participants` other than the preset's value (`advanced_rules`). The same rules apply to `PATCH`, except that a value the competition already has is accepted (a record created in `full` keeps saving its other fields).
 
 **`GET /competitions/{competition}`** · user · `app.v1.competitions.show`
 
@@ -382,6 +385,7 @@ Errors: `invitation_email_mismatch` (422). An unknown or expired `invitation_tok
 | others | nothing → 409 `competition_not_editable` |
 
 - Any field not allowed in the current status → 409 `competition_not_editable` with `details.fields = [..]`.
+- Release-scope field refusals as for create, for values that differ from the stored ones.
 - Returns `Competition`.
 
 **`DELETE /competitions/{competition}`** · issuer, `competitions.manage` · `app.v1.competitions.destroy`
@@ -408,7 +412,7 @@ Errors: `invitation_email_mismatch` (422). An unknown or expired `invitation_tok
 
 - Request: `new_close_at` (required, date) and `reason` (required, 5–1000).
 - Returns `Competition`.
-- Errors: `invalid_state_transition` (409; not live), `extend_invalid` (422; field `new_close_at`, `details.min_new_close_at`).
+- Errors: `invalid_state_transition` (409; not live), `extend_invalid` (422; field `new_close_at`, `details.min_new_close_at`), `feature_disabled` (404; `extend_competition` off).
 
 **`POST /competitions/{competition}/cancel`** · issuer, `competitions.manage` · `app.v1.competitions.cancel`
 
@@ -449,9 +453,9 @@ Errors: `invitation_email_mismatch` (422). An unknown or expired `invitation_tok
 | `invitations` | required, array, min:1, max:100 |
 | `invitations.*.email` | required_without_all:organization_id,vendor_id, email |
 | `invitations.*.organization_id` | nullable, from suggestions |
-| `invitations.*.vendor_id` | nullable, one of the caller organization's vendors |
+| `invitations.*.vendor_id` | nullable, one of the caller organization's vendors (present while `vendor_directory` is off → 422 `errors.feature_disabled_field` on the path) |
 | `invitations.*.name` | nullable, max:150 |
-| `invitations.*.sponsored` | boolean, default false (counts only in `selected` sponsorship mode) |
+| `invitations.*.sponsored` | boolean, default false (counts only in `selected` sponsorship mode; `true` while `sponsorship` is off → 422 `errors.feature_disabled_field` on the path, as for `PATCH …/invitations/{invitation}` unless the invitation is already sponsored) |
 
 - Response 201 `[Invitation]`: status `draft` on a draft competition, `sent` otherwise.
 
@@ -679,7 +683,7 @@ Response **201** (or **200** on an idempotent replay):
 
 **`GET /plans`** · guest · `app.v1.plans.index`
 
-- Returns `[Plan]` (§2.10). Active plans only, ordered by `sort_order`, with the custom plan last.
+- Returns `[Plan]` (§2.10). Active plans only, ordered by `sort_order`, with the custom plan last. The custom plan is omitted while `custom_plan_quote` is off (and `GET /plans/custom-quote` is 404 `feature_disabled`).
 
 **`GET /plans/custom-quote`** · guest · `app.v1.plans.custom-quote`
 
@@ -732,6 +736,7 @@ Response **201** (or **200** on an idempotent replay):
   - `subscription_downgrade_not_allowed` (409);
   - `subscription_renewal_too_early` (409, `details.renewable_from`);
   - the coupon errors;
+  - `feature_disabled` (404): a non-blank `coupon_code` while `coupons` is off, or the custom plan while `custom_plan_quote` is off (the same `coupons` rule applies to the sponsorship checkout);
   - `gateway_not_configured` (503);
   - `gateway_error` (502).
 
@@ -776,7 +781,7 @@ Response **201** (or **200** on an idempotent replay):
 
 - Request: `mode` (required, in:none,all,selected) and `max_passes` (nullable, integer 1–200).
 - Returns `Sponsorship`.
-- Errors: `sponsorship_not_enabled` (403), `sponsorship_locked` (409), `invalid_state_transition` (409; competition not in draft, scheduled or live before the cutoff).
+- Errors: `sponsorship_not_enabled` (403; organization flag off), `sponsorship_locked` (409), `invalid_state_transition` (409; competition not in draft, scheduled or live before the cutoff), `feature_disabled` (404; `mode` all or selected while `flags.sponsorship` is off; `mode: none` stays accepted).
 
 **`GET /competitions/{competition}/sponsorship/quote`** · issuer · `app.v1.competitions.sponsorship.quote`
 
@@ -974,7 +979,7 @@ Response **201** (or **200** on an idempotent replay):
 | Region | `{"id", "code", "name"}` |
 | Category | `{"id", "code", "name", "is_other", "auction_allowed"}` |
 | CloseReason | `{"id", "code", "kind", "name", "requires_note"}` |
-| Preset | `{"id", "code", "name", "description", "direction", "format", "rules": RulesInput (without start or reserve prices)}` |
+| Preset | `{"id", "code", "name", "description", "direction", "format", "tier", "rules": RulesInput (without start or reserve prices)}`. `tier` ∈ `simple`, `standard`, `protected`, or `null` for an untiered preset (`RELEASE_SCOPE.md` §2.2). |
 
 ### 2.5 File
 
@@ -1094,6 +1099,7 @@ Response **201** (or **200** on an idempotent replay):
 
 - `phase` is `null` unless the status is `live`.
 - `permissions` values follow ARCHITECTURE §8.3 and §6. The participant-side flags are always false for the issuer, and the reverse holds for participants.
+- Release scope: `can_extend`, `can_start_bafo` and `can_manage_sponsorship` are false while `extend_competition`, `bafo_round` or `sponsorship` is off.
 
 #### Competition (participant projection, `viewer_role = "participant"`)
 
@@ -1594,11 +1600,22 @@ Create and rotate responses add `"secret": "whsec_…"` **once**.
   "realtime": {"key": "…", "host": "localhost", "port": 8085, "scheme": "http"},
   "legal": {"terms": {"version": "2026-10-01"}, "privacy": {"version": "2026-10-01"},
             "competition_rules": {"version": "2026-10-01"}},
-  "features": {"sponsorship": true},
+  "features": {
+    "release_scope": "core",
+    "sponsorship": false,
+    "flags": {"team_management": false, "vendor_directory": false, "integrations_api": false, "csv_import_export": false,
+              "sponsorship": false, "bafo_round": false, "sealed_format": false, "advanced_rules": false,
+              "final_pricing_window": false, "deletion_approval": false, "deleted_competitions": false,
+              "offer_report": false, "login_as": false, "google_signin": false, "dark_mode": false,
+              "billing_invoices": false, "custom_plan_quote": false, "coupons": false, "qa_comments": true,
+              "attachments": true, "extend_competition": false, "cancel_competition": true}
+  },
   "currency": "SAR", "vat_rate_bp": 1500, "supported_locales": ["ar", "en"],
   "server_time": "…"
 }
 ```
+
+`features.release_scope` is for display only; clients branch on `features.flags.<name>`, which always holds the 22 keys of `RELEASE_SCOPE.md` §1.3 in that order (unknown keys ignored, missing keys read as `false`). `features.sponsorship` is kept for compatibility and always equals `features.flags.sponsorship`.
 
 `maintenance.message` is localised. `store_links` and `support` are admin settings (empty strings until set). The local demo seed (`PlatformDemoSeeder`) fills them with clearly marked placeholders on the reserved `bafo.example` domain; real values are set in the admin before release.
 

@@ -96,24 +96,28 @@ describe('W11 my competitions', () => {
 })
 
 describe('W12 new competition', () => {
-  it('creates the draft after step 2 and continues with the rules step', async () => {
+  it('creates the draft after step 1 (type and basics) and continues with the rules step', async () => {
     competitions.createCompetition.mockResolvedValue(makeIssuerCompetition())
     const wrapper = await mountSuspended(NewPage, { route: '/ar/dashboard/competitions/new' })
     await flush()
-    expect(wrapper.text()).toContain(t('competitions.setup.titles.type'))
-    expect(wrapper.text()).toContain(PRESETS[0]!.name)
-
-    await wrapper.findAll('button').find(button => button.text().includes(t('common.actions.continue')))!.trigger('click')
-    await flush()
+    // One step: the direction cards and the basics together; five steps in the stepper (RELEASE_SCOPE §2.1).
+    expect(wrapper.text()).toContain(t('competitions.setup.titles.basics'))
+    expect(wrapper.text()).toContain(t('competitions.setup.type.direction_legend'))
     expect(wrapper.text()).toContain(t('competitions.setup.basics.title_label'))
+    expect(wrapper.text()).toContain(t('competitions.setup.steps.review'))
+    expect(wrapper.text()).not.toContain(t('competitions.setup.steps.fees'))
+    // Presets moved to the rules step.
+    expect(wrapper.text()).not.toContain(PRESETS[0]!.name)
 
-    // Nothing is sent while the basics are incomplete.
+    // Nothing is sent while the basics are incomplete; the summary lists the problems with field links (FQ8).
     await wrapper.findAll('button').find(button => button.text().includes(t('competitions.setup.create_draft')))!.trigger('click')
     await flush()
     expect(competitions.createCompetition).not.toHaveBeenCalled()
+    expect(wrapper.text()).toContain(t('competitions.setup.error_summary.title'))
+    expect(wrapper.findAll('a[href="#wizard-title"]')).toHaveLength(1)
     expect(wrapper.text()).toContain(t('competitions.setup.basics.issues.title_required'))
 
-    await wrapper.find('input[type="text"]').setValue('توريد طابعات')
+    await wrapper.find('#wizard-title').setValue('توريد طابعات')
     const selects = wrapper.findAll('select')
     await selects[0]!.setValue('0')
     await selects[1]!.setValue('0')
@@ -135,9 +139,7 @@ describe('W12 new competition', () => {
     competitions.createCompetition.mockRejectedValue(new ApiError({ status: 403, code: 'issuer_plan_required', message: 'plan', errors: {} }))
     const wrapper = await mountSuspended(NewPage, { route: '/ar/dashboard/competitions/new' })
     await flush()
-    await wrapper.findAll('button').find(button => button.text().includes(t('common.actions.continue')))!.trigger('click')
-    await flush()
-    await wrapper.find('input[type="text"]').setValue('توريد طابعات')
+    await wrapper.find('#wizard-title').setValue('توريد طابعات')
     const selects = wrapper.findAll('select')
     await selects[0]!.setValue('0')
     await selects[1]!.setValue('0')

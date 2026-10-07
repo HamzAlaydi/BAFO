@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Modules\Platform;
 
 use App\Modules\Platform\Console\Commands\PrunePlatformCommand;
+use App\Modules\Platform\Console\Commands\ReleaseScopeCommand;
 use App\Modules\Platform\Policies\FilePolicy;
 use App\Support\Files\File;
 use App\Support\Modules\ModuleServiceProvider;
@@ -41,7 +42,7 @@ final class PlatformServiceProvider extends ModuleServiceProvider
         $this->app->make(Settings::class)->defaults($defaults);
 
         if ($this->app->runningInConsole()) {
-            $this->commands([PrunePlatformCommand::class]);
+            $this->commands([PrunePlatformCommand::class, ReleaseScopeCommand::class]);
         }
 
         $this->callAfterResolving(Schedule::class, static function (Schedule $schedule): void {

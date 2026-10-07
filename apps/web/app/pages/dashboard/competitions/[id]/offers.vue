@@ -11,6 +11,7 @@ import type { IssuerCompetition } from '~/types/api/competitions'
 const ctx = useCompetitionContext()
 const { t } = useI18n()
 const auth = useAuthStore()
+const features = useFeatures()
 
 const competition = computed(() => (ctx.competition.value?.viewer_role === 'issuer' ? ctx.competition.value as IssuerCompetition : null))
 useSeoMeta({ title: () => t('competitions.detail.tabs.offers') })
@@ -79,7 +80,7 @@ const viewModel = computed<'log' | 'participants' | null>({
           size="sm"
         />
         <CompetitionsIssuerExportButton
-          v-if="auth.can('integrations.manage')"
+          v-if="auth.can('integrations.manage') && features.enabled('csv_import_export')"
           :competition-id="competition.id"
           type="offer_log"
         />

@@ -1,4 +1,7 @@
 import 'package:bafo/core/api/api_client.dart';
+import 'package:bafo/core/config/app_config.dart';
+import 'package:bafo/core/config/feature_gate.dart';
+import 'package:bafo/core/l10n/l10n.dart';
 import 'package:bafo/core/router/app_router.dart';
 import 'package:bafo/features/account/data/contact_repository.dart';
 import 'package:bafo/features/account/presentation/account_hub_screen.dart';
@@ -21,7 +24,8 @@ import 'package:go_router/go_router.dart';
 /// `/legal/:code` (M13).
 ///
 /// `/account/organization?edit=1` opens the organisation form directly (the
-/// home billing-profile alert).
+/// home billing-profile alert). Team (M56–M57) and Invoices are gated by
+/// the `team_management` and `billing_invoices` flags (RELEASE_SCOPE.md §4).
 GoRoute accountRoute() => GoRoute(
   path: AppRoutes.account,
   builder: (_, _) => const AccountHubScreen(),
@@ -34,23 +38,50 @@ GoRoute accountRoute() => GoRoute(
         startEditing: state.uri.queryParameters['edit'] == '1',
       ),
     ),
+    // Release scope (RELEASE_SCOPE.md §4): the routes stay, the screens
+    // render only with their flag; otherwise the friendly
+    // «غير متاح في هذا الإصدار» screen.
     GoRoute(
       path: 'team',
-      builder: (_, _) => const TeamScreen(),
+      builder: (_, _) => const FeatureGate(
+        feature: Feature.teamManagement,
+        fallback: FeatureUnavailableScreen(),
+        child: TeamScreen(),
+      ),
       routes: [
-        GoRoute(path: 'new', builder: (_, _) => const TeamMemberFormScreen()),
+        GoRoute(
+          path: 'new',
+          builder: (_, _) => const FeatureGate(
+            feature: Feature.teamManagement,
+            fallback: FeatureUnavailableScreen(),
+            child: TeamMemberFormScreen(),
+          ),
+        ),
         GoRoute(
           path: ':membershipId',
-          builder: (_, state) => TeamMemberFormScreen(
-            membershipId: state.pathParameters['membershipId'],
-            member: state.extra is TeamMember
-                ? state.extra! as TeamMember
-                : null,
+          builder: (_, state) => FeatureGate(
+            feature: Feature.teamManagement,
+            fallback: const FeatureUnavailableScreen(),
+            child: TeamMemberFormScreen(
+              membershipId: state.pathParameters['membershipId'],
+              member: state.extra is TeamMember
+                  ? state.extra! as TeamMember
+                  : null,
+            ),
           ),
         ),
       ],
     ),
-    GoRoute(path: 'invoices', builder: (_, _) => const InvoicesScreen()),
+    GoRoute(
+      path: 'invoices',
+      builder: (context, _) => FeatureGate(
+        feature: Feature.billingInvoices,
+        fallback: FeatureUnavailableScreen(
+          message: context.l10n.accountInvoicesOnWeb,
+        ),
+        child: const InvoicesScreen(),
+      ),
+    ),
     GoRoute(path: 'settings', builder: (_, _) => const SettingsScreen()),
     GoRoute(
       path: 'help',

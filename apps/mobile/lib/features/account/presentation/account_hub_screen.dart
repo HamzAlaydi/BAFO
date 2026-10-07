@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:bafo/core/api/api_client.dart';
+import 'package:bafo/core/config/app_config.dart';
+import 'package:bafo/core/config/feature_gate.dart';
 import 'package:bafo/core/l10n/l10n.dart';
 import 'package:bafo/core/models/me.dart';
 import 'package:bafo/core/router/app_router.dart';
@@ -15,7 +17,8 @@ import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 
 /// M51 Account hub: who is signed in, the organisation and its plan, links
-/// to the account screens (by permission, S10), and sign-out.
+/// to the account screens (by permission, S10, and by release-scope flag,
+/// RELEASE_SCOPE.md §4), and sign-out.
 ///
 /// It renders the session's `Me`; pull to refresh re-reads `GET /me`.
 class AccountHubScreen extends StatefulWidget {
@@ -50,6 +53,9 @@ class _AccountHubScreenState extends State<AccountHubScreen> {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final me = context.select<SessionCubit, Me?>((cubit) => cubit.state.me);
+    // Release scope (RELEASE_SCOPE.md §4): Team and Invoices are built only
+    // when their flags are on, never greyed out.
+    final flags = context.flags;
     final version = context.read<ClientInfo>().appVersion;
     final theme = Theme.of(context);
 
@@ -110,7 +116,8 @@ class _AccountHubScreenState extends State<AccountHubScreen> {
                     title: l10n.accountOrganizationTitle,
                     onTap: () => context.go(AccountPaths.organization),
                   ),
-                  if (me.can(Permissions.teamManage))
+                  if (me.can(Permissions.teamManage) &&
+                      flags.enabled(Feature.teamManagement))
                     AccountLinkTile(
                       key: const Key('account.team'),
                       icon: Icons.groups_outlined,
@@ -123,7 +130,8 @@ class _AccountHubScreenState extends State<AccountHubScreen> {
                     title: l10n.billingStatusTitle,
                     onTap: () => context.push(AppRoutes.billing),
                   ),
-                  if (me.can(Permissions.billingView))
+                  if (me.can(Permissions.billingView) &&
+                      flags.enabled(Feature.billingInvoices))
                     AccountLinkTile(
                       key: const Key('account.invoices'),
                       icon: Icons.receipt_long_outlined,

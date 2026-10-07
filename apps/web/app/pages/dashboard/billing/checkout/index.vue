@@ -14,6 +14,7 @@ definePageMeta({ layout: 'dashboard', middleware: 'auth' })
 
 const { t } = useI18n()
 const auth = useAuthStore()
+const features = useFeatures()
 const route = useRoute()
 const router = useRouter()
 const localePath = useLocalePath()
@@ -433,6 +434,7 @@ const plansLink = computed(() => ({ path: '/dashboard/billing/plans', query: { i
                   {{ quoteError }}
                 </UiAlert>
                 <BillingCouponField
+                  v-if="features.enabled('coupons')"
                   v-model="coupon"
                   :context="couponContext"
                   :error="couponError"

@@ -10,19 +10,33 @@ import type {
 } from '~/types/api/competitions'
 import {
   cloneEditorRules,
+  defaultPresetFor,
   editorRulesCustomised,
   editorRulesEqual,
   editorRulesFromPreset,
   editorRulesInput,
   editorRulesIssues,
+  editorRulesWithinScope,
   normalizeEditorRules,
   presetsFor,
+  tieredPresetsFor,
+  untieredPresetsFor,
   type EditorIssue,
 } from './competition-editor-rules'
 import { editorScheduleIssues } from './competition-editor-schedule'
 
-/** The parts of a draft each wizard step saves on its own (SCREENS W15). */
+/**
+ * The parts of a draft the wizard saves (SCREENS W15, RELEASE_SCOPE.md §2.1). Step 1 saves `type` and
+ * `basics` together, so every saving method accepts one section or a list of them.
+ */
 export type EditorSection = 'type' | 'basics' | 'rules' | 'schedule'
+
+export type EditorSections = EditorSection | readonly EditorSection[]
+
+function sectionList(sections: EditorSections | undefined): EditorSection[] {
+  if (sections === undefined) return Object.keys(SECTION_FIELDS) as EditorSection[]
+  return typeof sections === 'string' ? [sections] : [...sections]
+}
 
 /** The editable draft, with the API's field names (CONVENTIONS §4.1). */
 export interface EditorForm {
@@ -107,18 +121,25 @@ export function editorFieldPath(path: string): string {
 }
 
 /**
- * The issuer's creation wizard (SCREENS CD3, W12, W15): one draft form, saved step by step.
+ * The issuer's creation wizard (SCREENS CD3, W12, W15; RELEASE_SCOPE.md §2): one draft form, saved
+ * step by step.
  *
- * - Steps 1–2 run client-side; `create()` sends `POST /competitions` with the basics, the type and the
- *   full preset rules. Later steps `save(section)` with `PATCH`, always sending the **whole** `rules`
+ * - Step 1 runs client-side; `create()` sends `POST /competitions` with the basics, the type and the
+ *   full preset rules. Later steps `save(sections)` with `PATCH`, always sending the **whole** `rules`
  *   object with `preset_code` (SCREENS §6 G4).
- * - Changing direction or format resets the rules to the preset of the new combination, keeping the
- *   prices (W15 step 1).
- * - Dirty tracking per section feeds the unsaved-changes guard. No optimistic state: the form takes
- *   the server's copy after every save.
+ * - A new draft starts from the `standard` tier preset of its direction (§2.2). Changing direction or
+ *   format resets the rules to the preset of the new combination, keeping the prices (W15 step 1).
+ * - Dirty tracking per section feeds the unsaved-changes guard and the autosave. No optimistic state:
+ *   the form takes the server's copy after every save.
  */
 export const useCompetitionEditorStore = defineStore('competition-editor', () => {
   const lookups = useLookupsStore()
+  const appConfig = useAppConfigStore()
+
+  /** Preset rules for a new draft or a preset switch, kept within the release scope (never applied to loaded records). */
+  function presetRules(chosen: Pick<Preset, 'rules'> | null, format: Format, keep: Pick<Rules, 'start_price_minor' | 'reserve_price_minor'> | null = null): Rules {
+    return normalizeEditorRules(editorRulesWithinScope(editorRulesFromPreset(chosen, format, keep), appConfig.flags), format)
+  }
 
   const competitionId = ref<string | null>(null)
   const competition = ref<IssuerCompetition | null>(null)
@@ -128,16 +149,25 @@ export const useCompetitionEditorStore = defineStore('competition-editor', () =>
   const error = ref<ApiError | null>(null)
   /** Coupon applied to the covered-fees quote (step 7), reused by "Pay and publish" (step 8). */
   const couponCode = ref<string | null>(null)
+  /**
+   * Field paths whose typed text cannot be read («1.234», «12abc» in an amount field). The form keeps
+   * the field's last valid value, so the section must not save until the text is fixed (FQ2, FQ8).
+   */
+  const unreadable = ref<string[]>([])
 
   const isNew = computed(() => competitionId.value === null)
 
   const preset = computed<Preset | null>(() => lookups.presets.find(item => item.code === form.value.preset_code) ?? null)
   const availablePresets = computed(() => presetsFor(lookups.presets, form.value.direction, form.value.format))
+  /** The three tier cards of RELEASE_SCOPE.md §2.2 (empty on a catalogue without tiers). */
+  const tieredPresets = computed(() => tieredPresetsFor(lookups.presets, form.value.direction, form.value.format))
+  /** Untiered reference presets («قوالب أخرى»), for the `advanced_rules` select. */
+  const otherPresets = computed(() => untieredPresetsFor(lookups.presets, form.value.direction, form.value.format))
   const customised = computed(() => editorRulesCustomised(form.value.rules, preset.value, form.value.format))
   const category = computed(() => lookups.categoryById(form.value.category_id))
 
-  function isDirty(section?: EditorSection): boolean {
-    const fields = section ? SECTION_FIELDS[section] : (Object.keys(SECTION_FIELDS) as EditorSection[]).flatMap(key => SECTION_FIELDS[key])
+  function isDirty(sections?: EditorSections): boolean {
+    const fields = sectionList(sections).flatMap(key => SECTION_FIELDS[key])
     return fields.some(field => !sameValue(field, form.value, saved.value))
   }
 
@@ -145,23 +175,27 @@ export const useCompetitionEditorStore = defineStore('competition-editor', () =>
 
   // ---------- Loading ----------
 
-  /** A new competition (W12): defaults to a live tender with its first preset. */
+  /** A new competition (W12): a live tender on the standard tier preset (or the first preset). */
   function startNew(): void {
     competitionId.value = null
     competition.value = null
     error.value = null
     couponCode.value = null
+    unreadable.value = []
     const next = emptyEditorForm()
-    const first = presetsFor(lookups.presets, next.direction, next.format)[0] ?? null
+    const first = defaultPresetFor(lookups.presets, next.direction, next.format)
     next.preset_code = first?.code ?? null
-    next.rules = editorRulesFromPreset(first, next.format)
+    next.rules = presetRules(first, next.format)
     form.value = next
     saved.value = cloneForm(next)
   }
 
   /** An existing draft (W15). */
   function load(source: IssuerCompetition): void {
-    if (competitionId.value !== source.id) couponCode.value = null
+    if (competitionId.value !== source.id) {
+      couponCode.value = null
+      unreadable.value = []
+    }
     competitionId.value = source.id
     competition.value = source
     error.value = null
@@ -170,16 +204,20 @@ export const useCompetitionEditorStore = defineStore('competition-editor', () =>
   }
 
   /**
-   * Takes the server's copy after a save. Fields of the saved section, and fields without unsaved
-   * edits, follow the server; unsaved edits in other sections are kept.
+   * Takes the server's copy after a save. Fields of the saved sections, and fields without unsaved
+   * edits, follow the server; unsaved edits in other sections are kept. With `sent` (the form as it
+   * was when the request left), a field the user changed again while the request was in flight keeps
+   * its newer value, so an autosave never overwrites typing.
    */
-  function absorb(source: IssuerCompetition, section: EditorSection | null): void {
+  function absorb(source: IssuerCompetition, sections: EditorSections | null, sent: EditorForm | null = null): void {
     const fresh = editorFormFromCompetition(source)
     const keep = cloneForm(form.value)
     const next = cloneForm(fresh)
+    const savedFields = sections === null ? null : new Set(sectionList(sections).flatMap(key => SECTION_FIELDS[key]))
     for (const field of Object.keys(fresh) as FormField[]) {
-      const inSection = section === null || SECTION_FIELDS[section].includes(field)
-      if (!inSection && !sameValue(field, form.value, saved.value)) {
+      const inSection = savedFields === null || savedFields.has(field)
+      const editedSinceSent = sent !== null && !sameValue(field, form.value, sent)
+      if ((!inSection && !sameValue(field, form.value, saved.value)) || editedSinceSent) {
         (next as unknown as Record<string, unknown>)[field] = field === 'rules' ? keep.rules : keep[field]
       }
     }
@@ -193,19 +231,19 @@ export const useCompetitionEditorStore = defineStore('competition-editor', () =>
 
   /**
    * Direction or format changed (W15 step 1): the rules return to the preset of the new combination
-   * (the current preset when it still fits), keeping the start and reserve prices.
+   * (the current preset when it still fits, else the standard tier), keeping the start and reserve prices.
    */
   function setType(direction: Direction, format: Format): void {
     const current = form.value
     if (current.direction === direction && current.format === format) return
     const options = presetsFor(lookups.presets, direction, format)
-    const nextPreset = options.find(item => item.code === current.preset_code) ?? options[0] ?? null
+    const nextPreset = options.find(item => item.code === current.preset_code) ?? defaultPresetFor(lookups.presets, direction, format)
     form.value = {
       ...current,
       direction,
       format,
       preset_code: nextPreset?.code ?? null,
-      rules: editorRulesFromPreset(nextPreset, format, current.rules),
+      rules: presetRules(nextPreset, format, current.rules),
     }
   }
 
@@ -215,7 +253,7 @@ export const useCompetitionEditorStore = defineStore('competition-editor', () =>
     form.value = {
       ...form.value,
       preset_code: chosen?.code ?? null,
-      rules: editorRulesFromPreset(chosen, form.value.format, form.value.rules),
+      rules: presetRules(chosen, form.value.format, form.value.rules),
     }
   }
 
@@ -232,14 +270,14 @@ export const useCompetitionEditorStore = defineStore('competition-editor', () =>
     form.value = { ...form.value, [field]: value }
   }
 
-  /** Discards unsaved edits (one section, or everything). */
-  function reset(section?: EditorSection): void {
-    if (!section) {
+  /** Discards unsaved edits (some sections, or everything). */
+  function reset(sections?: EditorSections): void {
+    if (!sections) {
       form.value = cloneForm(saved.value)
       return
     }
     const next = cloneForm(form.value)
-    for (const field of SECTION_FIELDS[section]) {
+    for (const field of sectionList(sections).flatMap(key => SECTION_FIELDS[key])) {
       (next as unknown as Record<string, unknown>)[field] = field === 'rules' ? cloneEditorRules(saved.value.rules) : saved.value[field]
     }
     form.value = next
@@ -277,12 +315,28 @@ export const useCompetitionEditorStore = defineStore('competition-editor', () =>
     })
   }
 
-  /** Issues that stop a section from saving (the server would reject it). */
-  function blockingIssues(section: EditorSection, nowMs: number): EditorIssue[] {
+  /** Marks a field whose typed text cannot be read (`UiMoneyInput` `@unreadable`), or clears it. */
+  function setUnreadable(field: string, value: boolean): void {
+    const listed = unreadable.value.includes(field)
+    if (value && !listed) unreadable.value = [...unreadable.value, field]
+    else if (!value && listed) unreadable.value = unreadable.value.filter(item => item !== field)
+  }
+
+  /** One `save` issue per unreadable field: the step would otherwise save the last valid value. */
+  const unreadableIssues = computed<EditorIssue[]>(() => unreadable.value.map(field => ({ field, key: 'common.money.invalid', when: 'save' })))
+
+  /** Issues that stop the given sections from saving (the server would reject them). */
+  function blockingIssues(sections: EditorSections, nowMs: number): EditorIssue[] {
     const pick = (issues: EditorIssue[]) => issues.filter(issue => issue.when === 'save')
-    if (section === 'basics') return pick(basicsIssues.value)
-    if (section === 'rules' || section === 'type') return pick(rulesIssues.value)
-    return pick(scheduleIssuesAt(nowMs))
+    const result: EditorIssue[] = []
+    const list = sectionList(sections)
+    if (list.includes('basics')) result.push(...pick(basicsIssues.value))
+    if (list.includes('rules') || list.includes('type')) {
+      result.push(...unreadableIssues.value.filter(issue => issue.field.startsWith('rules.')))
+      result.push(...pick(rulesIssues.value).filter(issue => !unreadable.value.includes(issue.field)))
+    }
+    if (list.includes('schedule')) result.push(...pick(scheduleIssuesAt(nowMs)))
+    return result
   }
 
   /** First server message per editor field path (`rules.*` normalised). */
@@ -298,7 +352,7 @@ export const useCompetitionEditorStore = defineStore('competition-editor', () =>
 
   // ---------- Saving ----------
 
-  function payloadFor(section: EditorSection): UpdateCompetitionRequest {
+  function sectionPayload(section: EditorSection): UpdateCompetitionRequest {
     const value = form.value
     switch (section) {
       case 'type':
@@ -316,6 +370,11 @@ export const useCompetitionEditorStore = defineStore('competition-editor', () =>
       case 'schedule':
         return { bidding_opens_at: value.bidding_opens_at, scheduled_close_at: value.scheduled_close_at }
     }
+  }
+
+  /** The `PATCH` body for one section or several (one request for the type and the basics). */
+  function payloadFor(sections: EditorSections): UpdateCompetitionRequest {
+    return Object.assign({}, ...sectionList(sections).map(sectionPayload)) as UpdateCompetitionRequest
   }
 
   function createPayload(): CreateCompetitionRequest {
@@ -353,18 +412,19 @@ export const useCompetitionEditorStore = defineStore('competition-editor', () =>
   }
 
   /**
-   * `PATCH /competitions/{id}` with the section's fields. Returns null when nothing changed.
+   * `PATCH /competitions/{id}` with the fields of the given sections. Returns null when nothing changed.
    * Throws `ApiError` (422 bound by path, `competition_not_editable`).
    */
-  async function save(section: EditorSection): Promise<IssuerCompetition | null> {
+  async function save(sections: EditorSections): Promise<IssuerCompetition | null> {
     const id = competitionId.value
     if (!id) throw new Error('save() needs a created draft')
-    if (!isDirty(section)) return null
+    if (!isDirty(sections)) return null
     saving.value = true
     error.value = null
+    const sent = cloneForm(form.value)
     try {
-      const updated = await updateCompetition(id, payloadFor(section))
-      absorb(updated, section)
+      const updated = await updateCompetition(id, payloadFor(sections))
+      absorb(updated, sections, sent)
       return updated
     }
     catch (cause) {
@@ -391,11 +451,15 @@ export const useCompetitionEditorStore = defineStore('competition-editor', () =>
     isNew,
     preset,
     availablePresets,
+    tieredPresets,
+    otherPresets,
     customised,
     category,
     dirty,
     basicsIssues,
     rulesIssues,
+    unreadable,
+    setUnreadable,
     serverFieldErrors,
     isDirty,
     startNew,

@@ -10,6 +10,8 @@ use App\Modules\Billing\Models\Plan;
 use App\Modules\Billing\Services\BillingSettings;
 use App\Modules\Billing\Services\PricingCalculator;
 use App\Support\Exceptions\ApiException;
+use App\Support\Features\Feature;
+use App\Support\Features\FeatureFlags;
 use App\Support\Money\Money;
 use Illuminate\Http\JsonResponse;
 
@@ -19,12 +21,14 @@ use Illuminate\Http\JsonResponse;
 final class PlanController extends BillingController
 {
     /**
-     * Active plans by `sort_order`, the custom plan last.
+     * Active plans by `sort_order`, the custom plan last. The custom plan is left out while the
+     * release scope hides `custom_plan_quote` (RELEASE_SCOPE.md §1.5).
      */
-    public function index(): JsonResponse
+    public function index(FeatureFlags $features): JsonResponse
     {
         $plans = Plan::query()
             ->where('is_active', true)
+            ->when(! $features->enabled(Feature::CustomPlanQuote), static fn ($query) => $query->where('is_custom', false))
             ->orderBy('is_custom')
             ->orderBy('sort_order')
             ->orderBy('id')

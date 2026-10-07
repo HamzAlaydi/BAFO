@@ -28,6 +28,7 @@ const props = withDefaults(defineProps<{
 
 const selected = defineModel<string | null>('selected', { default: null })
 const { t } = useI18n()
+const features = useFeatures()
 const name = `standing-${useId()}`
 
 const columns = computed<TableColumn[]>(() => {
@@ -43,7 +44,10 @@ const columns = computed<TableColumn[]>(() => {
   )
   if (props.rows.some(row => row.bafo.shortlisted)) list.push({ key: 'bafo', label: t('live.console.ranking.bafo') })
   if (props.showContact) list.push({ key: 'contact', label: t('offers.standings.contact'), hideOnMobile: true })
-  list.push({ key: 'coverage', label: t('invitations.issuer.table.coverage'), hideOnMobile: true })
+  // Fee coverage belongs to sponsorship: shown with the flag, or when a covered pass exists (existing records).
+  if (features.enabled('sponsorship') || props.rows.some(row => row.participant.coverage === 'sponsored')) {
+    list.push({ key: 'coverage', label: t('invitations.issuer.table.coverage'), hideOnMobile: true })
+  }
   return list
 })
 

@@ -13,6 +13,13 @@ const FONT_CSS = [
   '@fontsource/ibm-plex-sans-arabic/700.css',
 ]
 
+/**
+ * Absolute site origin for canonical, hreflang, Open Graph, the sitemap and robots.txt
+ * (RELEASE_SCOPE §6.3). `NUXT_PUBLIC_SITE_URL` overrides it at build time; set
+ * `NUXT_PUBLIC_I18N_BASE_URL` to the same value when overriding at runtime only.
+ */
+const SITE_URL = (process.env.NUXT_PUBLIC_SITE_URL ?? 'https://bafo-web-demo.vercel.app').replace(/\/$/, '')
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   modules: ['@nuxtjs/i18n', '@pinia/nuxt', '@vueuse/nuxt', '@nuxt/eslint'],
@@ -42,6 +49,8 @@ export default defineNuxtConfig({
     public: {
       // Override with NUXT_PUBLIC_API_BASE etc. (see .env.example)
       apiBase: 'http://localhost:8000/api/app/v1',
+      // Canonical origin of the public site (no trailing slash).
+      siteUrl: SITE_URL,
       broadcastAuthEndpoint: 'http://localhost:8000/broadcasting/auth',
       // Development-only override of `AppConfig.realtime` (GET /app-config is the contract source).
       reverb: {
@@ -75,6 +84,12 @@ export default defineNuxtConfig({
 
   compatibilityDate: '2025-07-15',
 
+  // Pre-compressed static assets (gzip and brotli) for the node server used by the hosted demo image;
+  // platforms with their own edge compression ignore the files (RELEASE_SCOPE §6.3 LCP rules).
+  nitro: {
+    compressPublicAssets: { gzip: true, brotli: true },
+  },
+
   vite: {
     plugins: [tailwindcss()],
   },
@@ -94,7 +109,7 @@ export default defineNuxtConfig({
   },
 
   i18n: {
-    baseUrl: 'http://localhost:3000',
+    baseUrl: SITE_URL,
     defaultLocale: 'ar',
     strategy: 'prefix',
     langDir: 'locales',

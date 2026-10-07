@@ -1,10 +1,9 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { mockNuxtImport, mountSuspended } from '@nuxt/test-utils/runtime'
 import { makeTokenPayload } from '../fixtures/api'
-import { makePlan, makeCustomPlan, pageOf } from '../fixtures/billing'
+import { pageOf } from '../fixtures/billing'
 import { makeVendor } from '../fixtures/integrations'
 import VendorsPage from '~/pages/dashboard/vendors/index.vue'
-import LandingPage from '~/pages/index.vue'
 
 const integrations = vi.hoisted(() => ({
   listVendors: vi.fn(),
@@ -114,80 +113,5 @@ describe('W25 vendors', () => {
     expect(integrations.createVendor).not.toHaveBeenCalled()
     expect(wrapper.text()).toContain(t('validation.cr_number'))
     wrapper.unmount()
-  })
-})
-
-describe('W01 landing', () => {
-  // The plans are SSR data (`useAsyncData`), cached per key across mounts in one Nuxt app.
-  beforeEach(() => clearNuxtData('landing:plans'))
-
-  it('renders the sections with SSR plans and the FAQ', async () => {
-    billing.fetchPlans.mockResolvedValue([makePlan(), makeCustomPlan()])
-    const wrapper = await mountSuspended(LandingPage)
-    await flush()
-    expect(wrapper.get('h1').text()).toBe(t('landing.hero.title'))
-    expect(wrapper.text()).toContain(t('landing.how.issuer.one.title'))
-    expect(wrapper.text()).toContain(t('landing.sponsored.title'))
-    expect(wrapper.text()).toContain(t('landing.erp.title'))
-    expect(wrapper.text()).toContain(t('landing.plans.title'))
-    expect(wrapper.text()).toContain(makePlan().name)
-    expect(wrapper.text()).toContain(t('landing.plans.custom'))
-    expect(wrapper.findAll('details')).toHaveLength(9)
-    expectNoRawKeys(wrapper.text())
-    expect(wrapper.findAll('a').some(link => link.attributes('href') === 'http://api.bafo.test/docs/api')).toBe(true)
-  })
-
-  it('switches how it works to the participant steps', async () => {
-    billing.fetchPlans.mockResolvedValue([])
-    const wrapper = await mountSuspended(LandingPage)
-    await flush()
-    await wrapper.findAll('[role="tab"]').find(tab => tab.text().includes(t('landing.how.tabs.participant')))!.trigger('click')
-    await flush()
-    expect(wrapper.text()).toContain(t('landing.how.participant.three.title'))
-  })
-
-  it('hides the plans section when plans cannot be loaded', async () => {
-    billing.fetchPlans.mockRejectedValue(new ApiError({ status: 500, code: 'server_error', message: '', errors: {} }))
-    const wrapper = await mountSuspended(LandingPage)
-    await flush()
-    expect(wrapper.find('#plans').exists()).toBe(false)
-    expect(wrapper.text()).toContain(t('landing.faq.title'))
-  })
-
-  it('sends the contact form with the empty honeypot and confirms inline', async () => {
-    billing.fetchPlans.mockResolvedValue([])
-    platform.submitContact.mockResolvedValue({ id: '01j9msg0000000000000000001' })
-    const wrapper = await mountSuspended(LandingPage)
-    await flush()
-    const form = wrapper.get('#contact form')
-    await form.trigger('submit')
-    await flush()
-    expect(platform.submitContact).not.toHaveBeenCalled()
-    expect(wrapper.get('#contact').text()).toContain(t('validation.required'))
-
-    await form.get('input[autocomplete="name"]').setValue('سارة')
-    await form.get('input[type="email"]').setValue('sara@issuer.sa')
-    const texts = form.findAll('input[type="text"]:not([name="website_url"]):not([autocomplete])')
-    await texts.at(-1)!.setValue('طلب جلسة تعريفية')
-    await form.get('textarea').setValue('نود معرفة المزيد عن التكامل.')
-    await form.trigger('submit')
-    await flush()
-    expect(platform.submitContact).toHaveBeenCalledWith(expect.objectContaining({ name: 'سارة', email: 'sara@issuer.sa', subject: 'طلب جلسة تعريفية', website_url: '' }))
-    expect(wrapper.text()).toContain(t('landing.contact.sent_title'))
-  })
-
-  it('explains the rate limit on the contact form', async () => {
-    billing.fetchPlans.mockResolvedValue([])
-    platform.submitContact.mockRejectedValue(new ApiError({ status: 429, code: 'too_many_requests', message: '', errors: {} }))
-    const wrapper = await mountSuspended(LandingPage)
-    await flush()
-    const form = wrapper.get('#contact form')
-    await form.get('input[autocomplete="name"]').setValue('سارة')
-    await form.get('input[type="email"]').setValue('sara@issuer.sa')
-    await form.findAll('input[type="text"]:not([name="website_url"]):not([autocomplete])').at(-1)!.setValue('موضوع')
-    await form.get('textarea').setValue('رسالة')
-    await form.trigger('submit')
-    await flush()
-    expect(wrapper.text()).toContain(t('errors.too_many_requests'))
   })
 })

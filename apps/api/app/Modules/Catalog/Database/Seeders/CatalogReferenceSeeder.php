@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Modules\Catalog\Database\Seeders;
 
 use App\Modules\Catalog\Enums\CloseReasonKind;
+use App\Modules\Catalog\Enums\PresetTier;
 use App\Modules\Catalog\Models\Category;
 use App\Modules\Catalog\Models\CloseReason;
 use App\Modules\Catalog\Models\CompetitionPreset;
@@ -16,8 +17,8 @@ use Illuminate\Support\Facades\DB;
 
 /**
  * The Catalog reference data of ARCHITECTURE §5.2: the 13 Saudi administrative regions, the
- * categories, the close reasons and the three rules presets. Idempotent: `updateOrCreate` by
- * `code`, so it runs on every `db:seed`.
+ * categories, the close reasons, the three reference rules presets and the six tier presets of
+ * RELEASE_SCOPE.md §2.2. Idempotent: `updateOrCreate` by `code`, so it runs on every `db:seed`.
  */
 final class CatalogReferenceSeeder extends Seeder
 {
@@ -88,6 +89,74 @@ final class CatalogReferenceSeeder extends Seeder
         ['void_other', CloseReasonKind::VoidOffer, 'سبب آخر', 'Other reason', true],
     ];
 
+    /**
+     * The preset tiers of RELEASE_SCOPE.md §2.2: tier => [name AR, name EN, description AR,
+     * description EN, rules]. Each tier is seeded for both directions (`tender_live_<tier>`,
+     * `auction_live_<tier>`), live format, with the same text. `rules` holds the RulesInput keys of
+     * API.md §2.6 without prices.
+     *
+     * @var array<string, array{0: string, 1: string, 2: string, 3: string, 4: array<string, mixed>}>
+     */
+    public const array TIER_PRESETS = [
+        'simple' => [
+            'بسيطة',
+            'Simple',
+            'يحسّن كل متنافس عرضه بحرّية ويعرف فقط إن كان متصدراً. تُغلق المنافسة في موعدها دون تمديد.',
+            'Each participant improves their own offer freely and only knows whether they are leading. The competition closes on time without extensions.',
+            [
+                'min_step_minor' => null,
+                'min_step_bps' => null,
+                'amount_granularity_minor' => 100,
+                'must_beat' => 'own',
+                'rank_visibility' => 'leading_flag',
+                'show_prices' => false,
+                'auto_extend' => ['enabled' => false, 'window_seconds' => null, 'by_seconds' => null, 'max_extensions' => null],
+                'final_window_minutes' => null,
+                'bafo_round' => ['enabled' => false, 'duration_minutes' => null],
+                'min_participants' => 1,
+                'result_publication' => 'outcome_only',
+            ],
+        ],
+        'standard' => [
+            'قياسية',
+            'Standard',
+            'حد أدنى للتحسين 0.5%. إذا تغيّر العرض المتصدر في آخر 3 دقائق يُمدَّد الإغلاق 3 دقائق (حتى 10 مرات). يعرف المتنافس إن كان متصدراً فقط.',
+            'Minimum improvement 0.5%. If the leading offer changes in the last 3 minutes, closing extends by 3 minutes (up to 10 times). Participants only know whether they are leading.',
+            [
+                'min_step_minor' => null,
+                'min_step_bps' => 50,
+                'amount_granularity_minor' => 100,
+                'must_beat' => 'own',
+                'rank_visibility' => 'leading_flag',
+                'show_prices' => false,
+                'auto_extend' => ['enabled' => true, 'window_seconds' => 180, 'by_seconds' => 180, 'max_extensions' => 10],
+                'final_window_minutes' => null,
+                'bafo_round' => ['enabled' => false, 'duration_minutes' => null],
+                'min_participants' => 2,
+                'result_publication' => 'outcome_only',
+            ],
+        ],
+        'protected' => [
+            'حماية قصوى',
+            'Maximum protection',
+            'لا يرى المتنافسون ترتيبهم ولا أسعار غيرهم. حد أدنى للتحسين 1%، وتمديد 5 دقائق عند أي تغيير في العرض المتصدر خلال آخر 5 دقائق (حتى 20 مرة).',
+            'Participants see neither their rank nor other prices. Minimum improvement 1%, and closing extends by 5 minutes whenever the leading offer changes in the last 5 minutes (up to 20 times).',
+            [
+                'min_step_minor' => null,
+                'min_step_bps' => 100,
+                'amount_granularity_minor' => 100,
+                'must_beat' => 'own',
+                'rank_visibility' => 'none',
+                'show_prices' => false,
+                'auto_extend' => ['enabled' => true, 'window_seconds' => 300, 'by_seconds' => 300, 'max_extensions' => 20],
+                'final_window_minutes' => null,
+                'bafo_round' => ['enabled' => false, 'duration_minutes' => null],
+                'min_participants' => 2,
+                'result_publication' => 'outcome_only',
+            ],
+        ],
+    ];
+
     public function run(): void
     {
         DB::transaction(function (): void {
@@ -142,8 +211,9 @@ final class CatalogReferenceSeeder extends Seeder
     }
 
     /**
-     * The three presets of ARCHITECTURE §5.2. `rules` holds the RulesInput keys of API.md §2.6
-     * without prices.
+     * The three reference presets of ARCHITECTURE §5.2 (untiered, `tier = null`), then the six tier
+     * presets of RELEASE_SCOPE.md §2.2 (tender simple → protected, then auction). `rules` holds the
+     * RulesInput keys of API.md §2.6 without prices.
      */
     private function seedPresets(): void
     {
@@ -157,6 +227,7 @@ final class CatalogReferenceSeeder extends Seeder
                 ],
                 'direction' => Direction::Tender,
                 'format' => Format::Live,
+                'tier' => null,
                 'rules' => [
                     'min_step_minor' => null,
                     'min_step_bps' => 50,
@@ -180,6 +251,7 @@ final class CatalogReferenceSeeder extends Seeder
                 ],
                 'direction' => Direction::Tender,
                 'format' => Format::Sealed,
+                'tier' => null,
                 'rules' => [
                     'min_step_minor' => null,
                     'min_step_bps' => null,
@@ -203,6 +275,7 @@ final class CatalogReferenceSeeder extends Seeder
                 ],
                 'direction' => Direction::Auction,
                 'format' => Format::Live,
+                'tier' => null,
                 'rules' => [
                     'min_step_minor' => 50000,
                     'min_step_bps' => null,
@@ -218,6 +291,20 @@ final class CatalogReferenceSeeder extends Seeder
                 ],
             ],
         ];
+
+        foreach ([Direction::Tender, Direction::Auction] as $direction) {
+            foreach (self::TIER_PRESETS as $tier => [$nameAr, $nameEn, $descriptionAr, $descriptionEn, $rules]) {
+                $presets[] = [
+                    'code' => "{$direction->value}_live_{$tier}",
+                    'name' => ['ar' => $nameAr, 'en' => $nameEn],
+                    'description' => ['ar' => $descriptionAr, 'en' => $descriptionEn],
+                    'direction' => $direction,
+                    'format' => Format::Live,
+                    'tier' => PresetTier::from($tier),
+                    'rules' => $rules,
+                ];
+            }
+        }
 
         foreach ($presets as $index => $preset) {
             CompetitionPreset::query()->updateOrCreate(

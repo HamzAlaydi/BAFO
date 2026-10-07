@@ -3475,7 +3475,7 @@
   "@issuerCreateTitle": {
     "description": "Wizard title."
   },
-  "issuerCreateStepType": "النوع والإعداد المسبق",
+  "issuerCreateStepType": "النوع ومستوى القواعد",
   "@issuerCreateStepType": {
     "description": "M34 step title."
   },
@@ -4811,6 +4811,175 @@
     "placeholders": {
       "date": {
         "type": "String"
+      }
+    }
+  },
+  "errorsFeatureDisabled": "هذه الميزة غير متاحة في هذا الإصدار.",
+  "@errorsFeatureDisabled": {
+    "description": "errors.feature_disabled (RELEASE_SCOPE.md §1.5): 404 behind a release-scope flag."
+  },
+  "errorsFeatureDisabledField": "هذا الخيار غير متاح في هذا الإصدار.",
+  "@errorsFeatureDisabledField": {
+    "description": "errors.feature_disabled_field: a 422 on a field the release scope hides."
+  },
+  "commonFeatureUnavailableTitle": "غير متاح في هذا الإصدار",
+  "@commonFeatureUnavailableTitle": {
+    "description": "Title of the screen behind a route whose feature is off in this release."
+  },
+  "commonFeatureUnavailableHint": "ستتوفر هذه الميزة في إصدار قادم من بافو.",
+  "@commonFeatureUnavailableHint": {
+    "description": "Hint under the message of the feature-unavailable screen."
+  },
+  "accountInvoicesOnWeb": "الفواتير متاحة في لوحة تحكم بافو على الويب.",
+  "@accountInvoicesOnWeb": {
+    "description": "Message of the feature-unavailable screen behind /account/invoices in the core release."
+  },
+  "issuerPresetTierTitle": "مستوى القواعد",
+  "@issuerPresetTierTitle": {
+    "description": "M34: heading of the preset tier cards (simple, standard, maximum protection)."
+  },
+  "issuerPresetTierHint": "اختر مستوى واحداً، ويشرح بافو أثره بجملة واحدة. يمكنك تعديل التفاصيل لاحقاً من لوحة التحكم على الويب.",
+  "@issuerPresetTierHint": {
+    "description": "M34: helper under the tier cards heading."
+  },
+  "issuerPresetTierRecommended": "موصى به",
+  "@issuerPresetTierRecommended": {
+    "description": "M34: pill on the standard tier card."
+  },
+  "issuerPresetTierOther": "قوالب أخرى",
+  "@issuerPresetTierOther": {
+    "description": "M34: heading of the untiered presets (advanced_rules flag)."
+  },
+  "issuerScheduleQuickTitle": "مدة استقبال العروض",
+  "@issuerScheduleQuickTitle": {
+    "description": "M36: heading of the duration quick picks."
+  },
+  "issuerScheduleQuickHour": "ساعة",
+  "@issuerScheduleQuickHour": {
+    "description": "M36 quick pick: 60 minutes."
+  },
+  "issuerScheduleQuickHours3": "3 ساعات",
+  "@issuerScheduleQuickHours3": {
+    "description": "M36 quick pick: 3 hours."
+  },
+  "issuerScheduleQuickDay": "يوم",
+  "@issuerScheduleQuickDay": {
+    "description": "M36 quick pick: 24 hours."
+  },
+  "issuerScheduleQuickDays3": "3 أيام",
+  "@issuerScheduleQuickDays3": {
+    "description": "M36 quick pick: 72 hours."
+  },
+  "issuerScheduleQuickWeek": "أسبوع",
+  "@issuerScheduleQuickWeek": {
+    "description": "M36 quick pick: 7 days."
+  },
+  "issuerScheduleQuickCustom": "مخصص",
+  "@issuerScheduleQuickCustom": {
+    "description": "M36 quick pick: pick the closing time yourself."
+  },
+  "issuerScheduleQuickFromPublish": "تُحتسب المدة من لحظة النشر.",
+  "@issuerScheduleQuickFromPublish": {
+    "description": "M36: hint under the quick picks when offers open on publish."
+  },
+  "issuerScheduleRelativeClose": "يُغلق {relative}: {date}",
+  "@issuerScheduleRelativeClose": {
+    "description": "M36: relative hint under the closing time, e.g. «يُغلق بعد 3 أيام: 12 نوفمبر 2026، 4:00 م بتوقيت الرياض».",
+    "placeholders": {
+      "relative": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "issuerScheduleInMinutes": "{count, plural, =1{بعد دقيقة} =2{بعد دقيقتين} few{بعد {count} دقائق} many{بعد {count} دقيقة} other{بعد {count} دقيقة}}",
+  "@issuerScheduleInMinutes": {
+    "description": "Relative phrase for a duration under an hour.",
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "issuerScheduleInHours": "{count, plural, =1{بعد ساعة} =2{بعد ساعتين} few{بعد {count} ساعات} many{بعد {count} ساعة} other{بعد {count} ساعة}}",
+  "@issuerScheduleInHours": {
+    "description": "Relative phrase for a duration under a day.",
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "issuerScheduleInDays": "{count, plural, =1{بعد يوم} =2{بعد يومين} few{بعد {count} أيام} many{بعد {count} يوماً} other{بعد {count} يوم}}",
+  "@issuerScheduleInDays": {
+    "description": "Relative phrase for a duration of a day or more.",
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "issuerFieldDurationTooShortDetail": "{minutes, plural, =1{المدة دقيقة واحدة فقط} =2{المدة دقيقتان فقط} few{المدة {minutes} دقائق فقط} many{المدة {minutes} دقيقة فقط} other{المدة {minutes} دقيقة فقط}}؛ الحد الأدنى {min, plural, =1{دقيقة واحدة} =2{دقيقتان} few{{min} دقائق} many{{min} دقيقة} other{{min} دقيقة}}.",
+  "@issuerFieldDurationTooShortDetail": {
+    "description": "R16 with the actual duration and the bound (FQ2 self-explaining message).",
+    "placeholders": {
+      "minutes": {
+        "type": "num"
+      },
+      "min": {
+        "type": "num"
+      }
+    }
+  },
+  "issuerFieldDurationTooLongDetail": "{days, plural, =1{المدة يوم واحد} =2{المدة يومان} few{المدة {days} أيام} many{المدة {days} يوماً} other{المدة {days} يوم}}؛ الحد الأقصى {max, plural, =1{يوم واحد} =2{يومان} few{{max} أيام} many{{max} يوماً} other{{max} يوم}}.",
+  "@issuerFieldDurationTooLongDetail": {
+    "description": "R16 with the actual duration and the bound (FQ2 self-explaining message).",
+    "placeholders": {
+      "days": {
+        "type": "num"
+      },
+      "max": {
+        "type": "num"
+      }
+    }
+  },
+  "issuerFieldTitleHelper": "اسم واضح يفهمه المدعوون. مثال: توريد أجهزة حاسب محمول للإدارة العامة",
+  "@issuerFieldTitleHelper": {
+    "description": "M35: helper with an example under the title field (FQ1)."
+  },
+  "issuerFieldDescriptionExample": "مطلوب قبل النشر. اذكر الكمية والمواصفات ومكان التسليم وشروط الدفع.",
+  "@issuerFieldDescriptionExample": {
+    "description": "M35: helper with an example under the description field (FQ1)."
+  },
+  "commonAmountExample": "مثال: 125,000.00",
+  "@commonAmountExample": {
+    "description": "Placeholder of money fields (FQ1); Western digits, two decimals."
+  },
+  "issuerCreateDraftRestored": "استُعيد ما أدخلته سابقاً في هذه المنافسة.",
+  "@issuerCreateDraftRestored": {
+    "description": "M34: notice when the unsaved local draft is restored (FQ6)."
+  },
+  "issuerCreateStartOver": "ابدأ من جديد",
+  "@issuerCreateStartOver": {
+    "description": "M34: clears the restored local draft."
+  },
+  "commonErrorSummaryTitle": "{count, plural, =1{يرجى تصحيح الحقل التالي:} =2{يرجى تصحيح الحقلين التاليين:} few{يرجى تصحيح الحقول التالية ({count}):} many{يرجى تصحيح الحقول التالية ({count}):} other{يرجى تصحيح الحقول التالية ({count}):}}",
+  "@commonErrorSummaryTitle": {
+    "description": "Heading of the error summary shown after a failed submit (FQ8).",
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "commonErrorSummaryOtherStep": "في الخطوة {step}",
+  "@commonErrorSummaryOtherStep": {
+    "description": "Error summary: the field is on another step.",
+    "placeholders": {
+      "step": {
+        "type": "int"
       }
     }
   }

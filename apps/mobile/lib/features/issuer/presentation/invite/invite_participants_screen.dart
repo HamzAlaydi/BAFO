@@ -1,3 +1,5 @@
+import 'package:bafo/core/config/app_config.dart';
+import 'package:bafo/core/config/feature_gate.dart';
 import 'package:bafo/core/l10n/l10n.dart';
 import 'package:bafo/core/models/competition_enums.dart';
 import 'package:bafo/core/theme/semantic_colors.dart';
@@ -17,7 +19,9 @@ import 'package:material_ui/material_ui.dart';
 
 /// M40 (`/competitions/:id/invite`): Suggestions / E-mail / Vendors,
 /// staged chips, then one all-or-nothing `POST …/invitations`. Fees are
-/// never paid on mobile (SCREENS.md §3.2).
+/// never paid on mobile (SCREENS.md §3.2). The Vendors segment needs the
+/// `vendor_directory` flag and the covered-fees rows the `sponsorship` flag
+/// (RELEASE_SCOPE.md §4).
 class InviteParticipantsScreen extends StatelessWidget {
   const InviteParticipantsScreen({required this.competitionId, super.key});
 
@@ -108,6 +112,14 @@ class _Ready extends StatelessWidget {
     final draft = state.competition.status == CompetitionStatus.draft;
     final count = state.staged.length;
     final offline = issuerOffline(context);
+    final flags = context.flags;
+    final showVendors = flags.enabled(Feature.vendorDirectory);
+    final showSponsorship = flags.enabled(Feature.sponsorship);
+    // Without the directory the segment is not built; a stale selection
+    // falls back to the suggestions.
+    final tab = !showVendors && state.tab == InviteTab.vendors
+        ? InviteTab.suggestions
+        : state.tab;
     return Column(
       children: [
         Padding(
@@ -127,12 +139,13 @@ class _Ready extends StatelessWidget {
                 value: InviteTab.email,
                 label: l10n.issuerInviteTabEmail,
               ),
-              FilterSegment(
-                value: InviteTab.vendors,
-                label: l10n.issuerInviteTabVendors,
-              ),
+              if (showVendors)
+                FilterSegment(
+                  value: InviteTab.vendors,
+                  label: l10n.issuerInviteTabVendors,
+                ),
             ],
-            selected: state.tab,
+            selected: tab,
             onChanged: cubit.selectTab,
           ),
         ),
@@ -140,13 +153,13 @@ class _Ready extends StatelessWidget {
           child: ListView(
             padding: BafoSpacing.pagePadding,
             children: [
-              switch (state.tab) {
+              switch (tab) {
                 InviteTab.suggestions => _SuggestionsTab(state: state),
                 InviteTab.email => _EmailTab(state: state),
                 InviteTab.vendors => _VendorsTab(state: state),
               },
               const SizedBox(height: BafoSpacing.xl),
-              _StagedSection(state: state),
+              _StagedSection(state: state, showSponsorship: showSponsorship),
             ],
           ),
         ),
@@ -442,9 +455,12 @@ class _VendorsTab extends StatelessWidget {
 }
 
 class _StagedSection extends StatelessWidget {
-  const _StagedSection({required this.state});
+  const _StagedSection({required this.state, required this.showSponsorship});
 
   final InviteReady state;
+
+  /// The `sponsorship` flag: covered-fees rows and the free-slots counter.
+  final bool showSponsorship;
 
   String? _rowError(AppLocalizations l10n, InviteRowError? error) {
     if (error == null) return null;
@@ -463,6 +479,7 @@ class _StagedSection extends StatelessWidget {
     final theme = Theme.of(context);
     final cubit = context.read<InviteParticipantsCubit>();
     final error = state.submitError;
+    final selectedMode = state.selectedMode && showSponsorship;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -473,7 +490,7 @@ class _StagedSection extends StatelessWidget {
             style: theme.textTheme.titleMedium,
           ),
         ),
-        if (state.selectedMode) ...[
+        if (selectedMode) ...[
           const SizedBox(height: BafoSpacing.sm),
           InfoNotice(
             message: l10n.issuerInviteFreeSlots(state.freeSlots),
@@ -509,7 +526,7 @@ class _StagedSection extends StatelessWidget {
             _StagedTile(
               row: row,
               error: _rowError(l10n, state.rowErrors[row.key]),
-              selectedMode: state.selectedMode,
+              selectedMode: selectedMode,
               canSponsor: row.sponsored || state.canSponsorMore,
               enabled: !state.submitting,
               onRemove: () => cubit.remove(row.key),

@@ -3,7 +3,11 @@ import { EyeOff, ShieldCheck, Timer } from '@lucide/vue'
 
 const { t } = useI18n()
 const route = useRoute()
+const features = useFeatures()
 const year = new Date().getFullYear()
+
+// Sign-in and registration pages are never indexed (RELEASE_SCOPE.md §6.3).
+useSeoMeta({ robots: 'noindex, nofollow' })
 // Long forms (registration) opt into a wider column with `definePageMeta({ authWide: true })`.
 const wide = computed(() => route.meta.authWide === true)
 
@@ -30,7 +34,7 @@ const points = computed(() => [
         </NuxtLinkLocale>
         <div class="flex items-center gap-1">
           <AppLanguageSwitch compact />
-          <AppThemeMenu />
+          <AppThemeMenu v-if="features.enabled('dark_mode')" />
         </div>
       </header>
       <main

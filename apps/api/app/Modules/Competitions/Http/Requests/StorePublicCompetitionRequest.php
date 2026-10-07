@@ -42,7 +42,11 @@ final class StorePublicCompetitionRequest extends CompetitionRequest
      */
     public function after(): array
     {
-        return [...parent::after(), fn (Validator $validator) => $this->checkInvitationTargets($validator)];
+        return [
+            ...parent::after(),
+            fn (Validator $validator) => $this->checkInvitationTargets($validator),
+            fn (Validator $validator) => $this->refuseHiddenInvitationFields($validator),
+        ];
     }
 
     /**

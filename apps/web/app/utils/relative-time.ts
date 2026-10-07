@@ -21,3 +21,17 @@ export function relativeTime(iso: string, nowMs: number): RelativeTime {
   if (diff < 24 * 3600_000) return { unit: 'hours', value: Math.floor(diff / 3600_000) }
   return { unit: 'days', value: Math.floor(diff / (24 * 3600_000)) }
 }
+
+export type RelativeDuration = { unit: 'minutes' | 'hours' | 'days', value: number }
+
+/**
+ * Buckets a positive duration for "in … " phrases («بعد 3 أيام», "in 3 days"), used for the relative
+ * close hint of the schedule step. The caller renders `common.relative.in_<unit>` with the 6-form
+ * plural. Durations below a minute count as one minute; negative ones as zero minutes.
+ */
+export function relativeDuration(ms: number): RelativeDuration {
+  if (ms <= 0) return { unit: 'minutes', value: 0 }
+  if (ms < 3600_000) return { unit: 'minutes', value: Math.max(1, Math.round(ms / 60_000)) }
+  if (ms < 24 * 3600_000) return { unit: 'hours', value: Math.round(ms / 3600_000) }
+  return { unit: 'days', value: Math.round(ms / (24 * 3600_000)) }
+}

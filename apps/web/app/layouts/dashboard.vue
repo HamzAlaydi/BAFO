@@ -11,10 +11,14 @@ const { t } = useI18n()
 const auth = useAuthStore()
 const home = useHomeStore()
 const notifications = useNotificationsStore()
+const features = useFeatures()
 const route = useRoute()
 const localePath = useLocalePath()
 const toast = useToast()
 const navOpen = ref(false)
+
+// Private pages are never indexed (RELEASE_SCOPE.md §6.3).
+useSeoMeta({ robots: 'noindex, nofollow' })
 
 notifications.startRealtime()
 
@@ -43,6 +47,13 @@ watch(() => auth.gate, (gate) => {
 }, { immediate: true })
 
 const blockingGate = computed(() => (auth.gate === 'account_inactive' || auth.gate === 'organization_suspended' ? auth.gate : null))
+
+// A page hidden by the release scope renders the 404 state in place, without a redirect (RELEASE_SCOPE.md §5;
+// `middleware/feature.ts` has already loaded the flags). The page itself is not mounted, so it calls no API.
+// The router's current route, not `useRoute()`: Nuxt syncs the latter when a page finishes rendering, which a
+// page that is not mounted never does, so leaving the hidden page would keep the 404 state on screen.
+const router = useRouter()
+const hiddenByScope = computed(() => features.ready.value && !features.anyEnabled(router.currentRoute.value.meta.feature))
 </script>
 
 <template>
@@ -88,7 +99,7 @@ const blockingGate = computed(() => (auth.gate === 'account_inactive' || auth.ga
         <AppOrgSwitcher />
         <div class="ms-auto flex items-center gap-0.5 sm:gap-1">
           <AppLanguageSwitch compact />
-          <AppThemeMenu />
+          <AppThemeMenu v-if="features.enabled('dark_mode')" />
           <AppNotificationsMenu v-if="!blockingGate" />
           <AppUserMenu />
         </div>
@@ -104,6 +115,7 @@ const blockingGate = computed(() => (auth.gate === 'account_inactive' || auth.ga
             v-if="blockingGate"
             :gate="blockingGate"
           />
+          <UiNotFoundState v-else-if="hiddenByScope" />
           <slot v-else />
         </div>
       </main>

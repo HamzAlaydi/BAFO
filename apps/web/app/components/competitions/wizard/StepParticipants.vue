@@ -5,9 +5,10 @@ import type { Invitation, IssuerCompetition } from '~/types/api/competitions'
 import { stagedRowErrors, stagedToInput, upsertInvitation, type StagedInvitation } from '~/stores/competition-editor-invitations'
 
 /**
- * Wizard step 6 «المتنافسون» (SCREENS W15 `participants`): the invite picker, "Add {n} invitations"
- * (all-or-nothing, per-row errors put back on the staged rows), the current draft invitations with
- * name edit and removal, and the counter against the minimum participants.
+ * The invitations of wizard step 4 «المتنافسون والمستندات» (SCREENS W15 `participants`; RELEASE_SCOPE.md
+ * §2.1): the invite picker, "Add {n} invitations" (all-or-nothing, per-row errors put back on the staged
+ * rows; disabled with its reason while no row is valid), the current draft invitations with name edit
+ * and removal, and the counter against the minimum participants.
  */
 const props = defineProps<{ competition: IssuerCompetition }>()
 const emit = defineEmits<{ changed: [] }>()
@@ -126,8 +127,13 @@ function onRemoved(id: string): void {
         </UiAlert>
         <div
           v-if="staged.length > 0"
-          class="flex justify-end"
+          class="flex flex-wrap items-center justify-end gap-3"
         >
+          <span
+            v-if="sendable.length === 0"
+            class="text-sm text-fg-muted"
+            role="status"
+          >{{ t('invitations.issuer.add_reason') }}</span>
           <UiButton
             :icon="UserPlus"
             :loading="sending"

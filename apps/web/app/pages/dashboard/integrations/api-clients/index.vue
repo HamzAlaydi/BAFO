@@ -10,7 +10,7 @@ import type { TableColumn } from '~/types/ui'
  * once, and the dialog closes only after the user confirms they stored the secret. The secret is
  * dropped from memory when the dialog closes.
  */
-definePageMeta({ layout: 'dashboard', middleware: 'auth' })
+definePageMeta({ layout: 'dashboard', middleware: ['auth', 'feature'], feature: 'integrations_api' })
 
 const { t } = useI18n()
 const auth = useAuthStore()

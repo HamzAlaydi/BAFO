@@ -3,12 +3,28 @@ import type { Preset } from '~/types/api/catalog'
 import type { Direction, Format } from '~/types/api/competitions'
 
 /**
- * Wizard step 1 «نوع المنافسة» (SCREENS W12 step 1, W15 `type`): direction with a plain explanation,
- * format, the BAFO round switch and the preset cards filtered by direction and format.
+ * The competition type (SCREENS W12 step 1, W15 `type`; RELEASE_SCOPE.md §2.4): direction with a
+ * plain explanation and, when the props allow, the format cards, the BAFO round switch and the preset
+ * cards filtered by direction and format. Inside the 5-step wizard it renders at the top of step 1 with
+ * `showFormat = flags.sealed_format` and without BAFO or presets (they moved to the rules step); the
+ * defaults keep the full component for any other caller.
  *
  * Auction is gated by `me.organization.features.auction_enabled` (S10). On an existing draft,
  * changing direction or format asks first, because the rules return to the chosen preset (prices kept).
  */
+withDefaults(defineProps<{
+  /** The live / sealed cards (`flags.sealed_format`). */
+  showFormat?: boolean
+  /** The BAFO round switch (`flags.bafo_round`; the rules step owns it in the 5-step wizard). */
+  showBafo?: boolean
+  /** The preset cards (the rules step shows the tier cards instead). */
+  showPresets?: boolean
+}>(), {
+  showFormat: true,
+  showBafo: true,
+  showPresets: true,
+})
+
 const { t } = useI18n()
 const auth = useAuthStore()
 const editor = useCompetitionEditorStore()
@@ -126,12 +142,18 @@ watch(confirmOpen, (open) => {
     </CompetitionsWizardChoiceCards>
 
     <CompetitionsWizardChoiceCards
+      v-if="showFormat || editor.form.format === 'sealed'"
       v-model="format"
       :options="formatOptions"
       :legend="t('competitions.setup.type.format_legend')"
+      :disabled="!showFormat"
+      :hint="showFormat ? undefined : t('competitions.setup.type.format_kept')"
     />
 
-    <UiCard padding="sm">
+    <UiCard
+      v-if="showBafo"
+      padding="sm"
+    >
       <UiSwitch
         v-model="bafoEnabled"
         :label="t('competitions.setup.type.bafo_label')"
@@ -139,20 +161,22 @@ watch(confirmOpen, (open) => {
       />
     </UiCard>
 
-    <CompetitionsWizardChoiceCards
-      v-if="presetOptions.length > 0"
-      v-model="presetCode"
-      :options="presetOptions"
-      :legend="t('competitions.setup.type.presets.legend')"
-      :hint="t('competitions.setup.type.presets.hint')"
-      :columns="presetOptions.length > 2 ? 3 : 2"
-    />
-    <UiAlert
-      v-else
-      tone="info"
-    >
-      {{ t('competitions.setup.type.presets.none') }}
-    </UiAlert>
+    <template v-if="showPresets">
+      <CompetitionsWizardChoiceCards
+        v-if="presetOptions.length > 0"
+        v-model="presetCode"
+        :options="presetOptions"
+        :legend="t('competitions.setup.type.presets.legend')"
+        :hint="t('competitions.setup.type.presets.hint')"
+        :columns="presetOptions.length > 2 ? 3 : 2"
+      />
+      <UiAlert
+        v-else
+        tone="info"
+      >
+        {{ t('competitions.setup.type.presets.none') }}
+      </UiAlert>
+    </template>
 
     <UiConfirmDialog
       v-model:open="confirmOpen"

@@ -4,6 +4,7 @@ import type { LegalDocumentCode } from '~/types/api/platform'
 /** Public pages (landing, legal, invitation landing): header with sign-in, footer with legal links. */
 const { t } = useI18n()
 const auth = useAuthStore()
+const features = useFeatures()
 const year = new Date().getFullYear()
 
 const legalLinks: LegalDocumentCode[] = ['terms', 'privacy', 'refund', 'competition_rules']
@@ -21,7 +22,7 @@ const legalLinks: LegalDocumentCode[] = ['terms', 'privacy', 'refund', 'competit
         </NuxtLinkLocale>
         <div class="flex items-center gap-1 sm:gap-2">
           <AppLanguageSwitch compact />
-          <AppThemeMenu />
+          <AppThemeMenu v-if="features.enabled('dark_mode')" />
           <template v-if="auth.isAuthenticated">
             <UiButton
               to="/dashboard"

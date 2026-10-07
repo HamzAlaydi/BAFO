@@ -9,7 +9,7 @@ import type { MenuEntry, TableColumn } from '~/types/ui'
  * status and dates; invite, edit role and flags, deactivate or reactivate, remove, resend the
  * invitation. The owner's row and the viewer's own row are locked. No optimistic state changes.
  */
-definePageMeta({ layout: 'dashboard', middleware: 'auth' })
+definePageMeta({ layout: 'dashboard', middleware: ['auth', 'feature'], feature: 'team_management' })
 
 const { t } = useI18n()
 const auth = useAuthStore()

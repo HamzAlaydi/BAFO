@@ -2737,7 +2737,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get issuerCreateTitle => 'New competition';
 
   @override
-  String get issuerCreateStepType => 'Type and preset';
+  String get issuerCreateStepType => 'Type and rules level';
 
   @override
   String get issuerCreateStepBasics => 'Basic details';
@@ -3843,5 +3843,168 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String invitationsJoinBy(String date) {
     return 'Join by $date';
+  }
+
+  @override
+  String get errorsFeatureDisabled =>
+      'This feature is not available in this release.';
+
+  @override
+  String get errorsFeatureDisabledField =>
+      'This option is not available in this release.';
+
+  @override
+  String get commonFeatureUnavailableTitle => 'Not available in this release';
+
+  @override
+  String get commonFeatureUnavailableHint =>
+      'This feature will arrive in a later BAFO release.';
+
+  @override
+  String get accountInvoicesOnWeb =>
+      'Invoices are available in the BAFO web dashboard.';
+
+  @override
+  String get issuerPresetTierTitle => 'Rules level';
+
+  @override
+  String get issuerPresetTierHint =>
+      'Pick one level and BAFO explains its effect in one sentence. You can adjust the details later from the web dashboard.';
+
+  @override
+  String get issuerPresetTierRecommended => 'Recommended';
+
+  @override
+  String get issuerPresetTierOther => 'Other templates';
+
+  @override
+  String get issuerScheduleQuickTitle => 'Offer window';
+
+  @override
+  String get issuerScheduleQuickHour => '1 hour';
+
+  @override
+  String get issuerScheduleQuickHours3 => '3 hours';
+
+  @override
+  String get issuerScheduleQuickDay => '1 day';
+
+  @override
+  String get issuerScheduleQuickDays3 => '3 days';
+
+  @override
+  String get issuerScheduleQuickWeek => '1 week';
+
+  @override
+  String get issuerScheduleQuickCustom => 'Custom';
+
+  @override
+  String get issuerScheduleQuickFromPublish =>
+      'The duration counts from the moment of publishing.';
+
+  @override
+  String issuerScheduleRelativeClose(String relative, String date) {
+    return 'Closes $relative: $date';
+  }
+
+  @override
+  String issuerScheduleInMinutes(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'in $count minutes',
+      one: 'in 1 minute',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String issuerScheduleInHours(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'in $count hours',
+      one: 'in 1 hour',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String issuerScheduleInDays(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'in $count days',
+      one: 'in 1 day',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String issuerFieldDurationTooShortDetail(num minutes, num min) {
+    String _temp0 = intl.Intl.pluralLogic(
+      minutes,
+      locale: localeName,
+      other: '$minutes minutes',
+      one: '1 minute',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      min,
+      locale: localeName,
+      other: '$min minutes',
+      one: '1 minute',
+    );
+    return 'The duration is only $_temp0; the minimum is $_temp1.';
+  }
+
+  @override
+  String issuerFieldDurationTooLongDetail(num days, num max) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: '$days days',
+      one: '1 day',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      max,
+      locale: localeName,
+      other: '$max days',
+      one: '1 day',
+    );
+    return 'The duration is $_temp0; the maximum is $_temp1.';
+  }
+
+  @override
+  String get issuerFieldTitleHelper =>
+      'A clear name invitees understand. Example: Supplying laptops for the head office';
+
+  @override
+  String get issuerFieldDescriptionExample =>
+      'Required before publishing. State the quantity, specifications, delivery location and payment terms.';
+
+  @override
+  String get commonAmountExample => 'Example: 125,000.00';
+
+  @override
+  String get issuerCreateDraftRestored =>
+      'What you entered earlier for this competition was restored.';
+
+  @override
+  String get issuerCreateStartOver => 'Start over';
+
+  @override
+  String commonErrorSummaryTitle(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Please correct the following $count fields:',
+      one: 'Please correct the following field:',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String commonErrorSummaryOtherStep(int step) {
+    return 'In step $step';
   }
 }

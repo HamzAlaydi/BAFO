@@ -2739,7 +2739,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get issuerCreateTitle => 'منافسة جديدة';
 
   @override
-  String get issuerCreateStepType => 'النوع والإعداد المسبق';
+  String get issuerCreateStepType => 'النوع ومستوى القواعد';
 
   @override
   String get issuerCreateStepBasics => 'البيانات الأساسية';
@@ -3862,5 +3862,190 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String invitationsJoinBy(String date) {
     return 'الانضمام قبل $date';
+  }
+
+  @override
+  String get errorsFeatureDisabled => 'هذه الميزة غير متاحة في هذا الإصدار.';
+
+  @override
+  String get errorsFeatureDisabledField =>
+      'هذا الخيار غير متاح في هذا الإصدار.';
+
+  @override
+  String get commonFeatureUnavailableTitle => 'غير متاح في هذا الإصدار';
+
+  @override
+  String get commonFeatureUnavailableHint =>
+      'ستتوفر هذه الميزة في إصدار قادم من بافو.';
+
+  @override
+  String get accountInvoicesOnWeb =>
+      'الفواتير متاحة في لوحة تحكم بافو على الويب.';
+
+  @override
+  String get issuerPresetTierTitle => 'مستوى القواعد';
+
+  @override
+  String get issuerPresetTierHint =>
+      'اختر مستوى واحداً، ويشرح بافو أثره بجملة واحدة. يمكنك تعديل التفاصيل لاحقاً من لوحة التحكم على الويب.';
+
+  @override
+  String get issuerPresetTierRecommended => 'موصى به';
+
+  @override
+  String get issuerPresetTierOther => 'قوالب أخرى';
+
+  @override
+  String get issuerScheduleQuickTitle => 'مدة استقبال العروض';
+
+  @override
+  String get issuerScheduleQuickHour => 'ساعة';
+
+  @override
+  String get issuerScheduleQuickHours3 => '3 ساعات';
+
+  @override
+  String get issuerScheduleQuickDay => 'يوم';
+
+  @override
+  String get issuerScheduleQuickDays3 => '3 أيام';
+
+  @override
+  String get issuerScheduleQuickWeek => 'أسبوع';
+
+  @override
+  String get issuerScheduleQuickCustom => 'مخصص';
+
+  @override
+  String get issuerScheduleQuickFromPublish => 'تُحتسب المدة من لحظة النشر.';
+
+  @override
+  String issuerScheduleRelativeClose(String relative, String date) {
+    return 'يُغلق $relative: $date';
+  }
+
+  @override
+  String issuerScheduleInMinutes(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'بعد $count دقيقة',
+      many: 'بعد $count دقيقة',
+      few: 'بعد $count دقائق',
+      two: 'بعد دقيقتين',
+      one: 'بعد دقيقة',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String issuerScheduleInHours(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'بعد $count ساعة',
+      many: 'بعد $count ساعة',
+      few: 'بعد $count ساعات',
+      two: 'بعد ساعتين',
+      one: 'بعد ساعة',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String issuerScheduleInDays(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'بعد $count يوم',
+      many: 'بعد $count يوماً',
+      few: 'بعد $count أيام',
+      two: 'بعد يومين',
+      one: 'بعد يوم',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String issuerFieldDurationTooShortDetail(num minutes, num min) {
+    String _temp0 = intl.Intl.pluralLogic(
+      minutes,
+      locale: localeName,
+      other: 'المدة $minutes دقيقة فقط',
+      many: 'المدة $minutes دقيقة فقط',
+      few: 'المدة $minutes دقائق فقط',
+      two: 'المدة دقيقتان فقط',
+      one: 'المدة دقيقة واحدة فقط',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      min,
+      locale: localeName,
+      other: '$min دقيقة',
+      many: '$min دقيقة',
+      few: '$min دقائق',
+      two: 'دقيقتان',
+      one: 'دقيقة واحدة',
+    );
+    return '$_temp0؛ الحد الأدنى $_temp1.';
+  }
+
+  @override
+  String issuerFieldDurationTooLongDetail(num days, num max) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: 'المدة $days يوم',
+      many: 'المدة $days يوماً',
+      few: 'المدة $days أيام',
+      two: 'المدة يومان',
+      one: 'المدة يوم واحد',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      max,
+      locale: localeName,
+      other: '$max يوم',
+      many: '$max يوماً',
+      few: '$max أيام',
+      two: 'يومان',
+      one: 'يوم واحد',
+    );
+    return '$_temp0؛ الحد الأقصى $_temp1.';
+  }
+
+  @override
+  String get issuerFieldTitleHelper =>
+      'اسم واضح يفهمه المدعوون. مثال: توريد أجهزة حاسب محمول للإدارة العامة';
+
+  @override
+  String get issuerFieldDescriptionExample =>
+      'مطلوب قبل النشر. اذكر الكمية والمواصفات ومكان التسليم وشروط الدفع.';
+
+  @override
+  String get commonAmountExample => 'مثال: 125,000.00';
+
+  @override
+  String get issuerCreateDraftRestored =>
+      'استُعيد ما أدخلته سابقاً في هذه المنافسة.';
+
+  @override
+  String get issuerCreateStartOver => 'ابدأ من جديد';
+
+  @override
+  String commonErrorSummaryTitle(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'يرجى تصحيح الحقول التالية ($count):',
+      many: 'يرجى تصحيح الحقول التالية ($count):',
+      few: 'يرجى تصحيح الحقول التالية ($count):',
+      two: 'يرجى تصحيح الحقلين التاليين:',
+      one: 'يرجى تصحيح الحقل التالي:',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String commonErrorSummaryOtherStep(int step) {
+    return 'في الخطوة $step';
   }
 }

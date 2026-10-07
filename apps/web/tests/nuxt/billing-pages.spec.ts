@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { mockNuxtImport, mountSuspended } from '@nuxt/test-utils/runtime'
-import { makeMe, makeOrganization, makeTokenPayload } from '../fixtures/api'
+import { makeAppConfig, makeMe, makeOrganization, makeTokenPayload } from '../fixtures/api'
 import {
   makeCouponValidation,
   makeCustomPlan,
@@ -75,6 +75,8 @@ beforeEach(() => {
   download.mockReset()
   competitions.fetchHome.mockResolvedValue({ issuer: null, participant: null, team: null, subscription: null, alerts: [], activities: [] })
   signIn({ organization: completeOrg() })
+  // The custom plan quote, coupons and invoice pages are flag-gated: these tests run against the full product.
+  useAppConfigStore().config = makeAppConfig()
   sessionStorage.clear()
 })
 
@@ -373,6 +375,21 @@ describe('W30 subscription and billing', () => {
     expect(wrapper.text()).toContain(money(30000))
     expect(wrapper.text()).toContain(t('team.seats.used', { used: 2, total: 3 }))
     expect(wrapper.text()).toContain(t('billing.overview.history.title'))
+    expectNoRawKeys(wrapper.text())
+  })
+
+  it('hides vouchers and the covered-participation card in release scope core (§1.3 sponsorship)', async () => {
+    useAppConfigStore().config = makeAppConfig({}, 'core')
+    billing.fetchSubscription.mockResolvedValue(makeOverview())
+    billing.listVouchers.mockResolvedValue([makeVoucher()])
+    const wrapper = await mountSuspended(BillingPage)
+    await flush()
+    expect(wrapper.text()).toContain('باقة برو')
+    expect(wrapper.text()).toContain(t('billing.subtitle_core'))
+    expect(wrapper.text()).not.toContain(t('billing.vouchers.title'))
+    expect(wrapper.text()).not.toContain(t('billing.overview.sponsorship.title'))
+    expect(wrapper.find('a[href$="/billing/invoices"]').exists()).toBe(false)
+    expect(billing.listVouchers).not.toHaveBeenCalled()
     expectNoRawKeys(wrapper.text())
   })
 

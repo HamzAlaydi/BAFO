@@ -1,4 +1,5 @@
 import 'package:bafo/core/api/pagination.dart';
+import 'package:bafo/core/config/app_config.dart';
 import 'package:bafo/features/competitions/data/competitions_repository.dart';
 import 'package:bafo/features/competitions/domain/competition.dart';
 import 'package:bafo/features/competitions/domain/issuer_models.dart';
@@ -9,6 +10,7 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
+import '../../helpers/scope.dart';
 import 'issuer_test_helpers.dart';
 
 void main() {
@@ -193,13 +195,16 @@ void main() {
       when(() => lookupsRepository.lookups()).thenAnswer((_) async => lookups);
     });
 
-    CreateCompetitionCubit build({bool auction = true}) =>
-        CreateCompetitionCubit(
-          competitions: competitions,
-          lookups: lookupsRepository,
-          now: () => now,
-          auctionEnabled: auction,
-        );
+    CreateCompetitionCubit build({
+      bool auction = true,
+      FeatureFlags flags = FeatureFlags.none,
+    }) => CreateCompetitionCubit(
+      competitions: competitions,
+      lookups: lookupsRepository,
+      now: () => now,
+      auctionEnabled: auction,
+      flags: flags,
+    );
 
     void fill(CreateCompetitionCubit cubit) {
       cubit
@@ -237,7 +242,8 @@ void main() {
 
     blocTest<CreateCompetitionCubit, CreateCompetitionState>(
       'the only matching preset is picked; auctions stay off without the flag',
-      build: () => build(auction: false),
+      // The sealed format is a hidden feature: scope `full` (RELEASE_SCOPE §1.6).
+      build: () => build(auction: false, flags: ScopeFlags.full),
       act: (cubit) async {
         await cubit.load();
         cubit

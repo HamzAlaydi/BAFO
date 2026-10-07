@@ -19,7 +19,7 @@ import type { ChoiceOption } from '~/types/ui'
  * event (202 → the delivery log refreshes after 3 s); rotate the secret (shown once); delete. The
  * delivery log with a status filter, a row drawer and Redeliver. Signature verification snippets.
  */
-definePageMeta({ layout: 'dashboard', middleware: 'auth' })
+definePageMeta({ layout: 'dashboard', middleware: ['auth', 'feature'], feature: 'integrations_api' })
 
 const props = withDefaults(defineProps<{ testRefreshMs?: number }>(), { testRefreshMs: 3000 })
 

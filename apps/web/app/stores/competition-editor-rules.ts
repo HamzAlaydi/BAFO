@@ -9,8 +9,9 @@
  * - `editorRulesPreview()` describes unsaved rules in words (i18n keys + params). Once saved, the
  *   server's `rules_summary` is the authoritative text (ARCHITECTURE §7.16).
  */
-import type { Preset } from '~/types/api/catalog'
+import { PRESET_TIERS, type Preset, type PresetTier } from '~/types/api/catalog'
 import type { AmountGranularity, Direction, Format, Rules, RulesInput } from '~/types/api/competitions'
+import type { FeatureFlags } from '~/types/api/platform'
 import { normalizeDigits } from '~/utils/digits'
 import { formatBps } from '~/utils/money'
 
@@ -36,8 +37,15 @@ export interface EditorIssue {
   field: string
   key: string
   params?: Record<string, string | number>
+  /** Plural choice for the message (`t(key, params, count)`), when the message counts something. */
+  count?: number
   /** `save`: the server rejects the save; `publish`: only publishing is blocked. */
   when: 'save' | 'publish'
+}
+
+/** Renders an issue with the app's `t`, passing the plural choice when the issue carries one. */
+export function issueMessage(issue: EditorIssue, t: (key: string, params: Record<string, string | number>, count?: number) => string): string {
+  return issue.count === undefined ? t(issue.key, issue.params ?? {}) : t(issue.key, issue.params ?? {}, issue.count)
 }
 
 /** `d` of ARCHITECTURE §7.1: tender −1, auction +1. */
@@ -131,6 +139,19 @@ function stripUndefined<T extends object>(value: T): Partial<T> {
 }
 
 /**
+ * Keeps freshly chosen rules within the release scope (RELEASE_SCOPE.md §1.5): without
+ * `final_pricing_window` a new draft has no final window, without `bafo_round` no BAFO round, so the
+ * server's field refusals never trip on a preset value. Existing records are never touched: the
+ * callers apply this to new drafts and preset choices only.
+ */
+export function editorRulesWithinScope(rules: Rules, flags: Pick<FeatureFlags, 'final_pricing_window' | 'bafo_round'>): Rules {
+  const next = cloneEditorRules(rules)
+  if (!flags.final_pricing_window) next.final_window_minutes = null
+  if (!flags.bafo_round) next.bafo_round = { enabled: false, duration_minutes: null }
+  return next
+}
+
+/**
  * Rules for a preset (or the defaults without one), keeping the issuer's prices. Presets never carry
  * prices (API.md §2.4), so the start and reserve prices survive a preset switch.
  */
@@ -173,6 +194,29 @@ export function editorRulesCustomised(rules: Rules, preset: Pick<Preset, 'rules'
 /** Presets for a direction and format, in lookup order. */
 export function presetsFor<T extends Pick<Preset, 'direction' | 'format'>>(presets: readonly T[], direction: Direction, format: Format): T[] {
   return presets.filter(preset => preset.direction === direction && preset.format === format)
+}
+
+type TieredPreset = Pick<Preset, 'direction' | 'format' | 'tier'>
+
+/** The tier cards of RELEASE_SCOPE.md §2.2 for a direction and format, ordered simple → standard → protected. */
+export function tieredPresetsFor<T extends TieredPreset>(presets: readonly T[], direction: Direction, format: Format): T[] {
+  return presetsFor(presets, direction, format)
+    .filter(preset => preset.tier !== null && preset.tier !== undefined)
+    .sort((a, b) => PRESET_TIERS.indexOf(a.tier as PresetTier) - PRESET_TIERS.indexOf(b.tier as PresetTier))
+}
+
+/** The untiered reference presets («قوالب أخرى»), shown only with `advanced_rules`. */
+export function untieredPresetsFor<T extends TieredPreset>(presets: readonly T[], direction: Direction, format: Format): T[] {
+  return presetsFor(presets, direction, format).filter(preset => preset.tier === null || preset.tier === undefined)
+}
+
+/**
+ * The preset a new draft (or a changed direction) starts from: the `standard` tier, else the first
+ * tiered preset, else the first preset of the combination (older catalogues without tiers).
+ */
+export function defaultPresetFor<T extends TieredPreset>(presets: readonly T[], direction: Direction, format: Format): T | null {
+  const tiered = tieredPresetsFor(presets, direction, format)
+  return tiered.find(preset => preset.tier === 'standard') ?? tiered[0] ?? presetsFor(presets, direction, format)[0] ?? null
 }
 
 export function minStepMode(rules: Pick<Rules, 'min_step_minor' | 'min_step_bps'>): MinStepMode {
@@ -282,6 +326,8 @@ export interface RulesPreviewLine {
   params?: Record<string, string | number>
   /** Amount parameters to format with the money formatter before insertion (CONVENTIONS §6.2). */
   amounts?: Record<string, number>
+  /** Counted parameters, inserted with their noun in the locale's plural form (`rules.preview.units.<unit>`). */
+  counts?: Record<string, { unit: 'minutes' | 'times', count: number }>
 }
 
 /**
@@ -303,14 +349,14 @@ export function editorRulesPreview(rules: Rules, direction: Direction, format: F
     else if (rules.min_step_bps !== null) lines.push({ key: `rules.preview.min_step_percent.${direction}`, params: { percent: formatBps(rules.min_step_bps) } })
     const visibility = rules.rank_visibility
     lines.push({ key: `rules.preview.visibility_${visibility}${rules.show_prices ? '_prices' : ''}` })
-    if (rules.final_window_minutes !== null) lines.push({ key: 'rules.preview.final_window', params: { minutes: rules.final_window_minutes } })
+    if (rules.final_window_minutes !== null) lines.push({ key: 'rules.preview.final_window', counts: { minutes: { unit: 'minutes', count: rules.final_window_minutes } } })
     if (rules.auto_extend.enabled) {
       lines.push({
         key: 'rules.preview.auto_extend',
-        params: {
-          window: Math.round((rules.auto_extend.window_seconds ?? 0) / 60),
-          by: Math.round((rules.auto_extend.by_seconds ?? 0) / 60),
-          max: rules.auto_extend.max_extensions ?? 0,
+        counts: {
+          window: { unit: 'minutes', count: Math.round((rules.auto_extend.window_seconds ?? 0) / 60) },
+          by: { unit: 'minutes', count: Math.round((rules.auto_extend.by_seconds ?? 0) / 60) },
+          max: { unit: 'times', count: rules.auto_extend.max_extensions ?? 0 },
         },
       })
     }
@@ -318,7 +364,7 @@ export function editorRulesPreview(rules: Rules, direction: Direction, format: F
   else {
     lines.push({ key: 'rules.preview.visibility_sealed' })
   }
-  if (rules.bafo_round.enabled) lines.push({ key: 'rules.preview.bafo', params: { minutes: rules.bafo_round.duration_minutes ?? 0 } })
+  if (rules.bafo_round.enabled) lines.push({ key: 'rules.preview.bafo', counts: { minutes: { unit: 'minutes', count: rules.bafo_round.duration_minutes ?? 0 } } })
   lines.push({ key: 'rules.preview.min_participants', params: { count: rules.min_participants } })
   lines.push({ key: `rules.preview.result_${rules.result_publication}` })
   lines.push({ key: rules.amount_granularity_minor === 100 ? 'rules.preview.granularity_riyals' : 'rules.preview.granularity_halalas' })

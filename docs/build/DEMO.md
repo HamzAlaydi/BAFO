@@ -55,7 +55,7 @@ Each module fills in its row when its `<Module>DemoSeeder` lands.
 | Module | Demo seeder | Seeds | Status |
 |---|---|---|---|
 | Platform | `PlatformDemoSeeder` | Reference data: settings defaults and the placeholder legal documents (every code, AR and EN, version `2026-10-01`, published; each body opens with a draft notice in its own language). Demo: **placeholder** `app.store_links` (`https://bafo.example/placeholder/…`) and `app.support` (`support@bafo.example`, dummy phone and WhatsApp `+966500000000`) so `GET /app-config` shows the store button and support contacts in the apps. Replace them with real values in the admin settings before release. On an existing database: `php artisan db:seed --class='App\Modules\Platform\Database\Seeders\PlatformDemoSeeder'`. | done |
-| Catalog | – | – (reference data only: `CatalogReferenceSeeder`, 13 regions, 14 categories, 15 close reasons, 3 presets) | done |
+| Catalog | – | – (reference data only: `CatalogReferenceSeeder`, 13 regions, 14 categories, 15 close reasons, 9 presets: the 3 reference presets and the 6 tier presets `tender_live_*` / `auction_live_*` simple, standard, protected of RELEASE_SCOPE.md §2.2; `core` offers the tier presets only) | done |
 | Identity | `IdentityDemoSeeder` | The organizations and users above: verified e-mails, the listed roles and flags, the organization flags, complete billing profiles (VAT registered), categories, terms and privacy consents | done |
 | Billing | `BillingDemoSeeder` | The 4 plans. Subscriptions per the `plan` column: Issuer Co pro, Supplier A single and Buyer D plus are paid monthly through the real checkout (fake gateway, approved), each with a cleared tax invoice and PDF. Supplier C has the 30-day trial on plus; Supplier B has none. The public coupon `LAUNCH10` gives 10% off any purchase, once per organization. Competition #12 is built by Competitions with `ConfigureSponsorship` and `GrantSponsoredPass` (see `docs/build/handoff/billing.md`). Test card flow: open the checkout's `redirect_url` (`/pay/fake/{id}`) and choose Approve or Decline. | done |
 | Integrations | `IntegrationsDemoSeeder` | For Issuer Co: the API client **ERP demo** (every scope; client secret `bafo-demo-client-secret-0000000000000001`; its `client_id` is the client's id in the dashboard or `GET /api/public/v1/client`), the API key `bafo_test_demo0001_DemoKey0000000000000000000000001` (`bafo_live_…` when `API_KEY_ENV=live`), a webhook endpoint at `http://localhost:9999/webhooks` for every event with the signing secret `whsec_YmFmby1kZW1vLXdlYmhvb2stc2VjcmV0LTMyYnl0ZXM=`, and 4 vendors: Supplier A, B and C (linked to their organizations; SAP supplier keys `100045`–`100047`) and Al Ofoq Supplies (not on BAFO, `100048`). Try it: `curl -H 'Authorization: Bearer <the key>' http://localhost:8000/api/public/v1/client`; the reference is at `http://localhost:8000/docs/api` | done |
@@ -82,3 +82,25 @@ Reference numbers follow the publish order on a fresh database (`BAFO-T-2026-000
 | 10 | `not_awarded` | not_awarded (auction) | بيع خردة حديد ومعادن | Joined: D (one offer); invited: A; reason `not_awarded_prices_above_budget` | Competitions |
 | 11 | `cancelled` | cancelled (was scheduled) | خدمات تسويق وطباعة المواد الترويجية | Invitations expired; reason `cancel_budget_withdrawn` | Competitions |
 | 12 | `sponsored_live` | sponsored live tender | خدمات النظافة للفروع (رسوم مغطّاة) | Sponsorship `selected`; Supplier B joined on a granted pass, A on its plan | Competitions (+ Billing's Actions) |
+
+## Release scope
+
+The product ships in release scope `core` (setting `platform.release_scope`, default `core` in every
+environment; `docs/build/RELEASE_SCOPE.md`). The demo data above is seeded by the module Actions, so
+competitions created with sealed format, a BAFO round or covered fees keep rendering in `core`; only
+*creating or configuring* those features is hidden (404 `feature_disabled`), together with the team,
+vendor, integrations, import/export, coupon and custom-quote endpoints and the whole public API.
+
+To show the full product, flip the switch (no deploy needed):
+
+```sh
+# from apps/api
+php artisan platform:release-scope full      # or `core`; no argument prints the scope and its flags
+```
+
+or `http://localhost:8000/admin` → Settings → `platform.release_scope`. `GET /app-config` then
+reports `features.release_scope` and the derived `features.flags`; web and mobile reload them.
+The API test suite runs as `full` (`tests/TestCase.php`); the `tests/Feature/*/ReleaseScopeTest.php`
+files (Platform, Catalog, Competitions, Billing, Admin) cover `core`. In `core`, `POST /competitions`
+needs a tier `preset_code`, and hidden values (sealed format, BAFO round, final window, reserve and
+other advanced rules, vendor or sponsored invitation rows) are 422 `errors.feature_disabled_field`.

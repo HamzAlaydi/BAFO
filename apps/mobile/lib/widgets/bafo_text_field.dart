@@ -6,9 +6,11 @@ import 'package:material_ui/material_ui.dart';
 /// floating label in Arabic, and it never overlaps the value).
 ///
 /// [errorText] shows a server-side validation message; [validator] runs the
-/// client-side rules. Password fields ([obscure]) get a show/hide toggle.
-/// [required] adds a visible marker and says "required" to screen readers;
-/// [optional] marks optional fields instead (S7).
+/// client-side rules: on blur, on submit, and again on each change once the
+/// field is in error, never while the first characters are typed
+/// (RELEASE_SCOPE.md FQ2). Password fields ([obscure]) get a show/hide
+/// toggle. [required] adds a visible marker and says "required" to screen
+/// readers; [optional] marks optional fields instead (S7).
 class BafoTextField extends StatefulWidget {
   const BafoTextField({
     required this.label,
@@ -90,6 +92,52 @@ class BafoTextField extends StatefulWidget {
 
 class _BafoTextFieldState extends State<BafoTextField> {
   late bool _hidden = widget.obscure;
+  final GlobalKey<FormFieldState<String>> _field =
+      GlobalKey<FormFieldState<String>>();
+  FocusNode? _ownFocus;
+
+  FocusNode get _focus => widget.focusNode ?? (_ownFocus ??= FocusNode());
+
+  @override
+  void initState() {
+    super.initState();
+    _focus.addListener(_onFocusChange);
+    widget.controller?.addListener(_onControllerChange);
+  }
+
+  @override
+  void didUpdateWidget(BafoTextField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.focusNode != widget.focusNode) {
+      (oldWidget.focusNode ?? _ownFocus)?.removeListener(_onFocusChange);
+      _focus.addListener(_onFocusChange);
+    }
+    if (oldWidget.controller != widget.controller) {
+      oldWidget.controller?.removeListener(_onControllerChange);
+      widget.controller?.addListener(_onControllerChange);
+    }
+  }
+
+  @override
+  void dispose() {
+    _focus.removeListener(_onFocusChange);
+    widget.controller?.removeListener(_onControllerChange);
+    _ownFocus?.dispose();
+    super.dispose();
+  }
+
+  /// FQ2: validate when the user leaves the field.
+  void _onFocusChange() {
+    if (_focus.hasFocus || widget.validator == null || !mounted) return;
+    _field.currentState?.validate();
+  }
+
+  /// A field in error re-validates as its text changes (also when the text
+  /// is set programmatically, e.g. a picked date), so the message clears.
+  void _onControllerChange() {
+    final field = _field.currentState;
+    if (field != null && field.hasError && mounted) field.validate();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -160,10 +208,14 @@ class _BafoTextFieldState extends State<BafoTextField> {
         Semantics(
           label: semanticsLabel,
           child: TextFormField(
+            key: _field,
             controller: widget.controller,
-            focusNode: widget.focusNode,
+            focusNode: _focus,
             validator: widget.validator,
-            onChanged: widget.onChanged,
+            onChanged: (value) {
+              if (widget.controller == null) _onControllerChange();
+              widget.onChanged?.call(value);
+            },
             onFieldSubmitted: widget.onSubmitted,
             onTap: widget.onTap,
             keyboardType: widget.keyboardType,

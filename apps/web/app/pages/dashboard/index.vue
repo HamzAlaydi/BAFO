@@ -13,6 +13,7 @@ definePageMeta({ layout: 'dashboard', middleware: 'auth' })
 
 const { t } = useI18n()
 const auth = useAuthStore()
+const features = useFeatures()
 const store = useHomeStore()
 const notifications = useNotificationsStore()
 
@@ -244,7 +245,7 @@ const greetingName = computed(() => auth.user?.name?.split(/\s+/)[0] ?? '')
               />
             </div>
             <template
-              v-if="auth.can('team.manage')"
+              v-if="auth.can('team.manage') && features.enabled('team_management')"
               #footer
             >
               <UiButton

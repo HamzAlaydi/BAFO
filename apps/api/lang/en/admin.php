@@ -63,12 +63,16 @@ return [
         'title' => 'Settings',
         'save' => 'Save settings',
         'saved' => 'Settings saved (:count changed).',
+        'help' => [
+            'platform_release_scope' => 'Core shows tenders and auctions only; Full brings back every hidden feature (team, vendors, integrations, sealed format, BAFO round, advanced rules…) without a deploy.',
+        ],
         'groups' => [
             'app' => 'App',
             'competitions' => 'Competitions',
             'bidding' => 'Offer engine',
             'billing' => 'Billing',
             'sponsorship' => 'Fees covered',
+            'platform' => 'Release',
         ],
         'keys' => [
             'app_min_version_ios' => 'Minimum supported version (iOS)',
@@ -103,6 +107,7 @@ return [
             'sponsorship_enabled' => 'Fees covered enabled on the platform',
             'sponsorship_pass_price_tender_minor' => 'Sponsored participation pass price (tender)',
             'sponsorship_pass_price_auction_minor' => 'Sponsored participation pass price (auction)',
+            'platform_release_scope' => 'Release scope',
         ],
         'sub' => [
             'ios' => 'iOS',
@@ -607,6 +612,9 @@ return [
         'supply_date' => 'Supply date',
         'suspended_at' => 'Suspended at',
         'suspension_reason' => 'Suspension reason',
+        'tier' => 'Preset tier',
+        'tier_help' => 'Simple, Standard or Maximum protection: the three preset cards of the rules step. Leave empty for an "other template", which issuers see only in the full release scope.',
+        'tier_none' => 'No tier (other template)',
         'title' => 'Title',
         'total' => 'Total',
         'trial_used_at' => 'Trial used at',

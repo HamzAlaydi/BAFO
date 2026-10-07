@@ -31,7 +31,7 @@ const items = computed(() => {
     { key: 'opens', label: t('competitions.setup.schedule.timeline.opens'), value: p.opensOnPublish ? null : iso(p.opensAtMs), note: p.opensOnPublish ? t('competitions.setup.schedule.opens_on_publish') : undefined },
   ]
   if (p.finalWindowStartsAtMs !== null) rows.push({ key: 'final_window', label: t('competitions.setup.schedule.timeline.final_window'), value: iso(p.finalWindowStartsAtMs) })
-  if (p.invitationCutoffAtMs !== null) rows.push({ key: 'cutoff', label: t('competitions.setup.schedule.timeline.invitation_cutoff'), value: iso(p.invitationCutoffAtMs) })
+  if (p.invitationCutoffAtMs !== null) rows.push({ key: 'cutoff', label: t('competitions.setup.schedule.timeline.invitation_cutoff'), value: iso(p.invitationCutoffAtMs), note: t('competitions.setup.schedule.timeline.invitation_cutoff_note') })
   rows.push({ key: 'close', label: t('competitions.setup.schedule.timeline.close'), value: iso(p.closeAtMs), note: p.closeAtMs === null ? t('competitions.setup.schedule.not_set') : undefined })
   if (p.hardStopAtMs !== null) rows.push({ key: 'hard_stop', label: t('competitions.setup.schedule.timeline.latest_close'), value: iso(p.hardStopAtMs) })
   return rows
@@ -83,6 +83,10 @@ const duration = computed(() => {
           <span
             v-else
             class="font-semibold text-fg"
+          >{{ item.note }}</span>
+          <span
+            v-if="item.value && item.note"
+            class="text-xs text-fg-muted"
           >{{ item.note }}</span>
         </span>
       </li>

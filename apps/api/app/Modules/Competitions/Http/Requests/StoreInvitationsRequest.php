@@ -10,7 +10,7 @@ use Illuminate\Validation\Validator;
 
 /**
  * `POST /competitions/{competition}/invitations` (API.md §1.4; §3.4 bulk `{"invitations": [InvitationInput]}`):
- * 1–100 rows.
+ * 1–100 rows. Vendor and sponsored rows follow the release scope (RELEASE_SCOPE.md §1.5).
  */
 final class StoreInvitationsRequest extends FormRequest
 {
@@ -34,7 +34,10 @@ final class StoreInvitationsRequest extends FormRequest
      */
     public function after(): array
     {
-        return [fn (Validator $validator) => $this->checkInvitationTargets($validator)];
+        return [
+            fn (Validator $validator) => $this->checkInvitationTargets($validator),
+            fn (Validator $validator) => $this->refuseHiddenInvitationFields($validator),
+        ];
     }
 
     /**

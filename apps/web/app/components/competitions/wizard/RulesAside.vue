@@ -20,7 +20,8 @@ const lines = computed(() => {
   if (!previewing.value) return props.serverLines ?? []
   return editorRulesPreview(editor.form.rules, editor.form.direction, editor.form.format).map((line) => {
     const amounts = Object.fromEntries(Object.entries(line.amounts ?? {}).map(([key, minor]) => [key, money.format(minor)]))
-    return t(line.key, { ...line.params, ...amounts })
+    const counts = Object.fromEntries(Object.entries(line.counts ?? {}).map(([key, { unit, count }]) => [key, t(`rules.preview.units.${unit}`, { count }, count)]))
+    return t(line.key, { ...line.params, ...amounts, ...counts })
   })
 })
 </script>

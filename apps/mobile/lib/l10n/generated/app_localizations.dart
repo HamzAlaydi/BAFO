@@ -4517,7 +4517,7 @@ abstract class AppLocalizations {
   /// M34 step title.
   ///
   /// In ar, this message translates to:
-  /// **'النوع والإعداد المسبق'**
+  /// **'النوع ومستوى القواعد'**
   String get issuerCreateStepType;
 
   /// M35 step title.
@@ -6109,6 +6109,186 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'الانضمام قبل {date}'**
   String invitationsJoinBy(String date);
+
+  /// errors.feature_disabled (RELEASE_SCOPE.md §1.5): 404 behind a release-scope flag.
+  ///
+  /// In ar, this message translates to:
+  /// **'هذه الميزة غير متاحة في هذا الإصدار.'**
+  String get errorsFeatureDisabled;
+
+  /// errors.feature_disabled_field: a 422 on a field the release scope hides.
+  ///
+  /// In ar, this message translates to:
+  /// **'هذا الخيار غير متاح في هذا الإصدار.'**
+  String get errorsFeatureDisabledField;
+
+  /// Title of the screen behind a route whose feature is off in this release.
+  ///
+  /// In ar, this message translates to:
+  /// **'غير متاح في هذا الإصدار'**
+  String get commonFeatureUnavailableTitle;
+
+  /// Hint under the message of the feature-unavailable screen.
+  ///
+  /// In ar, this message translates to:
+  /// **'ستتوفر هذه الميزة في إصدار قادم من بافو.'**
+  String get commonFeatureUnavailableHint;
+
+  /// Message of the feature-unavailable screen behind /account/invoices in the core release.
+  ///
+  /// In ar, this message translates to:
+  /// **'الفواتير متاحة في لوحة تحكم بافو على الويب.'**
+  String get accountInvoicesOnWeb;
+
+  /// M34: heading of the preset tier cards (simple, standard, maximum protection).
+  ///
+  /// In ar, this message translates to:
+  /// **'مستوى القواعد'**
+  String get issuerPresetTierTitle;
+
+  /// M34: helper under the tier cards heading.
+  ///
+  /// In ar, this message translates to:
+  /// **'اختر مستوى واحداً، ويشرح بافو أثره بجملة واحدة. يمكنك تعديل التفاصيل لاحقاً من لوحة التحكم على الويب.'**
+  String get issuerPresetTierHint;
+
+  /// M34: pill on the standard tier card.
+  ///
+  /// In ar, this message translates to:
+  /// **'موصى به'**
+  String get issuerPresetTierRecommended;
+
+  /// M34: heading of the untiered presets (advanced_rules flag).
+  ///
+  /// In ar, this message translates to:
+  /// **'قوالب أخرى'**
+  String get issuerPresetTierOther;
+
+  /// M36: heading of the duration quick picks.
+  ///
+  /// In ar, this message translates to:
+  /// **'مدة استقبال العروض'**
+  String get issuerScheduleQuickTitle;
+
+  /// M36 quick pick: 60 minutes.
+  ///
+  /// In ar, this message translates to:
+  /// **'ساعة'**
+  String get issuerScheduleQuickHour;
+
+  /// M36 quick pick: 3 hours.
+  ///
+  /// In ar, this message translates to:
+  /// **'3 ساعات'**
+  String get issuerScheduleQuickHours3;
+
+  /// M36 quick pick: 24 hours.
+  ///
+  /// In ar, this message translates to:
+  /// **'يوم'**
+  String get issuerScheduleQuickDay;
+
+  /// M36 quick pick: 72 hours.
+  ///
+  /// In ar, this message translates to:
+  /// **'3 أيام'**
+  String get issuerScheduleQuickDays3;
+
+  /// M36 quick pick: 7 days.
+  ///
+  /// In ar, this message translates to:
+  /// **'أسبوع'**
+  String get issuerScheduleQuickWeek;
+
+  /// M36 quick pick: pick the closing time yourself.
+  ///
+  /// In ar, this message translates to:
+  /// **'مخصص'**
+  String get issuerScheduleQuickCustom;
+
+  /// M36: hint under the quick picks when offers open on publish.
+  ///
+  /// In ar, this message translates to:
+  /// **'تُحتسب المدة من لحظة النشر.'**
+  String get issuerScheduleQuickFromPublish;
+
+  /// M36: relative hint under the closing time, e.g. «يُغلق بعد 3 أيام: 12 نوفمبر 2026، 4:00 م بتوقيت الرياض».
+  ///
+  /// In ar, this message translates to:
+  /// **'يُغلق {relative}: {date}'**
+  String issuerScheduleRelativeClose(String relative, String date);
+
+  /// Relative phrase for a duration under an hour.
+  ///
+  /// In ar, this message translates to:
+  /// **'{count, plural, =1{بعد دقيقة} =2{بعد دقيقتين} few{بعد {count} دقائق} many{بعد {count} دقيقة} other{بعد {count} دقيقة}}'**
+  String issuerScheduleInMinutes(num count);
+
+  /// Relative phrase for a duration under a day.
+  ///
+  /// In ar, this message translates to:
+  /// **'{count, plural, =1{بعد ساعة} =2{بعد ساعتين} few{بعد {count} ساعات} many{بعد {count} ساعة} other{بعد {count} ساعة}}'**
+  String issuerScheduleInHours(num count);
+
+  /// Relative phrase for a duration of a day or more.
+  ///
+  /// In ar, this message translates to:
+  /// **'{count, plural, =1{بعد يوم} =2{بعد يومين} few{بعد {count} أيام} many{بعد {count} يوماً} other{بعد {count} يوم}}'**
+  String issuerScheduleInDays(num count);
+
+  /// R16 with the actual duration and the bound (FQ2 self-explaining message).
+  ///
+  /// In ar, this message translates to:
+  /// **'{minutes, plural, =1{المدة دقيقة واحدة فقط} =2{المدة دقيقتان فقط} few{المدة {minutes} دقائق فقط} many{المدة {minutes} دقيقة فقط} other{المدة {minutes} دقيقة فقط}}؛ الحد الأدنى {min, plural, =1{دقيقة واحدة} =2{دقيقتان} few{{min} دقائق} many{{min} دقيقة} other{{min} دقيقة}}.'**
+  String issuerFieldDurationTooShortDetail(num minutes, num min);
+
+  /// R16 with the actual duration and the bound (FQ2 self-explaining message).
+  ///
+  /// In ar, this message translates to:
+  /// **'{days, plural, =1{المدة يوم واحد} =2{المدة يومان} few{المدة {days} أيام} many{المدة {days} يوماً} other{المدة {days} يوم}}؛ الحد الأقصى {max, plural, =1{يوم واحد} =2{يومان} few{{max} أيام} many{{max} يوماً} other{{max} يوم}}.'**
+  String issuerFieldDurationTooLongDetail(num days, num max);
+
+  /// M35: helper with an example under the title field (FQ1).
+  ///
+  /// In ar, this message translates to:
+  /// **'اسم واضح يفهمه المدعوون. مثال: توريد أجهزة حاسب محمول للإدارة العامة'**
+  String get issuerFieldTitleHelper;
+
+  /// M35: helper with an example under the description field (FQ1).
+  ///
+  /// In ar, this message translates to:
+  /// **'مطلوب قبل النشر. اذكر الكمية والمواصفات ومكان التسليم وشروط الدفع.'**
+  String get issuerFieldDescriptionExample;
+
+  /// Placeholder of money fields (FQ1); Western digits, two decimals.
+  ///
+  /// In ar, this message translates to:
+  /// **'مثال: 125,000.00'**
+  String get commonAmountExample;
+
+  /// M34: notice when the unsaved local draft is restored (FQ6).
+  ///
+  /// In ar, this message translates to:
+  /// **'استُعيد ما أدخلته سابقاً في هذه المنافسة.'**
+  String get issuerCreateDraftRestored;
+
+  /// M34: clears the restored local draft.
+  ///
+  /// In ar, this message translates to:
+  /// **'ابدأ من جديد'**
+  String get issuerCreateStartOver;
+
+  /// Heading of the error summary shown after a failed submit (FQ8).
+  ///
+  /// In ar, this message translates to:
+  /// **'{count, plural, =1{يرجى تصحيح الحقل التالي:} =2{يرجى تصحيح الحقلين التاليين:} few{يرجى تصحيح الحقول التالية ({count}):} many{يرجى تصحيح الحقول التالية ({count}):} other{يرجى تصحيح الحقول التالية ({count}):}}'**
+  String commonErrorSummaryTitle(num count);
+
+  /// Error summary: the field is on another step.
+  ///
+  /// In ar, this message translates to:
+  /// **'في الخطوة {step}'**
+  String commonErrorSummaryOtherStep(int step);
 }
 
 class _AppLocalizationsDelegate

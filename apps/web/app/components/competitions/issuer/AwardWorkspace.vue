@@ -24,6 +24,7 @@ const ctx = useCompetitionContext()
 const { t } = useI18n()
 const toast = useToast()
 const auth = useAuthStore()
+const features = useFeatures()
 const lookups = useLookupsStore()
 const money = useMoney()
 const { message } = useErrorMessage()
@@ -231,7 +232,7 @@ const bafoCutoff = computed(() => snapshot.value?.bafo?.cutoff_at ?? competition
           </p>
           <div class="flex flex-wrap gap-2">
             <UiButton
-              v-if="permissions?.can_start_bafo"
+              v-if="permissions?.can_start_bafo && features.enabled('bafo_round')"
               variant="secondary"
               :icon="Layers"
               @click="shortlistOpen = true"
@@ -363,7 +364,7 @@ const bafoCutoff = computed(() => snapshot.value?.bafo?.cutoff_at ?? competition
           :competition-id="competition.id"
         />
         <UiCard
-          v-if="auth.can('integrations.manage') && reportAvailable"
+          v-if="auth.can('integrations.manage') && reportAvailable && features.enabled('csv_import_export')"
           :title="t('competitions.issuer.export.results_title')"
           padding="sm"
         >

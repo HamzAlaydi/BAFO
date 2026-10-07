@@ -23,6 +23,14 @@ const props = defineProps<{
 }>()
 
 const model = defineModel<number | null>({ default: null })
+const emit = defineEmits<{
+  /**
+   * The typed text can (`false`) or cannot (`true`) be read as an amount. While it cannot, the model
+   * keeps its last valid value, so a form that saves on submit must treat the field as blocking
+   * (FQ2, FQ8). Also sent with `false` when an unreadable field is removed from the page.
+   */
+  unreadable: [value: boolean]
+}>()
 const { t } = useI18n()
 const money = useMoney()
 const autoId = useId()
@@ -48,6 +56,11 @@ const rangeError = computed(() => {
   if (props.min !== undefined && model.value < props.min) return t('common.money.min', { amount: money.format(props.min) })
   if (props.max !== undefined && model.value > props.max) return t('common.money.max', { amount: money.format(props.max) })
   return null
+})
+
+watch(invalidText, value => emit('unreadable', value))
+onBeforeUnmount(() => {
+  if (invalidText.value) emit('unreadable', false)
 })
 
 const displayedError = computed(() => props.error ?? (invalidText.value ? t('common.money.invalid') : rangeError.value))

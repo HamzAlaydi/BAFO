@@ -394,6 +394,7 @@ Every error body is `{message, code, errors, details?}` (API.md §0.4). **Each c
 - **Field problems** (format, required, unique, max, exists, …) are **always** 422 `validation_failed`, with `errors` keyed by field path. Messages come from the validation lang files or `<module>.validation.*`.
 - **Bulk requests** (invitations) also return `details.item_codes`, which maps the field path to a machine code: `invitation_duplicate`, `cannot_invite_own_organization`, `vendor_blocked`, `vendor_not_found`. These item codes are **not** top-level codes.
 - **Import row errors** use the row codes of ARCHITECTURE §14.7: `required`, `invalid_format`, `unknown_region`, `unknown_category`, `duplicate_in_file`.
+- **Release-scope refusals** (`RELEASE_SCOPE.md` §1.5): a value of a hidden feature on a visible endpoint is a field problem, 422 `validation_failed` with the shared message `errors.feature_disabled_field` on its path; a hidden endpoint is the top-level `feature_disabled` below.
 - **Business rules** use the top-level codes below.
 
 ### 8.2 Generic (Platform, `lang/*/errors.php`)
@@ -424,6 +425,7 @@ Every error body is `{message, code, errors, details?}` (API.md §0.4). **Each c
 | `invalid_state_transition` | 409 | The action is not allowed in the current state (`details.from`, `details.to` or `details.status`) |
 | `file_type_not_allowed` | 422 | Upload extension or MIME not allowed for the purpose |
 | `file_too_large` | 422 | Upload over the purpose limit |
+| `feature_disabled` | 404 | The feature is not available in this release scope (`details.feature` = the flag of `features.flags`, `RELEASE_SCOPE.md` §1.5) |
 
 ### 8.3 Identity (`lang/*/identity.php`)
 

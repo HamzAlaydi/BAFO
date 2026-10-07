@@ -8,7 +8,7 @@ import { ArrowLeft, ArrowRight, BookOpen, Contact, ExternalLink, FileDown, FileU
  * documentation on the API origin (`/docs/api`, `openapi.yaml`). Without `features.api_enabled` the
  * API clients and webhooks cards carry the callout; import and export stay available.
  */
-definePageMeta({ layout: 'dashboard', middleware: 'auth' })
+definePageMeta({ layout: 'dashboard', middleware: ['auth', 'feature'], feature: ['integrations_api', 'csv_import_export'] })
 
 const { t } = useI18n()
 const auth = useAuthStore()

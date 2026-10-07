@@ -7,6 +7,7 @@ use App\Modules\Billing\Enums\DiscountType;
 use App\Modules\Billing\Models\Coupon;
 use App\Modules\Billing\Models\CouponRedemption;
 use App\Modules\Billing\Models\Plan;
+use Carbon\CarbonImmutable;
 use Illuminate\Testing\TestResponse;
 use Tests\Support\Billing\Billing;
 
@@ -57,6 +58,12 @@ function securityApprove(object $test, TestResponse $checkout): void
 }
 
 it('does not let one organization redeem a once-per-organization coupon twice through parallel checkouts', function () {
+    // The last checkout renews the plan bought here, and a renewal opens `billing.renewal_window_days`
+    // (30) before the period ends: on a day whose next month is 31 days away it would stop at
+    // `subscription_renewal_too_early` before the coupon check. Freeze a day whose monthly period
+    // (28 days) is inside the window, so the purchase is valid and only the coupon can refuse it.
+    $this->travelTo(CarbonImmutable::parse('2027-02-10 09:00:00', 'UTC'));
+
     $coupon = securityCoupon(['per_organization_limit' => 1]);
     Billing::actingAs(Billing::member());
 

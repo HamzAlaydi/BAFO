@@ -27,6 +27,7 @@ import 'package:material_ui/material_ui.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../helpers/fakes.dart';
+import '../../helpers/scope.dart';
 import 'support.dart';
 
 class _MockHome extends Mock implements HomeRepository {}
@@ -151,6 +152,8 @@ void main() {
             BlocProvider<SessionCubit>.value(value: session),
             BlocProvider<UnreadCountCubit>.value(value: unread),
             BlocProvider<LocaleCubit>.value(value: localeCubit),
+            // Team and Invoices exist in scope `full` (RELEASE_SCOPE.md §4).
+            scopeProvider(ScopeFlags.full),
             RepositoryProvider<HomeRepository>.value(value: home),
             RepositoryProvider<NotificationsRepository>.value(
               value: notifications,

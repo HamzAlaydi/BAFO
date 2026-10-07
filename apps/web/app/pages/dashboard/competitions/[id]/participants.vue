@@ -15,6 +15,7 @@ import { upsertInvitation } from '~/stores/competition-editor-invitations'
  */
 const ctx = useCompetitionContext()
 const { t } = useI18n()
+const features = useFeatures()
 const route = useRoute()
 const router = useRouter()
 const clock = useServerTime()
@@ -158,7 +159,7 @@ function onCreated(): void {
     </div>
 
     <CompetitionsIssuerSponsorshipCard
-      v-if="sponsorship"
+      v-if="sponsorship && features.enabled('sponsorship')"
       :competition-id="competition.id"
       :sponsorship="sponsorship"
       :can-manage="competition.permissions.can_manage_sponsorship"

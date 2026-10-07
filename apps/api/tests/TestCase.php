@@ -6,6 +6,9 @@ namespace Tests;
 
 use App\Support\Clock\CarbonDbClock;
 use App\Support\Clock\DbClock;
+use App\Support\Features\FeatureFlags;
+use App\Support\Features\ReleaseScope;
+use App\Support\Settings\Settings;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Support\Facades\Storage;
 use Monolog\Handler\NullHandler;
@@ -40,6 +43,21 @@ abstract class TestCase extends BaseTestCase
         foreach (['api_access', 'push'] as $channel) {
             config()->set("logging.channels.{$channel}", ['driver' => 'monolog', 'handler' => NullHandler::class]);
         }
+
+        // Release scope (RELEASE_SCOPE.md §1.6): the product default is `core`, but the suite runs
+        // against the full product so every feature stays covered. This is the one implicit place;
+        // a test that exercises scope `core` sets it explicitly with $this->releaseScope(...).
+        // Registered as a default (no database write) so the Unit tests that boot the app can run too.
+        $this->app->make(Settings::class)->defaults([FeatureFlags::SETTING_KEY => ReleaseScope::Full->value]);
+    }
+
+    /**
+     * Switches the release scope for the rest of the test (stored through Settings, so the
+     * cache is flushed and the next request sees it).
+     */
+    protected function releaseScope(ReleaseScope $scope): void
+    {
+        $this->app->make(Settings::class)->set(FeatureFlags::SETTING_KEY, $scope->value, null);
     }
 
     /**

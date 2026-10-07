@@ -6,8 +6,12 @@ namespace App\Modules\Admin\Filament\Support;
 
 use App\Modules\Platform\Actions\UpdateAppSetting;
 use App\Support\Auth\Actor;
+use App\Support\Features\FeatureFlags;
+use App\Support\Features\ReleaseScope;
 use App\Support\Settings\Settings;
+use BackedEnum;
 use Filament\Forms\Components\Field;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TagsInput;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -18,13 +22,23 @@ use Illuminate\Support\Facades\Lang as Translator;
 /**
  * The §15.3 settings page form, built from the defaults the modules registered (`Settings`): one
  * field per key, typed by its default value (switch, integer, SAR amount for `*_minor`, text,
- * a group of fields for objects, a tag list for lists). Saving calls Platform's `UpdateAppSetting`
- * for each changed key only.
+ * a group of fields for objects, a tag list for lists). A key whose values are a backed enum
+ * (ENUM_KEYS, e.g. `platform.release_scope`, RELEASE_SCOPE.md §1.1) is a required select of the
+ * enum's labelled values. Saving calls Platform's `UpdateAppSetting` for each changed key only.
  */
 final class SettingsForm
 {
     /** Section order; any other prefix follows. */
-    private const array GROUPS = ['app', 'competitions', 'bidding', 'billing', 'sponsorship'];
+    private const array GROUPS = ['platform', 'app', 'competitions', 'bidding', 'billing', 'sponsorship'];
+
+    /**
+     * Settings stored as the value of a backed enum (their default is the plain string value).
+     *
+     * @var array<string, class-string<BackedEnum>>
+     */
+    private const array ENUM_KEYS = [
+        FeatureFlags::SETTING_KEY => ReleaseScope::class,
+    ];
 
     public function __construct(private readonly Settings $settings) {}
 
@@ -160,12 +174,37 @@ final class SettingsForm
             ));
         }
 
+        if (isset(self::ENUM_KEYS[$key])) {
+            return $this->enumSelect($name, $label, $key, self::ENUM_KEYS[$key]);
+        }
+
         if (is_array($default)) {
             return TagsInput::make($name)->label($label)->helperText($key)
                 ->nestedRecursiveRules(is_int($default[0] ?? null) ? ['integer', 'min:0'] : ['string', 'max:100']);
         }
 
         return $this->scalarField($name, $label, $key, $default)->helperText($key);
+    }
+
+    /**
+     * A required select of the enum's values, labelled by the enum's `label()` when it has one.
+     * UpdateAppSetting still rejects anything else (InvalidArgumentException).
+     *
+     * @param  class-string<BackedEnum>  $enum
+     */
+    private function enumSelect(string $name, string $label, string $key, string $enum): Select
+    {
+        $options = [];
+
+        foreach ($enum::cases() as $case) {
+            $options[(string) $case->value] = method_exists($case, 'label') ? (string) $case->label() : (string) $case->value;
+        }
+
+        $help = self::text('settings.help.'.str_replace('.', '_', $key), '');
+
+        return Select::make($name)->label($label)->options($options)->required()->selectablePlaceholder(false)
+            ->in(array_keys($options))
+            ->helperText($help === '' ? $key : $key.' — '.$help);
     }
 
     private function scalarField(string $name, string $label, string $key, mixed $default): Field

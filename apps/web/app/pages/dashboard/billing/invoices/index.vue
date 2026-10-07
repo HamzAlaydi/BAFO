@@ -11,7 +11,7 @@ import type { TableColumn } from '~/types/ui'
  * `invoice_pdf_not_ready` → «الفاتورة قيد الإصدار»). Subscription and sponsored-pass purchases both
  * appear here.
  */
-definePageMeta({ layout: 'dashboard', middleware: 'auth' })
+definePageMeta({ layout: 'dashboard', middleware: ['auth', 'feature'], feature: 'billing_invoices', featureFallback: '/dashboard/billing' })
 
 const { t } = useI18n()
 const auth = useAuthStore()

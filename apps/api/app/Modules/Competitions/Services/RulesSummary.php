@@ -54,16 +54,16 @@ final class RulesSummary
         };
 
         if ($competition->final_window_minutes !== null) {
-            $lines[] = self::text('final_window', $locale, ['minutes' => $competition->final_window_minutes]);
+            $lines[] = self::text('final_window', $locale, ['minutes' => self::counted('minutes', $competition->final_window_minutes, $locale)]);
         }
 
         if ($competition->auto_extend_enabled && $competition->auto_extend_window_seconds !== null
             && $competition->auto_extend_by_seconds !== null && $competition->auto_extend_max !== null) {
             $key = $competition->hard_stop_at !== null ? 'auto_extend_with_latest' : 'auto_extend';
             $lines[] = self::text($key, $locale, [
-                'window' => self::minutes($competition->auto_extend_window_seconds),
-                'by' => self::minutes($competition->auto_extend_by_seconds),
-                'max' => $competition->auto_extend_max,
+                'window' => self::duration($competition->auto_extend_window_seconds, $locale),
+                'by' => self::duration($competition->auto_extend_by_seconds, $locale),
+                'max' => self::counted('times', $competition->auto_extend_max, $locale),
                 'latest' => $competition->hard_stop_at !== null ? DisplayTime::format($competition->hard_stop_at, $locale) : '',
             ]);
         }
@@ -102,6 +102,26 @@ final class RulesSummary
         $remainder = $seconds % 60;
 
         return $remainder === 0 ? (string) intdiv($seconds, 60) : intdiv($seconds, 60).':'.str_pad((string) $remainder, 2, '0', STR_PAD_LEFT);
+    }
+
+    /**
+     * A duration with its unit in the locale's plural form («3 دقائق», «دقيقتين», "1 minute"); a duration
+     * that is not a whole number of minutes reads "m:ss" with the generic unit.
+     */
+    private static function duration(int $seconds, string $locale): string
+    {
+        return $seconds % 60 === 0
+            ? self::counted('minutes', intdiv($seconds, 60), $locale)
+            : self::text('units.minutes_exact', $locale, ['time' => self::minutes($seconds)]);
+    }
+
+    /**
+     * A count with its noun in the locale's plural form (`competitions.rules_summary.units.<unit>`, six
+     * Arabic forms: «مرة واحدة», «مرتين», «3 مرات», «20 مرة»).
+     */
+    private static function counted(string $unit, int $count, string $locale): string
+    {
+        return trans_choice('competitions.rules_summary.units.'.$unit, $count, ['count' => $count], $locale);
     }
 
     /**

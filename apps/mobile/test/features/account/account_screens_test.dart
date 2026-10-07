@@ -6,6 +6,7 @@ import 'package:bafo/core/api/pagination.dart';
 import 'package:bafo/core/config/app_config.dart';
 import 'package:bafo/core/config/app_config_cubit.dart';
 import 'package:bafo/core/config/app_config_repository.dart';
+import 'package:bafo/core/config/feature_gate.dart';
 import 'package:bafo/core/l10n/locale_cubit.dart';
 import 'package:bafo/core/lookups/lookups_repository.dart';
 import 'package:bafo/core/models/lookups.dart';
@@ -32,6 +33,7 @@ import 'package:mocktail/mocktail.dart';
 
 import '../../helpers/fakes.dart';
 import '../../helpers/pump.dart';
+import '../../helpers/scope.dart';
 import 'support.dart';
 
 class _MockAccount extends Mock implements AccountRepository {}
@@ -129,6 +131,9 @@ void main() {
     String location = '/account',
     Object? extra,
     Locale locale = const Locale('ar'),
+    // Team and Invoices are hidden features (RELEASE_SCOPE.md §4): the
+    // existing screens are exercised in scope `full`.
+    FeatureFlags? flags,
   }) async {
     tester.view
       ..physicalSize = const Size(1080, 4000)
@@ -156,6 +161,7 @@ void main() {
         ),
       ],
       providers: (_) => [
+        scopeProvider(flags ?? ScopeFlags.full),
         BlocProvider<SessionCubit>.value(value: session),
         BlocProvider<LocaleCubit>.value(value: localeCubit),
         RepositoryProvider<AccountRepository>.value(value: account),
@@ -261,6 +267,83 @@ void main() {
       await tester.pumpAndSettle();
       expect(router.state.uri.path, '/account/team');
       expect(find.text('فريق العمل'), findsOneWidget);
+    });
+  });
+
+  group('release scope core (RELEASE_SCOPE.md §4)', () {
+    testWidgets('the hub hides Team and Invoices and keeps the plan', (
+      tester,
+    ) async {
+      await pumpAccount(tester, flags: ScopeFlags.core);
+
+      expect(find.byKey(const Key('account.team')), findsNothing);
+      expect(find.byKey(const Key('account.invoices')), findsNothing);
+      for (final key in [
+        'account.profile',
+        'account.password',
+        'account.organization',
+        'account.plan',
+        'account.settings',
+        'account.help',
+        'account.delete',
+      ]) {
+        expect(find.byKey(Key(key)), findsOneWidget, reason: key);
+      }
+    });
+
+    testWidgets('/account/team shows «غير متاح في هذا الإصدار», not the team', (
+      tester,
+    ) async {
+      final router = await pumpAccount(
+        tester,
+        flags: ScopeFlags.core,
+        location: '/account/team',
+      );
+
+      expect(find.byType(FeatureUnavailableScreen), findsOneWidget);
+      expect(find.text('غير متاح في هذا الإصدار'), findsWidgets);
+      expect(find.text('هذه الميزة غير متاحة في هذا الإصدار.'), findsOneWidget);
+      expect(find.text('فريق العمل'), findsNothing);
+      verifyNever(() => team.members());
+
+      await tester.tap(find.byKey(const Key('feature.unavailable.back')));
+      await tester.pumpAndSettle();
+      expect(router.state.uri.path, '/account');
+    });
+
+    testWidgets('/account/team/new and the member form are gated too', (
+      tester,
+    ) async {
+      await pumpAccount(
+        tester,
+        flags: ScopeFlags.core,
+        location: '/account/team/new',
+      );
+      expect(find.byType(FeatureUnavailableScreen), findsOneWidget);
+      expect(find.byKey(const Key('member.submit')), findsNothing);
+    });
+
+    testWidgets('/account/invoices says the invoices are on the web', (
+      tester,
+    ) async {
+      await pumpAccount(
+        tester,
+        flags: ScopeFlags.core,
+        location: '/account/invoices',
+      );
+      expect(find.byType(FeatureUnavailableScreen), findsOneWidget);
+      expect(
+        find.text('الفواتير متاحة في لوحة تحكم بافو على الويب.'),
+        findsOneWidget,
+      );
+      expect(find.text('BAFO-INV-2026-000001'), findsNothing);
+      verifyNever(() => billing.invoices());
+    });
+
+    testWidgets('scope full brings both back', (tester) async {
+      await pumpAccount(tester, flags: ScopeFlags.full);
+      expect(find.byKey(const Key('account.team')), findsOneWidget);
+      expect(find.byKey(const Key('account.invoices')), findsOneWidget);
     });
   });
 

@@ -52,6 +52,11 @@ return [
             'import_errors' => 'أخطاء الاستيراد',
             'export' => 'ملف التصدير',
         ],
+        // الإعداد platform.release_scope (RELEASE_SCOPE.md §1.1).
+        'release_scope' => [
+            'core' => 'أساسي (المناقصات والمزايدات)',
+            'full' => 'كامل (جميع المزايا)',
+        ],
     ],
 
     'legal' => [

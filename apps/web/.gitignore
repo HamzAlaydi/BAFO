@@ -30,3 +30,6 @@ test-results
 blob-report
 .vercel
 .env*
+
+# Rendered OG templates (scripts/og-image.ts)
+scripts/.og-*.html

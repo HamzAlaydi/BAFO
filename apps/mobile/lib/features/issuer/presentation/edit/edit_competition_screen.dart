@@ -1,3 +1,5 @@
+import 'package:bafo/core/config/app_config.dart';
+import 'package:bafo/core/config/feature_gate.dart';
 import 'package:bafo/core/l10n/l10n.dart';
 import 'package:bafo/core/lookups/lookups_repository.dart';
 import 'package:bafo/core/theme/spacing.dart';
@@ -147,6 +149,11 @@ class _Form extends StatelessWidget {
                       ? state.competition.rules
                       : null,
                   isEnabled: scope.allows,
+                  // RELEASE_SCOPE.md §4: the reserve is an advanced rule; an
+                  // existing value keeps rendering (records always render).
+                  showReserve:
+                      context.flags.enabled(Feature.advancedRules) ||
+                      initial.reservePriceMinor != null,
                   onChanged: cubit.update,
                 ),
               ],

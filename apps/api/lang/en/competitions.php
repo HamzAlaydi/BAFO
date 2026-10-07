@@ -234,9 +234,15 @@ return [
             'with_prices' => 'Each participant sees its rank and the offer prices, without participant names.',
             'without_prices' => 'Each participant sees its rank, without other participants\' prices.',
         ],
-        'final_window' => 'The final pricing window starts :minutes minutes before closing; before it only your own offer is visible.',
-        'auto_extend' => 'Offers that change the leading offer in the last :window minutes extend closing by :by minutes, up to :max times.',
-        'auto_extend_with_latest' => 'Offers that change the leading offer in the last :window minutes extend closing by :by minutes, up to :max times (latest possible close :latest).',
+        'final_window' => 'The final pricing window starts :minutes before closing; before it only your own offer is visible.',
+        'auto_extend' => 'Offers that change the leading offer in the last :window extend closing by :by, up to :max.',
+        'auto_extend_with_latest' => 'Offers that change the leading offer in the last :window extend closing by :by, up to :max (latest possible close :latest).',
+        // Counted nouns (trans_choice: one|other).
+        'units' => [
+            'minutes' => ':count minute|:count minutes',
+            'minutes_exact' => ':time minutes',
+            'times' => ':count time|:count times',
+        ],
         'bafo' => 'The issuer may invite a shortlist to submit one best and final offer after closing.',
         'server_time' => 'Offers are timed on receipt by the BAFO server.',
         'prices_excl_vat' => 'Prices exclude VAT.',

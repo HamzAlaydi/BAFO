@@ -16,6 +16,7 @@ definePageMeta({ layout: 'dashboard', middleware: 'auth' })
 const { t } = useI18n()
 const route = useRoute()
 const auth = useAuthStore()
+const features = useFeatures()
 const toast = useToast()
 const { message, bind } = useErrorMessage()
 
@@ -165,6 +166,8 @@ function onFileUpdated(next: Organization): void {
 }
 
 const FEATURES = ['api_enabled', 'auction_enabled', 'sponsorship_enabled'] as const
+/** The API and covered-fees rows need their features explained: shown with `advanced_rules` (RELEASE_SCOPE.md §5). */
+const visibleFeatures = computed(() => FEATURES.filter(feature => feature === 'auction_enabled' || features.enabled('advanced_rules')))
 </script>
 
 <template>
@@ -442,7 +445,7 @@ const FEATURES = ['api_enabled', 'auction_enabled', 'sponsorship_enabled'] as co
       >
         <ul class="flex flex-col gap-3">
           <li
-            v-for="feature in FEATURES"
+            v-for="feature in visibleFeatures"
             :key="feature"
             class="flex items-center justify-between gap-4 text-sm"
           >

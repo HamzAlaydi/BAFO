@@ -33,7 +33,7 @@ it('returns every lookup list without a token', function () {
                 'regions' => [['id', 'code', 'name']],
                 'categories' => [['id', 'code', 'name', 'is_other', 'auction_allowed']],
                 'close_reasons' => [['id', 'code', 'kind', 'name', 'requires_note']],
-                'presets' => [['id', 'code', 'name', 'description', 'direction', 'format', 'rules']],
+                'presets' => [['id', 'code', 'name', 'description', 'direction', 'format', 'tier', 'rules']],
             ],
             'meta' => ['server_time'],
         ]);
@@ -46,7 +46,8 @@ it('returns every lookup list without a token', function () {
         ])
         ->and($response->json('data.categories'))->toHaveCount(14)
         ->and($response->json('data.close_reasons'))->toHaveCount(15)
-        ->and($response->json('data.presets'))->toHaveCount(3);
+        // tests/TestCase.php runs as `full`: the three reference presets and the six tiers (core: Catalog/ReleaseScopeTest).
+        ->and($response->json('data.presets'))->toHaveCount(9);
 });
 
 it('names the lookups in the request language', function () {
@@ -107,8 +108,14 @@ it('answers 404 for an unknown lookup type', function () {
 it('returns the presets with rules and no prices', function () {
     $presets = collect($this->getJson('/api/app/v1/lookups/presets')->assertOk()->json('data'))->keyBy('code');
 
-    expect($presets->keys()->all())->toBe(['standard_live_tender', 'sealed_rfq', 'surplus_sale_auction'])
-        ->and($presets['standard_live_tender'])->toMatchArray(['direction' => 'tender', 'format' => 'live'])
+    expect($presets->keys()->all())->toBe([
+        'standard_live_tender', 'sealed_rfq', 'surplus_sale_auction',
+        'tender_live_simple', 'tender_live_standard', 'tender_live_protected',
+        'auction_live_simple', 'auction_live_standard', 'auction_live_protected',
+    ])
+        ->and($presets['standard_live_tender'])->toMatchArray(['direction' => 'tender', 'format' => 'live', 'tier' => null])
+        ->and($presets['tender_live_standard'])->toMatchArray(['direction' => 'tender', 'format' => 'live', 'tier' => 'standard'])
+        ->and($presets['auction_live_protected'])->toMatchArray(['direction' => 'auction', 'format' => 'live', 'tier' => 'protected'])
         ->and($presets['standard_live_tender']['rules'])->toMatchArray([
             'min_step_bps' => 50,
             'must_beat' => 'own',

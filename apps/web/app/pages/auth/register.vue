@@ -68,6 +68,23 @@ useUnsavedChangesGuard(() => started.value && !registered.value)
 const errors = ref<Record<string, string | undefined>>({})
 const serverErrorFields = ref<Set<string>>(new Set())
 const formError = ref<string | null>(null)
+/** After a submit attempt, every field error is listed at the top with a link to its field (FQ8). */
+const submitted = ref(false)
+const errorSummary = computed(() => (submitted.value
+  ? Object.entries(errors.value).filter((entry): entry is [string, string] => Boolean(entry[1])).map(([field, text]) => ({ field, text }))
+  : []))
+const summaryEl = useTemplateRef<HTMLElement>('summary')
+
+async function focusField(field: string): Promise<void> {
+  const section = SECTION_OF_FIELD[field]
+  if (section === 'address') addressOpen.value = true
+  if (narrow.value && section) current.value = SECTIONS.indexOf(section)
+  await nextTick()
+  const control = document.querySelector<HTMLElement>(`[data-field="${field}"] input, [data-field="${field}"] select, [data-field="${field}"] textarea, [data-field="${field}"] [role="checkbox"], [data-field="${field}"] button`)
+  const target = control ?? document.querySelector<HTMLElement>(`[data-field="${field}"]`)
+  target?.scrollIntoView({ block: 'center' })
+  target?.focus()
+}
 const invitationNotice = ref<string | null>(null)
 const submitting = ref(false)
 const addressOpen = ref(false)
@@ -221,9 +238,11 @@ function payload(): RegisterRequest {
 
 async function submit(): Promise<void> {
   formError.value = null
+  submitted.value = true
   const allValid = SECTIONS.map(section => applyErrors(validateSection(section), [section])).every(Boolean)
   if (!allValid) {
-    await focusFirstError()
+    await nextTick()
+    summaryEl.value?.focus()
     return
   }
   if (cooldown.active.value) return
@@ -325,6 +344,31 @@ const localeOptions = computed(() => [
       {{ formError }}
     </UiAlert>
 
+    <div
+      v-if="errorSummary.length > 0"
+      ref="summary"
+      tabindex="-1"
+      class="outline-none"
+    >
+      <UiAlert
+        tone="danger"
+        :title="t('auth.register.error_summary')"
+      >
+        <ul class="mt-1 flex flex-col gap-1">
+          <li
+            v-for="item in errorSummary"
+            :key="item.field"
+          >
+            <a
+              href="#"
+              class="link"
+              @click.prevent="focusField(item.field)"
+            >{{ item.text }}</a>
+          </li>
+        </ul>
+      </UiAlert>
+    </div>
+
     <form
       class="relative flex flex-col gap-8"
       novalidate
@@ -351,6 +395,7 @@ const localeOptions = computed(() => [
           :maxlength="150"
           required
           :error="errors.name"
+          data-field="name"
         />
         <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
           <div class="flex flex-col gap-1.5">
@@ -363,6 +408,7 @@ const localeOptions = computed(() => [
               dir="ltr"
               required
               :error="errors.email"
+              data-field="email"
             />
             <NuxtLinkLocale
               v-if="serverErrorFields.has('email')"
@@ -372,29 +418,35 @@ const localeOptions = computed(() => [
               {{ t('auth.register.sign_in_instead') }}
             </NuxtLinkLocale>
           </div>
-          <UiPhoneInput
-            v-model="form.phone"
-            :label="t('auth.fields.phone')"
-            :hint="t('auth.fields.phone_hint')"
+          <div data-field="phone">
+            <UiPhoneInput
+              v-model="form.phone"
+              :label="t('auth.fields.phone')"
+              :hint="t('auth.fields.phone_hint')"
+              required
+              :error="errors.phone"
+            />
+          </div>
+        </div>
+        <div data-field="password">
+          <UiPasswordInput
+            v-model="form.password"
+            :label="t('auth.fields.password')"
+            autocomplete="new-password"
+            checklist
             required
-            :error="errors.phone"
+            :error="errors.password"
           />
         </div>
-        <UiPasswordInput
-          v-model="form.password"
-          :label="t('auth.fields.password')"
-          autocomplete="new-password"
-          checklist
-          required
-          :error="errors.password"
-        />
-        <UiPasswordInput
-          v-model="form.password_confirmation"
-          :label="t('auth.fields.password_confirmation')"
-          autocomplete="new-password"
-          required
-          :error="errors.password_confirmation"
-        />
+        <div data-field="password_confirmation">
+          <UiPasswordInput
+            v-model="form.password_confirmation"
+            :label="t('auth.fields.password_confirmation')"
+            autocomplete="new-password"
+            required
+            :error="errors.password_confirmation"
+          />
+        </div>
         <UiSegmented
           v-model="form.locale"
           :options="localeOptions"
@@ -422,6 +474,7 @@ const localeOptions = computed(() => [
           :maxlength="150"
           required
           :error="errors['organization.name']"
+          data-field="organization.name"
         />
         <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
           <div class="flex flex-col gap-1.5">
@@ -434,6 +487,7 @@ const localeOptions = computed(() => [
               :maxlength="10"
               required
               :error="errors['organization.cr_number']"
+              data-field="organization.cr_number"
             />
             <NuxtLinkLocale
               v-if="serverErrorFields.has('organization.cr_number')"
@@ -443,12 +497,14 @@ const localeOptions = computed(() => [
               {{ t('auth.register.sign_in_instead') }}
             </NuxtLinkLocale>
           </div>
-          <OrganizationRegionSelect
-            v-model="form.organization.region_id"
-            :label="t('organization.fields.region')"
-            required
-            :error="errors['organization.region_id']"
-          />
+          <div data-field="organization.region_id">
+            <OrganizationRegionSelect
+              v-model="form.organization.region_id"
+              :label="t('organization.fields.region')"
+              required
+              :error="errors['organization.region_id']"
+            />
+          </div>
         </div>
         <UiInput
           v-model="form.organization.city"
@@ -457,6 +513,7 @@ const localeOptions = computed(() => [
           :maxlength="100"
           required
           :error="errors['organization.city']"
+          data-field="organization.city"
         />
         <UiSwitch
           v-model="form.organization.vat_registered"
@@ -473,6 +530,7 @@ const localeOptions = computed(() => [
           :maxlength="15"
           required
           :error="errors['organization.vat_number']"
+          data-field="organization.vat_number"
         />
         <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
           <UiInput
@@ -571,18 +629,22 @@ const localeOptions = computed(() => [
         >
           {{ t('auth.register.sections.consent.title') }}
         </h2>
-        <UiCheckbox
-          v-model="form.accept_terms"
-          :label="t('auth.register.accept_terms')"
-          required
-          :error="errors.accept_terms"
-        />
-        <UiCheckbox
-          v-model="form.accept_privacy"
-          :label="t('auth.register.accept_privacy')"
-          required
-          :error="errors.accept_privacy"
-        />
+        <div data-field="accept_terms">
+          <UiCheckbox
+            v-model="form.accept_terms"
+            :label="t('auth.register.accept_terms')"
+            required
+            :error="errors.accept_terms"
+          />
+        </div>
+        <div data-field="accept_privacy">
+          <UiCheckbox
+            v-model="form.accept_privacy"
+            :label="t('auth.register.accept_privacy')"
+            required
+            :error="errors.accept_privacy"
+          />
+        </div>
         <p class="text-sm text-fg-muted">
           {{ t('auth.register.read_documents') }}
           <NuxtLinkLocale

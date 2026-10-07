@@ -52,7 +52,11 @@ it('names module migrations inside the module range', function (string $module, 
     expect($files)->not->toBeEmpty();
 
     foreach ($files as $file) {
-        expect(basename($file))->toMatch('/^2026_01_01_\d{6}_[a-z0-9_]+\.php$/');
+        // Tables are created on 2026_01_01; a later change carries a later date (CONVENTIONS §2.4),
+        // and its number stays inside the module range.
+        expect(basename($file))->toMatch('/^\d{4}_\d{2}_\d{2}_\d{6}_[a-z0-9_]+\.php$/')
+            ->and(substr(basename($file), 0, 10) >= '2026_01_01')->toBeTrue()
+            ->and(str_starts_with(basename($file), '2026_01_01_') || ! str_contains(basename($file), '_create_'))->toBeTrue();
 
         $number = (int) substr(basename($file), 11, 6);
 

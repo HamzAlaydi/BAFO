@@ -5,14 +5,29 @@ declare(strict_types=1);
 namespace App\Modules\Billing\Http\Requests;
 
 use App\Modules\Billing\Enums\SponsorshipMode;
+use App\Support\Features\Feature;
+use App\Support\Features\FeatureFlags;
+use App\Support\Features\FeatureRefusals;
 use Illuminate\Validation\Rule;
 
 /**
  * `PUT /competitions/{competition}/sponsorship` (API.md §1.7): `mode` (none, all, selected) and
- * an optional `max_passes` cap (1–200).
+ * an optional `max_passes` cap (1–200). While the release scope hides `sponsorship`
+ * (RELEASE_SCOPE.md §1.5) only `mode: none` is accepted (turning covered fees off stays possible
+ * on an existing record); `all` or `selected` is 404 `feature_disabled`.
  */
 final class UpdateSponsorshipRequest extends BillingFormRequest
 {
+    protected function prepareForValidation(): void
+    {
+        $mode = $this->input('mode');
+
+        if (is_string($mode) && SponsorshipMode::tryFrom($mode) !== null
+            && ! app(FeatureFlags::class)->enabled(Feature::Sponsorship)) {
+            throw FeatureRefusals::disabled(Feature::Sponsorship);
+        }
+    }
+
     public function rules(): array
     {
         return [

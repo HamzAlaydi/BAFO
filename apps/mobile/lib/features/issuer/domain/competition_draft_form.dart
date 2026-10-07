@@ -1,4 +1,5 @@
 import 'package:bafo/core/api/api_exception.dart';
+import 'package:bafo/core/api/json.dart';
 import 'package:bafo/core/models/competition_enums.dart';
 import 'package:bafo/core/models/lookups.dart';
 import 'package:bafo/features/competitions/domain/issuer_models.dart';
@@ -124,6 +125,16 @@ enum DraftProblem {
 
   /// R16: at most [DraftRules.maxDurationDays].
   durationTooLong,
+
+  /// The typed amount cannot be read (FQ2, FQ8): «1.2.3», more than two
+  /// decimals. Its value is null meanwhile, so the step must not move on.
+  amountInvalid,
+
+  /// The typed amount is zero.
+  amountNotPositive,
+
+  /// The typed amount has halalas where only whole riyals are allowed.
+  amountWholeRiyals,
 }
 
 /// Mirrors of the server's default settings, used for hints only.
@@ -158,7 +169,30 @@ final class CompetitionDraftForm extends Equatable {
     this.opensOnPublish = true,
     this.biddingOpensAt,
     this.scheduledCloseAt,
+    this.unreadableAmounts = const {},
   });
+
+  /// The local autosave shape (RELEASE_SCOPE.md FQ6): what the user typed,
+  /// kept in `PreferencesStore` until `POST /competitions` succeeds.
+  factory CompetitionDraftForm.fromJson(Json json) => CompetitionDraftForm(
+    direction: json['direction'] == null
+        ? null
+        : Direction.parse(json['direction']),
+    format: json['format'] == null
+        ? null
+        : CompetitionFormat.parse(json['format']),
+    presetCode: json.strOrNull('preset_code'),
+    title: json.strOrNull('title') ?? '',
+    description: json.strOrNull('description') ?? '',
+    categoryId: json.strOrNull('category_id'),
+    categoryOtherText: json.strOrNull('category_other_text') ?? '',
+    regionId: json.strOrNull('region_id'),
+    startPriceMinor: json.intOrNull('start_price_minor'),
+    reservePriceMinor: json.intOrNull('reserve_price_minor'),
+    opensOnPublish: json.flag('opens_on_publish', fallback: true),
+    biddingOpensAt: json.dateOrNull('bidding_opens_at'),
+    scheduledCloseAt: json.dateOrNull('scheduled_close_at'),
+  );
 
   final Direction? direction;
   final CompetitionFormat? format;
@@ -180,8 +214,41 @@ final class CompetitionDraftForm extends Equatable {
   final DateTime? biddingOpensAt;
   final DateTime? scheduledCloseAt;
 
+  /// Amount fields whose typed text cannot be used (FQ2, FQ8), with why. Their
+  /// halalas are null meanwhile; without this the step would move on and save
+  /// no price. Not autosaved: a restored form shows the saved amounts.
+  final Map<DraftField, DraftProblem> unreadableAmounts;
+
+  Json toJson() => {
+    'direction': direction?.wire,
+    'format': format?.wire,
+    'preset_code': presetCode,
+    'title': title,
+    'description': description,
+    'category_id': categoryId,
+    'category_other_text': categoryOtherText,
+    'region_id': regionId,
+    'start_price_minor': startPriceMinor,
+    'reserve_price_minor': reservePriceMinor,
+    'opens_on_publish': opensOnPublish,
+    'bidding_opens_at': biddingOpensAt == null
+        ? null
+        : toApiTime(biddingOpensAt!),
+    'scheduled_close_at': scheduledCloseAt == null
+        ? null
+        : toApiTime(scheduledCloseAt!),
+  };
+
   /// The opening that is sent: null when it opens on publish.
   DateTime? get effectiveOpensAt => opensOnPublish ? null : biddingOpensAt;
+
+  /// The duration offers stay open, counted from the opening or from [now]
+  /// (publish) when they open on publish; null without a closing time.
+  Duration? durationFrom(DateTime now) {
+    final close = scheduledCloseAt;
+    if (close == null) return null;
+    return close.difference(effectiveOpensAt ?? now);
+  }
 
   CompetitionDraftForm copyWith({
     Direction? direction,
@@ -197,6 +264,7 @@ final class CompetitionDraftForm extends Equatable {
     bool? opensOnPublish,
     DateTime? Function()? biddingOpensAt,
     DateTime? Function()? scheduledCloseAt,
+    Map<DraftField, DraftProblem>? unreadableAmounts,
   }) => CompetitionDraftForm(
     direction: direction ?? this.direction,
     format: format ?? this.format,
@@ -219,12 +287,26 @@ final class CompetitionDraftForm extends Equatable {
     scheduledCloseAt: scheduledCloseAt == null
         ? this.scheduledCloseAt
         : scheduledCloseAt(),
+    unreadableAmounts: unreadableAmounts ?? this.unreadableAmounts,
   );
 
   /// Presets that match the chosen direction and format.
   List<Preset> presetsFor(List<Preset> presets) => [
     for (final preset in presets)
       if (preset.direction == direction && preset.format == format) preset,
+  ];
+
+  /// The tier cards of the chosen direction and format (RELEASE_SCOPE.md
+  /// §2.2), ordered simple → standard → protected.
+  List<Preset> tieredPresetsFor(List<Preset> presets) => [
+    for (final preset in presetsFor(presets))
+      if (preset.isTiered) preset,
+  ]..sort((a, b) => a.tier!.index.compareTo(b.tier!.index));
+
+  /// The untiered («قوالب أخرى») presets of the chosen direction and format.
+  List<Preset> untieredPresetsFor(List<Preset> presets) => [
+    for (final preset in presetsFor(presets))
+      if (!preset.isTiered) preset,
   ];
 
   Preset? presetIn(List<Preset> presets) =>
@@ -248,8 +330,12 @@ final class CompetitionDraftForm extends Equatable {
         }
         // CONTRACT-GAP: the API accepts `preset_code: null` (column
         // defaults), which can break R1 for sealed competitions; mobile has no
-        // rules editor (CD4), so it requires a matching preset.
-        if (presetIn(presetsFor(lookups.presets)) == null) {
+        // rules editor (CD4), so it requires a matching preset. Asked only
+        // once the direction and format exist (the cards are not shown
+        // before, and the summary would name a choice the user cannot see).
+        if (!problems.containsKey(DraftField.direction) &&
+            !problems.containsKey(DraftField.format) &&
+            presetIn(presetsFor(lookups.presets)) == null) {
           problems[DraftField.preset] = DraftProblem.required;
         }
       case CreateStep.basics:
@@ -316,6 +402,8 @@ final class CompetitionDraftForm extends Equatable {
             const Duration(days: DraftRules.maxDurationDays)) {
           problems[DraftField.closesAt] = DraftProblem.durationTooLong;
         }
+        // The text wins over checks made on the last usable value.
+        problems.addAll(unreadableAmounts);
       case CreateStep.review:
         for (final earlier in [
           CreateStep.type,
@@ -370,5 +458,6 @@ final class CompetitionDraftForm extends Equatable {
     opensOnPublish,
     biddingOpensAt,
     scheduledCloseAt,
+    unreadableAmounts,
   ];
 }
